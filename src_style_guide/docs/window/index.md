@@ -1,0 +1,1 @@
+Section describes usage of window components.

@@ -1,0 +1,1 @@
+Section describes usage of UI tables components.

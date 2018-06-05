@@ -1,0 +1,1 @@
+Section describes all common UI components used in entire project.

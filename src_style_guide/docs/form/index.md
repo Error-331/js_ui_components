@@ -1,0 +1,1 @@
+Section describes UI components used inside form (mostly).

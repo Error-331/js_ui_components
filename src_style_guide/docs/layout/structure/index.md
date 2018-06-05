@@ -1,0 +1,1 @@
+Section describes UI structural components.

@@ -1,0 +1,1 @@
+Section describes grid types. Each grid have a collection of utilitary components which are used to layout all other visual elements.
