@@ -34,8 +34,10 @@ module.exports = {
     },
 
     configureServer(app) {
-        app.use('/assets',  express.static('./src/assets'));
+        app.use('/assets',  express.static('./public/assets'));
     },
+
+    serverPort: parseInt(process.env.serverPort),
 
     sections: [
         {

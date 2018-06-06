@@ -20,6 +20,7 @@
     "prepublish": "rm -rf ./lib/ ; npm run prepublish-babel && npm run prepublish-flow",
     "prepublish-babel": "babel ./src --out-dir ./lib",
     "prepublish-flow": "flow-copy-source ./src ./lib",
+    "copy-assets-to-public": "rm -rf ./public/ && mkdir -p ./public && cp -a ./src/assets/. ./public/assets/",
     "start-frontend-style-guide-server": "styleguidist server --config ./src_style_guide/styleguide.config.js"
   },
   "author": {
