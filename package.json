@@ -38,7 +38,7 @@
     "classnames": ">=2.2.5",
     "react": ">=16.2.0",
     "react-dom": ">=16.2.0",
-    "react-jss": ">=8.2.0",
+    "react-jss": ">=8.5.0",
     "redux-form": ">=7.2.0",
     "ramda": ">=0.25.0"
   },
