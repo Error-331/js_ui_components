@@ -14,7 +14,7 @@ module.exports = {
             script: 'npm',
             args: 'run start-frontend-style-guide-server',
             env: {
-                serverPort: 7050,
+                serverPort: 9027,
             },
         }
     ],
