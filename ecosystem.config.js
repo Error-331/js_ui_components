@@ -10,7 +10,7 @@
 module.exports = {
     apps : [
         {
-            name: 'test',
+            name: 'JS UI components',
             script: 'npm',
             args: 'run start-frontend-style-guide-server',
             env: {
