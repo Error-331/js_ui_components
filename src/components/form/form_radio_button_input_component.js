@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {always, equals, isNil, ifElse, clone} from 'ramda';
+import {always, equals, isNil, defaultTo, ifElse, clone} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 import type {FieldProps} from 'redux-form';
@@ -257,7 +257,7 @@ class FormRadioButtonInputComponent extends React.Component<PropsTypes, StateTyp
 
     // region state accessors
     _createInputId(): string {
-        const {name}: {name: ?string} = this._getInputData();
+        const {name} = this._getInputData();
         const randomIdNumber: number = generateRandomIdNumber();
 
         if (isNil(name)) {
@@ -272,11 +272,11 @@ class FormRadioButtonInputComponent extends React.Component<PropsTypes, StateTyp
     // region prop accessors
     _isChecked(): boolean {
         const {checked}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
-        return isNil(checked) ? false : checked;
+        return defaultTo(false)(checked);
     }
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
-        const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
+        const {input} = this.props;
         return isNil(input) ? clone(FormRadioButtonInputComponent.defaultProps.input) : input;
     }
 
@@ -300,7 +300,7 @@ class FormRadioButtonInputComponent extends React.Component<PropsTypes, StateTyp
 
     _renderInputIcon(): React.Node {
         return <div className={this.props.classes.inputControlIcon}>
-        </div>
+        </div>;
     }
 
     _renderInputControlLabel(): React.Node {
@@ -328,7 +328,7 @@ class FormRadioButtonInputComponent extends React.Component<PropsTypes, StateTyp
             id={this._id}
 
             onChange={onChange}
-        />
+        />;
     }
 
     _renderInputContainer(): React.Node {

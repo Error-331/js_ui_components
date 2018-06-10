@@ -3,4 +3,4 @@
 // @flow
 
 // exports
-export * from './simple_flex_grid'
+export * from './simple_flex_grid';

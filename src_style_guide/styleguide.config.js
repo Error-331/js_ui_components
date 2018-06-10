@@ -37,7 +37,7 @@ module.exports = {
         app.use('/assets',  express.static('./public/assets'));
     },
 
-    serverPort: parseInt(process.env.serverPort),
+    serverPort: parseInt(process.env.serverPort) || 6060,
 
     sections: [
         {
@@ -51,7 +51,7 @@ module.exports = {
                         {
                             name: 'Simple flex grid',
                             content: path.join(__dirname, './docs/grid/simple_flex_grid/index.md'),
-                            components: path.join(__dirname, './../src/components/grid/simple_flex_grid/**/[A-Za-z_]*.js'),
+                            components: path.join(__dirname, './../src/components/grid/simple_flex_grid/**/simple_[A-Za-z_]*.js'),
                         },
                     ]
                 },
@@ -63,7 +63,7 @@ module.exports = {
                         {
                             name: 'Alignment',
                             content: path.join(__dirname, './docs/layout/alignment/index.md'),
-                            components: path.join(__dirname, './../src/components/layout/alignment/**/[A-Za-z_]*.js'),
+                            components: path.join(__dirname, './../src/components/layout/alignment/**/elements_[A-Za-z_]*.js'),
                         },
 
                         {
