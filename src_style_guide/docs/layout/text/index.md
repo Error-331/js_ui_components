@@ -1,0 +1,1 @@
+Section describes components used for text formatting.

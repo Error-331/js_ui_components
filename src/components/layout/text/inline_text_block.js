@@ -5,7 +5,6 @@
 // external imports
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import {is} from 'ramda';
 
 // local imports
 
@@ -16,18 +15,6 @@ type PropsTypes = {
      */
 
     style?: {[string]: mixed},
-
-    /**
-     * Size of the column in percent
-     */
-
-    size: number | 'auto',
-
-    /**
-     * Flag that indicates whether the column should occupy the remaining space of parent container
-     */
-
-    full?: boolean,
 
     /**
      * JSS inner classes
@@ -44,7 +31,6 @@ type PropsTypes = {
     children?: React.ChildrenArray<any>,
 };
 
-// styles definition
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
@@ -56,16 +42,9 @@ const styles = theme => ({
 });
 
 // component implementation
-function SimpleFlexGridColumn(props: PropsTypes) {
-    const {size, full, classes, style, children} = props;
+function InlineTextBlock(props: PropsTypes) {
 
-    const flexBasis: string = is(String, size) ? size : `${size.toString()}%`;
-    const flexGrow: number = full === true ? 1 : 0;
-
-    return <div className={classes.componentContainer} style={{flexBasis, flexGrow, ...style}}>
-        {children}
-    </div>
 }
 
 // exports
-export default injectSheet(styles)(SimpleFlexGridColumn);
+export default injectSheet(styles)(InlineTextBlock);

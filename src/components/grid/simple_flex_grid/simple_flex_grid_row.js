@@ -26,6 +26,7 @@ type PropsTypes = {
     children?: React.ChildrenArray<React.Element<SimpleFlexGridColumnType>>,
 };
 
+// styles definition
 const styles = theme => ({
     componentContainer: {
         display: 'flex',
