@@ -7,12 +7,22 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {always, complement, isEmpty, ifElse} from 'ramda';
+import {always, complement, gt, lt, isEmpty, ifElse, unless} from 'ramda';
 
 // local imports
 
 // type definitions
 type CardChildrenType = React.ChildrenArray<void | null | string | number | React.Element<any>>;
+type StyleType = {
+    [string]: mixed
+};
+
+type ThemeType = {
+    [string]: mixed,
+    materialDepthLevels: {
+        [string]: string,
+    }
+};
 
 type PropsTypes = {
     /**
@@ -22,10 +32,16 @@ type PropsTypes = {
     header?: ?CardChildrenType,
 
     /**
-     * Content for card body
+     * Number that indicates how high above other elements the card component is placed
      */
 
-    children?: ?CardChildrenType,
+    heightLevel?: number,
+
+    /**
+     * Flag that indicates whether card component should pop when user control hovers over it
+     */
+
+    popOnHover?: boolean,
 
     /**
      * Class names for card container outer div
@@ -37,9 +53,7 @@ type PropsTypes = {
      * Styles for card container outer div
      */
 
-    containerStyles?: {
-        [string]: mixed
-    },
+    containerStyles?: StyleType,
 
     /**
      * Styles for card container body div
@@ -48,6 +62,20 @@ type PropsTypes = {
     bodyStyles?: {
         [string]: mixed
     },
+
+    /**
+     * Content for card body
+     */
+
+    children?: ?CardChildrenType,
+
+    /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
 
     /**
      * JSS inner classes
@@ -78,9 +106,33 @@ const styles = theme => ({
         alignContent: 'flex-start',
 
         borderRadius: theme.layoutStyles.layoutHeaderCommonBorderRadius,
-        boxShadow: theme.materialDepthLevels.materialDepth1BoxShadow,
-
         backgroundColor: theme.layoutStyles.layoutBodyCommonBackgroundColor,
+
+        transition: 'box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+
+        '&.height1': {
+            boxShadow: theme.materialDepthLevels.materialDepth1BoxShadow,
+        },
+
+        '&.height2': {
+            boxShadow: theme.materialDepthLevels.materialDepth2BoxShadow,
+        },
+
+        '&.height3': {
+            boxShadow: theme.materialDepthLevels.materialDepth3BoxShadow,
+        },
+
+        '&.height4': {
+            boxShadow: theme.materialDepthLevels.materialDepth4BoxShadow,
+        },
+
+        '&.height5': {
+            boxShadow: theme.materialDepthLevels.materialDepth5BoxShadow,
+        },
+
+        '&.poppable:hover': {
+            boxShadow: theme.materialDepthLevels.materialDepth5BoxShadow,
+        },
 
         '& > $componentHeader': {
             boxSizing: 'border-box',
@@ -109,7 +161,9 @@ const styles = theme => ({
             borderRadius: theme.layoutStyles.layoutHeaderCommonBorderRadius,
 
             fontFamily: theme.layoutStyles.layoutBodyCommonFontFamily,
-            fontSize: theme.layoutStyles.layoutBodyCommonFontSize
+            fontSize: theme.layoutStyles.layoutBodyCommonFontSize,
+
+            color: theme.layoutStyles.layoutBodyFontColor,
         }
     },
 
@@ -143,8 +197,21 @@ class RegularCardComponent extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region style accessors
+    _getOuterContainerStyles(): StyleType {
+        return Object.assign({}, this.props.containerStyles);
+    }
+
     _getOuterContainerClasses(): string {
-        return classNames(this.props.classes.componentContainer, this.props.containerClassNames);
+        const heightClassName: string = `height${this._getHeightLevel()}`;
+
+        return classNames(
+            this.props.classes.componentContainer,
+            {
+                [heightClassName]: true,
+                'poppable': this._getPopOnHover()
+            },
+            this.props.containerClassNames
+        );
     }
 
     // endregion
@@ -156,6 +223,20 @@ class RegularCardComponent extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region prop accessors
+    _getHeightLevel(): number {
+        let {heightLevel = 1} = this.props;
+
+        heightLevel = unless(gt(5), always(5))(heightLevel);
+        heightLevel = unless(lt(1), always(1))(heightLevel);
+
+        return heightLevel;
+    }
+
+    _getPopOnHover(): boolean {
+        const {popOnHover = false} = this.props;
+        return popOnHover;
+    }
+
     // endregion
 
     // region handlers
@@ -174,14 +255,20 @@ class RegularCardComponent extends React.Component<PropsTypes, StateTypes> {
     }
 
     _renderBody(): React.Node {
-        return <div className={this.props.classes.componentBody} style={this.props.bodyStyles}>
+        return <div
+            className={this.props.classes.componentBody}
+            style={this.props.bodyStyles}
+        >
             {this.props.children}
         </div>;
     }
 
     _renderOuterContainer(): React.Node {
         return (
-            <div className={this._getOuterContainerClasses()} style={this.props.containerStyles}>
+            <div
+                className={this._getOuterContainerClasses()}
+                style={this._getOuterContainerStyles()}
+            >
                 {this._renderHeader()}
                 {this._renderBody()}
             </div>
@@ -189,7 +276,7 @@ class RegularCardComponent extends React.Component<PropsTypes, StateTypes> {
     }
 
     render(): React.Node {
-        return this._renderOuterContainer()
+        return this._renderOuterContainer();
     }
 
     // endregion
