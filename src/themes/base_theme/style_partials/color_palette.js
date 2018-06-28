@@ -22,6 +22,11 @@ export default Object.freeze({
     materialLightBlueA400: '#00b0ff',
     materialLightBlueA700: '#0091ea',
 
+    // grey
+    materialGrey400: '#bdbdbd',
+    materialGrey600: '#757575',
+    materialGrey900: '#212121',
+
     // blue grey
     materialBlueGrey200: '#b0bec5',
     materialBlueGrey300: '#90a4ae',

@@ -157,20 +157,20 @@ const styles = theme => ({
             '& $optionContainer': {
                 padding: '8px 8px 8px 10px',
                 cursor: 'pointer',
-                color: theme.inputStyles.inputCommonInactiveColor,
+                color: theme.inputStyles.inactiveColor,
             },
 
             '& $optionContainer.selected': {
-                backgroundColor: theme.inputStyles.inputSelectedBGColor,
+                backgroundColor: theme.inputStyles.selectedBGColor,
             },
 
             '& $optionContainer:hover': {
-                color: theme.inputStyles.inputCommonHoverColor,
+                color: theme.inputStyles.hoverColor,
             },
 
             '& $optionContainer.selected:hover': {
                 cursor: 'auto',
-                color: theme.inputStyles.inputCommonInactiveColor,
+                color: theme.inputStyles.inactiveColor,
             }
         }
     },

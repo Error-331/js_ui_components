@@ -5,5 +5,5 @@ import commonStyles from './base_styles';
 
 // exports
 export default Object.freeze({
-    windowCommonOverlayColor: commonStyles.commonQuinaryTextColor,
+    windowCommonOverlayColor: commonStyles.quinaryColor,
 });

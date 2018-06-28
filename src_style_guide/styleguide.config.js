@@ -75,7 +75,7 @@ module.exports = {
                         {
                             name: 'Text',
                             content: path.join(__dirname, './docs/layout/text/index.md'),
-                            components: path.join(__dirname, './../src/components/layout/text/**/(?!index)[A-Za-z_]*.js'),
+                            components: path.join(__dirname, './../src/components/layout/text/**/[A-Za-z_]*_[A-Za-z_]*.js'),
                         },
                     ]
                 },

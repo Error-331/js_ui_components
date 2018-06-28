@@ -2,14 +2,15 @@
 
 // local imports
 import fontStacks from './font_stacks';
-import coloPalette from './color_palette';
+import baseStyles from './base_styles';
 
 // exports
 export default Object.freeze({
-    buttonCommonFontStack: fontStacks.regularFontFamilyStack,
+    fontStack: fontStacks.regularFontFamilyStack,
 
-    buttonCommonColor: coloPalette.materialRed800,
-    buttonCommonHoverColor: coloPalette.materialBlack,
+    captionFontSize: 14, // px
+    iconFontSize: 17,
 
-    buttonCommonBGColor: coloPalette.materialLightBlue600,
+    fontColor: baseStyles.primaryColor,
+    bgColor: baseStyles.tertiaryColor,
 });

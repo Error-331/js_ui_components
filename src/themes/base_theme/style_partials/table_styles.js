@@ -7,13 +7,13 @@ import commonStyles from './base_styles';
 export default Object.freeze({
     commonTableCellFontSize: commonStyles.commonSecondaryFontSize, // px
 
-    commonTableHeaderCellFontColor:  commonStyles.commonQuinaryTextColor,
-    commonTableCellFontColor: commonStyles.commonSecondaryTextColor,
+    commonTableHeaderCellFontColor:  commonStyles.quinaryColor,
+    commonTableCellFontColor: commonStyles.secondaryColor,
 
     commonTableCellBGColor: commonStyles.commonTransparentBGColor,
-    commonTableCellHoverBGColor: commonStyles.commonQuinaryTextColor,
+    commonTableCellHoverBGColor: commonStyles.quinaryColor,
 
-    commonTableCellBorderColor: commonStyles.commonQuinaryTextColor,
+    commonTableCellBorderColor: commonStyles.quinaryColor,
 
     commonTableCellPaddingTop: 12, // px
     commonTableCellPaddingBottom: 12, // px

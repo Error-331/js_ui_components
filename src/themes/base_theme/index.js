@@ -15,6 +15,7 @@ import buttonStyles from './style_partials/button_styles';
 import tableStyles from './style_partials/table_styles';
 import windowStyles from './style_partials/window_styles';
 
+import colorUtilities from './../business_logic/color_utilities';
 import styleValuesRegister from './../business_logic/style_values_register';
 
 // theme implementation
@@ -33,9 +34,8 @@ const theme = Object.freeze({
     tableStyles,
     windowStyles,
 
-    // panel elements common styles
-    panelHeaderFontColor: colorPalette.materialRed800,
-    panelHeaderBackgroundColor: colorPalette.materialLightBlue600,
+    // utilities
+    colorUtilities,
 
     // registers
     styleValuesRegister,

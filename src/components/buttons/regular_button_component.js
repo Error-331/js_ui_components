@@ -7,33 +7,40 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {is, isNil, unless, always} from 'ramda';
+import {is, isNil, equals, unless, always} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components';
+
+import InlineTextBlock from './../layout/text/inline_text_block';
 
 // local imports
 
 // type definitions
 type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
-type ButtonVariantType = 'button' | 'submit' | 'reset';
 
 type PropsTypes = {
     /**
      * Button label
      */
 
-    label?: ?string,
+    label?: string,
 
     /**
-     * Type of the button component, can be one of following one: 'button', 'submit', 'reset'
+     * Value that indicates where label should be placed on left side of the button or on the right
      */
 
-    type?: ?ButtonVariantType,
+    labelPosition?: 'left' | 'right',
 
     /**
-     * Class name which will be added to underlying 'Button' component
+     * Class name which will be added to outer container of the component
      */
 
-    className?: ?string,
+    containerClassName?: ?string,
+
+    /**
+     * Icon class name
+     */
+
+    iconClassName?: string,
 
     /**
      * Callback function which will be called once user clicks on it
@@ -56,38 +63,69 @@ type StateTypes = {};
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
-        display: 'block',
+        display: 'flex',
 
         flexBasis: 'auto',
         flexGrow: 0,
         flexShrink: 1,
 
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'flex-start',
+
         border: 'none',
         borderRadius: '2px',
 
-        padding: '5px 12px 5px 12px',
-
-        fontFamily: theme.buttonStyles.buttonCommonFontStack,
+        padding: '11px 16px 11px 16px',
 
         '-webkit-tap-highlight-color': 'transparent',
+        boxShadow: theme.materialDepthLevels.materialDepth1BoxShadow,
+        backgroundColor: theme.buttonStyles.bgColor,
 
-        textTransform: 'uppercase',
-        textDecoration: 'none',
-        textAlign: 'center',
-
-        letterSpacing: '.5px',
         cursor: 'pointer',
 
-        boxShadow: theme.materialDepthLevels.materialDepth1BoxShadow,
-
-        color: theme.baseStyles.commonPrimaryTextColor,
-        backgroundColor: theme.baseStyles.commonPrimaryBGColor,
-
         '&:hover': {
-            textDecoration: 'none',
-            color: theme.baseStyles.commonHoverColor
+            backgroundColor: theme.colorUtilities.shadeColorFast(theme.buttonStyles.bgColor, -0.2),
         },
-    }
+
+        '& > $iconContainer': {
+            flexBasis: 'auto',
+            flexGrow: 0,
+            flexShrink: 1,
+
+            fontSize: theme.buttonStyles.iconFontSize,
+            color: theme.buttonStyles.fontColor,
+
+            '&.left': {
+                marginLeft: '10px',
+            },
+
+            '&.right': {
+                marginRight: '10px',
+            }
+        },
+
+        '& > $captionContainer': {
+            flexBasis: 'auto',
+            flexGrow: 0,
+            flexShrink: 1,
+
+            fontFamily: theme.buttonStyles.fontStack,
+            fontSize: theme.buttonStyles.captionFontSize,
+
+            textTransform: 'uppercase',
+            textAlign: 'center',
+
+            letterSpacing: '.5px',
+            color: theme.buttonStyles.fontColor
+        }
+    },
+
+    iconContainer: {},
+    captionContainer: {},
 });
 
 /**
@@ -128,9 +166,26 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region style accessors
-    _getClassName(): string {
-        const {classes: {componentContainer}, className}: {classes: any, className?: ?string} = this.props;
-        return classNames(componentContainer, className);
+    _getIconClassName(): ?string {
+        const {iconClassName, classes} = this.props;
+
+        if (isNil(iconClassName)) {
+            return null;
+        }
+
+        return classNames(
+            classes.iconContainer,
+            iconClassName,
+            {
+                'left': equals('left', this._getLabelPosition()),
+                'right': equals('right', this._getLabelPosition()),
+            }
+        );
+    }
+
+    _getComponentContainerClass(): string {
+        const {classes: {componentContainer}, containerClassName}: {classes: any, containerClassName?: ?string} = this.props;
+        return classNames(componentContainer, containerClassName);
     }
 
     // endregion
@@ -142,6 +197,18 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region prop accessors
+    _getLabelPosition(): string {
+        let {labelPosition} = this.props;
+        labelPosition = is(String, labelPosition) ? labelPosition.toLowerCase() : labelPosition;
+
+        return unless(isNotNil, always('left'))(labelPosition);
+    }
+
+    _getLabel(): string {
+        const {label = ''} = this.props;
+        return label;
+    }
+
     // endregion
 
     // region handlers
@@ -158,16 +225,32 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region render methods
-    render(): React.Node {
-        let {type, label}: {type?: ?ButtonVariantType, label?: ?string} = this.props;
-        type = unless(isNotNil, always('button'))(type);
+    _renderCaptionContainer(): React.Node {
+        return <InlineTextBlock className={this.props.classes.captionContainer}>
+            {this._getLabel()}
+        </InlineTextBlock>;
+    }
 
-        const className: string = this._getClassName();
+    _renderIconContainer(): React.Node {
+        return unless(isNil, className => <i className={className}/>)(this._getIconClassName());
+    }
+
+    _renderComponentContainer(): React.Node {
         const onClickHandler: ClickCallbackType = this._onClick;
+        const labelPosition: string = this._getLabelPosition();
 
-        return (
-            <button type={type} className={className} onClick={onClickHandler}>{label}</button>
-        );
+        return <div
+            onClick={onClickHandler}
+            className={this._getComponentContainerClass()}
+        >
+            {equals('right', labelPosition) ? this._renderIconContainer() : null}
+            {this._renderCaptionContainer()}
+            {equals('left', labelPosition) ? this._renderIconContainer() : null}
+        </div>;
+    }
+
+    render(): React.Node {
+        return this._renderComponentContainer();
     }
 
     // endregion

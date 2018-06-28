@@ -5,7 +5,7 @@
 // external imports
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import {is} from 'ramda';
+import {is, toString} from 'ramda';
 
 // local imports
 
@@ -59,7 +59,7 @@ const styles = theme => ({
 function SimpleFlexGridColumn(props: PropsTypes) {
     const {size, full, classes, style, children} = props;
 
-    const flexBasis: string = is(String, size) ? size : `${size.toString()}%`;
+    const flexBasis: string = is(String, size) ? size : `${toString(size)}%`;
     const flexGrow: number = full === true ? 1 : 0;
 
     return <div className={classes.componentContainer} style={{flexBasis, flexGrow, ...style}}>

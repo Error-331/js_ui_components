@@ -5,11 +5,15 @@ import coloPalette from './color_palette';
 
 // exports
 export default Object.freeze({
-    commonPrimaryTextColor: coloPalette.materialRed800,
-    commonSecondaryTextColor: coloPalette.materialLightBlue900,
-    commonTertiaryTextColor: coloPalette.materialLightBlue600,
-    commonQuaternaryTextColor: coloPalette.materialLightBlue400,
-    commonQuinaryTextColor: coloPalette.materialLightBlue300,
+    primaryColor: coloPalette.materialRed800,
+    secondaryColor: coloPalette.materialLightBlue900,
+    tertiaryColor: coloPalette.materialLightBlue600,
+    quaternaryColor: coloPalette.materialLightBlue400,
+    quinaryColor: coloPalette.materialLightBlue300,
+
+    primaryTextColor: coloPalette.materialGrey900,
+    secondaryTextColor: coloPalette.materialGrey600,
+    dividerColor: coloPalette.materialGrey400,
 
     commonHoverColor: coloPalette.materialBlack,
     commonDisabledColor: coloPalette.materialBlueGrey200,

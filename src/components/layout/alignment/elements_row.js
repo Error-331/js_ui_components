@@ -28,7 +28,7 @@ type PropsTypes = {
     wrap?: boolean,
 
     /**
-     * React style object for in deep control of how buttons row is represented
+     * React style object for in deep control of how elements row is represented
      */
 
     style?: {[string]: mixed},

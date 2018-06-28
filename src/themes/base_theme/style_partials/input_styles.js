@@ -7,28 +7,28 @@ import baseStyles from './base_styles';
 
 // exports
 export default Object.freeze({
-    inputCommonFontFamily: fontStacks.regularFontFamilyStack,
+    fontStack: fontStacks.regularFontFamilyStack,
 
-    inputCommonFontSize: baseStyles.commonSecondaryFontSize, // px
-    inputCommonLabelActiveFontSize: baseStyles.commonTertiaryFontSize, // px
-    inputCommonLabelInactiveFontSize: baseStyles.commonSecondaryFontSize, // px
-    inputCommonIconFontSize: baseStyles.commonIconPrimaryFontSize, // px
+    fontSize: baseStyles.commonSecondaryFontSize, // px
+    labelActiveFontSize: baseStyles.commonTertiaryFontSize, // px
+    labelInactiveFontSize: baseStyles.commonSecondaryFontSize, // px
+    iconFontSize: baseStyles.commonIconPrimaryFontSize, // px
 
-    inputCommonBGColor: baseStyles.commonTransparentBGColor,
-    inputSelectedBGColor: baseStyles.commonDisabledColor,
+    bgColor: baseStyles.commonTransparentBGColor,
+    selectedBGColor: baseStyles.commonDisabledColor,
 
-    inputCommonHoverColor: baseStyles.commonPrimaryTextColor,
-    inputCommonActiveColor: baseStyles.commonSecondaryTextColor,
-    inputCommonInactiveColor: baseStyles.commonTertiaryTextColor,
-    inputCommonLabelColor: baseStyles.commonQuaternaryTextColor,
-    inputCommonReadOnlyColor: baseStyles.commonQuaternaryTextColor,
-    inputCommonDisabledColor: baseStyles.commonDisabledColor,
+    hoverColor: baseStyles.primaryColor,
+    activeColor: baseStyles.secondaryColor,
+    inactiveColor: baseStyles.tertiaryColor,
+    labelColor: baseStyles.quaternaryColor,
+    readOnlyColor: baseStyles.quaternaryColor,
+    disabledColor: baseStyles.commonDisabledColor,
 
-    inputSwitchCommonSliderBodyBGColorInactive: baseStyles.commonUtilityBGColor,
-    inputSwitchCommonSliderBodyBGColorActive: baseStyles.commonQuaternaryTextColor,
+    switchSliderInactiveBodyBGColor: baseStyles.commonUtilityBGColor,
+    switchSliderActiveBodyBGColor: baseStyles.quaternaryColor,
 
-    inputSwitchCommonSliderHandleInactive: coloPalette.materialWhite,
-    inputSwitchCommonSliderHandleActive: baseStyles.commonSecondaryTextColor,
+    switchSliderHandleInactive: coloPalette.materialWhite,
+    switchSliderHandleActive: baseStyles.secondaryColor,
 
-    inputSwitchLabelOffset: 5, // px
+    switchLabelOffset: 5, // px
 });

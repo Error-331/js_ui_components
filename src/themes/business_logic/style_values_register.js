@@ -17,7 +17,7 @@ export default Object.seal({
             return;
         }
 
-        this.lastUsedZIndexes = reject(equals(oldZIndex), this.lastUsedZIndexes)
+        this.lastUsedZIndexes = reject(equals(oldZIndex), this.lastUsedZIndexes);
     },
 
     get zIndex() {

@@ -2,22 +2,26 @@
 
 // local imports
 import fontStacks from './font_stacks';
-import commonStyles from './base_styles';
+import baseStyles from './base_styles';
 
 // exports
 export default Object.freeze({
     layoutHeaderCommonFontFamily: fontStacks.regularFontFamilyStack,
     layoutBodyCommonFontFamily: fontStacks.regularFontFamilyStack,
+    layoutCommonFontFamily: fontStacks.regularFontFamilyStack,
 
-    layoutTitleCommonFontSize:  commonStyles.commonTitleFontSize,
-    layoutBodyCommonFontSize: commonStyles.commonSecondaryFontSize,
+    layoutTitleCommonFontSize:  baseStyles.commonTitleFontSize,
+    layoutBodyCommonFontSize: baseStyles.commonSecondaryFontSize,
+    layoutCommonFontSize: baseStyles.commonSecondaryFontSize,
 
     layoutHeaderCommonBorderRadius: 2, // px
 
     layoutCommonHorizontalSpacing: 5, // px
     layoutCommonVerticalSpacing: 5, // px
 
-    layoutHeaderCommonColor: commonStyles.commonPrimaryTextColor,
-    layoutHeaderCommonBackgroundColor: commonStyles.commonPrimaryBGColor,
-    layoutBodyCommonBackgroundColor: commonStyles.commonNoneTransparentBGColor
+    layoutHeaderCommonColor: baseStyles.primaryColor,
+    layoutBodyFontColor: baseStyles.primaryTextColor,
+
+    layoutHeaderCommonBackgroundColor: baseStyles.commonPrimaryBGColor,
+    layoutBodyCommonBackgroundColor: baseStyles.commonNoneTransparentBGColor
 });

@@ -101,7 +101,7 @@ const styles = theme => ({
         alignItems: 'stretch',
         alignContent: 'flex-start',
 
-        padding: `${theme.inputStyles.inputCommonLabelActiveFontSize + topAdditionalPadding}px 0px 0px 0px`,
+        padding: `${theme.inputStyles.labelActiveFontSize + topAdditionalPadding}px 0px 0px 0px`,
 
         '& > $inputContainer': {
             boxSizing: 'border-box',
@@ -123,20 +123,20 @@ const styles = theme => ({
             '& > $inputControl': {
                 boxSizing: 'border-box',
 
-                flexBasis: `${theme.inputStyles.inputCommonFontSize}px`,
+                flexBasis: `${theme.inputStyles.fontSize}px`,
                 flexShrink: '0',
                 flexGrow: '0',
 
                 margin: '0 0 0 0',
 
                 border: 'none',
-                borderBottom: `1px solid ${theme.inputStyles.inputCommonInactiveColor}`,
+                borderBottom: `1px solid ${theme.inputStyles.inactiveColor}`,
                 borderRadius: '0',
 
                 padding: '0',
 
-                fontFamily: theme.inputStyles.inputCommonFontFamily,
-                fontSize: `${theme.inputStyles.inputCommonFontSize}px`,
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: `${theme.inputStyles.fontSize}px`,
 
                 boxShadow: 'none',
 
@@ -144,77 +144,77 @@ const styles = theme => ({
 
                 lineHeight: 'normal',
 
-                backgroundColor: theme.inputStyles.inputCommonBGColor,
-                color: theme.inputStyles.inputCommonInactiveColor,
+                backgroundColor: theme.inputStyles.bgColor,
+                color: theme.inputStyles.inactiveColor,
 
                 '&:-webkit-autofill': {
                     '-webkit-box-shadow': '0 0 0 1000px transparent inset !important'
                 },
 
                 '&::-webkit-input-placeholder': {
-                    color: theme.inputStyles.inputCommonDisabledColor
+                    color: theme.inputStyles.disabledColor
                 },
 
                 '&::-moz-placeholder': {
-                    color: theme.inputStyles.inputCommonDisabledColor
+                    color: theme.inputStyles.disabledColor
                 },
 
                 '&::-ms-input-placeholder': {
-                    color: theme.inputStyles.inputCommonDisabledColor
+                    color: theme.inputStyles.disabledColor
                 },
 
                 '&.focus': {
-                    borderColor: theme.inputStyles.inputCommonActiveColor,
-                    color: theme.inputStyles.inputCommonActiveColor
+                    borderColor: theme.inputStyles.activeColor,
+                    color: theme.inputStyles.activeColor
                 },
 
                 '&.readOnly': {
-                    color: theme.inputStyles.inputCommonReadOnlyColor,
-                    borderBottom: `1px solid ${theme.inputStyles.inputCommonReadOnlyColor}`
+                    color: theme.inputStyles.readOnlyColor,
+                    borderBottom: `1px solid ${theme.inputStyles.readOnlyColor}`
                 },
 
                 '&.disabled': {
-                    color: theme.inputStyles.inputCommonDisabledColor,
-                    borderBottom: `1px dotted ${theme.inputStyles.inputCommonDisabledColor}`
+                    color: theme.inputStyles.disabledColor,
+                    borderBottom: `1px dotted ${theme.inputStyles.disabledColor}`
                 },
             },
 
             '& > $inputControlLabel': {
                 position: 'absolute',
 
-                top: `${theme.inputStyles.inputCommonFontSize - theme.inputStyles.inputCommonLabelInactiveFontSize}px`,
+                top: `${theme.inputStyles.fontSize - theme.inputStyles.labelInactiveFontSize}px`,
                 left: '0px',
 
-                fontFamily: theme.inputStyles.inputCommonFontFamily,
-                fontSize: `${theme.inputStyles.inputCommonLabelActiveFontSize}px`,
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: `${theme.inputStyles.labelActiveFontSize}px`,
 
                 cursor: 'text',
-                color: theme.inputStyles.inputCommonLabelColor,
+                color: theme.inputStyles.labelColor,
 
                 transition: '.2s ease-out',
 
                 '&.active': {
-                    fontSize: `${theme.inputStyles.inputCommonLabelActiveFontSize}px`,
+                    fontSize: `${theme.inputStyles.labelActiveFontSize}px`,
                     '-webkit-transform': 'translateY(-145%)',
                     transform: 'translateY(-145%)'
                 },
 
                 '&.passive': {
-                    fontSize: `${theme.inputStyles.inputCommonLabelInactiveFontSize}px`,
+                    fontSize: `${theme.inputStyles.labelInactiveFontSize}px`,
                     '-webkit-transform': 'translateY(0%)',
                     transform: 'translateY(0%)'
                 },
 
                 '&.focus': {
-                    color: theme.inputStyles.inputCommonActiveColor
+                    color: theme.inputStyles.activeColor
                 },
 
                 '&.readOnly': {
-                    color: theme.inputStyles.inputCommonReadOnlyColor
+                    color: theme.inputStyles.readOnlyColor
                 },
 
                 '&.disabled': {
-                    color: theme.inputStyles.inputCommonDisabledColor,
+                    color: theme.inputStyles.disabledColor,
                 },
             },
 
@@ -225,24 +225,24 @@ const styles = theme => ({
             '& > i': {
                 position: 'absolute',
 
-                left: `calc(100%  - ${theme.inputStyles.inputCommonIconFontSize + iconAdditionalPadding}px)`,
-                top: `${theme.inputStyles.inputCommonFontSize - theme.inputStyles.inputCommonIconFontSize}px`,
+                left: `calc(100%  - ${theme.inputStyles.iconFontSize + iconAdditionalPadding}px)`,
+                top: `${theme.inputStyles.fontSize - theme.inputStyles.iconFontSize}px`,
 
                 transition: 'all .3s',
 
-                fontSize: `${theme.inputStyles.inputCommonIconFontSize}px`,
-                color: theme.inputStyles.inputCommonInactiveColor,
+                fontSize: `${theme.inputStyles.iconFontSize}px`,
+                color: theme.inputStyles.inactiveColor,
 
                 '&.focus': {
-                    color: theme.inputStyles.inputCommonActiveColor
+                    color: theme.inputStyles.activeColor
                 },
 
                 '&.readOnly': {
-                    color: theme.inputStyles.inputCommonReadOnlyColor
+                    color: theme.inputStyles.readOnlyColor
                 },
 
                 '&.disabled': {
-                    color: theme.inputStyles.inputCommonDisabledColor
+                    color: theme.inputStyles.disabledColor
                 },
             }
         }
@@ -447,7 +447,7 @@ class FormTextInputComponent extends React.Component<PropsTypes, StateTypes> {
             htmlFor={this._id}
         >
             {this._getLabel()}
-        </label>
+        </label>;
     }
 
     _renderInput(): React.Node {
@@ -472,7 +472,7 @@ class FormTextInputComponent extends React.Component<PropsTypes, StateTypes> {
 
             readOnly={readOnlyParam}
             disabled={disabledParam}
-        />
+        />;
     }
 
     _renderInputContainer(): React.Node {
@@ -480,7 +480,7 @@ class FormTextInputComponent extends React.Component<PropsTypes, StateTypes> {
             {this._renderInput()}
             {this._renderLabel()}
             {this._renderIcon()}
-        </div>
+        </div>;
     }
 
     render(): React.Node {

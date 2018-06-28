@@ -146,7 +146,7 @@ function ElementsColumn(props: PropsTypes): React.Node {
 
     return <div className={containerClasses} style={{...style}}>
         {props.children}
-    </div>
+    </div>;
 }
 
 // exports
