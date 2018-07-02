@@ -33,21 +33,21 @@ const styles = theme => ({
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
 
-                        borderBottom: `1px solid ${theme.tableStyles.commonTableCellBorderColor}`,
+                        borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
 
                         paddingTop: '0px',
-                        paddingBottom: `${theme.tableStyles.commonTableCellPaddingBottom}px`,
+                        paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
 
-                        paddingLeft: `${theme.tableStyles.commonTableCellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.commonTableCellPaddingRight}px`,
+                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
+                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
 
                         fontFamily: '"Roboto-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif',
-                        fontSize: `${theme.tableStyles.commonTableCellFontSize}px`,
+                        fontSize: `${theme.tableStyles.cellFontSize}px`,
 
                         textAlign: 'left',
 
-                        color: theme.tableStyles.commonTableHeaderCellFontColor,
-                        backgroundColor: theme.tableStyles.commonTableCellBGColor
+                        color: theme.tableStyles.headerCellFontColor,
+                        backgroundColor: theme.tableStyles.cellBGColor
                     }
                 }
             },
@@ -58,21 +58,21 @@ const styles = theme => ({
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
 
-                        borderTop: `1px solid ${theme.tableStyles.commonTableCellBorderColor}`,
+                        borderTop: `1px solid ${theme.tableStyles.cellBorderColor}`,
 
-                        paddingTop: `${theme.tableStyles.commonTableCellPaddingTop}px`,
+                        paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
                         paddingBottom: '0px',
 
-                        paddingLeft: `${theme.tableStyles.commonTableCellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.commonTableCellPaddingRight}px`,
+                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
+                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
 
                         fontFamily: '"Roboto-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif',
-                        fontSize: `${theme.tableStyles.commonTableCellFontSize}px`,
+                        fontSize: `${theme.tableStyles.cellFontSize}px`,
 
                         textAlign: 'left',
 
-                        color: theme.tableStyles.commonTableHeaderCellFontColor,
-                        backgroundColor: theme.tableStyles.commonTableCellBGColor
+                        color: theme.tableStyles.headerCellFontColor,
+                        backgroundColor: theme.tableStyles.cellBGColor
                     }
                 }
             },
@@ -83,27 +83,27 @@ const styles = theme => ({
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
 
-                        borderBottom: `1px solid ${theme.tableStyles.commonTableCellBorderColor}`,
+                        borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
 
-                        paddingTop: `${theme.tableStyles.commonTableCellPaddingTop}px`,
-                        paddingBottom: `${theme.tableStyles.commonTableCellPaddingBottom}px`,
+                        paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
+                        paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
 
-                        paddingLeft: `${theme.tableStyles.commonTableCellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.commonTableCellPaddingRight}px`,
+                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
+                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
 
                         fontFamily: '"Roboto-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif',
-                        fontSize: `${theme.tableStyles.commonTableCellFontSize}px`,
+                        fontSize: `${theme.tableStyles.cellFontSize}px`,
 
                         textAlign: 'left',
 
-                        color: theme.tableStyles.commonTableCellFontColor,
-                        backgroundColor: theme.tableStyles.commonTableCellBGColor
+                        color: theme.tableStyles.cellFontColor,
+                        backgroundColor: theme.tableStyles.cellBGColor
                     }
                 },
 
                 '& tr:hover': {
                     '& td': {
-                        backgroundColor: theme.tableStyles.commonTableCellHoverBGColor
+                        backgroundColor: theme.tableStyles.cellHoverBGColor
                     }
                 },
 

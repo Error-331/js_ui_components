@@ -16,8 +16,21 @@ import InlineTextBlock from './../layout/text/inline_text_block';
 
 // type definitions
 type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
+type StyleType = {[string]: mixed};
 
 type PropsTypes = {
+    /**
+     * Flag that describes how the button will look like
+     */
+
+    variant: 'text' | 'outlined' | 'contained',
+
+    /**
+     * Flag that describes how text of the button will look like
+     */
+
+    textType: 'primary' | 'secondary' | 'default',
+
     /**
      * Button label
      */
@@ -31,10 +44,22 @@ type PropsTypes = {
     labelPosition?: 'left' | 'right',
 
     /**
+     * Flag that indicates whether button is disabled or not
+     */
+
+    disabled?: boolean,
+
+    /**
      * Class name which will be added to outer container of the component
      */
 
     containerClassName?: ?string,
+
+    /**
+     * Styles which will be added to outer container of the component
+     */
+
+    containerStyles?: StyleType,
 
     /**
      * Icon class name
@@ -60,6 +85,9 @@ type PropsTypes = {
 type StateTypes = {};
 
 // styles definition
+const verticalPadding: number = 11; // px
+const horizontalPadding: number = 16; // px
+
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
@@ -76,19 +104,83 @@ const styles = theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
-        border: 'none',
         borderRadius: '2px',
 
-        padding: '11px 16px 11px 16px',
+        padding: `${verticalPadding}px ${horizontalPadding}px`,
 
         '-webkit-tap-highlight-color': 'transparent',
-        boxShadow: theme.materialDepthLevels.materialDepth1BoxShadow,
-        backgroundColor: theme.buttonStyles.bgColor,
+        transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 
         cursor: 'pointer',
 
-        '&:hover': {
-            backgroundColor: theme.colorUtilities.shadeColorFast(theme.buttonStyles.bgColor, -0.2),
+        '&.text': {
+            border: 'none',
+
+            '&:hover': {
+                backgroundColor: theme.colorUtilities.shadeColorFast(theme.buttonStyles.bgColor, 0.8),
+            },
+
+            '& > $iconContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorDefaultNoBG,
+                }
+            },
+
+            '& > $captionContainer': {
+                fontFamily: theme.buttonStyles.fontStackBold,
+
+                '&.default': {
+                    color: theme.buttonStyles.fontColorDefaultNoBG,
+                }
+            },
+        },
+
+        '&.outlined': {
+            border: `${theme.buttonStyles.borderSize}px solid ${theme.buttonStyles.borderColor}`,
+            padding: `${verticalPadding - theme.buttonStyles.borderSize}px ${horizontalPadding - theme.buttonStyles.borderSize}px`,
+
+            '&:hover': {
+                backgroundColor: theme.colorUtilities.shadeColorFast(theme.buttonStyles.bgColor, 0.8),
+            },
+
+            '& > $iconContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorDefaultNoBG,
+                }
+            },
+
+            '& > $captionContainer': {
+                fontFamily: theme.buttonStyles.fontStackRegular,
+
+                '&.default': {
+                    color: theme.buttonStyles.fontColorDefaultNoBG,
+                }
+            },
+        },
+
+        '&.contained': {
+            border: 'none',
+
+            boxShadow: theme.materialDepthLevels.materialDepth1BoxShadow,
+            backgroundColor: theme.buttonStyles.bgColor,
+
+            '&:hover': {
+                backgroundColor: theme.colorUtilities.shadeColorFast(theme.buttonStyles.bgColor, -0.2),
+            },
+
+            '& > $iconContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorDefaultWithBG,
+                }
+            },
+
+            '& > $captionContainer': {
+                fontFamily: theme.buttonStyles.fontStackRegular,
+
+                '&.default': {
+                    color: theme.buttonStyles.fontColorDefaultWithBG,
+                }
+            },
         },
 
         '& > $iconContainer': {
@@ -97,7 +189,7 @@ const styles = theme => ({
             flexShrink: 1,
 
             fontSize: theme.buttonStyles.iconFontSize,
-            color: theme.buttonStyles.fontColor,
+            color: theme.buttonStyles.fontColorDefault,
 
             '&.left': {
                 marginLeft: '10px',
@@ -105,6 +197,14 @@ const styles = theme => ({
 
             '&.right': {
                 marginRight: '10px',
+            },
+
+            '&.primary': {
+                color: theme.buttonStyles.fontColorPrimary,
+            },
+
+            '&.secondary': {
+                color: theme.buttonStyles.fontColorSecondary,
             }
         },
 
@@ -113,14 +213,20 @@ const styles = theme => ({
             flexGrow: 0,
             flexShrink: 1,
 
-            fontFamily: theme.buttonStyles.fontStack,
             fontSize: theme.buttonStyles.captionFontSize,
 
             textTransform: 'uppercase',
             textAlign: 'center',
 
             letterSpacing: '.5px',
-            color: theme.buttonStyles.fontColor
+
+            '&.primary': {
+                color: theme.buttonStyles.fontColorPrimary,
+            },
+
+            '&.secondary': {
+                color: theme.buttonStyles.fontColorSecondary,
+            },
         }
     },
 
@@ -143,7 +249,6 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
 
     static defaultProps = {
         label: '',
-        type: 'button',
         className: '',
 
         onClick: () => {},
@@ -168,6 +273,7 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
     // region style accessors
     _getIconClassName(): ?string {
         const {iconClassName, classes} = this.props;
+        const textType: string = this._getTextType();
 
         if (isNil(iconClassName)) {
             return null;
@@ -179,13 +285,23 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
             {
                 'left': equals('left', this._getLabelPosition()),
                 'right': equals('right', this._getLabelPosition()),
-            }
+            },
+            textType
         );
     }
 
     _getComponentContainerClass(): string {
-        const {classes: {componentContainer}, containerClassName}: {classes: any, containerClassName?: ?string} = this.props;
-        return classNames(componentContainer, containerClassName);
+        const {classes: {componentContainer}, containerClassName} = this.props;
+        const buttonVariant: string = this._getVariant();
+
+        return classNames(componentContainer, buttonVariant, containerClassName);
+    }
+
+    _getCaptionContainerClass(): string {
+        const {classes: {captionContainer}} = this.props;
+        const textType: string = this._getTextType();
+
+        return classNames(captionContainer, textType);
     }
 
     // endregion
@@ -197,6 +313,21 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region prop accessors
+    _getDisabled(): boolean {
+        const {disabled = false} = this.props;
+        return disabled;
+    }
+
+    _getVariant(): string {
+        const {variant = 'contained'} = this.props;
+        return variant.toLowerCase();
+    }
+
+    _getTextType(): string {
+        const {textType = 'default'} = this.props;
+        return textType.toLowerCase();
+    }
+
     _getLabelPosition(): string {
         let {labelPosition} = this.props;
         labelPosition = is(String, labelPosition) ? labelPosition.toLowerCase() : labelPosition;
@@ -207,6 +338,11 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
     _getLabel(): string {
         const {label = ''} = this.props;
         return label;
+    }
+
+    _getContainerStyles(): StyleType {
+        const {containerStyles = {}} = this.props;
+        return containerStyles;
     }
 
     // endregion
@@ -226,7 +362,7 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
 
     // region render methods
     _renderCaptionContainer(): React.Node {
-        return <InlineTextBlock className={this.props.classes.captionContainer}>
+        return <InlineTextBlock className={this._getCaptionContainerClass()}>
             {this._getLabel()}
         </InlineTextBlock>;
     }
@@ -238,10 +374,12 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
     _renderComponentContainer(): React.Node {
         const onClickHandler: ClickCallbackType = this._onClick;
         const labelPosition: string = this._getLabelPosition();
+        const isDisabled: boolean = this._getDisabled();
 
         return <div
-            onClick={onClickHandler}
+            onClick={isDisabled ? null : onClickHandler}
             className={this._getComponentContainerClass()}
+            style={this._getContainerStyles()}
         >
             {equals('right', labelPosition) ? this._renderIconContainer() : null}
             {this._renderCaptionContainer()}

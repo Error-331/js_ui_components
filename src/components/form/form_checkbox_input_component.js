@@ -103,9 +103,9 @@ const styles = theme => ({
             flexGrow: 0,
 
             fontFamily: theme.inputStyles.fontStack,
-            fontSize: theme.inputStyles.inputCommonFontSize,
+            fontSize: theme.inputStyles.fontSize,
 
-            color: theme.inputStyles.inputCommonLabelColor,
+            color: theme.inputStyles.labelColor,
 
             '&.disabled': {
                 color: theme.inputStyles.disabledColor

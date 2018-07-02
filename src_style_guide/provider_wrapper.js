@@ -9,7 +9,10 @@ import {ThemeProvider} from 'react-jss';
 // local imports
 import store from './modules/store';
 
-import baseTheme from './../src/themes/base_theme';
+//import baseTheme from './../src/theming/themes/base_theme';
+//import deepOrangeTealTheme from './../src/theming/themes/deep_orange_teal_theme';
+import purpleIndigoTheme from './../src/theming/themes/purple_indigo_theme';
+
 import CoreLayoutWrapperComponent from './modules/components/core_layout_wrapper_component';
 
 // wrapper implementation
@@ -17,7 +20,7 @@ class ComponentsWrapper extends Component {
     render() {
         return (
             <ReactReduxProvider store={store}>
-                <ThemeProvider theme={baseTheme}>
+                <ThemeProvider theme={purpleIndigoTheme}>
                     <BrowserRouter>
                         <CoreLayoutWrapperComponent>
                             {this.props.children}

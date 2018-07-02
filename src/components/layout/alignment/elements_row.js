@@ -72,11 +72,11 @@ const styles = theme => ({
         },
 
         '&.left > div': {
-            marginRight: `${theme.layoutStyles.layoutCommonHorizontalSpacing}px`,
+            marginRight: `${theme.layoutStyles.horizontalSpacing}px`,
         },
 
         '&.left > button': {
-            marginRight: `${theme.layoutStyles.layoutCommonHorizontalSpacing}px`,
+            marginRight: `${theme.layoutStyles.horizontalSpacing}px`,
         },
 
         '&.left > div:last-child': {
@@ -92,11 +92,11 @@ const styles = theme => ({
         },
 
         '&.right > div': {
-            marginLeft: `${theme.layoutStyles.layoutCommonHorizontalSpacing}px`,
+            marginLeft: `${theme.layoutStyles.horizontalSpacing}px`,
         },
 
         '&.right > button': {
-            marginLeft: `${theme.layoutStyles.layoutCommonHorizontalSpacing}px`,
+            marginLeft: `${theme.layoutStyles.horizontalSpacing}px`,
         },
 
         '&.right > div:first-child': {
@@ -112,11 +112,11 @@ const styles = theme => ({
         },
 
         '&.center > div': {
-            marginRight: `${theme.layoutStyles.layoutCommonHorizontalSpacing}px`,
+            marginRight: `${theme.layoutStyles.horizontalSpacing}px`,
         },
 
         '&.center > button': {
-            marginRight: `${theme.layoutStyles.layoutCommonHorizontalSpacing}px`,
+            marginRight: `${theme.layoutStyles.horizontalSpacing}px`,
         },
 
         '&.center > div:last-child': {

@@ -64,7 +64,7 @@ function SimpleFlexGridColumn(props: PropsTypes) {
 
     return <div className={classes.componentContainer} style={{flexBasis, flexGrow, ...style}}>
         {children}
-    </div>
+    </div>;
 }
 
 // exports

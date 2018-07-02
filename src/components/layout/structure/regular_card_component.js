@@ -105,8 +105,8 @@ const styles = theme => ({
         alignItems: 'stretch',
         alignContent: 'flex-start',
 
-        borderRadius: theme.layoutStyles.layoutHeaderCommonBorderRadius,
-        backgroundColor: theme.layoutStyles.layoutBodyCommonBackgroundColor,
+        borderRadius: theme.layoutStyles.headerBorderRadius,
+        backgroundColor: theme.layoutStyles.bodyBGColor,
 
         transition: 'box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
 
@@ -158,12 +158,12 @@ const styles = theme => ({
             alignContent: 'flex-start',
 
             padding: '8px 8px 10px 10px',
-            borderRadius: theme.layoutStyles.layoutHeaderCommonBorderRadius,
+            borderRadius: theme.layoutStyles.headerBorderRadius,
 
-            fontFamily: theme.layoutStyles.layoutBodyCommonFontFamily,
-            fontSize: theme.layoutStyles.layoutBodyCommonFontSize,
+            fontFamily: theme.layoutStyles.bodyFontStack,
+            fontSize: theme.layoutStyles.bodyFontSize,
 
-            color: theme.layoutStyles.layoutBodyFontColor,
+            color: theme.layoutStyles.bodyFontColor,
         }
     },
 

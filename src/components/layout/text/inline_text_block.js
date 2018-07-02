@@ -40,10 +40,10 @@ type PropsTypes = {
 
 const styles = theme => ({
     componentContainer: {
-        fontFamily: theme.layoutStyles.layoutCommonFontFamily,
-        fontSize: theme.layoutStyles.layoutCommonFontSize,
+        fontFamily: theme.layoutStyles.fontStack,
+        fontSize: theme.layoutStyles.fontSize,
 
-        color: theme.layoutStyles.layoutBodyFontColor,
+        color: theme.layoutStyles.bodyFontColor,
     }
 });
 

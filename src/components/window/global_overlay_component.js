@@ -94,7 +94,7 @@ const styles = theme => ({
             width: '100%',
             height: '100%',
 
-            backgroundColor: theme.windowStyles.windowCommonOverlayColor,
+            backgroundColor: theme.windowStyles.overlayColor,
             opacity: 0.5
         },
 
