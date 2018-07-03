@@ -1,7 +1,14 @@
 'use strict';
 
+// @flow
+
+// external imports
+
+// local imports
+import type {FontFacesType} from './../../types/theming/font_face_types';
+
 // exports
-export default Object.freeze({
+const fontFaces: FontFacesType = Object.freeze({
     RobotoRegular: {
         fontFamily: 'Roboto-Regular',
         fontStyle: 'normal',
@@ -16,3 +23,5 @@ export default Object.freeze({
         src: 'url(/assets/fonts/roboto/Roboto-Bold.ttf) format("truetype")',
     }
 });
+
+export default fontFaces;

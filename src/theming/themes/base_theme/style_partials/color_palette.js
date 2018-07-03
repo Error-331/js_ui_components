@@ -1,7 +1,14 @@
 'use strict';
 
+// @flow
+
+// external imports
+
+// local imports
+import type {ColorPaletteType} from './../../../../types/theming/color_palette_types';
+
 // exports
-export default () => {
+export default (): ColorPaletteType => {
     return Object.freeze({
         // red
         materialRed800: '#c62828',

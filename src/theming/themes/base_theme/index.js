@@ -1,9 +1,30 @@
 'use strict';
 
-//external imports
-import {mergeAll} from 'ramda';
+// @flow
+
+// external imports
+import {clone} from 'ramda';
 
 // local imports
+import type {
+    FontFacesListType,
+    FontStacksType,
+    ColorPaletteType,
+    MaterialDepthLevelsType,
+    BaseStylesType,
+
+    LayoutStylesType,
+    InputStylesType,
+    ButtonStyleType,
+    TableStyleType,
+    WindowStylesType,
+
+    BaseThemePartialsType,
+    AdditionalThemePartialsType,
+} from './../../../types/theming/';
+
+import type {ThemeType} from './../../../types/theme_types';
+
 import FontFaces from './../../common_styles/font_faces';
 
 import fontFacesFunc from './style_partials/font_faces';
@@ -24,15 +45,15 @@ import colorUtilities from './../../business_logic/color_utilities';
 import styleValuesRegister from './../../business_logic/style_values_register';
 
 // base theme partials preparation
-const fontFaces = fontFacesFunc(FontFaces);
-const fontStacks = fontStacksFunc();
+const fontFaces: FontFacesListType = fontFacesFunc(FontFaces);
+const fontStacks: FontStacksType = fontStacksFunc();
 
-const colorPalette = colorPaletteFunc();
-const materialDepthLevels = materialDepthLevelsFunc();
+const colorPalette: ColorPaletteType = colorPaletteFunc();
+const materialDepthLevels: MaterialDepthLevelsType = materialDepthLevelsFunc();
 
-const baseStyles = baseStylesFunc(colorPalette);
+const baseStyles: BaseStylesType = baseStylesFunc(colorPalette);
 
-export const baseThemePartials = Object.freeze({
+export const baseThemePartials: BaseThemePartialsType = Object.freeze({
     '@font-face': fontFaces,
     fontStacks,
 
@@ -43,13 +64,13 @@ export const baseThemePartials = Object.freeze({
 });
 
 // additional theme partials preparation
-const layoutStyles = layoutStylesFunc(baseThemePartials);
-const inputStyles = inputStylesFunc(baseThemePartials);
-const buttonStyles = buttonStylesFunc(baseThemePartials);
-const tableStyles = tableStylesFunc(baseThemePartials);
-const windowStyles = windowStylesFunc(baseThemePartials);
+const layoutStyles: LayoutStylesType = layoutStylesFunc(baseThemePartials);
+const inputStyles: InputStylesType = inputStylesFunc(baseThemePartials);
+const buttonStyles: ButtonStyleType = buttonStylesFunc(baseThemePartials);
+const tableStyles: TableStyleType = tableStylesFunc(baseThemePartials);
+const windowStyles: WindowStylesType = windowStylesFunc(baseThemePartials);
 
-export const additionalThemePartials = Object.freeze({
+export const additionalThemePartials: AdditionalThemePartialsType = Object.freeze({
     layoutStyles,
     inputStyles,
     buttonStyles,
@@ -58,16 +79,12 @@ export const additionalThemePartials = Object.freeze({
 });
 
 // exports
-const theme = mergeAll([
-    {
-        // utilities
-        colorUtilities,
+const theme: ThemeType = {
+    colorUtilities,
+    styleValuesRegister,
 
-        // registers
-        styleValuesRegister,
-    },
-    baseThemePartials,
-    additionalThemePartials
-]);
+    ...clone(baseThemePartials),
+    ...clone(additionalThemePartials)
+};
 
 export default Object.freeze(theme);

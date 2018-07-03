@@ -1,7 +1,15 @@
 'use strict';
 
+// @flow
+
+// external imports
+
+// local imports
+import type {BaseStylesType} from './../../../../types/theming/base_style_types';
+import type {TableStyleType} from './../../../../types/theming/table_style_types';
+
 // exports
-export default ({baseStyles}) => {
+export default ({baseStyles}: {baseStyles: BaseStylesType}): TableStyleType => {
     return Object.freeze({
         cellFontSize: baseStyles.secondaryFontSize, // px
 

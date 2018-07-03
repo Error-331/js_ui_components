@@ -41,7 +41,7 @@ type PropsTypes = {
 const styles = theme => ({
     componentContainer: {
         fontFamily: theme.layoutStyles.fontStack,
-        fontSize: theme.layoutStyles.fontSize,
+        fontSize: theme.layoutStyles.bodyFontSize,
 
         color: theme.layoutStyles.bodyFontColor,
     }

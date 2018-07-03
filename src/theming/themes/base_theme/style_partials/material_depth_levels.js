@@ -1,7 +1,14 @@
 'use strict';
 
+// @flow
+
+// external imports
+
+// local imports
+import type {MaterialDepthLevelsType} from './../../../../types/theming/material_depth_level_types';
+
 // exports
-export default () => {
+export default (): MaterialDepthLevelsType => {
     return Object.freeze({
         materialDepth1BoxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         materialDepth2BoxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',

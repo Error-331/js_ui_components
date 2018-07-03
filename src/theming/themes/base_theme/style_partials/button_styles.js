@@ -1,7 +1,16 @@
 'use strict';
 
+// @flow
+
+// external imports
+
+// local imports
+import type {FontStacksType} from './../../../../types/theming/font_stack_types';
+import type {BaseStylesType} from './../../../../types/theming/base_style_types';
+import type {ButtonStyleType} from './../../../../types/theming/button_style_types';
+
 // exports
-export default ({fontStacks, baseStyles}) => {
+export default ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): ButtonStyleType => {
     return Object.freeze({
         fontStackRegular: fontStacks.regularFontFamilyStack,
         fontStackBold: fontStacks.boldFontFamilyStack,

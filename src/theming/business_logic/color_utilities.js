@@ -8,9 +8,10 @@
 // external imports
 
 // local imports
+import type {ColorUtilitiesTypes} from './../../types/theming/color_utilities_types';
 
 // exports
-export default Object.seal({
+const colorUtilities: ColorUtilitiesTypes = Object.seal({
     shadeColorFast(hexColorString: string, shadingPercent: number): string {
         const hexColor: number = parseInt(hexColorString.slice(1),16);
 
@@ -30,3 +31,5 @@ export default Object.seal({
         return `#${shadedColorHex.toString(16).slice(1)}`;
     },
 });
+
+export default colorUtilities;
