@@ -1,8 +1,17 @@
 'use strict';
 
+// @flow
+
+// external imports
+import {mergeDeepRight} from 'ramda';
+
+// local imports
+import type {ColorPaletteType, ColorPaletteFuncType} from './../../../../types/theming/';
+import {colorPaletteFunc as canonicalColorPaletteFunc} from './../../base_theme';
+
 // exports
-export default () => {
-    return Object.freeze({
+export const colorPaletteFunc: ColorPaletteFuncType = (): ColorPaletteType => {
+    const newColorPalette: ColorPaletteType = mergeDeepRight(canonicalColorPaletteFunc(), {
         // indigo
         materialIndigoA200: '#536dfe',
 
@@ -12,4 +21,6 @@ export default () => {
         materialPurple600: '#8e24aa',
         materialPurple900: '#4a148c',
     });
+
+    return Object.freeze(newColorPalette);
 };

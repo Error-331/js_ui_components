@@ -5,12 +5,13 @@
 // external imports
 
 // local imports
-import type {FontFacesType, FontFacesListType} from './../../../../types/theming/font_face_types';
+import type {FontFacesType, FontFacesListType, FontFacesFuncType} from './../../../../types/theming/font_face_types';
 
 // exports
-export default (fontFaces: FontFacesType): FontFacesListType => {
+export const fontFacesFunc: FontFacesFuncType = (fontFaces: FontFacesType): FontFacesListType => {
     return [
         fontFaces.RobotoRegular,
         fontFaces.RobotoBold,
     ];
 };
+

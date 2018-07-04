@@ -20,9 +20,7 @@ class CoreLayoutWrapperComponent extends Component {
     render() {
         return (
             <Form onSubmit={() => {}}>
-                <div className={this.props.classes.applicationContainer}>
-                    {this.props.children}
-                </div>
+                {this.props.children}
             </Form>
         );
     }

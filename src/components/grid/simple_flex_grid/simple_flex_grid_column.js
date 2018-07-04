@@ -61,7 +61,6 @@ function SimpleFlexGridColumn(props: PropsTypes) {
 
     const flexBasis: string = is(String, size) ? size : `${toString(size)}%`;
     const flexGrow: number = full === true ? 1 : 0;
-
     return <div className={classes.componentContainer} style={{flexBasis, flexGrow, ...style}}>
         {children}
     </div>;

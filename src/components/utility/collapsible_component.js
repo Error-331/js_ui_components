@@ -121,7 +121,7 @@ class CollapsibleComponent extends React.Component<PropsTypes, StateTypes> {
     _outerContainer: ?HTMLDivElement;
     _innerContainer: ?HTMLDivElement;
 
-    _animationTimeoutId: ?number;
+    _animationTimeoutId: ?TimeoutID;
 
     _onAccordionTransitionEnd(): void  {
         let newState: StateTypes = {animationStage: this.state.animationStage, outerContainerStyles: {}};

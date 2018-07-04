@@ -7,6 +7,8 @@
 // local imports
 
 // exports
+import type {ColorPaletteType} from './';
+
 export type BaseStylesType = {
     accentColorPrimary: string,
 
@@ -36,3 +38,5 @@ export type BaseStylesType = {
 
     iconPrimaryFontSize: number,
 };
+
+export type BaseStylesFuncType = (colorPalette: ColorPaletteType) => BaseStylesType;

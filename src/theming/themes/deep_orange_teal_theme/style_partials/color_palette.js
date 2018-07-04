@@ -1,8 +1,17 @@
 'use strict';
 
+// @flow
+
+// external imports
+import {mergeDeepRight} from 'ramda';
+
+// local imports
+import type {ColorPaletteType, ColorPaletteFuncType} from './../../../../types/theming/';
+import {colorPaletteFunc as canonicalColorPaletteFunc} from './../../base_theme';
+
 // exports
-export default () => {
-    return Object.freeze({
+export const colorPaletteFunc: ColorPaletteFuncType = (): ColorPaletteType => {
+    const newColorPalette: ColorPaletteType = mergeDeepRight(canonicalColorPaletteFunc(), {
         // teal
         materialTeal500: '#009688',
 
@@ -12,4 +21,6 @@ export default () => {
         materialDeepOrange600: '#f4511e',
         materialDeepOrange900: '#bf360c',
     });
+
+    return Object.freeze(newColorPalette);
 };

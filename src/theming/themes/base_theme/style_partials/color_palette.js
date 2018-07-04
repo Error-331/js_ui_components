@@ -5,10 +5,10 @@
 // external imports
 
 // local imports
-import type {ColorPaletteType} from './../../../../types/theming/color_palette_types';
+import type {ColorPaletteType, ColorPaletteFuncType} from './../../../../types/theming/color_palette_types';
 
 // exports
-export default (): ColorPaletteType => {
+export const colorPaletteFunc: ColorPaletteFuncType = (): ColorPaletteType => {
     return Object.freeze({
         // red
         materialRed800: '#c62828',

@@ -6,35 +6,61 @@
 import {always, mergeAll, mergeDeepRight} from 'ramda';
 
 // local imports
-import baseTheme from '../themes/base_theme';
+import type {
+    FontFacesListType,
+    FontStacksType,
+    ColorPaletteType,
+    MaterialDepthLevelsFuncType,
+    BaseStylesFuncType,
+
+    FontFacesFuncType,
+    FontStacksFuncType,
+    ColorPaletteFuncType,
+    MaterialDepthLevelsType,
+    BaseStylesType,
+
+    LayoutStylesType,
+    InputStylesType,
+    ButtonStyleType,
+    TableStyleType,
+    WindowStylesType,
+
+    BaseThemePartialsType,
+    AdditionalThemePartialsType,
+} from './../../types/theming/';
+import type {ThemeType} from './../../types/theme_types';
+
+import {baseTheme} from '../themes/base_theme/';
 import FontFaces from './../common_styles/font_faces';
 
-import fontFacesFunc from '../themes/base_theme/style_partials/font_faces';
-import fontStacksFunc from '../themes/base_theme/style_partials/font_stacks';
-import colorPaletteFunc from '../themes/base_theme/style_partials/color_palette';
-import materialDepthLevelsFunc from '../themes/base_theme/style_partials/material_depth_levels';
-import baseStylesFunc from '../themes/base_theme/style_partials/base_styles';
+import {
+    fontFacesFunc,
+    fontStacksFunc,
+    colorPaletteFunc,
+    materialDepthLevelsFunc,
+    baseStylesFunc,
 
-import windowStylesFunc from '../themes/base_theme/style_partials/window_styles';
-import inputStylesFunc from '../themes/base_theme/style_partials/input_styles';
-import buttonStylesFunc from '../themes/base_theme/style_partials/button_styles';
-import tableStylesFunc from '../themes/base_theme/style_partials/table_styles';
-import layoutStylesFunc from '../themes/base_theme/style_partials/layout_styles';
+    windowStylesFunc,
+    inputStylesFunc,
+    buttonStylesFunc,
+    tableStylesFunc,
+    layoutStylesFunc
+} from './../themes/base_theme';
 
 export const extendTheme = (
-    newFontFacesFunc = always({}),
-    newFontStacksFunc = always({}),
-    newColorPaletteFunc = always({}),
-    newMaterialDeptsFunc = always({}),
-    newBaseStylesFunc = always({})
-) => {
-    const fontFaces = mergeDeepRight(fontFacesFunc(FontFaces), newFontFacesFunc(FontFaces));
-    const fontStacks = mergeDeepRight(fontStacksFunc(), newFontStacksFunc());
-    const colorPalette = mergeDeepRight(colorPaletteFunc(), newColorPaletteFunc());
-    const materialDepthLevels = mergeDeepRight(materialDepthLevelsFunc(), newMaterialDeptsFunc());
-    const baseStyles = mergeDeepRight(baseStylesFunc(colorPalette), newBaseStylesFunc(colorPalette));
+    newFontFacesFunc: FontFacesFuncType = fontFacesFunc,
+    newFontStacksFunc: FontStacksFuncType = fontStacksFunc,
+    newColorPaletteFunc: ColorPaletteFuncType = colorPaletteFunc,
+    newMaterialDepthLevelsFunc: MaterialDepthLevelsFuncType = materialDepthLevelsFunc,
+    newBaseStylesFunc: BaseStylesFuncType = baseStylesFunc
+): ThemeType => {
+    const fontFaces: FontFacesListType = newFontFacesFunc(FontFaces);
+    const fontStacks: FontStacksType = newFontStacksFunc();
+    const colorPalette: ColorPaletteType = newColorPaletteFunc();
+    const materialDepthLevels: MaterialDepthLevelsType = newMaterialDepthLevelsFunc();
+    const baseStyles: BaseStylesType = newBaseStylesFunc(colorPalette);
 
-    const newBaseThemePartials = Object.freeze({
+    const newBaseThemePartials: BaseThemePartialsType = Object.freeze({
         '@font-face': fontFaces,
         fontStacks,
 
@@ -44,13 +70,13 @@ export const extendTheme = (
         baseStyles,
     });
 
-    const layoutStyles = layoutStylesFunc(newBaseThemePartials);
-    const inputStyles = inputStylesFunc(newBaseThemePartials);
-    const buttonStyles = buttonStylesFunc(newBaseThemePartials);
-    const tableStyles = tableStylesFunc(newBaseThemePartials);
-    const windowStyles = windowStylesFunc(newBaseThemePartials);
+    const layoutStyles: LayoutStylesType = layoutStylesFunc(newBaseThemePartials);
+    const inputStyles: InputStylesType = inputStylesFunc(newBaseThemePartials);
+    const buttonStyles: ButtonStyleType = buttonStylesFunc(newBaseThemePartials);
+    const tableStyles: TableStyleType = tableStylesFunc(newBaseThemePartials);
+    const windowStyles: WindowStylesType = windowStylesFunc(newBaseThemePartials);
 
-    const newAdditionalThemePartials = Object.freeze({
+    const newAdditionalThemePartials: AdditionalThemePartialsType = Object.freeze({
         layoutStyles,
         inputStyles,
         buttonStyles,
@@ -58,7 +84,7 @@ export const extendTheme = (
         windowStyles,
     });
 
-    const newTheme = mergeAll([
+    const newTheme: ThemeType = mergeAll([
         baseTheme,
         newBaseThemePartials,
         newAdditionalThemePartials

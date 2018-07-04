@@ -16,6 +16,7 @@ export type FontFaceType = {
 
 export type FontFacesType = {
     [string]: FontFaceType
-}
+};
 
 export type FontFacesListType = Array<FontFaceType>;
+export type FontFacesFuncType = (fontFaces: FontFacesType) => FontFacesListType;

@@ -10,18 +10,12 @@ import classNames from 'classnames';
 import {always, complement, gt, lt, isEmpty, ifElse, unless} from 'ramda';
 
 // local imports
+import type {ThemeType} from './../../../types/theme_types';
 
 // type definitions
 type CardChildrenType = React.ChildrenArray<void | null | string | number | React.Element<any>>;
 type StyleType = {
     [string]: mixed
-};
-
-type ThemeType = {
-    [string]: mixed,
-    materialDepthLevels: {
-        [string]: string,
-    }
 };
 
 type PropsTypes = {

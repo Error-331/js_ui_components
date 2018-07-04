@@ -14,7 +14,6 @@ import type {
 } from './theming';
 
 // exports
-
 export type ThemeType = BaseThemePartialsType & AdditionalThemePartialsType & {
     colorUtilities: ColorUtilitiesTypes,
     styleValuesRegister: StyleValuesRegisterType,

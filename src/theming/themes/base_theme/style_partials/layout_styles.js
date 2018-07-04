@@ -10,7 +10,7 @@ import type {BaseStylesType} from './../../../../types/theming/base_style_types'
 import type {LayoutStylesType} from './../../../../types/theming/layout_style_types';
 
 // exports
-export default ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): LayoutStylesType => {
+export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): LayoutStylesType => {
     return Object.freeze({
         fontStack: fontStacks.regularFontFamilyStack,
         headerFontStack: fontStacks.regularFontFamilyStack,

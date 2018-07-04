@@ -6,10 +6,10 @@
 
 // local imports
 import type {ColorPaletteType} from './../../../../types/theming/color_palette_types';
-import type {BaseStylesType} from './../../../../types/theming/base_style_types';
+import type {BaseStylesType, BaseStylesFuncType} from './../../../../types/theming/base_style_types';
 
 // exports
-export default (colorPalette: ColorPaletteType): BaseStylesType => {
+export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteType): BaseStylesType => {
     return Object.freeze({
         // accent colors
         accentColorPrimary: colorPalette.materialRed800,

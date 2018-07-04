@@ -25,12 +25,11 @@ module.exports = {
                 }
             ]
         }
-
-
     },
 
     styleguideComponents: {
-        Wrapper: path.join(__dirname, './provider_wrapper')
+        Wrapper:  path.join(__dirname, './modules/containers/component_wrapper_container'),
+        StyleGuideRenderer: path.join(__dirname, './provider_wrapper')
     },
 
     configureServer(app) {

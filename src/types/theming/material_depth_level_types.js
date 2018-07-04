@@ -14,3 +14,5 @@ export type MaterialDepthLevelsType = {
     materialDepth4BoxShadow: string,
     materialDepth5BoxShadow: string,
 }
+
+export type MaterialDepthLevelsFuncType = () => MaterialDepthLevelsType;

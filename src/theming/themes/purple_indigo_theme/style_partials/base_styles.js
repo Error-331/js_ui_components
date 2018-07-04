@@ -1,8 +1,17 @@
 'use strict';
 
+// @flow
+
+// external imports
+import {mergeDeepRight} from 'ramda';
+
+// local imports
+import type {ColorPaletteType, BaseStylesType, BaseStylesFuncType} from './../../../../types/theming/';
+import {baseStylesFunc as canonicalBaseStylesFunc} from './../../base_theme';
+
 // exports
-export default (colorPalette) => {
-    return Object.freeze({
+export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteType): BaseStylesType => {
+    const newBaseStyles: BaseStylesType = mergeDeepRight(canonicalBaseStylesFunc(colorPalette), {
         // accent colors
         accentColorPrimary: colorPalette.materialIndigoA200,
 
@@ -14,4 +23,6 @@ export default (colorPalette) => {
 
         primaryBGColor: colorPalette.materialPurple600,
     });
+
+    return Object.freeze(newBaseStyles);
 };

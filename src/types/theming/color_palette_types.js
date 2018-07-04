@@ -10,3 +10,5 @@
 export type ColorPaletteType = {
     [string]: string
 };
+
+export type ColorPaletteFuncType = () => ColorPaletteType;
