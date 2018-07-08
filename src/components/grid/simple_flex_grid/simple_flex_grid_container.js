@@ -45,7 +45,7 @@ const styles = theme => ({
 function SimpleFlexGridContainer(props: PropsTypes) {
     return <div className={props.classes.componentContainer}>
         {props.children}
-    </div>
+    </div>;
 }
 
 // exports

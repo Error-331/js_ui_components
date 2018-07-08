@@ -5,6 +5,8 @@
 // external imports
 import * as React from 'react';
 import injectSheet from 'react-jss';
+
+import classNames from 'classnames';
 import {is, toString} from 'ramda';
 
 // local imports
@@ -16,6 +18,12 @@ type PropsTypes = {
      */
 
     style?: {[string]: mixed},
+
+    /**
+     * Name of the class which will be applied to component along with default one
+     */
+
+    className?: string,
 
     /**
      * Size of the column in percent
@@ -57,11 +65,14 @@ const styles = theme => ({
 
 // component implementation
 function SimpleFlexGridColumn(props: PropsTypes) {
-    const {size, full, classes, style, children} = props;
+    const {size, full, classes, style, className, children} = props;
 
     const flexBasis: string = is(String, size) ? size : `${toString(size)}%`;
     const flexGrow: number = full === true ? 1 : 0;
-    return <div className={classes.componentContainer} style={{flexBasis, flexGrow, ...style}}>
+
+    const componentClassNames: string = classNames(classes.componentContainer, className);
+
+    return <div className={componentClassNames} style={{flexBasis, flexGrow, ...style}}>
         {children}
     </div>;
 }
