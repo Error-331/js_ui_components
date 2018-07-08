@@ -113,6 +113,9 @@ class ComponentsWrapper extends Component {
                                                 'Base theme': 'base',
                                                 'Deep orange teal': 'deepOrangeTeal',
                                                 'Purple indigo': 'purpleIndigo',
+                                                'Blue grey red': 'blueGreyRed',
+                                                'Green amber': 'greenAmber',
+                                                'Brown lime': 'brownLime'
                                             }}/>
                                         </SimpleFlexGridColumn>
                                     </SimpleFlexGridRow>
