@@ -8,8 +8,15 @@ module.exports = {
         rules: [
             {
                 test: /\.jsx?$/,
-                loaders: ['babel-loader'],
                 exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ["env", "stage-2", "flow", "react"],
+                        plugins: ["transform-object-rest-spread"]
+                    }
+                }
+
             },
 
             {
