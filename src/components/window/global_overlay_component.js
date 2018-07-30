@@ -11,16 +11,9 @@ import {is, isNil, defaultTo} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components';
 
 // local imports
+import type {ThemeType} from './../../types/theme_types';
 
 // type definitions
-type ThemeType = {
-    [string]: mixed,
-    styleValuesRegister: {
-        zIndex: number,
-        releaseZIndex: (oldZIndex?: number) => boolean
-    }
-};
-
 type PropsTypes = {
     /**
      * Flag that indicates whether to show or not to show global overlay component
@@ -94,7 +87,7 @@ const styles = theme => ({
             width: '100%',
             height: '100%',
 
-            backgroundColor: theme.windowStyles.windowCommonOverlayColor,
+            backgroundColor: theme.windowStyles.overlayColor,
             opacity: 0.5
         },
 
@@ -228,7 +221,7 @@ class GlobalOverlayComponent extends React.Component<PropsTypes, StateTypes> {
         return <div onClick={this._onOverlayClick} className={this._getOverlayContainerClasses()} style={styles}>
             {this._renderSemiTransparentBackgroundContainer()}
             {this._renderChildrenContainer()}
-        </div>
+        </div>;
     }
 
     render(): React.Node {

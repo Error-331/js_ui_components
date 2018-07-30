@@ -25,12 +25,11 @@ module.exports = {
                 }
             ]
         }
-
-
     },
 
     styleguideComponents: {
-        Wrapper: path.join(__dirname, './provider_wrapper')
+        Wrapper:  path.join(__dirname, './modules/containers/component_wrapper_container'),
+        StyleGuideRenderer: path.join(__dirname, './provider_wrapper')
     },
 
     configureServer(app) {
@@ -75,7 +74,7 @@ module.exports = {
                         {
                             name: 'Text',
                             content: path.join(__dirname, './docs/layout/text/index.md'),
-                            components: path.join(__dirname, './../src/components/layout/text/**/(?!index)[A-Za-z_]*.js'),
+                            components: path.join(__dirname, './../src/components/layout/text/**/[A-Za-z_]*_[A-Za-z_]*.js'),
                         },
                     ]
                 },

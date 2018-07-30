@@ -142,7 +142,7 @@ class ModalComponent extends React.Component<PropsTypes, StateTypes> {
         >
             {children}
             {this._renderFooter()}
-        </RegularCardComponent>
+        </RegularCardComponent>;
     }
 
     _renderOverlayComponent(): React.Node {

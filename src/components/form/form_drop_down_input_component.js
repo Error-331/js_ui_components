@@ -13,6 +13,7 @@ import {isNotNil, generateRandomIdNumber} from '@webfuturistics/design_component
 
 // local imports
 import type {FormTextInputTypes} from './form_text_input_component';
+import type {ThemeType} from './../../types/theme_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
 import FormTextInputComponent from './form_text_input_component';
@@ -22,14 +23,6 @@ import RegularCardComponent from './../layout/structure/regular_card_component';
 // type definitions
 type OptionValueType = string | number;
 type OptionType = { [string]: OptionValueType }
-
-type ThemeType = {
-    [string]: mixed,
-    styleValuesRegister: {
-        zIndex: number,
-        releaseZIndex: (oldZIndex?: number) => boolean
-    }
-};
 
 type PropsTypes = FieldProps & {
 
@@ -157,20 +150,20 @@ const styles = theme => ({
             '& $optionContainer': {
                 padding: '8px 8px 8px 10px',
                 cursor: 'pointer',
-                color: theme.inputStyles.inputCommonInactiveColor,
+                color: theme.inputStyles.inactiveColor,
             },
 
             '& $optionContainer.selected': {
-                backgroundColor: theme.inputStyles.inputSelectedBGColor,
+                backgroundColor: theme.inputStyles.selectedBGColor,
             },
 
             '& $optionContainer:hover': {
-                color: theme.inputStyles.inputCommonHoverColor,
+                color: theme.inputStyles.hoverColor,
             },
 
             '& $optionContainer.selected:hover': {
                 cursor: 'auto',
-                color: theme.inputStyles.inputCommonInactiveColor,
+                color: theme.inputStyles.inactiveColor,
             }
         }
     },
@@ -344,7 +337,7 @@ class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes>
         if (isNotNil(labelValue)) {
             return {
                 [labelValue[0]]: labelValue[1]
-            }
+            };
         }
     }
 
@@ -373,11 +366,11 @@ class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes>
         onChange(optionValue);
     }
 
-    _onOverlayClick(event: SyntheticMouseEvent<any>): void {
+    _onOverlayClick(): void {
         this._closeOptionsContainer();
     }
 
-    _onDropDownInputClick(event: SyntheticMouseEvent<any>): void {
+    _onDropDownInputClick(): void {
         let {readOnly, disabled} = this.props;
 
         readOnly = defaultTo(false)(readOnly);
@@ -397,7 +390,7 @@ class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes>
 
     // region render methods
     _renderTextInputComponent(): React.Node {
-        return <FormTextInputComponent {...this._getFormTextInputComponentProps()} />
+        return <FormTextInputComponent {...this._getFormTextInputComponentProps()} />;
     }
 
     _renderTextInputContainer(): React.Node {
@@ -411,7 +404,7 @@ class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes>
         const indexedMap: any = addIndex(map);
 
         return indexedMap((option, index) => {
-            return <option value={option[1]} key={`input_option_${index}`}>{option[0]}</option>
+            return <option value={option[1]} key={`input_option_${index}`}>{option[0]}</option>;
         }, toPairs(this.props.options));
     }
 
@@ -432,7 +425,7 @@ class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes>
             onChange={onChange}
         >
             {this._renderInputOptions()}
-        </select>
+        </select>;
     }
 
     _renderGlobalOverlayComponent(): React.Node {
@@ -444,7 +437,7 @@ class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes>
         label: string,
         className: string,
         clickCallback?: (event: SyntheticMouseEvent<HTMLInputElement>) => void): React.Node {
-        return <div onClick={clickCallback} className={className} key={`option_${index}`}>{label}</div>
+        return <div onClick={clickCallback} className={className} key={`option_${index}`}>{label}</div>;
     }
 
     _renderOptionsContainers(): React.Node[] {

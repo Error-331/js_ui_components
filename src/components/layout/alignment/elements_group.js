@@ -20,7 +20,7 @@ type AlignmentType = 'left' | 'right' | 'center';
 
 type PropsTypes = {
     /**
-     * Flag that dictates how radio buttons should be laid out
+     * Flag that dictates how elements should be laid out
      */
 
     direction?: DirectionType,

@@ -1,5 +1,9 @@
 // styleguidist webpack config
 module.exports = {
+    devServer: {
+        disableHostCheck: true
+    },
+
     resolve: {
         extensions: ['.js', '.jsx', '.json']
     },

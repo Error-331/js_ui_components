@@ -57,10 +57,10 @@ const styles = theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
-        borderTopLeftRadius: theme.layoutStyles.layoutHeaderCommonBorderRadius,
-        borderTopRightRadius: theme.layoutStyles.layoutHeaderCommonBorderRadius,
+        borderTopLeftRadius: theme.layoutStyles.headerBorderRadius,
+        borderTopRightRadius: theme.layoutStyles.headerBorderRadius,
 
-        backgroundColor: theme.layoutStyles.layoutHeaderCommonBackgroundColor,
+        backgroundColor: theme.layoutStyles.headerBGColor,
 
         '& > $titleContainer': {
             boxSizing: 'border-box',
@@ -74,10 +74,10 @@ const styles = theme => ({
             overflow: 'hidden',
             textOverflow: 'ellipsis',
 
-            fontFamily: theme.layoutStyles.layoutHeaderCommonFontFamily,
-            fontSize: `${theme.layoutStyles.layoutTitleCommonFontSize}px`,
+            fontFamily: theme.layoutStyles.headerFontStack,
+            fontSize: `${theme.layoutStyles.headerFontSize}px`,
 
-            color: theme.layoutStyles.layoutHeaderCommonColor,
+            color: theme.layoutStyles.headerFontColor,
         },
 
         '& > $titleContainer:first-letter': {
@@ -93,9 +93,9 @@ const styles = theme => ({
 
             paddingRight: '10px',
 
-            fontSize: `${theme.layoutStyles.layoutTitleCommonFontSize}px`,
+            fontSize: `${theme.layoutStyles.headerFontSize}px`,
             cursor: 'pointer',
-            color: theme.layoutStyles.layoutHeaderCommonColor,
+            color: theme.layoutStyles.headerFontColor,
         }
     },
 

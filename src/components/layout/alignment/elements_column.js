@@ -66,11 +66,11 @@ const styles = theme => ({
         },
 
         '&.left > div': {
-            marginTop: `${theme.layoutStyles.layoutCommonVerticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
         },
 
         '&.left > button': {
-            marginTop: `${theme.layoutStyles.layoutCommonVerticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
         },
 
         '&.left > div:irst-child': {
@@ -86,11 +86,11 @@ const styles = theme => ({
         },
 
         '&.right > div': {
-            marginTop: `${theme.layoutStyles.layoutCommonVerticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
         },
 
         '&.right > button': {
-            marginTop: `${theme.layoutStyles.layoutCommonVerticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
         },
 
         '&.right > div:first-child': {
@@ -106,11 +106,11 @@ const styles = theme => ({
         },
 
         '&.center > div': {
-            marginTop: `${theme.layoutStyles.layoutCommonVerticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
         },
 
         '&.center > button': {
-            marginTop: `${theme.layoutStyles.layoutCommonVerticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
         },
 
         '&.center > div:irst-child': {
@@ -146,7 +146,7 @@ function ElementsColumn(props: PropsTypes): React.Node {
 
     return <div className={containerClasses} style={{...style}}>
         {props.children}
-    </div>
+    </div>;
 }
 
 // exports

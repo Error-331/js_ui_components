@@ -94,22 +94,22 @@ const styles = theme => ({
             flexShrink: 1,
             flexGrow: 0,
 
-            fontFamily: theme.inputStyles.inputCommonFontFamily,
-            fontSize: theme.inputStyles.inputCommonFontSize,
+            fontFamily: theme.inputStyles.fontStack,
+            fontSize: theme.inputStyles.fontSize,
 
-            color: theme.inputStyles.inputCommonLabelColor,
+            color: theme.inputStyles.labelColor,
 
             '&.disabled': {
-                color: theme.inputStyles.inputCommonDisabledColor
+                color: theme.inputStyles.disabledColor
             }
         },
 
         '& > $checkboxLeftLabel': {
-            paddingRight: `${theme.inputStyles.inputSwitchLabelOffset}px`,
+            paddingRight: `${theme.inputStyles.switchLabelOffset}px`,
         },
 
         '& > $checkboxRightLabel': {
-            paddingLeft: `${theme.inputStyles.inputSwitchLabelOffset}px`,
+            paddingLeft: `${theme.inputStyles.switchLabelOffset}px`,
         },
 
         '& > $inputControl': {
@@ -120,7 +120,7 @@ const styles = theme => ({
             },
 
             '&:checked + $inputControlLabel.disabled > $inputControlIcon': {
-                backgroundColor: theme.inputStyles.inputCommonDisabledColor
+                backgroundColor: theme.inputStyles.disabledColor
             },
         },
 
@@ -141,7 +141,7 @@ const styles = theme => ({
             padding: '3px',
 
             borderRadius: '50%',
-            border: `2px solid ${theme.inputStyles.inputSwitchCommonSliderBodyBGColorActive}`,
+            border: `2px solid ${theme.inputStyles.switchSliderActiveBodyBGColor}`,
 
             '& > $inputControlIcon': {
                 flexBasis: 'auto',
@@ -150,7 +150,7 @@ const styles = theme => ({
 
                 borderRadius: '50%',
 
-                backgroundColor: theme.inputStyles.inputSwitchCommonSliderHandleActive,
+                backgroundColor: theme.inputStyles.switchSliderHandleActive,
 
                 transform: 'scale(0)',
 
@@ -160,7 +160,7 @@ const styles = theme => ({
         },
 
         '& > $inputControlLabel.disabled': {
-            borderColor: theme.inputStyles.inputCommonDisabledColor
+            borderColor: theme.inputStyles.disabledColor
         }
     },
 
@@ -199,7 +199,10 @@ class FormRadioButtonInputComponent extends React.Component<PropsTypes, StateTyp
 
             onChange: () => {},
             onFocus: () => {},
-            onBlur: () => {}
+            onBlur: () => {},
+            onDrop: () => {},
+            onDragStart: () => {},
+            onFocus: () => {},
         },
 
         classes: {}

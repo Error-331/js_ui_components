@@ -76,11 +76,11 @@ const switchSliderHandlerTop = (switchSliderHandlerHeight - switchSliderBodyHeig
 const switchSliderHandlerRight = switchSliderBodyWidth - switchSliderHandlerWidth;
 
 const switchSliderBodyDisabledClasses = (theme) => ({
-    backgroundColor: theme.inputStyles.inputCommonDisabledColor
+    backgroundColor: theme.inputStyles.disabledColor
 });
 
 const switchSliderHandleDisabledClasses = (theme) => ({
-    backgroundColor: theme.inputStyles.inputSwitchCommonSliderHandleInactive
+    backgroundColor: theme.inputStyles.switchSliderHandleInactive
 });
 
 const styles = theme => ({
@@ -106,34 +106,34 @@ const styles = theme => ({
             flexShrink: 1,
             flexGrow: 0,
 
-            fontFamily: theme.inputStyles.inputCommonFontFamily,
-            fontSize: theme.inputStyles.inputCommonFontSize,
+            fontFamily: theme.inputStyles.fontStack,
+            fontSize: theme.inputStyles.fontSize,
 
-            color: theme.inputStyles.inputCommonLabelColor,
+            color: theme.inputStyles.labelColor,
 
             '&.disabled': {
-                color: theme.inputStyles.inputCommonDisabledColor
+                color: theme.inputStyles.disabledColor
             }
         },
 
         '& > $switchLeftLabel': {
-            paddingRight: `${theme.inputStyles.inputSwitchLabelOffset}px`,
+            paddingRight: `${theme.inputStyles.switchLabelOffset}px`,
         },
 
         '& > $switchRightLabel': {
-            paddingLeft: `${theme.inputStyles.inputSwitchLabelOffset}px`,
+            paddingLeft: `${theme.inputStyles.switchLabelOffset}px`,
         },
 
         '& > $inputControl': {
             display: 'none',
 
             '&:checked + $inputControlLabel > $switchSliderBodyContainer': {
-                backgroundColor: theme.inputStyles.inputSwitchCommonSliderBodyBGColorActive
+                backgroundColor: theme.inputStyles.switchSliderActiveBodyBGColor
             },
 
             '&:checked + $inputControlLabel > $switchSliderHandleContainer': {
                 transform: `translate(${switchSliderHandlerRight}px, -${switchSliderHandlerTop}px)`,
-                backgroundColor: theme.inputStyles.inputSwitchCommonSliderHandleActive,
+                backgroundColor: theme.inputStyles.switchSliderHandleActive,
             },
 
             '&:checked + $inputControlLabel > $switchSliderBodyContainer.disabled': switchSliderBodyDisabledClasses(theme),
@@ -148,7 +148,7 @@ const styles = theme => ({
             flexGrow: 0,
             flexShrink: 1,
 
-            backgroundColor: theme.inputStyles.inputCommonBGColor,
+            backgroundColor: theme.inputStyles.bgColor,
 
             '& > $switchSliderBodyContainer': {
                 boxSizing: 'border-box',
@@ -158,7 +158,7 @@ const styles = theme => ({
 
                 borderRadius: '15px',
 
-                backgroundColor: theme.inputStyles.inputSwitchCommonSliderBodyBGColorInactive,
+                backgroundColor: theme.inputStyles.switchSliderInactiveBodyBGColor,
 
                 '&.disabled': switchSliderBodyDisabledClasses(theme)
             },
@@ -174,7 +174,7 @@ const styles = theme => ({
 
                 borderRadius: '50%',
 
-                backgroundColor: theme.inputStyles.inputSwitchCommonSliderHandleInactive,
+                backgroundColor: theme.inputStyles.switchSliderHandleInactive,
                 boxShadow: '0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084)',
 
                 transform: `translate(0px, -${switchSliderHandlerTop}px)`,
@@ -223,7 +223,10 @@ class FormSwitchInputComponent extends React.Component<PropsTypes, StateTypes> {
 
             onChange: () => {},
             onFocus: () => {},
-            onBlur: () => {}
+            onBlur: () => {},
+            onDrop: () => {},
+            onDragStart: () => {},
+            onFocus: () => {},
         },
 
         classes: {}
@@ -300,7 +303,7 @@ class FormSwitchInputComponent extends React.Component<PropsTypes, StateTypes> {
 
     // region state accessors
     _createInputId(): string {
-        const {name}: {name: ?string} = this._getInputData();
+        const {name} = this._getInputData();
         const randomIdNumber: number = generateRandomIdNumber();
 
         if (isNil(name)) {
@@ -371,7 +374,7 @@ class FormSwitchInputComponent extends React.Component<PropsTypes, StateTypes> {
             id={this._id}
 
             onChange={onChange}
-        />
+        />;
     }
 
     _renderInputContainer(): React.Node {

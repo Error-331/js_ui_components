@@ -102,30 +102,30 @@ const styles = theme => ({
             flexShrink: 1,
             flexGrow: 0,
 
-            fontFamily: theme.inputStyles.inputCommonFontFamily,
-            fontSize: theme.inputStyles.inputCommonFontSize,
+            fontFamily: theme.inputStyles.fontStack,
+            fontSize: theme.inputStyles.fontSize,
 
-            color: theme.inputStyles.inputCommonLabelColor,
+            color: theme.inputStyles.labelColor,
 
             '&.disabled': {
-                color: theme.inputStyles.inputCommonDisabledColor
+                color: theme.inputStyles.disabledColor
             }
         },
 
         '& > $checkboxLeftLabel': {
-            paddingRight: `${theme.inputStyles.inputSwitchLabelOffset}px`,
+            paddingRight: `${theme.inputStyles.switchLabelOffset}px`,
         },
 
         '& > $checkboxRightLabel': {
-            paddingLeft: `${theme.inputStyles.inputSwitchLabelOffset}px`,
+            paddingLeft: `${theme.inputStyles.switchLabelOffset}px`,
         },
 
         '& > $inputControl': {
             display: 'none',
 
             '&:checked + $inputControlLabel > $checkMarkBackgroundContainer': {
-                borderColor: theme.inputStyles.inputSwitchCommonSliderBodyBGColorActive,
-                background: theme.inputStyles.inputSwitchCommonSliderBodyBGColorActive
+                borderColor: theme.inputStyles.switchSliderActiveBodyBGColor,
+                background: theme.inputStyles.switchSliderActiveBodyBGColor
             },
 
             '&:checked + $inputControlLabel > $checkMarkContainer': {
@@ -133,8 +133,8 @@ const styles = theme => ({
             },
 
             '&:checked + $inputControlLabel > $checkMarkBackgroundContainer.disabled': {
-                borderColor: theme.inputStyles.inputCommonDisabledColor,
-                background: theme.inputStyles.inputCommonDisabledColor
+                borderColor: theme.inputStyles.disabledColor,
+                background: theme.inputStyles.disabledColor
             }
         },
 
@@ -153,7 +153,7 @@ const styles = theme => ({
                 width: '100%',
                 height: '100%',
 
-                border: `2px solid ${theme.inputStyles.inputSwitchCommonSliderBodyBGColorInactive}`,
+                border: `2px solid ${theme.inputStyles.switchSliderInactiveBodyBGColor}`,
                 borderRadius: '2px',
 
                 backGroundColor: 'white',
@@ -171,14 +171,14 @@ const styles = theme => ({
                 width: `${checkMarkWidthPercentage}%`,
                 height: `${checkMarkHeightPercentage}%`,
 
-                border: `2px solid ${theme.inputStyles.inputSwitchCommonSliderHandleActive}`,
+                border: `2px solid ${theme.inputStyles.switchSliderHandleActive}`,
                 borderTopStyle: 'none',
                 borderRightStyle: 'none',
 
                 transform: 'rotate(-45deg)',
 
                 '&.disabled': {
-                    borderColor: theme.inputStyles.inputSwitchCommonSliderHandleInactive
+                    borderColor: theme.inputStyles.switchSliderHandleInactive
                 }
             },
         }
@@ -221,7 +221,10 @@ class FormCheckboxInputComponent extends React.Component<PropsTypes, StateTypes>
 
             onChange: () => {},
             onFocus: () => {},
-            onBlur: () => {}
+            onBlur: () => {},
+            onDrop: () => {},
+            onDragStart: () => {},
+            onFocus: () => {},
         },
 
         classes: {}
@@ -288,7 +291,7 @@ class FormCheckboxInputComponent extends React.Component<PropsTypes, StateTypes>
 
     // region state accessors
     _createInputId(): string {
-        const {name}: {name: ?string} = this._getInputData();
+        const {name} = this._getInputData();
         const randomIdNumber: number = generateRandomIdNumber();
 
         if (isNil(name)) {
@@ -331,7 +334,7 @@ class FormCheckboxInputComponent extends React.Component<PropsTypes, StateTypes>
 
     _renderCheckMarkContainer(): React.Node {
         return <div className={this._getCheckMarkContainer()}>
-        </div>
+        </div>;
     }
 
     _renderCheckMarkBackgroundContainer(): React.Node {
@@ -365,7 +368,7 @@ class FormCheckboxInputComponent extends React.Component<PropsTypes, StateTypes>
             id={this._id}
 
             onChange={onChange}
-        />
+        />;
     }
 
     _renderInputContainer(): React.Node {
