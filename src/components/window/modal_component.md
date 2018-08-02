@@ -4,10 +4,10 @@ Example usage of modal component with some custom content:
 
 const {Component} = require('react');
 
-const RegularButtonComponent = require('./../buttons/regular_button_component').default;
-const RegularCardHeaderComponent = require('./../layout/structure/regular_card_header_component').default;
+const {RegularButtonComponent} = require('./../buttons/regular_button_component');
+const {RegularCardHeaderComponent} = require('./../layout/structure/regular_card_header_component');
 
-const ElementsRow = require('./../layout/alignment/elements_row').default;
+const {ElementsRow} = require('./../layout/alignment/elements_row');
 
 class DemoGlobalModalComponent1 extends Component {
     _onShowModal() {

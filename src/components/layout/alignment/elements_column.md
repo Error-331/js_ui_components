@@ -2,7 +2,8 @@ A number of buttons aligned to the left:
 
 ```jsx
 
-const RegularButtonComponent = require('./../../buttons/regular_button_component').default;
+const {ElementsColumn} = require('./elements_column');
+const {RegularButtonComponent} = require('./../../buttons/regular_button_component');
 
 <ElementsColumn alignment='left'>
     <RegularButtonComponent label='button 1'/>
@@ -16,7 +17,8 @@ A number of buttons aligned to the center:
 
 ```jsx
 
-const RegularButtonComponent = require('./../../buttons/regular_button_component').default;
+const {ElementsColumn} = require('./elements_column');
+const {RegularButtonComponent} = require('./../../buttons/regular_button_component');
 
 <ElementsColumn alignment='center'>
     <RegularButtonComponent label='button 1'/>
@@ -30,7 +32,8 @@ A number of buttons aligned to the right:
 
 ```jsx
 
-const RegularButtonComponent = require('./../../buttons/regular_button_component').default;
+const {ElementsColumn} = require('./elements_column');
+const {RegularButtonComponent} = require('./../../buttons/regular_button_component');
 
 <ElementsColumn alignment='right'>
     <RegularButtonComponent label='button 1'/>

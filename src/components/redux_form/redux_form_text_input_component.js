@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import FormTextInputComponent from './../form/form_text_input_component';
+import {FormTextInputComponent} from './../form/form_text_input_component';
 
 // type definitions
 type InputTypes = 'text' | 'password';
@@ -68,7 +68,7 @@ type StateTypes = {};
  */
 
 // component implementation
-class ReduxFormTextInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class ReduxFormTextInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'ReduxFormTextInputComponent';
 
     render(): React.Node {
@@ -77,4 +77,4 @@ class ReduxFormTextInputComponent extends React.Component<PropsTypes, StateTypes
 }
 
 // exports
-export default ReduxFormTextInputComponent;
+export const ReduxFormTextInputComponent = ReduxFormTextInputComponentClass;

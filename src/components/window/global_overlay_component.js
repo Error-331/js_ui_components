@@ -126,7 +126,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class GlobalOverlayComponent extends React.Component<PropsTypes, StateTypes> {
+export class GlobalOverlayComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'GlobalOverlayComponent';
 
@@ -233,4 +233,4 @@ class GlobalOverlayComponent extends React.Component<PropsTypes, StateTypes> {
 }
 
 // exports
-export default injectSheet(styles)(GlobalOverlayComponent);
+export const GlobalOverlayComponent = injectSheet(styles)(GlobalOverlayComponentClass);

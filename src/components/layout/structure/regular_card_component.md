@@ -18,7 +18,7 @@ Card with HTML body and with title:
 
 ```jsx
 
-const RegularCardHeaderComponent = require('./regular_card_header_component').default;
+const {RegularCardHeaderComponent} = require('./regular_card_header_component');
 
 <RegularCardComponent header={<RegularCardHeaderComponent title='Test panel 1' />}>
     <h3>

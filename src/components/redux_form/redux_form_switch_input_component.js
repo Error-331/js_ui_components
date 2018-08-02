@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import FormSwitchInputComponent from './../form/form_switch_input_component';
+import {FormSwitchInputComponent} from './../form/form_switch_input_component';
 
 // type definitions
 type PropsTypes = {
@@ -48,7 +48,7 @@ type StateTypes = {};
  */
 
 // component implementation
-class ReduxFormSwitchInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class ReduxFormSwitchInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'ReduxFormSwitchInputComponent';
 
     render(): React.Node {
@@ -66,4 +66,4 @@ class ReduxFormSwitchInputComponent extends React.Component<PropsTypes, StateTyp
 }
 
 // exports
-export default ReduxFormSwitchInputComponent;
+export const ReduxFormSwitchInputComponent = ReduxFormSwitchInputComponentClass;

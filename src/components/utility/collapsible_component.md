@@ -3,8 +3,8 @@ Example usage of the component using minimal parameters set:
 ```jsx
 
 const {Component} = require('react');
-const RegularButtonComponent = require('./../buttons/regular_button_component').default;
-const InlineTextBlock = require('./../layout/text/inline_text_block').default;
+const {RegularButtonComponent} = require('./../buttons/regular_button_component');
+const {InlineTextBlock} = require('./../layout/text/inline_text_block');
 
 class DemoCollapsibleComponent1 extends Component {
     _onSwitchCollapsible() {

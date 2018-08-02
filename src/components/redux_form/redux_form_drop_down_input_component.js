@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import FormDropDownInputComponent from '../form/form_drop_down_input_component';
+import {FormDropDownInputComponent} from '../form/form_drop_down_input_component';
 
 // type definitions
 type PropsTypes = {
@@ -62,13 +62,13 @@ type StateTypes = {};
  */
 
 // component implementation
-class ReduxFormDropDownInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class ReduxFormDropDownInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'ReduxFormDropDownInputComponent';
 
     render(): React.Node {
-        return <Field type='select' component={FormDropDownInputComponent} {...this.props}/>;
+        return <Field type='select' component={(props) => <FormDropDownInputComponent {...props}/>} {...this.props}/>;
     }
 }
 
 // exports
-export default ReduxFormDropDownInputComponent;
+export const ReduxFormDropDownInputComponent = ReduxFormDropDownInputComponentClass;

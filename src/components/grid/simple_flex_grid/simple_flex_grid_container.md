@@ -5,9 +5,10 @@ Example usage of simple flex grid container:
 
 const injectSheet = require('react-jss').default;
 
-const SimpleFlexGridRow = require('./simple_flex_grid_row').default;
-const SimpleFlexGridColumn = require('./simple_flex_grid_column').default;
-const InlineTextBlock = require('./../../layout/text/inline_text_block').default;
+const {SimpleFlexGridContainer} = require('./simple_flex_grid_container');
+const {SimpleFlexGridRow} = require('./simple_flex_grid_row');
+const {SimpleFlexGridColumn} = require('./simple_flex_grid_column');
+const {InlineTextBlock} = require('./../../layout/text/inline_text_block');
 
 const styles = theme => ({
     testContainer: {

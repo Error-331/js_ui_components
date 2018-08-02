@@ -8,6 +8,7 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import {defaultTo} from 'ramda';
+import {ElementsGroupFunction} from "./elements_group";
 
 // local imports
 
@@ -140,7 +141,7 @@ const styles = theme => ({
  */
 
 // component implementation
-function ElementsRow(props: PropsTypes): React.Node {
+export function ElementsRowFunction(props: PropsTypes): React.Node {
     let {alignment, wrap, classes, style} = props;
 
     alignment = defaultTo('left')(alignment);
@@ -158,5 +159,7 @@ function ElementsRow(props: PropsTypes): React.Node {
     </div>
 }
 
+ElementsRowFunction.displayName = 'ElementsRow';
+
 // exports
-export default injectSheet(styles)(ElementsRow);
+export const ElementsRow = injectSheet(styles)(ElementsRowFunction);

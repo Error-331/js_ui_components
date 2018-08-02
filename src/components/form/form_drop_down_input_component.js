@@ -16,9 +16,9 @@ import type {FormTextInputTypes} from './form_text_input_component';
 import type {ThemeType} from './../../types/theme_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
-import FormTextInputComponent from './form_text_input_component';
-import GlobalOverlayComponent from './../window/global_overlay_component';
-import RegularCardComponent from './../layout/structure/regular_card_component';
+import {FormTextInputComponent} from './form_text_input_component';
+import {GlobalOverlayComponent} from './../window/global_overlay_component';
+import {RegularCardComponent} from './../layout/structure/regular_card_component';
 
 // type definitions
 type OptionValueType = string | number;
@@ -184,7 +184,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class FormDropDownInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormDropDownInputComponent';
 
@@ -294,7 +294,7 @@ class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes>
     // region prop accessors
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormDropDownInputComponent.defaultProps.input) : input;
+        return isNil(input) ? clone(FormDropDownInputComponentClas.defaultProps.input) : input;
     }
 
     _getFormTextInputComponentProps(): FormTextInputTypes {
@@ -490,4 +490,4 @@ class FormDropDownInputComponent extends React.Component<PropsTypes, StateTypes>
 }
 
 // exports
-export default injectSheet(styles)(FormDropDownInputComponent);
+export const FormDropDownInputComponent = injectSheet(styles)(FormDropDownInputComponentClass);

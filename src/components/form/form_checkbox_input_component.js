@@ -205,7 +205,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class FormCheckboxInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class FormCheckboxInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormCheckboxInputComponent';
 
@@ -311,7 +311,7 @@ class FormCheckboxInputComponent extends React.Component<PropsTypes, StateTypes>
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormCheckboxInputComponent.defaultProps.input) : input;
+        return isNil(input) ? clone(FormCheckboxInputComponentClass.defaultProps.input) : input;
     }
 
     // endregion
@@ -392,4 +392,4 @@ class FormCheckboxInputComponent extends React.Component<PropsTypes, StateTypes>
 }
 
 // exports
-export default injectSheet(styles)(FormCheckboxInputComponent);
+export const FormCheckboxInputComponent = injectSheet(styles)(FormCheckboxInputComponentClass);

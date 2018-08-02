@@ -183,7 +183,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class FormRadioButtonInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class FormRadioButtonInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormRadioButtonInputComponent';
 
@@ -280,7 +280,7 @@ class FormRadioButtonInputComponent extends React.Component<PropsTypes, StateTyp
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input} = this.props;
-        return isNil(input) ? clone(FormRadioButtonInputComponent.defaultProps.input) : input;
+        return isNil(input) ? clone(FormRadioButtonInputComponentClass.defaultProps.input) : input;
     }
 
     // endregion
@@ -355,4 +355,4 @@ class FormRadioButtonInputComponent extends React.Component<PropsTypes, StateTyp
 }
 
 // exports
-export default injectSheet(styles)(FormRadioButtonInputComponent);
+export const FormRadioButtonInputComponent = injectSheet(styles)(FormRadioButtonInputComponentClass);

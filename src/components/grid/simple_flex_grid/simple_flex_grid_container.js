@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 // local imports
-import type SimpleFlexGridRowType from './simple_flex_grid_row';
+import type {SimpleFlexGridRow} from './simple_flex_grid_row';
 
 // type definitions
 type PropsTypes = {
@@ -23,7 +23,7 @@ type PropsTypes = {
      * Child node (with optional sub-nodes)
      */
 
-    children?: React.ChildrenArray<React.Element<SimpleFlexGridRowType>>,
+    children?: React.ChildrenArray<React.Element<SimpleFlexGridRow>>,
 };
 
 // styles definition
@@ -42,11 +42,13 @@ const styles = theme => ({
 });
 
 // component implementation
-function SimpleFlexGridContainer(props: PropsTypes) {
+function SimpleFlexGridContainerFunction(props: PropsTypes) {
     return <div className={props.classes.componentContainer}>
         {props.children}
     </div>;
 }
 
+SimpleFlexGridContainerFunction.displayName = 'SimpleFlexGridContainer';
+
 // exports
-export default injectSheet(styles)(SimpleFlexGridContainer);
+export const SimpleFlexGridContainer = injectSheet(styles)(SimpleFlexGridContainerFunction);

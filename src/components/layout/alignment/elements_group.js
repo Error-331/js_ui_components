@@ -9,8 +9,8 @@ import injectSheet from 'react-jss';
 import {defaultTo} from 'ramda';
 
 // local imports
-import ElementsRow from './elements_row';
-import ElementsColumn from './elements_column';
+import {ElementsRow} from './elements_row';
+import {ElementsColumn} from './elements_column';
 
 // type definitions
 type CardChildren = React.ChildrenArray<void | null | string | number | React.Element<any>>;
@@ -61,7 +61,7 @@ const styles = theme => ({});
  */
 
 // component implementation
-function ElementsGroup(props: PropsTypes): React.Node {
+export function ElementsGroupFunction(props: PropsTypes): React.Node {
     let {direction, alignment} = props;
     direction = defaultTo('column')(direction);
 
@@ -73,5 +73,7 @@ function ElementsGroup(props: PropsTypes): React.Node {
     }
 }
 
+ElementsGroupFunction.displayName = 'ElementsGroup';
+
 // exports
-export default injectSheet(styles)(ElementsGroup);
+export const ElementsGroup = injectSheet(styles)(ElementsGroupFunction);

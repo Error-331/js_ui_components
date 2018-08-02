@@ -3,7 +3,7 @@ Example usage of global overlay:
 ```jsx
 
 const {Component} = require('react');
-const RegularButtonComponent = require('./../buttons/regular_button_component').default;
+const {RegularButtonComponent} = require('./../buttons/regular_button_component');
 
 class DemoGlobalOverlayComponent1 extends Component {
     _onShowOverlay() {
@@ -50,7 +50,7 @@ Example usage of global overlay with custom opacity:
 ```jsx
 
 const {Component} = require('react');
-const RegularButtonComponent = require('./../buttons/regular_button_component').default;
+const {RegularButtonComponent} = require('./../buttons/regular_button_component');
 
 class DemoGlobalOverlayComponent1 extends Component {
     _onShowOverlay() {

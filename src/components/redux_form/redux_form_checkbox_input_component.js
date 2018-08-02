@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import FormCheckboxInputComponent from '../form/form_checkbox_input_component';
+import {FormCheckboxInputComponent} from '../form/form_checkbox_input_component';
 
 // type definitions
 type PropsTypes = {
@@ -48,7 +48,7 @@ type StateTypes = {};
  */
 
 // component implementation
-class ReduxFormCheckboxInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class ReduxFormCheckboxInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'ReduxFormCheckboxInputComponent';
 
     render(): React.Node {
@@ -66,4 +66,4 @@ class ReduxFormCheckboxInputComponent extends React.Component<PropsTypes, StateT
 }
 
 // exports
-export default ReduxFormCheckboxInputComponent;
+export const ReduxFormCheckboxInputComponent = ReduxFormCheckboxInputComponentClass;

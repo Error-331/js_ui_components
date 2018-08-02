@@ -16,11 +16,11 @@ import MainContainer from './modules/containers/main_container';
 import CoreLayoutWrapperComponent from './modules/components/core_layout_wrapper_component';
 import ComponentFormContainer from './modules/containers/component_form_container';
 
-import SimpleFlexGridContainer from './../src/components/grid/simple_flex_grid/simple_flex_grid_container';
-import SimpleFlexGridRow from './../src/components/grid/simple_flex_grid/simple_flex_grid_row';
-import SimpleFlexGridColumn from './../src/components/grid/simple_flex_grid/simple_flex_grid_column';
+import {SimpleFlexGridContainer} from './../src/components/grid/simple_flex_grid/simple_flex_grid_container';
+import {SimpleFlexGridRow} from './../src/components/grid/simple_flex_grid/simple_flex_grid_row';
+import {SimpleFlexGridColumn} from './../src/components/grid/simple_flex_grid/simple_flex_grid_column';
 
-import FormDropDownInputComponent from './../src/components/redux_form/redux_form_drop_down_input_component';
+import {ReduxFormDropDownInputComponent} from './../src/components/redux_form/redux_form_drop_down_input_component';
 
 //
 const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space, maxWidth}) => ({
@@ -109,7 +109,7 @@ class ComponentsWrapper extends Component {
                                 <SimpleFlexGridContainer>
                                     <SimpleFlexGridRow className={classes.themeSelectorContainerRow}>
                                         <SimpleFlexGridColumn size={100} className={classes.themeSelectorContainerColumn}>
-                                            <FormDropDownInputComponent label='Theme selector' name='reduxFormDropDownInputComponents.themeSelectorValue' options={{
+                                            <ReduxFormDropDownInputComponent label='Theme selector' name='reduxFormDropDownInputComponents.themeSelectorValue' options={{
                                                 'Base theme': 'base',
                                                 'Deep orange teal': 'deepOrangeTeal',
                                                 'Purple indigo': 'purpleIndigo',

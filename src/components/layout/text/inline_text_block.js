@@ -57,7 +57,7 @@ const styles = theme => ({
  */
 
 // component implementation
-function InlineTextBlock(props: PropsTypes) {
+function InlineTextBlockFunction(props: PropsTypes) {
     const {classes, children, className, style} = props;
     const componentClassNames: string = classNames(classes.componentContainer, className);
 
@@ -67,4 +67,4 @@ function InlineTextBlock(props: PropsTypes) {
 }
 
 // exports
-export default injectSheet(styles)(InlineTextBlock);
+export const InlineTextBlock = injectSheet(styles)(InlineTextBlockFunction);

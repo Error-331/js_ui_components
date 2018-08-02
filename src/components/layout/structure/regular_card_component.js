@@ -174,7 +174,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class RegularCardComponent extends React.Component<PropsTypes, StateTypes> {
+export class RegularCardComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'RegularCardComponent';
 
@@ -277,4 +277,4 @@ class RegularCardComponent extends React.Component<PropsTypes, StateTypes> {
 }
 
 // exports
-export default injectSheet(styles)(RegularCardComponent);
+export const RegularCardComponent = injectSheet(styles)(RegularCardComponentClass);

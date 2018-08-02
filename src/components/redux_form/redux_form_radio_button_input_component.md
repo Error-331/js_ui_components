@@ -2,7 +2,7 @@ Editable radio buttons (medium) without labels:
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
@@ -24,7 +24,7 @@ Disabled radio buttons (medium) without labels:
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
@@ -50,7 +50,7 @@ Editable radio buttons (medium) with default value set but no labels:
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
@@ -72,7 +72,7 @@ Disabled radio buttons (medium) with default value set but no labels:
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
@@ -98,7 +98,7 @@ Editable radio buttons (medium) with labels (left):
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
@@ -126,7 +126,7 @@ Editable radio buttons (medium) with labels (right):
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
@@ -154,7 +154,7 @@ Editable radio buttons (medium) with labels (right) set as well as default value
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
@@ -182,7 +182,7 @@ Disabled radio buttons (medium) with labels (right) set:
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
@@ -214,7 +214,7 @@ Disabled radio buttons (medium) with labels (right) set as well as default value
 
 ```jsx
 
-const ElementsGroup = require('./../layout/alignment/elements_group').default;
+const {ElementsGroup} = require('./../layout/alignment/elements_group');
 
 <ElementsGroup>
 
