@@ -99,7 +99,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class CollapsibleComponent extends React.Component<PropsTypes, StateTypes> {
+export class CollapsibleComponentClass extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'CollapsibleComponent';
 
     static defaultProps: {
@@ -244,7 +244,7 @@ class CollapsibleComponent extends React.Component<PropsTypes, StateTypes> {
 
     render(): React.Node {
         const isContainerNotVisible: boolean = this.state.outerContainerStyles.display !== 'block' && this.state.outerContainerStyles.visibility !== 'visible';
-        const removeContentOnClose = defaultTo(CollapsibleComponent.defaultProps.removeContentOnClose)(this.props.removeContentOnClose);
+        const removeContentOnClose = defaultTo(CollapsibleComponentClass.defaultProps.removeContentOnClose)(this.props.removeContentOnClose);
         const isHideChildren: boolean = isContainerNotVisible && removeContentOnClose;
 
         return (
@@ -289,4 +289,4 @@ class CollapsibleComponent extends React.Component<PropsTypes, StateTypes> {
 }
 
 // exports
-export default injectSheet(styles)(CollapsibleComponent);
+export const CollapsibleComponent = injectSheet(styles)(CollapsibleComponentClass);

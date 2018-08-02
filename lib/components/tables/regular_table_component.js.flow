@@ -121,7 +121,7 @@ const styles = theme => ({
 const mapIndexed = addIndex(map);
 
 // component implementation
-class RegularTableComponent extends Component {
+export class RegularTableComponentClass extends Component {
     static displayName = 'RegularTableComponent';
 
     static defaultProps = {
@@ -217,4 +217,4 @@ class RegularTableComponent extends Component {
 }
 
 // exports
-export default injectSheet(styles)(RegularTableComponent);
+export const RegularTableComponent = injectSheet(styles)(RegularTableComponentClass);

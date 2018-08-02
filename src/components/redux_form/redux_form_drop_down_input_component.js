@@ -66,7 +66,7 @@ export class ReduxFormDropDownInputComponentClass extends React.Component<PropsT
     static displayName = 'ReduxFormDropDownInputComponent';
 
     render(): React.Node {
-        return <Field type='select' component={(props) => <FormDropDownInputComponent {...props}/>} {...this.props}/>;
+        return <Field type='select' component={FormDropDownInputComponent} {...this.props}/>;
     }
 }
 

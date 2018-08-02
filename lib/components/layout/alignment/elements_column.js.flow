@@ -134,7 +134,7 @@ const styles = theme => ({
  */
 
 // component implementation
-function ElementsColumn(props: PropsTypes): React.Node {
+function ElementsColumnFunction(props: PropsTypes): React.Node {
     let {alignment, classes, style} = props;
 
     alignment = defaultTo('left')(alignment);
@@ -149,5 +149,7 @@ function ElementsColumn(props: PropsTypes): React.Node {
     </div>;
 }
 
+ElementsColumnFunction.displayName = 'ElementsColumn';
+
 // exports
-export default injectSheet(styles)(ElementsColumn);
+export const ElementsColumn = injectSheet(styles)(ElementsColumnFunction);

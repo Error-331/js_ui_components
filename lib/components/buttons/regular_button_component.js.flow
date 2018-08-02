@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import {is, isNil, equals, unless, always} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components';
 
-import InlineTextBlock from './../layout/text/inline_text_block';
+import {InlineTextBlock} from './../layout/text/inline_text_block';
 
 // local imports
 
@@ -243,7 +243,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
+export class RegularButtonComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'RegularButtonComponent';
 
@@ -395,4 +395,4 @@ class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
 }
 
 // exports
-export default injectSheet(styles)(RegularButtonComponent);
+export const RegularButtonComponent = injectSheet(styles)(RegularButtonComponentClass);

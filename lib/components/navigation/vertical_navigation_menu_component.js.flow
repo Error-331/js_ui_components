@@ -8,8 +8,8 @@ import {__, T, isNil, isEmpty, equals, unless, and, complement, cond, always, ad
 import {isNotNil} from '@webfuturistics/design_components';
 
 // local imports
-import RegularCardComponent from './../layout/structure/regular_card_component';
-import CollapsibleComponent from './../utility/collapsible_component';
+import {RegularCardComponent} from './../layout/structure/regular_card_component';
+import {CollapsibleComponent} from './../utility/collapsible_component';
 
 // styles definition
 const styles = theme => ({
@@ -113,7 +113,10 @@ const styles = theme => ({
 });
 
 // component implementation
-class VerticalNavigationMenuComponent extends Component {
+export class VerticalNavigationMenuComponentClass extends Component {
+    // region static props
+    static displayName = 'VerticalNavigationMenuComponent';
+
     static defaultProps = {
         title: '',
         data: []
@@ -220,4 +223,4 @@ class VerticalNavigationMenuComponent extends Component {
 }
 
 // exports
-export default injectSheet(styles)(VerticalNavigationMenuComponent);
+export const VerticalNavigationMenuComponent = injectSheet(styles)(VerticalNavigationMenuComponentClass);

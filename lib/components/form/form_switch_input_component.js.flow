@@ -207,7 +207,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class FormSwitchInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class FormSwitchInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormSwitchInputComponent';
 
@@ -324,7 +324,7 @@ class FormSwitchInputComponent extends React.Component<PropsTypes, StateTypes> {
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormSwitchInputComponent.defaultProps.input) : input;
+        return isNil(input) ? clone(FormSwitchInputComponentClass.defaultProps.input) : input;
     }
 
     // endregion
@@ -396,4 +396,4 @@ class FormSwitchInputComponent extends React.Component<PropsTypes, StateTypes> {
 }
 
 // exports
-export default injectSheet(styles)(FormSwitchInputComponent);
+export const FormSwitchInputComponent = injectSheet(styles)(FormSwitchInputComponentClass);

@@ -64,7 +64,7 @@ const styles = theme => ({
 });
 
 // component implementation
-function SimpleFlexGridColumn(props: PropsTypes) {
+function SimpleFlexGridColumnFunction(props: PropsTypes) {
     const {size, full, classes, style, className, children} = props;
 
     const flexBasis: string = is(String, size) ? size : `${toString(size)}%`;
@@ -77,5 +77,7 @@ function SimpleFlexGridColumn(props: PropsTypes) {
     </div>;
 }
 
+SimpleFlexGridColumnFunction.displayName = 'SimpleFlexGridColumn';
+
 // exports
-export default injectSheet(styles)(SimpleFlexGridColumn);
+export const SimpleFlexGridColumn = injectSheet(styles)(SimpleFlexGridColumnFunction);

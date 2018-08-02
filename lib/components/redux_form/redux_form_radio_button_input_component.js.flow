@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import FormRadioButtonInputComponent from '../form/form_radio_button_input_component';
+import {FormRadioButtonInputComponent} from '../form/form_radio_button_input_component';
 
 // type definitions
 type PropsTypes = {
@@ -60,7 +60,7 @@ type StateTypes = {};
  */
 
 // component implementation
-class ReduxFormRadioButtonInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class ReduxFormRadioButtonInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'ReduxFormRadioButtonInputComponent';
 
     render(): React.Node {
@@ -79,4 +79,4 @@ class ReduxFormRadioButtonInputComponent extends React.Component<PropsTypes, Sta
 }
 
 // exports
-export default ReduxFormRadioButtonInputComponent;
+export const ReduxFormRadioButtonInputComponent = ReduxFormRadioButtonInputComponentClass;

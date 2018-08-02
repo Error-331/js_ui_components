@@ -9,8 +9,8 @@ import injectSheet from 'react-jss';
 import {merge, defaultTo} from 'ramda';
 
 // local imports
-import GlobalOverlayComponent from './global_overlay_component';
-import RegularCardComponent from './../layout/structure/regular_card_component';
+import {GlobalOverlayComponent} from './global_overlay_component';
+import {RegularCardComponent} from './../layout/structure/regular_card_component';
 
 // type definitions
 type CSSStylesType = {
@@ -90,7 +90,7 @@ const styles = theme => ({});
  */
 
 // component implementation
-class ModalComponent extends React.Component<PropsTypes, StateTypes> {
+export class ModalComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'ModalComponent';
 
@@ -161,4 +161,4 @@ class ModalComponent extends React.Component<PropsTypes, StateTypes> {
 }
 
 // exports
-export default injectSheet(styles)(ModalComponent);
+export const ModalComponent = injectSheet(styles)(ModalComponentClass);

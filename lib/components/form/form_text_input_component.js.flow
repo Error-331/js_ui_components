@@ -263,7 +263,7 @@ const styles = theme => ({
  */
 
 // component implementation
-class FormTextInputComponent extends React.Component<PropsTypes, StateTypes> {
+export class FormTextInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormTextInputComponent';
 
@@ -418,12 +418,12 @@ class FormTextInputComponent extends React.Component<PropsTypes, StateTypes> {
 
     _getMetaData(): ReduxFormFieldComponentMetaDataPropsTypes {
         const {meta}: {meta: ?ReduxFormFieldComponentMetaDataPropsTypes} = this.props;
-        return isNil(meta) ? clone(FormTextInputComponent.defaultProps.meta) : meta;
+        return isNil(meta) ? clone(FormTextInputComponentClass.defaultProps.meta) : meta;
     }
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormTextInputComponent.defaultProps.input) : input;
+        return isNil(input) ? clone(FormTextInputComponentClass.defaultProps.input) : input;
     }
 
     // endregion
@@ -495,4 +495,4 @@ class FormTextInputComponent extends React.Component<PropsTypes, StateTypes> {
 }
 
 // exports
-export default injectSheet(styles)(FormTextInputComponent);
+export const FormTextInputComponent = injectSheet(styles)(FormTextInputComponentClass);
