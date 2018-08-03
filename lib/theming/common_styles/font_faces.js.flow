@@ -8,7 +8,7 @@
 import type {FontFacesType} from './../../types/theming/font_face_types';
 
 // exports
-const fontFaces: FontFacesType = Object.freeze({
+export const fontFaces: FontFacesType = Object.freeze({
     RobotoRegular: {
         fontFamily: 'Roboto-Regular',
         fontStyle: 'normal',
@@ -24,4 +24,3 @@ const fontFaces: FontFacesType = Object.freeze({
     }
 });
 
-export default fontFaces;

@@ -31,7 +31,7 @@ import type {
 import type {ThemeType} from './../../types/theme_types';
 
 import {baseTheme} from '../themes/base_theme/';
-import FontFaces from './../common_styles/font_faces';
+import {fontFaces as commonFontFaces} from './../common_styles/font_faces';
 
 import {
     fontFacesFunc,
@@ -54,7 +54,7 @@ export const extendTheme = (
     newMaterialDepthLevelsFunc: MaterialDepthLevelsFuncType = materialDepthLevelsFunc,
     newBaseStylesFunc: BaseStylesFuncType = baseStylesFunc
 ): ThemeType => {
-    const fontFaces: FontFacesListType = newFontFacesFunc(FontFaces);
+    const fontFaces: FontFacesListType = newFontFacesFunc(commonFontFaces);
     const fontStacks: FontStacksType = newFontStacksFunc();
     const colorPalette: ColorPaletteType = newColorPaletteFunc();
     const materialDepthLevels: MaterialDepthLevelsType = newMaterialDepthLevelsFunc();

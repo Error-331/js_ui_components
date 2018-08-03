@@ -12,7 +12,7 @@ import type {ZIndexType, StyleValuesRegisterType} from './../../types/theming/st
 const MINIMUM_Z_INDEX: number = 100;
 
 // exports
-const styleValuesRegister: StyleValuesRegisterType = Object.seal({
+export const styleValuesRegister: StyleValuesRegisterType = Object.seal({
     lastUsedZIndexes: [MINIMUM_Z_INDEX - 1],
 
     releaseZIndex(oldZIndex?: ZIndexType): void {
@@ -30,5 +30,3 @@ const styleValuesRegister: StyleValuesRegisterType = Object.seal({
         return newZIndex;
     }
 });
-
-export default styleValuesRegister;
