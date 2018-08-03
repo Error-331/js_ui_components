@@ -16,11 +16,7 @@ import MainContainer from './modules/containers/main_container';
 import CoreLayoutWrapperComponent from './modules/components/core_layout_wrapper_component';
 import ComponentFormContainer from './modules/containers/component_form_container';
 
-import {SimpleFlexGridContainer} from './../src/components/grid/simple_flex_grid/simple_flex_grid_container';
-import {SimpleFlexGridRow} from './../src/components/grid/simple_flex_grid/simple_flex_grid_row';
-import {SimpleFlexGridColumn} from './../src/components/grid/simple_flex_grid/simple_flex_grid_column';
-
-import {ReduxFormDropDownInputComponent} from './../src/components/redux_form/redux_form_drop_down_input_component';
+import {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn, ReduxFormDropDownInputComponent} from './../src';
 
 //
 const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space, maxWidth}) => ({

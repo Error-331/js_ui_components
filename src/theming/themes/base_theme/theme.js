@@ -25,7 +25,7 @@ import type {
 
 import type {ThemeType} from './../../../types/theme_types';
 
-import FontFaces from './../../common_styles/font_faces';
+import {fontFaces as commonFontFaces} from './../../common_styles/font_faces';
 
 import {
     fontFacesFunc,
@@ -41,11 +41,11 @@ import {
     windowStylesFunc
 } from './';
 
-import colorUtilities from './../../business_logic/color_utilities';
-import styleValuesRegister from './../../business_logic/style_values_register';
+import {colorUtilities} from './../../business_logic/color_utilities';
+import {styleValuesRegister} from './../../business_logic/style_values_register';
 
 // base theme partials preparation
-const fontFaces: FontFacesListType = fontFacesFunc(FontFaces);
+const fontFaces: FontFacesListType = fontFacesFunc(commonFontFaces);
 const fontStacks: FontStacksType = fontStacksFunc();
 
 const colorPalette: ColorPaletteType = colorPaletteFunc();

@@ -6,12 +6,14 @@ import {connect}  from 'react-redux';
 import {ThemeProvider} from 'react-jss';
 
 // local imports
-import {baseTheme} from './../../../src/theming/themes/base_theme';
-import {deepOrangeTealTheme} from './../../../src/theming/themes/deep_orange_teal_theme';
-import {purpleIndigoTheme} from './../../../src/theming/themes/purple_indigo_theme';
-import {blueGreyRed} from './../../../src/theming/themes/blue_grey_red';
-import {greenAmber} from './../../../src/theming/themes/green_amber';
-import {brownLime} from '../../../src/theming/themes/brown_lime';
+import {
+    baseTheme,
+    deepOrangeTealTheme,
+    purpleIndigoTheme,
+    blueGreyRed,
+    greenAmber,
+    brownLime
+} from './../../../src';
 
 import StyleGuideThemeValueSelector from './../selectors/style_guide_theme_value_selector';
 
