@@ -46,7 +46,7 @@ const styles = theme => ({
         boxSizing: 'border-box',
         display: 'flex',
 
-        flexBasis: '100%',
+        flexBasis: 'auto',
         flexGrow: 0,
         flexShrink: 1,
 
