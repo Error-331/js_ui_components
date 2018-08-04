@@ -50,11 +50,11 @@ const styles = theme => ({
         flexGrow: 0,
         flexShrink: 1,
 
-        flexDirection: 'row',
+        flexDirection: 'column',
         flexWrap: 'wrap',
 
         justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        alignItems: 'stretch',
         alignContent: 'flex-start',
     }
 });
