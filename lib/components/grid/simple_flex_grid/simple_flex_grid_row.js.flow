@@ -43,6 +43,7 @@ type PropsTypes = {
 // styles definition
 const styles = theme => ({
     componentContainer: {
+        boxSizing: 'border-box',
         display: 'flex',
 
         flexBasis: '100%',
