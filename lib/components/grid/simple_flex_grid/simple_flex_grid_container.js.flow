@@ -14,6 +14,12 @@ import type {SimpleFlexGridRow} from './simple_flex_grid_row';
 // type definitions
 type PropsTypes = {
     /**
+     * Flag that indicates whether the container should stretch vertically
+     */
+
+    stretch?: boolean,
+
+    /**
      * React style object for in deep control of how container is represented
      */
 
@@ -56,13 +62,17 @@ const styles = theme => ({
         justifyContent: 'flex-start',
         alignItems: 'stretch',
         alignContent: 'flex-start',
+
+        '&.verticalStretch': {
+            height: '100%'
+        }
     }
 });
 
 // component implementation
 function SimpleFlexGridContainerFunction(props: PropsTypes) {
-    const {style, className, classes, children} = props;
-    const componentClassNames: string = classNames(classes.componentContainer, className);
+    const {stretch, style, className, classes, children} = props;
+    const componentClassNames: string = classNames(classes.componentContainer, {verticalStretch: stretch}, className);
 
     return <div className={componentClassNames} style={{...style}}>
         {children}

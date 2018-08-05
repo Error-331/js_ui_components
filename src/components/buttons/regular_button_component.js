@@ -257,7 +257,7 @@ export class RegularButtonComponentClass extends React.Component<PropsTypes, Sta
     // endregion
 
     // region constructor
-    constructor(props) {
+    constructor(props: PropsTypes) {
         super(props);
 
         const self: any = this;
@@ -348,7 +348,7 @@ export class RegularButtonComponentClass extends React.Component<PropsTypes, Sta
     // endregion
 
     // region handlers
-    _onClick(event): void {
+    _onClick(event: SyntheticEvent<HTMLButtonElement>): void {
         const {onClick}: {onClick?: ?ClickCallbackType} = this.props;
 
         if (isNil(onClick) && is(Function, onClick)) {

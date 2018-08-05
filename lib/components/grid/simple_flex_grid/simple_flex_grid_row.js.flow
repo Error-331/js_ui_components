@@ -14,6 +14,12 @@ import type {SimpleFlexGridColumn} from './simple_flex_grid_column';
 // type definitions
 type PropsTypes = {
     /**
+     * Flag that indicates whether the row should occupy the remaining space of parent container
+     */
+
+    full?: boolean,
+
+    /**
      * React style object for in deep control of how row is represented
      */
 
@@ -61,10 +67,12 @@ const styles = theme => ({
 
 // component implementation
 function SimpleFlexGridRowFunction(props: PropsTypes) {
-    const {style, className, classes, children} = props;
+    const {full, style, className, classes, children} = props;
     const componentClassNames: string = classNames(classes.componentContainer, className);
 
-    return <div className={componentClassNames} style={{...style}}>
+    const flexGrow: number = full === true ? 1 : 0;
+
+    return <div className={componentClassNames} style={{flexGrow, ...style}}>
         {children}
     </div>;
 }

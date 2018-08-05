@@ -61,9 +61,7 @@ function InlineTextBlockFunction(props: PropsTypes) {
     const {classes, children, className, style} = props;
     const componentClassNames: string = classNames(classes.componentContainer, className);
 
-    return <span className={componentClassNames} style={{...style}}>
-        {children}
-    </span>;
+    return <span className={componentClassNames} style={{...style}}>{children}</span>;
 }
 
 // exports
