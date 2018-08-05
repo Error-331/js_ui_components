@@ -16,7 +16,14 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         headerFontStack: fontStacks.regularFontFamilyStack,
         bodyFontStack: fontStacks.regularFontFamilyStack,
 
-        headerFontSize: baseStyles.headerFontSize,
+        inlineHeaderLevel1FontSize: baseStyles.inlineHeaderLevel1FontSize,
+        inlineHeaderLevel2FontSize: baseStyles.inlineHeaderLevel2FontSize,
+        inlineHeaderLevel3FontSize: baseStyles.inlineHeaderLevel3FontSize,
+        inlineHeaderLevel4FontSize: baseStyles.inlineHeaderLevel4FontSize,
+        inlineHeaderLevel5FontSize: baseStyles.inlineHeaderLevel5FontSize,
+        inlineHeaderLevel6FontSize: baseStyles.inlineHeaderLevel6FontSize,
+
+        headerFontSize: baseStyles.inlineHeaderLevel6FontSize,
         bodyFontSize: baseStyles.secondaryFontSize,
 
         headerBorderRadius: 2, // px

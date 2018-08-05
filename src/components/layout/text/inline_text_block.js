@@ -64,5 +64,7 @@ function InlineTextBlockFunction(props: PropsTypes) {
     return <span className={componentClassNames} style={{...style}}>{children}</span>;
 }
 
+InlineTextBlockFunction.displayName = 'InlineTextBlock';
+
 // exports
 export const InlineTextBlock = injectSheet(styles)(InlineTextBlockFunction);

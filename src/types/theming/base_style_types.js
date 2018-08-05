@@ -31,7 +31,13 @@ export type BaseStylesType = {
     utilityBGColor: string,
     noneTransparentBGColor: string,
 
-    headerFontSize: number,
+    inlineHeaderLevel1FontSize: number,
+    inlineHeaderLevel2FontSize: number,
+    inlineHeaderLevel3FontSize: number,
+    inlineHeaderLevel4FontSize: number,
+    inlineHeaderLevel5FontSize: number,
+    inlineHeaderLevel6FontSize: number,
+
     primaryFontSize: number,
     secondaryFontSize: number,
     tertiaryFontSize: number,

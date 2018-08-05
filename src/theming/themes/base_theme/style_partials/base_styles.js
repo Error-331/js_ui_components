@@ -35,7 +35,13 @@ export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteTyp
         utilityBGColor: colorPalette.materialGrey600,
         noneTransparentBGColor: colorPalette.materialWhite,
 
-        headerFontSize: 18, // px
+        inlineHeaderLevel1FontSize: 68, // px
+        inlineHeaderLevel2FontSize: 58, // px
+        inlineHeaderLevel3FontSize: 48, // px
+        inlineHeaderLevel4FontSize: 38, // px
+        inlineHeaderLevel5FontSize: 28, // px
+        inlineHeaderLevel6FontSize: 18, // px
+
         primaryFontSize: 18, // px
         secondaryFontSize: 15, // px
         tertiaryFontSize: 12,
