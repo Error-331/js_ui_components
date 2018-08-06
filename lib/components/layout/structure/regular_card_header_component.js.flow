@@ -12,12 +12,6 @@ import classNames from 'classnames';
 // type definitions
 type PropsTypes = {
     /**
-     * Card title
-     */
-
-    title?: string,
-
-    /**
      * Class names which will be used to display icon
      */
 
@@ -28,6 +22,12 @@ type PropsTypes = {
      */
 
     onIconClick?: (event: SyntheticMouseEvent<any>) => void,
+
+    /**
+     * Content for card header
+     */
+
+    children?: React.ChildrenArray<any>,
 
     /**
      * JSS inner classes
@@ -155,7 +155,7 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
 
     _renderTitleContainer(): React.Node {
         return <div className={this.props.classes.titleContainer}>
-            {this.props.title}
+            {this.props.children}
         </div>;
     }
 

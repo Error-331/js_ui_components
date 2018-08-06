@@ -20,7 +20,7 @@ Card with HTML body and with title:
 
 const {RegularCardHeaderComponent} = require('./regular_card_header_component');
 
-<RegularCardComponent header={<RegularCardHeaderComponent title='Test panel 1' />}>
+<RegularCardComponent header={<RegularCardHeaderComponent>Test panel 1</RegularCardHeaderComponent>}>
     <h3>
         Test header 1
     </h3>
@@ -36,7 +36,7 @@ const {RegularCardHeaderComponent} = require('./regular_card_header_component');
 Card with text body and with title:
 
 ```jsx
-<RegularCardComponent header={<RegularCardHeaderComponent title='Test panel 2' />}>
+<RegularCardComponent header={<RegularCardHeaderComponent>Test panel 2</RegularCardHeaderComponent>}>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin vitae nisl eget bibendum. Nunc tristique est a dolor interdum, eu faucibus
     nunc mollis. Morbi gravida libero ac aliquam rhoncus. Donec diam magna, interdum a urna a, rutrum auctor dui. Mauris id molestie dolor, eu
     consectetur elit. Donec id nisl vitae ex scelerisque suscipit.
@@ -86,7 +86,7 @@ Card component that will pop when user control hover over it and has custom heig
 Card with text body, title and that will pop when user control hover over it:
 
 ```jsx
-<RegularCardComponent popOnHover={true} header={<RegularCardHeaderComponent title='Test panel 2' />}>
+<RegularCardComponent popOnHover={true} header={<RegularCardHeaderComponent>Test panel 2</RegularCardHeaderComponent>}>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin vitae nisl eget bibendum. Nunc tristique est a dolor interdum, eu faucibus
     nunc mollis. Morbi gravida libero ac aliquam rhoncus. Donec diam magna, interdum a urna a, rutrum auctor dui. Mauris id molestie dolor, eu
     consectetur elit. Donec id nisl vitae ex scelerisque suscipit.

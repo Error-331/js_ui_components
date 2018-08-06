@@ -110,6 +110,12 @@ module.exports = {
                 },
 
                 {
+                    name: 'Date',
+                    content: path.join(__dirname, './docs/date/index.md'),
+                    components: path.join(__dirname, './../src/components/date/**/[A-Za-z_]*_component.js'),
+                },
+
+                {
                     name: 'Utility',
                     content: path.join(__dirname, './docs/utility/index.md'),
                     components: path.join(__dirname, './../src/components/utility/**/[A-Za-z_]*_component.js'),

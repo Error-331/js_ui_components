@@ -23,7 +23,7 @@ class DemoGlobalModalComponent1 extends Component {
     }
 
     render() {
-        const modalHeader = <RegularCardHeaderComponent title='Test modal 1' />;
+        const modalHeader = <RegularCardHeaderComponent>Test modal 1</RegularCardHeaderComponent>;
         const modalFooter = <ElementsRow style={{marginTop: '5px'}} alignment='right'>
             <RegularButtonComponent onClick={this._onHideModal} label='hide modal'/>
         </ElementsRow>;

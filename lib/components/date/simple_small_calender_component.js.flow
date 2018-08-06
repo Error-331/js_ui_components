@@ -1,0 +1,66 @@
+'use strict';
+
+// @flow
+
+// external imports
+import * as React from 'react';
+import injectSheet from 'react-jss';
+import classNames from 'classnames';
+
+// local imports
+import {
+    SimpleFlexGridContainer as Container,
+    SimpleFlexGridRow as Row,
+    SimpleFlexGridColumn as Col,
+} from './../grid';
+
+import {
+    RegularCardComponent,
+    RegularCardHeaderComponent
+} from './../layout';
+
+// type definitions
+type PropsTypes = {
+
+}
+
+type StateTypes = {};
+
+// styles definition
+const styles = theme => ({
+
+});
+
+/**
+ * Simple small calendar component styled according to material-UI guidelines.
+ *
+ * @version 1.0.0
+ * @author [Sergei Selihov](https://github.com/Error-331)
+ *
+ */
+
+// component implementation
+export class SimpleSmallCalendarComponentClass extends React.Component<PropsTypes, StateTypes> {
+    // region render methods
+    _renderCardHeader(): React.Node {
+        return <RegularCardHeaderComponent>
+            2017
+            Fri, Jul 28
+        </RegularCardHeaderComponent>;
+    }
+
+    _renderCard(): React.Node {
+        return <RegularCardComponent header={this._renderCardHeader()}>
+
+        </RegularCardComponent>;
+    }
+
+    render(): React.Node {
+        return this._renderCard();
+    }
+
+    // endregion
+}
+
+// exports
+export const SimpleSmallCalendarComponent = injectSheet(styles)(SimpleSmallCalendarComponentClass);

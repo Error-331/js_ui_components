@@ -5,3 +5,4 @@
 // exports
 export * from './alignment';
 export * from './structure';
+export * from './text';
