@@ -27,6 +27,8 @@ import {
 
 // type definitions
 type PropsTypes = {
+
+
     date?: Date | string,
 
     /**
@@ -164,82 +166,33 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     }
 
     _renderDaySelectionDays(weekIndex: number): React.Node {
+        const currentDate: moment = this._getDate();
+        const currentDayDate: moment = this._getDate();
+
         const startingDayNumber: number = this._getStartingDayNumber();
         const numberOfDays: number = add(this._getNumberOfDays(), startingDayNumber) - 1;
 
         return map(cond([
             [(dayIndex) => gt(dayIndex, numberOfDays), (dayIndex) => this._renderDaysSelectionBodyCell(dayIndex, '', false)],
             [(dayIndex) => lt(dayIndex, startingDayNumber), (dayIndex) => this._renderDaysSelectionBodyCell(dayIndex, '', false)],
-            [T, (dayIndex) => this._renderDaysSelectionBodyCell(dayIndex, dayIndex + 1 - startingDayNumber, false)]
+            [T, (dayIndex) => {
+                const currentDay: number = dayIndex - (startingDayNumber - 1);
+                const currentDayText: string = (dayIndex + 1 - startingDayNumber).toString();
+
+                currentDayDate.set('date', currentDay);
+                return this._renderDaysSelectionBodyCell(dayIndex, currentDayText, currentDate.isSame(currentDayDate));
+            }]
         ]), range(7 * weekIndex, (7 * weekIndex) + 7));
     }
 
     _renderDaysSelectionRows(): React.Node {
         const numberOfWeeks: number = this._getNumberOfWeeks();
-
         return map((weekIndex: number): React.Node => <tr key={`week_${weekIndex}`}>{this._renderDaySelectionDays(weekIndex)}</tr>,
             range(0, numberOfWeeks));
     }
 
     _renderDaysSelectionBody(): React.Node {
         return this._renderDaysSelectionRows();
-       // const currentDate: moment = this._getDate();
-
-       // const startOfMonth: moment = this._getStartOfMonthOfDate();
-       // const endOfMonth: moment = this._getEndOfMonthOfDate();
-
-       // let calendarOffset: number = startOfMonth.day();
-
-       // let endOfMonthDateIndex: number = endOfMonth.date();
-        //let calendarOffsetIndex: number = calendarOffset;
-       // let calendarEndIndex: number = endOfMonthDateIndex + calendarOffset;
-
-        //console.log('----', calendarOffset, endOfMonthDateIndex, calendarOffsetIndex, calendarEndIndex); // 3 31 3 34
-
-
-        /*let calendarIndex = 0;
-        let calendarWeekDayIndex = 0;
-        let weekIndex = 0;
-
-        let bodyRows = [];
-        let bodyCells = [];
-
-        while (calendarIndex < calendarEndIndex) {
-            if (calendarWeekDayIndex === 0) {
-                bodyRows.push(<tr key={'week_' + weekIndex}>{bodyCells}</tr>);
-                weekIndex++;
-            }
-
-            if (calendarIndex < calendarOffsetIndex) {
-                bodyCells.push(this._renderDaysSelectionBodyCell(calendarIndex, '', false));
-            } else {
-                let dayDate = (calendarIndex + 1) - calendarOffsetIndex;
-                currentDate.set('date', dayDate);
-
-                let isCurrentDay = false;   //this.state.inputValue ? currentDate.isSame(this.state.inputValue.format('YYYY-MM-DD')) : false;
-                bodyCells.push(this._renderDaysSelectionBodyCell(calendarIndex, dayDate, isCurrentDay));
-            }
-
-            calendarWeekDayIndex++;
-            calendarIndex++;
-
-            // if we iterate one week
-            if (calendarWeekDayIndex === 7) {
-                calendarWeekDayIndex = 0;
-                bodyCells = [];
-            }
-        }
-
-        if (calendarWeekDayIndex !== 0) {
-            let keyPaddingIndex = 0;
-
-            for (calendarWeekDayIndex; calendarWeekDayIndex < 7; calendarWeekDayIndex++) {
-                bodyCells.push(this._renderDaysSelectionBodyCell(calendarIndex + keyPaddingIndex, '', false));
-                keyPaddingIndex++;
-            }
-        }
-
-        return bodyRows;*/
     }
 
     _renderDaysSelection(): React.Node {
@@ -265,7 +218,7 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     }
 
     _renderHeaderDate(): React.Node {
-        return <InlineHeader level={5}>Fri, Jul 28</InlineHeader>;
+        return <InlineHeader level={4}>Fri, Jul 28</InlineHeader>;
     }
 
     _renderHeaderYear(): React.Node {
