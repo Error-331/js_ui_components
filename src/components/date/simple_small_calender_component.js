@@ -130,6 +130,9 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     // region constructor
     constructor(props: PropsTypes): void {
         super(props);
+        const self: any = this;
+
+        self._onMonthSelected = self._onMonthSelected.bind(this);
 
         const {selectedDate} = props;
 
@@ -157,6 +160,12 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     // endregion
 
     // region lifecycle methods
+    _onMonthSelected(newDate: moment) {
+        this.setState({
+            date: newDate
+        });
+    }
+
     // endregion
 
     // region style accessors
@@ -271,7 +280,7 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
 
     _renderMonthSelector(): React.Node {
         return cond([
-           [equals(true), () => <SimpleMonthSelectorComponent initialDate={this._getDateForMonthSelector()} />],
+           [equals(true), () => <SimpleMonthSelectorComponent onDateChange={this._onMonthSelected} initialDate={this._getDateForMonthSelector()} />],
            [equals(false), () => null]
         ])(this._getShowMonthSelector());
     }
