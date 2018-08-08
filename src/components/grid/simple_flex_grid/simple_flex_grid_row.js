@@ -5,8 +5,9 @@
 // external imports
 import * as React from 'react';
 import injectSheet from 'react-jss';
-
 import classNames from 'classnames';
+
+import {defaultTo} from 'ramda';
 
 // local imports
 import type {SimpleFlexGridColumn} from './simple_flex_grid_column';
@@ -18,6 +19,18 @@ type PropsTypes = {
      */
 
     full?: boolean,
+
+    /**
+     * Indicates how content is positioned along x-axis ('justify-content' CSS style)
+     */
+
+    xAlign?: 'start' | 'center' | 'space-between' | 'space-around' | 'space-evenly',
+
+    /**
+     * Indicates how content is positioned along y-axis ('align-items' CSS style)
+     */
+
+    yAlign?: 'stretch' | 'center' | 'start' | 'end',
 
     /**
      * React style object for in deep control of how row is represented
@@ -59,20 +72,25 @@ const styles = theme => ({
         flexDirection: 'row',
         flexWrap: 'nowrap',
 
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
         alignContent: 'flex-start',
     }
 });
 
 // component implementation
 function SimpleFlexGridRowFunction(props: PropsTypes) {
-    const {full, style, className, classes, children} = props;
+    const {full, xAlign, yAlign, style, className, classes, children} = props;
     const componentClassNames: string = classNames(classes.componentContainer, className);
 
     const flexGrow: number = full === true ? 1 : 0;
+    const justifyContent: string = defaultTo('flex-start')(xAlign);
+    const alignItems: string = defaultTo('align-items')(yAlign);
 
-    return <div className={componentClassNames} style={{flexGrow, ...style}}>
+    return <div className={componentClassNames} style={{
+        flexGrow,
+        alignItems,
+        justifyContent,
+        ...style
+    }}>
         {children}
     </div>;
 }
