@@ -3,12 +3,11 @@
 // @flow
 
 // external imports
-
 import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {T, defaultTo, cond, addIndex, range, gt, lt, add, map} from 'ramda';
+import {T, isNil, equals, defaultTo, cond, addIndex, range, gt, lt, add, map} from 'ramda';
 import moment from 'moment';
 
 // local imports
@@ -25,11 +24,33 @@ import {
     InlineHeader
 } from './../layout';
 
+import {SimpleMonthSelectorComponent} from './simple_month_selector_component';
+
 // type definitions
+type DateType = moment | Date | string;
+
 type PropsTypes = {
+    /**
+     * Current selected date
+     */
 
+    selectedDate?: DateType,
 
-    date?: Date | string,
+    /**
+     * Flag that indicates whether selected date should be highlighted
+     */
+
+    heightLightDate?: boolean,
+
+    compact?: boolean,
+
+    selectable?: boolean,
+
+    /**
+     * Flag that indicates whether month selector should be shown
+     */
+
+    showMonthSelector?: boolean,
 
     /**
      * JSS inner classes
@@ -40,7 +61,13 @@ type PropsTypes = {
     classes: any
 }
 
-type StateTypes = {};
+type StateTypes = {
+    /**
+     * Internal selected date
+     */
+
+    date?: Date | string,
+};
 
 // styles definition
 const styles = theme => ({
@@ -91,16 +118,40 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     static displayName = 'SimpleSmallCalendarComponent';
 
     static defaultProps = {
+        selectedDate: moment(),
+        heightLightDate: true,
+        compact: false,
+        selectable: true,
+        showMonthSelector: true
     };
 
     // endregion
 
     // region constructor
+    constructor(props: PropsTypes): void {
+        super(props);
+
+        const {selectedDate} = props;
+
+        this.state = {
+            date: isNil(selectedDate) ?
+                this._getDateOrDefault() :
+                this._getDateOrDefault(selectedDate)
+        };
+    }
+
     // endregion
 
     // region general logic methods
+    // TODO: to generic functions
     _normalizeDate(usrDate: moment): moment {
         return usrDate.clone().hour(0).minute(0).second(0).millisecond(0);
+    }
+
+    // TODO: to generic functions
+    _getDateOrDefault(usrDate?: DateType): moment {
+        const currentDate: moment = defaultTo(moment())(moment(usrDate));
+        return this._normalizeDate(currentDate);
     }
 
     // endregion
@@ -115,14 +166,12 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     // endregion
 
     // region state accessors
-    // endregion
-
-    // region prop accessors
     _getDate(): moment {
-        const {date} = this.props;
-        const currentDate: moment = defaultTo(moment())(moment(date));
+        return this.state.date;
+    }
 
-        return this._normalizeDate(currentDate);
+    _getDateForMonthSelector(): moment {
+        return moment(this._getDate()).day(1);
     }
 
     _getStartOfMonthOfDate() {
@@ -144,6 +193,13 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
 
     _getStartingDayNumber(): number {
         return this._getStartOfMonthOfDate().day();
+    }
+
+    // endregion
+
+    // region prop accessors
+    _getShowMonthSelector(): boolean {
+        return defaultTo(SimpleSmallCalendarComponentClass.defaultProps.showMonthSelector)(this.props.showMonthSelector);
     }
 
     // endregion
@@ -213,8 +269,11 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         </Container>;
     }
 
-    _renderMonthNavigation(): React.Node {
-        return null;
+    _renderMonthSelector(): React.Node {
+        return cond([
+           [equals(true), () => <SimpleMonthSelectorComponent initialDate={this._getDateForMonthSelector()} />],
+           [equals(false), () => null]
+        ])(this._getShowMonthSelector());
     }
 
     _renderHeaderDate(): React.Node {
@@ -245,7 +304,7 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
 
     _renderCard(): React.Node {
         return <RegularCardComponent header={this._renderCardHeader()}>
-            {this._renderMonthNavigation()}
+            {this._renderMonthSelector()}
             {this._renderDaysSelection()}
         </RegularCardComponent>;
     }
