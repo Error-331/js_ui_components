@@ -9,6 +9,7 @@ export * from './input_style_types';
 export * from './button_style_types';
 export * from './table_style_types';
 export * from './window_style_types';
+export * from './date_style_types';
 
 export * from './color_utilities_types';
 export * from './style_values_register_types';

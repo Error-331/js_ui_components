@@ -8,6 +8,9 @@
 
 // exports
 export type TableStyleType = {
+    bodyFontStack: string,
+    headerFontStack: string,
+
     cellFontSize: number,
 
     headerCellFontColor: string,

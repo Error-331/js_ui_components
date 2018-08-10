@@ -1,14 +1,102 @@
 'use strict';
 
+// @flow
+
 // external imports
-import React, {Component} from 'react';
+import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {isNil, isEmpty, addIndex, map} from 'ramda';
+import {is, isNil, isEmpty, always, defaultTo, mergeDeepRight, cond, map} from 'ramda';
 
 // local imports
 
+// type definitions
+type ColumnWidthType = string | number;
+
+type ColumnDataType = void | null | string | number | React.Element<any>;
+type RowDataType = Array<ColumnDataType>;
+
+type ColumnNamesType = Array<string>;
+type ColumnWidthsType = Array<ColumnWidthType>;
+
+type DataType = Array<RowDataType>;
+
+type PropsTypes = {
+    /**
+     * Flag that indicates whether table header should be shown
+     */
+
+    showTableHeader?: boolean,
+
+    /**
+     * Flag that indicates whether table footer should be shown
+     */
+
+    showTableFooter?: boolean,
+
+    /**
+     * Array of column names
+     */
+
+    columnNames?: ColumnNamesType,
+
+    /**
+     * Array of column widths
+     */
+
+    columnWidths?: ColumnWidthsType,
+
+    /**
+     * Column index (inside data row) which will use data from this column as id and skip its rendering
+     */
+
+    idColumnIndex?: number,
+
+    /**
+     * Array of data for each cell of the table
+     */
+
+    data?: DataType,
+
+    /**
+     * JSS inner classes
+     *
+     * @ignore
+     */
+
+    classes: any
+};
+
+type StateTypes = {};
+
 // styles definition
+const commonCellStylesFunc = (theme) => ({
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+
+    borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
+
+    paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
+    paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
+
+    paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
+    paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
+
+    fontFamily: theme.tableStyles.bodyFontStack,
+    fontSize: `${theme.tableStyles.cellFontSize}px`,
+
+    textAlign: 'left',
+
+    color: theme.tableStyles.cellFontColor,
+    backgroundColor: theme.tableStyles.cellBGColor
+});
+
+const thStylesFunc = (theme) => {
+    return mergeDeepRight(commonCellStylesFunc(theme), {
+        paddingTop: '0px',
+    });
+};
+
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
@@ -30,24 +118,7 @@ const styles = theme => ({
             '& > thead': {
                 '& > tr': {
                     '& th': {
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-
-                        borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
-
-                        paddingTop: '0px',
-                        paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
-
-                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
-
-                        fontFamily: '"Roboto-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif',
-                        fontSize: `${theme.tableStyles.cellFontSize}px`,
-
-                        textAlign: 'left',
-
-                        color: theme.tableStyles.headerCellFontColor,
-                        backgroundColor: theme.tableStyles.cellBGColor
+                        extend: thStylesFunc(theme)
                     }
                 }
             },
@@ -55,24 +126,7 @@ const styles = theme => ({
             '& > tfoot': {
                 '& > tr': {
                     '& th': {
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-
-                        borderTop: `1px solid ${theme.tableStyles.cellBorderColor}`,
-
-                        paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
-                        paddingBottom: '0px',
-
-                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
-
-                        fontFamily: '"Roboto-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif',
-                        fontSize: `${theme.tableStyles.cellFontSize}px`,
-
-                        textAlign: 'left',
-
-                        color: theme.tableStyles.headerCellFontColor,
-                        backgroundColor: theme.tableStyles.cellBGColor
+                        extend: thStylesFunc(theme)
                     }
                 }
             },
@@ -80,24 +134,7 @@ const styles = theme => ({
             '& > tbody': {
                 '& tr': {
                     '& td': {
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-
-                        borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
-
-                        paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
-                        paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
-
-                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
-
-                        fontFamily: '"Roboto-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif',
-                        fontSize: `${theme.tableStyles.cellFontSize}px`,
-
-                        textAlign: 'left',
-
-                        color: theme.tableStyles.cellFontColor,
-                        backgroundColor: theme.tableStyles.cellBGColor
+                        extend: commonCellStylesFunc(theme)
                     }
                 },
 
@@ -117,11 +154,9 @@ const styles = theme => ({
     }
 });
 
-// meta preparation
-const mapIndexed = addIndex(map);
-
 // component implementation
-export class RegularTableComponentClass extends Component {
+export class RegularTableComponentClass extends React.Component<PropsTypes, StateTypes> {
+    // region static props
     static displayName = 'RegularTableComponent';
 
     static defaultProps = {
@@ -135,7 +170,56 @@ export class RegularTableComponentClass extends Component {
         data: undefined
     };
 
-    _isIdColumn(columnIndex) {
+    // endregion
+
+    // region constructor
+    // endregion
+
+    // region lifecycle methods
+    // endregion
+
+    // region style accessors
+    // endregion
+
+    // region label accessors
+    // endregion
+
+    // region state accessors
+    // endregion
+
+    // region prop accessors
+    _getColumnNames(): ColumnNamesType {
+        return defaultTo([])(this.props.columnNames);
+    }
+
+    _getColumnWidths(): ColumnWidthsType {
+        return defaultTo([])(this.props.columnWidths);
+    }
+
+    _getColumnWidth(columnIndex: number): ColumnWidthType {
+        const columnWidth: ColumnWidthType = this._getColumnWidths()[columnIndex];
+
+        return cond([
+            [isNil, always('auto')],
+            [is(Number), columnWidth => `${columnWidth}px`],
+            [is(String), always(columnWidth)]
+        ])
+        (columnWidth);
+    }
+
+    _getData(): DataType {
+        return defaultTo([])(this.props.data);
+    }
+
+    _getDataRow(dataRow: RowDataType): RowDataType {
+        return defaultTo([])(dataRow);
+    }
+
+    _getDataColumn(dataColumn: ColumnDataType): ColumnDataType {
+        return defaultTo(null)(dataColumn);
+    }
+
+    _isIdColumn(columnIndex: number): boolean {
         const {idColumnIndex} = this.props;
 
         if (isNil(idColumnIndex)) {
@@ -145,18 +229,60 @@ export class RegularTableComponentClass extends Component {
         return columnIndex === idColumnIndex;
     }
 
-    _renderTableHeaderCells() {
-        const {columnNames, columnWidths, idColumnIndex} = this.props;
+    // endregion
 
-        return mapIndexed((columnName, columnIndex) => {
-            let columnWidth = columnWidths[columnIndex];
-            columnWidth = isNil(columnWidth) ? 'auto' : columnWidth;
+    // region handlers
+    // endregion
 
-            return <th style={{width: columnWidth}} key={`headerColumn_${columnIndex}`}>{columnName}</th>;
-        }, columnNames);
+    // region render methods
+
+    _renderTableBodyColums(rowData: RowDataType): React.Node {
+        let columnIndex: number = -1;
+
+        return map((columnData: ColumnDataType) => {
+            ++columnIndex;
+
+            columnData = this._getDataColumn(columnData);
+            if (this._isIdColumn(columnIndex)) {
+                return null;
+            }
+
+            return <td key={`column_${columnIndex}`}>{columnData}</td>;
+        }, rowData);
     }
 
-    _renderTableFooter() {
+    _renderTableBodyRows(): React.Node {
+        let rowIndex: number = -1;
+
+        return map((rowData: RowDataType) => {
+            ++rowIndex;
+            rowData = this._getDataRow(rowData);
+
+            return <tr key={`row_${rowIndex}`}>{this._renderTableBodyColums(rowData)}</tr>;
+        }, this._getData());
+    }
+
+    _renderTableBody(): React.Node {
+        const {data} = this.props;
+        const renderedData = (isNil(data) || isEmpty(data)) ? null : this._renderTableBodyRows();
+
+        return <tbody>{renderedData}</tbody>;
+    }
+
+    _renderTableHeaderCells(): React.Node {
+        let columnIndex: number = -1;
+
+        return map((columnName: string) => {
+            ++columnIndex;
+
+            return <th
+                style={{width: this._getColumnWidth(columnIndex)}}
+                key={`headerColumn_${columnIndex}`}
+            >{columnName}</th>;
+        }, this._getColumnNames());
+    }
+
+    _renderTableFooter(): React.Node {
         return (
             <tfoot>
                 <tr>
@@ -166,7 +292,7 @@ export class RegularTableComponentClass extends Component {
         );
     }
 
-    _renderTableHeader() {
+    _renderTableHeader(): React.Node {
         return (
             <thead>
                 <tr>
@@ -176,44 +302,30 @@ export class RegularTableComponentClass extends Component {
         );
     }
 
-    _renderTableBodyRows() {
-        const {data} = this.props;
-
-        return mapIndexed((rowData, rowIndex) => {
-            const cellsData = mapIndexed((columnData, columnIndex) => {
-                if (this._isIdColumn(columnIndex)) {
-                    return null;
-                }
-
-                return <td key={`column_${columnIndex}`}>{columnData}</td>;
-            }, rowData);
-
-            return <tr key={`row_${rowIndex}`}>{cellsData}</tr>;
-        }, data);
-    }
-
-    _renderTableBody() {
-        const {data} = this.props;
-        const renderedData = (isNil(data) || isEmpty(data)) ? null : this._renderTableBodyRows();
-
-        return <tbody>{renderedData}</tbody>;
-    }
-
-    render() {
-        const {componentContainer} = this.props.classes;
+    _renderTable(): React.Node {
         const {showTableHeader, showTableFooter} = this.props;
 
-        return (
-            <div className={componentContainer}>
-                <table>
-                    {showTableHeader && this._renderTableHeader()}
-                    {showTableFooter && this._renderTableFooter()}
+        return <table>
+            {showTableHeader && this._renderTableHeader()}
+            {showTableFooter && this._renderTableFooter()}
 
-                    {this._renderTableBody()}
-                </table>
-            </div>
-        );
+            {this._renderTableBody()}
+        </table>;
     }
+
+    _renderComponentContainer(): React.Node {
+        const {componentContainer} = this.props.classes;
+
+        return <div className={componentContainer}>
+            {this._renderTable()}
+        </div>;
+    }
+
+    render(): React.Node {
+        return this._renderComponentContainer();
+    }
+
+    // endregion
 }
 
 // exports
