@@ -19,7 +19,7 @@ import ComponentFormContainer from './modules/containers/component_form_containe
 import {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn, ReduxFormDropDownInputComponent} from './../src';
 
 //
-const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space, maxWidth}) => ({
+const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space}) => ({
     root: {
         backgroundColor: color.baseBackground,
     },
@@ -30,7 +30,7 @@ const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space, maxWidth}
         },
     },
     content: {
-        maxWidth,
+        maxWidth: '1640px',
         padding: [[space[2], space[4]]],
         margin: [[0, 'auto']],
         [mq.small]: {

@@ -2,9 +2,24 @@ Editable checkbox with no labels set:
 
 ```jsx
 
-<ReduxFormCheckboxInputComponent
-    name='testFormCheckboxInputComponent1'
-/>
+const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+
+<SimpleFlexGridContainer>
+    <SimpleFlexGridRow>
+        <SimpleFlexGridColumn>
+            <ReduxFormCheckboxInputComponent
+                name='testFormCheckboxInputComponent1'
+            />
+        </SimpleFlexGridColumn>
+        
+        <SimpleFlexGridColumn style={{marginLeft: '5px'}}>
+            <ReduxFormCheckboxInputComponent
+                variant={2}
+                name='testFormCheckboxInputComponentVariant2_1'/>
+        </SimpleFlexGridColumn>
+    </SimpleFlexGridRow>
+</SimpleFlexGridContainer>
+
 ```
 
 Disabled checkbox with no labels set:

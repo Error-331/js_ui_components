@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import {mergeDeepRight} from 'ramda';
 
 // local imports
-import {RegularTableComponentClass} from './regular_table_component';
+import {RegularTableComponentClass, RegularTableComponent} from './regular_table_component';
 
 // type definitions
 type PropsTypes = {
@@ -108,7 +108,7 @@ export class ControlledTableComponentClass extends React.Component<PropsTypes, S
 
     // region render methods
     render(): React.Node {
-        return <RegularTableComponentClass {...this.props}/>;
+        return <RegularTableComponent {...this.props}/>;
     }
 
     // endregion

@@ -6,14 +6,14 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {is, isNil, isEmpty, always, defaultTo, cond, map} from 'ramda';
+import {is, isNil, isEmpty, always, defaultTo, mergeDeepRight, cond, map} from 'ramda';
 
 // local imports
 
 // type definitions
 type ColumnWidthType = string | number;
 
-type ColumnDataType = void | null | string | number | React.Element<any>;
+type ColumnDataType = void | null | string | number | moment | React.Element<any>;
 type RowDataType = Array<ColumnDataType>;
 
 type ColumnNamesType = Array<string>;
@@ -70,6 +70,33 @@ type PropsTypes = {
 type StateTypes = {};
 
 // styles definition
+const commonCellStylesFunc = (theme) => ({
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+
+    borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
+
+    paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
+    paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
+
+    paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
+    paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
+
+    fontFamily: theme.tableStyles.bodyFontStack,
+    fontSize: `${theme.tableStyles.cellFontSize}px`,
+
+    textAlign: 'left',
+
+    color: theme.tableStyles.cellFontColor,
+    backgroundColor: theme.tableStyles.cellBGColor
+});
+
+const thStylesFunc = (theme) => {
+    return mergeDeepRight(commonCellStylesFunc(theme), {
+        paddingTop: '0px',
+    });
+};
+
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
@@ -91,24 +118,7 @@ const styles = theme => ({
             '& > thead': {
                 '& > tr': {
                     '& th': {
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-
-                        borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
-
-                        paddingTop: '0px',
-                        paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
-
-                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
-
-                        fontFamily: theme.tableStyles.headerFontStack,
-                        fontSize: `${theme.tableStyles.cellFontSize}px`,
-
-                        textAlign: 'left',
-
-                        color: theme.tableStyles.headerCellFontColor,
-                        backgroundColor: theme.tableStyles.cellBGColor
+                        extend: thStylesFunc(theme)
                     }
                 }
             },
@@ -116,24 +126,7 @@ const styles = theme => ({
             '& > tfoot': {
                 '& > tr': {
                     '& th': {
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-
-                        borderTop: `1px solid ${theme.tableStyles.cellBorderColor}`,
-
-                        paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
-                        paddingBottom: '0px',
-
-                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
-
-                        fontFamily: theme.tableStyles.headerFontStack,
-                        fontSize: `${theme.tableStyles.cellFontSize}px`,
-
-                        textAlign: 'left',
-
-                        color: theme.tableStyles.headerCellFontColor,
-                        backgroundColor: theme.tableStyles.cellBGColor
+                        extend: thStylesFunc(theme)
                     }
                 }
             },
@@ -141,24 +134,7 @@ const styles = theme => ({
             '& > tbody': {
                 '& tr': {
                     '& td': {
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-
-                        borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
-
-                        paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
-                        paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
-
-                        paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
-                        paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
-
-                        fontFamily: theme.tableStyles.bodyFontStack,
-                        fontSize: `${theme.tableStyles.cellFontSize}px`,
-
-                        textAlign: 'left',
-
-                        color: theme.tableStyles.cellFontColor,
-                        backgroundColor: theme.tableStyles.cellBGColor
+                        extend: commonCellStylesFunc(theme)
                     }
                 },
 
@@ -260,26 +236,29 @@ export class RegularTableComponentClass extends React.Component<PropsTypes, Stat
 
     // region render methods
 
+    _renderTableBodyColums(rowData: RowDataType): React.Node {
+        let columnIndex: number = -1;
+
+        return map((columnData: ColumnDataType) => {
+            ++columnIndex;
+
+            columnData = this._getDataColumn(columnData);
+            if (this._isIdColumn(columnIndex)) {
+                return null;
+            }
+
+            return <td key={`column_${columnIndex}`}>{columnData}</td>;
+        }, rowData);
+    }
+
     _renderTableBodyRows(): React.Node {
         let rowIndex: number = -1;
-        let columnIndex: number = -1;
 
         return map((rowData: RowDataType) => {
             ++rowIndex;
             rowData = this._getDataRow(rowData);
 
-            const cellsData = map((columnData: ColumnDataType) => {
-                ++columnIndex;
-
-                columnData = this._getDataColumn(columnData);
-                if (this._isIdColumn(columnIndex)) {
-                    return null;
-                }
-
-                return <td key={`column_${columnIndex}`}>{columnData}</td>;
-            }, rowData);
-
-            return <tr key={`row_${rowIndex}`}>{cellsData}</tr>;
+            return <tr key={`row_${rowIndex}`}>{this._renderTableBodyColums(rowData)}</tr>;
         }, this._getData());
     }
 

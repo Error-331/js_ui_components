@@ -107,8 +107,12 @@ export class ControlledTableComponentClass extends React.Component<PropsTypes, S
     // endregion
 
     // region render methods
+    render(): React.Node {
+        return <RegularTableComponentClass {...this.props}/>;
+    }
+
     // endregion
 }
 
 // exports
-export const RControlledTableComponent = injectSheet(styles)(ControlledTableComponentClass);
+export const ControlledTableComponent = injectSheet(styles)(ControlledTableComponentClass);

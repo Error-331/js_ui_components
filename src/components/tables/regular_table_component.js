@@ -6,14 +6,15 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {is, isNil, isEmpty, always, defaultTo, mergeDeepRight, cond, map} from 'ramda';
+import {T, is, isNil, isEmpty, always, defaultTo, mergeDeepRight, cond, map} from 'ramda';
+import moment from 'moment';
 
 // local imports
 
 // type definitions
 type ColumnWidthType = string | number;
 
-type ColumnDataType = void | null | string | number | React.Element<any>;
+type ColumnDataType = void | null | string | number | moment | React.Element<any>;
 type RowDataType = Array<ColumnDataType>;
 
 type ColumnNamesType = Array<string>;
@@ -236,18 +237,27 @@ export class RegularTableComponentClass extends React.Component<PropsTypes, Stat
 
     // region render methods
 
-    _renderTableBodyColums(rowData: RowDataType): React.Node {
+    _renderTableBodyColumn(columnData: ColumnDataType, columnIndex: number): React.Node {
+        columnData = cond([
+            [(columnData: ColumnDataType) => moment.isMoment(columnData), (columnData: moment) => columnData.format('YYYY-M-d H:mm:ss')],
+            [is(Date), (columnData: moment) => moment(columnData).format('YYYY-M-d H:mm:ss')],
+            [T, always(columnData)]
+        ])(columnData);
+
+        return <td key={`column_${columnIndex}`}>{columnData}</td>;
+    }
+
+    _renderTableBodyColumns(rowData: RowDataType): React.Node {
         let columnIndex: number = -1;
 
         return map((columnData: ColumnDataType) => {
             ++columnIndex;
 
-            columnData = this._getDataColumn(columnData);
             if (this._isIdColumn(columnIndex)) {
                 return null;
             }
 
-            return <td key={`column_${columnIndex}`}>{columnData}</td>;
+            return this._renderTableBodyColumn(this._getDataColumn(columnData), columnIndex);
         }, rowData);
     }
 
@@ -258,7 +268,7 @@ export class RegularTableComponentClass extends React.Component<PropsTypes, Stat
             ++rowIndex;
             rowData = this._getDataRow(rowData);
 
-            return <tr key={`row_${rowIndex}`}>{this._renderTableBodyColums(rowData)}</tr>;
+            return <tr key={`row_${rowIndex}`}>{this._renderTableBodyColumns(rowData)}</tr>;
         }, this._getData());
     }
 
