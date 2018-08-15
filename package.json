@@ -34,7 +34,14 @@
   },
   "license": "MIT",
   "peerDependencies": {
-
+    "@webfuturistics/design_components": "github:WebFuturistics/js_design_components",
+    "classnames": ">=2.2.5",
+    "react": ">=16.2.0",
+    "react-dom": ">=16.2.0",
+    "react-jss": ">=8.6.1",
+    "redux-form": ">=7.2.0",
+    "ramda": ">=0.25.0",
+    "moment": ">=2.22.2"
   },
   "devDependencies": {
     "util-fns": "^0.1.3",

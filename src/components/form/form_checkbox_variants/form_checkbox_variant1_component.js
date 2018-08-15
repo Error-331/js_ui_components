@@ -4,7 +4,7 @@
 
 // external imports
 import * as React from 'react';
-import injectSheet, {jss} from 'react-jss';
+import injectSheet, {jss, SheetsRegistry} from 'react-jss';
 import classNames from 'classnames';
 
 import {always, defaultTo, equals, isNil, ifElse, clone} from 'ramda';
@@ -115,9 +115,6 @@ const styles = theme => ({
         },
     },
 
-
-
-
     checkMarkBackgroundContainer: {},
     checkMarkContainer: {}
 });
@@ -163,14 +160,47 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
     //https://github.com/cssinjs/jss/blob/master/docs/js-api.md
 
     attachSheet() {
+
+        /*
+                'input:checked + $componentContainer > $checkMarkBackgroundContainer': {
+            borderColor: theme.inputStyles.switchSliderActiveBodyBGColor,
+            background: theme.inputStyles.switchSliderActiveBodyBGColor
+        },
+         */
+
+        const sheets = new SheetsRegistry()
+
+        const c = `input:checked + .${this.props.classes.componentContainer} > .${this.props.classes.checkMarkBackgroundContainer}`;
+const b = `input:checked + .${this.props.classes.componentContainer} > .${this.props.classes.checkMarkContainer}`;
+
+const a = `input:checked + .${this.props.classes.componentContainer} > .${this.props.classes.checkMarkBackgroundContainer}.disabled`;
         this.sheet = jss.createStyleSheet({
-            body: {
-                backgroundColor: 'red'
+            '@global': {
+                [c]: {
+                    borderColor: this.props.theme.inputStyles.switchSliderActiveBodyBGColor,
+                    background: this.props.theme.inputStyles.switchSliderActiveBodyBGColor
+                },
+                [b]: {
+                    visibility: 'visible'
+                },
+                [a]: {
+                    borderColor: this.props.theme.inputStyles.disabledColor,
+                    background: this.props.theme.inputStyles.disabledColor
+                }
             }
+
+
+
+
+
         }, {
-            link: true,
+
             meta: 'cc-dynamic'
-        }).attach();
+        })
+
+        sheets.add(this.sheet);
+
+          this.sheet.attach();
     }
 
     _renderCheckMarkContainer(): React.Node {
