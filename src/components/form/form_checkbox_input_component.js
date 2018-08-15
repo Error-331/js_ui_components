@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {always, defaultTo, equals, isNil, ifElse, clone} from 'ramda';
+import {always, defaultTo, equals, isNil, ifElse, cond, clone} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 import type {FieldProps} from 'redux-form';
@@ -15,7 +15,7 @@ import type {FieldProps} from 'redux-form';
 // local imports
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
-import {FormCheckboxVariant1Component} from './form_checkbox_variants';
+import {FormCheckboxVariant1Component, FormCheckboxVariant2Component} from './form_checkbox_variants';
 
 // type definitions
 type PropsTypes = FieldProps & {
@@ -250,7 +250,12 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
     }
 
     _renderCheckbox(): React.Node {
-        return <FormCheckboxVariant1Component disabled={this.props.disabled} htmlFor={this._id}/>
+        console.log(this._getVariant(), typeof this._getVariant());
+
+        return cond([
+            [equals(1), () =>  <FormCheckboxVariant1Component disabled={this.props.disabled} htmlFor={this._id}/>],
+            [equals(2), () =>  <FormCheckboxVariant2Component disabled={this.props.disabled} htmlFor={this._id}/>],
+        ])(this._getVariant())
     }
 
     _renderInput(): React.Node {

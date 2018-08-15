@@ -12,6 +12,12 @@ import {FormCheckboxInputComponent} from '../form/form_checkbox_input_component'
 // type definitions
 type PropsTypes = {
     /**
+     * Number that indicates which visual variant will be used to represent the checkbox
+     */
+
+    variant?: number,
+
+    /**
      * Input name
      */
 
@@ -53,6 +59,7 @@ export class ReduxFormCheckboxInputComponentClass extends React.Component<PropsT
 
     render(): React.Node {
         return <Field
+            variant={this.props.variant}
             type='checkbox'
             name={this.props.name}
             disabled={this.props.disabled}
