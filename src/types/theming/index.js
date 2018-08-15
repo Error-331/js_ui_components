@@ -13,6 +13,7 @@ export * from './date_style_types';
 
 export * from './color_utilities_types';
 export * from './style_values_register_types';
+export * from './style_sheet_register_types';
 
 export * from './base_theme_partials_types';
 export * from './additional_theme_partials_types';

@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {always, equals, isNil, ifElse, clone} from 'ramda';
+import {always, defaultTo, equals, isNil, ifElse, clone} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 import type {FieldProps} from 'redux-form';
@@ -15,8 +15,16 @@ import type {FieldProps} from 'redux-form';
 // local imports
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
+import {FormCheckboxVariant1Component} from './form_checkbox_variants';
+
 // type definitions
 type PropsTypes = FieldProps & {
+    /**
+     * Number that indicates which visual variant will be used to represent the checkbox
+     */
+
+    variant?: number,
+
     /**
      * Flag that dictates whether component should be disabled
      */
@@ -63,22 +71,6 @@ type PropsTypes = FieldProps & {
 type StateTypes = {};
 
 // styles definition
-const checkboxControlLabelWidth = 20; // px
-const checkboxControlLabelHeight = 20; // px
-
-const checkboxControlLabelHorizontalSpacing = 4; // px
-
-const checkMarkWidth = checkboxControlLabelWidth - (2 * checkboxControlLabelHorizontalSpacing); // px
-const checkMarkHeight = checkMarkWidth / 2; // px
-
-const checkboxControlLabelVerticalSpacing = (checkboxControlLabelHeight / 2) - (checkMarkWidth / 4) - (checkboxControlLabelHeight / 10);
-
-const checkMarkWidthPercentage = (checkMarkWidth * 100) / checkboxControlLabelWidth; // %
-const checkMarkHeightPercentage = (checkMarkHeight * 100) / checkboxControlLabelHeight; // %
-
-const checkMarkTopOffsetPercentage = (checkboxControlLabelVerticalSpacing * 100) / checkboxControlLabelHeight; // %
-const checkMarkLeftOffsetPercentage = (checkboxControlLabelHorizontalSpacing * 100) / checkboxControlLabelWidth; // %
-
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
@@ -122,66 +114,8 @@ const styles = theme => ({
 
         '& > $inputControl': {
             display: 'none',
-
-            '&:checked + $inputControlLabel > $checkMarkBackgroundContainer': {
-                borderColor: theme.inputStyles.switchSliderActiveBodyBGColor,
-                background: theme.inputStyles.switchSliderActiveBodyBGColor
-            },
-
-            '&:checked + $inputControlLabel > $checkMarkContainer': {
-                visibility: 'visible'
-            },
-
-            '&:checked + $inputControlLabel > $checkMarkBackgroundContainer.disabled': {
-                borderColor: theme.inputStyles.disabledColor,
-                background: theme.inputStyles.disabledColor
-            }
         },
 
-        '& > $inputControlLabel': {
-            position: 'relative',
-            boxSizing: 'border-box',
-            display: 'flex',
-
-            width: `${checkboxControlLabelWidth}px`,
-            height: `${checkboxControlLabelHeight}px`,
-
-            '& > $checkMarkBackgroundContainer': {
-                position: 'absolute',
-                boxSizing: 'border-box',
-
-                width: '100%',
-                height: '100%',
-
-                border: `2px solid ${theme.inputStyles.switchSliderInactiveBodyBGColor}`,
-                borderRadius: '2px',
-
-                backGroundColor: 'white',
-                transition: 'borderColor 0.3s, background 0.3s'
-            },
-
-            '& > $checkMarkContainer': {
-                position: 'absolute',
-                boxSizing: 'border-box',
-                visibility: 'hidden',
-
-                top: `${checkMarkTopOffsetPercentage}%`,
-                left: `${checkMarkLeftOffsetPercentage}%`,
-
-                width: `${checkMarkWidthPercentage}%`,
-                height: `${checkMarkHeightPercentage}%`,
-
-                border: `2px solid ${theme.inputStyles.switchSliderHandleActive}`,
-                borderTopStyle: 'none',
-                borderRightStyle: 'none',
-
-                transform: 'rotate(-45deg)',
-
-                '&.disabled': {
-                    borderColor: theme.inputStyles.switchSliderHandleInactive
-                }
-            },
-        }
     },
 
     checkboxLabel: {},
@@ -189,10 +123,6 @@ const styles = theme => ({
     checkboxRightLabel: {},
 
     inputControl: {},
-    inputControlLabel: {},
-
-    checkMarkBackgroundContainer: {},
-    checkMarkContainer: {},
 });
 
 /**
@@ -210,6 +140,7 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
     static displayName = 'FormCheckboxInputComponent';
 
     static defaultProps = {
+        variant: 1,
         disabled: false,
 
         leftLabel: '',
@@ -247,24 +178,6 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region style accessors
-    _getCheckMarkContainer(): string {
-        const {disabled}: {disabled: ?boolean} = this.props;
-
-        return classNames(
-            this.props.classes.checkMarkContainer,
-            {'disabled': disabled}
-        );
-    }
-
-    _getCheckMarkBackgroundContainerClasses(): string {
-        const {disabled}: {disabled: ?boolean} = this.props;
-
-        return classNames(
-            this.props.classes.checkMarkBackgroundContainer,
-            {'disabled': disabled}
-        );
-    }
-
     _getLabelClasses(): string {
         const {disabled, labelPosition, classes: {checkboxLeftLabel, checkboxRightLabel}} = this.props;
 
@@ -304,6 +217,10 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region prop accessors
+    _getVariant(): number {
+        return defaultTo(FormCheckboxInputComponentClass.defaultProps.variant)(this.props.variant);
+    }
+
     _isChecked(): boolean {
         const {checked}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
         return isNil(checked) ? false : checked;
@@ -332,21 +249,8 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
         </div>;
     }
 
-    _renderCheckMarkContainer(): React.Node {
-        return <div className={this._getCheckMarkContainer()}>
-        </div>;
-    }
-
-    _renderCheckMarkBackgroundContainer(): React.Node {
-        return <div className={this._getCheckMarkBackgroundContainerClasses()}>
-        </div>;
-    }
-
     _renderCheckbox(): React.Node {
-        return <label htmlFor={this._id} className={this.props.classes.inputControlLabel}>
-            {this._renderCheckMarkBackgroundContainer()}
-            {this._renderCheckMarkContainer()}
-        </label>;
+        return <FormCheckboxVariant1Component disabled={this.props.disabled} htmlFor={this._id}/>
     }
 
     _renderInput(): React.Node {

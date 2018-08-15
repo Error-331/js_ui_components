@@ -8,6 +8,7 @@
 import type {
     ColorUtilitiesTypes,
     StyleValuesRegisterType,
+    StyleSheetRegisterType,
 
     BaseThemePartialsType,
     AdditionalThemePartialsType,
@@ -17,4 +18,5 @@ import type {
 export type ThemeType = BaseThemePartialsType & AdditionalThemePartialsType & {
     colorUtilities: ColorUtilitiesTypes,
     styleValuesRegister: StyleValuesRegisterType,
+    styleSheetRegister: StyleSheetRegisterType
 }

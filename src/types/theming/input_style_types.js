@@ -8,6 +8,22 @@
 
 // exports
 export type InputStylesType = {
+    checkboxControlLabelWidth: number,
+    checkboxControlLabelHeight: number,
+
+    checkboxControlLabelHorizontalSpacing: number,
+
+    checkMarkWidth: number,
+    checkMarkHeight: number,
+
+    checkboxControlLabelVerticalSpacing: number,
+
+    checkMarkWidthPercentage: number,
+    checkMarkHeightPercentage: number,
+
+    checkMarkTopOffsetPercentage: number,
+    checkMarkLeftOffsetPercentage: number,
+
     fontStack: string,
 
     fontSize: number,
