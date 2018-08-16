@@ -7,6 +7,8 @@ import * as React from 'react';
 import injectSheet, {jss, SheetsRegistry} from 'react-jss';
 import classNames from 'classnames';
 
+import {defaultTo} from 'ramda';
+
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
 
@@ -21,6 +23,12 @@ type PropsTypes = {
      */
 
     disabled?: ?boolean,
+
+    /**
+     * Flag that dictates whether checkbox should be forcibly checked
+     */
+
+    forceCheck?: boolean,
 
     /**
      * Specifies which form element a label is bound to
@@ -230,6 +238,10 @@ export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTyp
     // endregion
 
     // region prop accessors
+    _getForceCheckProp(): boolean {
+        return defaultTo(false)(this.props.forceCheck);
+    }
+
     // endregion
 
     // region handlers
@@ -244,14 +256,19 @@ export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTyp
     }
 
     _renderCheckMarkContainer(): React.Node {
-        return <div className={this._getCheckMarkContainerClasses()}>
+        const forceCheck: boolean = this._getForceCheckProp();
+        const customStyles: CSSStylesType = forceCheck ? this._getCheckedCheckMarkContainerStyles() : {};
+
+        return <div className={this._getCheckMarkContainerClasses()} style={customStyles}>
         </div>;
     }
 
     _renderComponentContainer(): React.Node {
+        const forceCheck: boolean = this._getForceCheckProp();
+
         return <label htmlFor={this.props.htmlFor} className={this.props.classes.componentContainer}>
             {this._renderCheckMarkContainer()}
-            {this._renderCrossMarkContainer()}
+            {forceCheck ? null : this._renderCrossMarkContainer()}
         </label>;
     }
 
