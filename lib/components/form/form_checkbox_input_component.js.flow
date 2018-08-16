@@ -250,12 +250,10 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
     }
 
     _renderCheckbox(): React.Node {
-        console.log(this._getVariant(), typeof this._getVariant());
-
         return cond([
             [equals(1), () =>  <FormCheckboxVariant1Component disabled={this.props.disabled} htmlFor={this._id}/>],
             [equals(2), () =>  <FormCheckboxVariant2Component disabled={this.props.disabled} htmlFor={this._id}/>],
-        ])(this._getVariant())
+        ])(this._getVariant());
     }
 
     _renderInput(): React.Node {

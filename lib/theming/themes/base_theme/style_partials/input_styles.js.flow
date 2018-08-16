@@ -45,6 +45,8 @@ export const inputStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStack
         checkMarkTopOffsetPercentage,
         checkMarkLeftOffsetPercentage,
 
+        checkMarkLineWidth: 2, //px
+
         fontStack: fontStacks.regularFontFamilyStack,
 
         fontSize: baseStyles.secondaryFontSize, // px
@@ -55,6 +57,7 @@ export const inputStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStack
         bgColor: baseStyles.transparentBGColor,
         selectedBGColor: baseStyles.disabledColor,
 
+        attentionColor: baseStyles.accentColorPrimary,
         hoverColor: baseStyles.accentColorPrimary,
         activeColor: baseStyles.mainPrimaryColor,
         inactiveColor: baseStyles.mainSecondaryColor,
