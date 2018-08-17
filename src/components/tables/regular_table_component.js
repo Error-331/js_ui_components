@@ -10,11 +10,12 @@ import {T, is, isNil, isEmpty, always, defaultTo, mergeDeepRight, cond, map} fro
 import moment from 'moment';
 
 // local imports
+import {FormCheckboxVariant2Component} from './../form/form_checkbox_variants/form_checkbox_variant2_component';
 
 // type definitions
 type ColumnWidthType = string | number;
 
-type ColumnDataType = void | null | string | number | moment | React.Element<any>;
+type ColumnDataType = void | null | string | number | boolean | moment | React.Element<any>;
 type RowDataType = Array<ColumnDataType>;
 
 type ColumnNamesType = Array<string>;
@@ -241,6 +242,7 @@ export class RegularTableComponentClass extends React.Component<PropsTypes, Stat
         columnData = cond([
             [(columnData: ColumnDataType) => moment.isMoment(columnData), (columnData: moment) => columnData.format('YYYY-M-d H:mm:ss')],
             [is(Date), (columnData: moment) => moment(columnData).format('YYYY-M-d H:mm:ss')],
+            [is(Boolean), (columnData: ColumnDataType) => <FormCheckboxVariant2Component forceCheck={columnData}/>],
             [T, always(columnData)]
         ])(columnData);
 
