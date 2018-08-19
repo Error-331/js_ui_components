@@ -58,7 +58,6 @@ const columnNames = [
         
     'Deletion date',
     'Deletion date (UTC offset)'
-
 ];
     
 const columnWidths = ['10%', '10%', '10%', '10%', '10%', '10%', '10%'];
@@ -79,6 +78,7 @@ Test:
 ```jsx
 
 const moment = require('moment');
+const {SPECIFIC_COLUMN_TYPE_LONG_TEXT} = require('./regular_table_component');
 
 const currentDate = moment();
 const currentOffset = currentDate.utcOffset();
@@ -102,10 +102,10 @@ const paddingText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cu
  turpis ex fringilla tellus, at consectetur tellus justo sit amet enim.`;
  
 const tableData = [
-    ['landing', `landing type...${paddingText}`, true, currentDate, currentOffset, currentDate, currentOffset],
-    ['shop', `shop type...${paddingText}`, false, currentDate, currentOffset, null, null],
-    ['social', `social type...${paddingText}`, false, currentDate, currentOffset, null, null],
-    ['video', `video type......${paddingText}`, true, currentDate, currentOffset, currentDate, currentOffset],
+    ['landing', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `landing type...${paddingText}`}, true, currentDate, currentOffset, currentDate, currentOffset],
+    ['shop', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `shop type...${paddingText}`}, false, currentDate, currentOffset, null, null],
+    ['social', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `social type...${paddingText}`}, false, currentDate, currentOffset, null, null],
+    ['video', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `video type......${paddingText}`}, true, currentDate, currentOffset, currentDate, currentOffset],
 ];
 
 <ControlledTableComponent showTableHeader={true} showTableFooter={true} columnNames={columnNames} columnWidths={columnWidths} data={tableData}/>
