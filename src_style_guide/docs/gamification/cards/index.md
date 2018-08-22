@@ -1,0 +1,1 @@
+Section describes card components used in gamification.

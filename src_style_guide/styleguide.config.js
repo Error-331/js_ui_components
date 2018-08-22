@@ -125,6 +125,18 @@ module.exports = {
                     name: 'Window',
                     content: path.join(__dirname, './docs/window/index.md'),
                     components: path.join(__dirname, './../src/components/window/**/[A-Za-z_]*_component.js'),
+                },
+
+                {
+                    name: 'Gamification',
+                    content: path.join(__dirname, './docs/gamification/index.md'),
+                    sections: [
+                        {
+                            name: 'Cards',
+                            content: path.join(__dirname, './docs/gamification/cards/index.md'),
+                            components: path.join(__dirname, './../src/components/gamification/cards/**/[A-Za-z_]*_component.js'),
+                        },
+                    ]
                 }
             ]
         },
