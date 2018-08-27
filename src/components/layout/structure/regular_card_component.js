@@ -174,7 +174,10 @@ const styles = theme => ({
  */
 
 // component implementation
-export class RegularCardComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class RegularCardComponent extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'RegularCardComponent';
 
@@ -277,4 +280,3 @@ export class RegularCardComponentClass extends React.Component<PropsTypes, State
 }
 
 // exports
-export const RegularCardComponent = injectSheet(styles)(RegularCardComponentClass);

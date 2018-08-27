@@ -4,6 +4,9 @@
 
 // external imports
 import * as React from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
@@ -34,7 +37,11 @@ const styles = theme => ({
 });
 
 // component implementation
-export class TestComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@DragDropContext(HTML5Backend)
+@injectSheet(styles)
+export class TestComponent extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'TestComponent';
 
     _getComponentContainerClass(): string {
@@ -67,4 +74,3 @@ export class TestComponentClass extends React.Component<PropsTypes, StateTypes> 
 }
 
 // exports
-export const TestComponent = injectSheet(styles)(TestComponentClass);

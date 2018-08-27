@@ -4,7 +4,7 @@
 
 // external imports
 import * as React from 'react';
-import { DragSource } from 'react-dnd';
+import {DragSource, DropTarget} from 'react-dnd';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
@@ -36,7 +36,14 @@ const styles = theme => ({
 
 // component implementation
 
+const cardTarget = {
+    drop(props) {
+        return 'bb'
+    },
+}
+
 const cardSource = {
+
     beginDrag(props) {
         return {
             text: 'vv'
@@ -55,11 +62,25 @@ const cardSource = {
     }
 };
 
+function collect1(connect, monitor) {
+    return {
+        connectDragSource: connect.dragSource(),
+        isDragging: monitor.isDragging(),
+    }
+}
+
+function collect2(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver()
+    }
+}
+
+const c = 'ff';
+
 // $FlowFixMe decorators
-@DragSource('ff', cardSource, (connect, monitor) => ({
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-}))
+@DragSource(c, cardSource, collect1)
+@DropTarget(c, cardTarget, collect2)
 @injectSheet(styles)
 export class DraggableCardComponent extends React.Component<PropsTypes, StateTypes> {
     static defaultProps = {
@@ -67,13 +88,15 @@ export class DraggableCardComponent extends React.Component<PropsTypes, StateTyp
     };
 
     render() {
-        alert('a');
-        const { connectDragSource } = this.props;
-        return connectDragSource(
-            <RegularCardComponent>
-             432
-            </RegularCardComponent>
-        );
+        const { connectDragSource, connectDropTarget, isDragging, isOver } = this.props;
+        return connectDropTarget(connectDragSource(
+            <div>
+                <RegularCardComponent>
+                    {isDragging ? 'drag' : 'stop'}
+                    {isOver ? 'over' : 'not over'}
+                </RegularCardComponent>
+            </div>
+        ));
     }
 }
 

@@ -12,7 +12,11 @@ import classNames from 'classnames';
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 
 // type definitions
+type ConnectDragSourceType = (dragSource: React.Element<any>) => React.Node;
+
 type PropsTypes = {
+    connectDragSource: ConnectDragSourceType,
+
     /**
      * JSS inner classes
      *
@@ -58,13 +62,17 @@ const cardSource = {
 }))
 @injectSheet(styles)
 export class DraggableCardComponent extends React.Component<PropsTypes, StateTypes> {
+    static defaultProps = {
+        classes: {}
+    };
+
     render() {
         alert('a');
         const { connectDragSource } = this.props;
         return connectDragSource(
-            <div>
+            <RegularCardComponent>
              432
-            </div>
+            </RegularCardComponent>
         );
     }
 }
