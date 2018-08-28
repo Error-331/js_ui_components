@@ -1,5 +1,39 @@
 # UI Components (WebFuturistics)
 
+# Component sections
+    // region static props
+    // endregion
+    
+    // region private props
+    // endregion
+
+    // region constructor
+    // endregion
+    
+    // region business logic
+    // endregion
+
+    // region lifecycle methods
+    // endregion
+
+    // region style accessors
+    // endregion
+
+    // region label accessors
+    // endregion
+
+    // region state accessors
+    // endregion
+
+    // region prop accessors
+    // endregion
+
+    // region handlers
+    // endregion
+
+    // region render methods
+    // endregion
+
 # TODO
 
 - Types for themes system;

@@ -87,14 +87,19 @@ export class DraggableCardComponent extends React.Component<PropsTypes, StateTyp
         classes: {}
     };
 
+    /*
+        const childrenWithProps = React.Children.map(children, child =>
+      React.cloneElement(child, { doSomething: this.doSomething }));
+     */
+
     render() {
-        const { connectDragSource, connectDropTarget, isDragging, isOver } = this.props;
+        const { children, connectDragSource, connectDropTarget, isDragging, isOver } = this.props;
+
         return connectDropTarget(connectDragSource(
             <div>
-                <RegularCardComponent>
-                    {isDragging ? 'drag' : 'stop'}
-                    {isOver ? 'over' : 'not over'}
-                </RegularCardComponent>
+                {React.Children.map(children, child => React.cloneElement(child, {
+                    isDragging, isOver
+                }))}
             </div>
         ));
     }

@@ -10,13 +10,32 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
+import {defaultTo, inc, map} from 'ramda'
+
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 // local imports
 import {DraggableCardComponent} from './draggable_card_component';
 
 // type definitions
+type CardContentType = void | null | string | number | React.Element<any>;
+
+type DataType = {
+    id: number | string,
+    card: CardContentType,
+    data: any
+};
+
+type DataArrayType = Array<DataType>;
+
 type PropsTypes = {
+    /**
+     * Data for each card in the card drawer
+     *
+     */
+
+    data?: DataArrayType,
+
     /**
      * JSS inner classes
      *
@@ -44,47 +63,87 @@ const styles = theme => ({
 @DragDropContext(HTML5Backend)
 @injectSheet(styles)
 export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes> {
+    // region static props
     static displayName = 'CardDrawerComponent';
 
-    _dndType: ?string = null;
+    static defaultProps = {
+        classes: {}
+    };
 
+    // endregion
+
+    // region private props
+    _dndType: string = `card_drawer_${generateRandomIdNumber()}`;
+
+    // endregion
+
+    // region constructor
     constructor(props: PropsTypes): void {
         super(props);
-
-        this._dndType = this._createDNDType();
     }
 
-    _createDNDType(): string {
-        const randomIdNumber: number = generateRandomIdNumber();
-        return `card_drawer_${randomIdNumber}`;
+    // endregion
+
+    // region business logic
+    // endregion
+
+    // region lifecycle methods
+    // endregion
+
+    // region style accessors
+    // endregion
+
+    // region label accessors
+    // endregion
+
+    // region state accessors
+    // endregion
+
+    // region prop accessors
+
+
+    _getData(): DataArrayType {
+        return defaultTo([])(this.props.data);
     }
 
-    _getComponentContainerClass(): string {
-        return this.props.classes.componentContainer;
+    // endregion
+
+    // region handlers
+    // endregion
+
+    // region render methods
+    _renderDraggableCards(): Array<React.Node> {
+        let draggableCardKey: number = -1;
+
+        return map(({id, data, card}) => {
+            console.log(this._dndType);
+            draggableCardKey = inc(draggableCardKey);
+            return <DraggableCardComponent id={id} data={data} dndType={this._dndType} key={`draggable_card_${draggableCardKey}`}>
+                {card}
+            </DraggableCardComponent>
+        }, this._getData())
     }
 
     _renderComponentContainer(): React.Node {
-        return (<div className={this._getComponentContainerClass()}>
-            <DraggableCardComponent dndType={this._dndType}>
-                12
-            </DraggableCardComponent>
-
-            <DraggableCardComponent dndType={this._dndType}>
-                12
-            </DraggableCardComponent>
-
-            <DraggableCardComponent dndType={this._dndType}>
-                12
-            </DraggableCardComponent>
-
-            <DraggableCardComponent dndType={this._dndType}>
-                12
-            </DraggableCardComponent>
-        </div>);
+        return <div className={this._getComponentContainerClass()}>
+            {this._renderDraggableCards()}
+        </div>;
     }
 
     render(): React.Node {
         return this._renderComponentContainer();
+    }
+
+    // endregion
+
+
+
+
+
+
+
+    _getComponentContainerClass(): string {
+        return this.props.classes.componentContainer;
     }
 }
 
