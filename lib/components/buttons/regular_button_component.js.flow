@@ -243,7 +243,10 @@ const styles = theme => ({
  */
 
 // component implementation
-export class RegularButtonComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'RegularButtonComponent';
 
@@ -395,4 +398,3 @@ export class RegularButtonComponentClass extends React.Component<PropsTypes, Sta
 }
 
 // exports
-export const RegularButtonComponent = injectSheet(styles)(RegularButtonComponentClass);

@@ -15,6 +15,8 @@ import {RegularCardComponent} from './../../layout/structure/regular_card_compon
 type ConnectDragSourceType = (dragSource: React.Element<any>) => React.Node;
 
 type PropsTypes = {
+    dndType: string,
+
     connectDragSource: ConnectDragSourceType,
 
     /**
@@ -76,11 +78,9 @@ function collect2(connect, monitor) {
     }
 }
 
-const c = 'ff';
-
 // $FlowFixMe decorators
-@DragSource(c, cardSource, collect1)
-@DropTarget(c, cardTarget, collect2)
+@DragSource(({dndType}) => dndType, cardSource, collect1)
+@DropTarget(({dndType}) => dndType, cardTarget, collect2)
 @injectSheet(styles)
 export class DraggableCardComponent extends React.Component<PropsTypes, StateTypes> {
     static defaultProps = {
@@ -101,4 +101,3 @@ export class DraggableCardComponent extends React.Component<PropsTypes, StateTyp
 }
 
 // exports
-//export const DraggableCardComponent = injectSheet(styles)(DraggableCardComponentClass);

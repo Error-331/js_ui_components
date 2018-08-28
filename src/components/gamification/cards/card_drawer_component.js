@@ -4,11 +4,13 @@
 
 // external imports
 import * as React from 'react';
-import { DragDropContext } from 'react-dnd';
+import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
+
+import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 // local imports
 import {DraggableCardComponent} from './draggable_card_component';
@@ -41,8 +43,21 @@ const styles = theme => ({
 // $FlowFixMe decorators
 @DragDropContext(HTML5Backend)
 @injectSheet(styles)
-export class TestComponent extends React.Component<PropsTypes, StateTypes> {
-    static displayName = 'TestComponent';
+export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes> {
+    static displayName = 'CardDrawerComponent';
+
+    _dndType: ?string = null;
+
+    constructor(props: PropsTypes): void {
+        super(props);
+
+        this._dndType = this._createDNDType();
+    }
+
+    _createDNDType(): string {
+        const randomIdNumber: number = generateRandomIdNumber();
+        return `card_drawer_${randomIdNumber}`;
+    }
 
     _getComponentContainerClass(): string {
         return this.props.classes.componentContainer;
@@ -50,19 +65,19 @@ export class TestComponent extends React.Component<PropsTypes, StateTypes> {
 
     _renderComponentContainer(): React.Node {
         return (<div className={this._getComponentContainerClass()}>
-            <DraggableCardComponent>
+            <DraggableCardComponent dndType={this._dndType}>
                 12
             </DraggableCardComponent>
 
-            <DraggableCardComponent>
+            <DraggableCardComponent dndType={this._dndType}>
                 12
             </DraggableCardComponent>
 
-            <DraggableCardComponent>
+            <DraggableCardComponent dndType={this._dndType}>
                 12
             </DraggableCardComponent>
 
-            <DraggableCardComponent>
+            <DraggableCardComponent dndType={this._dndType}>
                 12
             </DraggableCardComponent>
         </div>);
