@@ -53,7 +53,10 @@ const styles = theme => ({
         boxSizing: 'border-box',
         display: 'grid',
 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))'
+        gridTemplateColumns: 'repeat(auto-fill, minmax(calc(3.125vw + 200px), 1fr))',
+        gridGap: '5px',
+       // gridAutoColumns: 'max-content',
+        //gridAutoRows: 'auto'
     }
 });
 
@@ -116,7 +119,6 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
         let draggableCardKey: number = -1;
 
         return map(({id, data, card}) => {
-            console.log(this._dndType);
             draggableCardKey = inc(draggableCardKey);
             return <DraggableCardComponent id={id} data={data} dndType={this._dndType} key={`draggable_card_${draggableCardKey}`}>
                 {card}
