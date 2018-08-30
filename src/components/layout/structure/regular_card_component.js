@@ -41,13 +41,19 @@ type PropsTypes = {
      * Class names for card container outer div
      */
 
-    containerClassNames?: ?string,
+    containerClassNames?: string,
 
     /**
      * Styles for card container outer div
      */
 
     containerStyles?: StyleType,
+
+    /**
+     * Class names for card body container div
+     */
+
+    bodyClassNames?: string,
 
     /**
      * Styles for card container body div
@@ -211,6 +217,13 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
         );
     }
 
+    _getBodyClasses(): string {
+        return classNames(
+            this.props.classes.componentBody,
+            this.props.bodyClassNames
+        );
+    }
+
     // endregion
 
     // region label accessors
@@ -253,7 +266,7 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
 
     _renderBody(): React.Node {
         return <div
-            className={this.props.classes.componentBody}
+            className={this._getBodyClasses()}
             style={this.props.bodyStyles}
         >
             {this.props.children}

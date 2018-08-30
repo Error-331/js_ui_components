@@ -55,9 +55,7 @@ const styles = theme => ({
 
         gridTemplateColumns: 'repeat(auto-fill, minmax(calc(3.125vw + 200px), 1fr))',
         gridGap: '5px',
-       // gridAutoColumns: 'max-content',
-        //gridAutoRows: 'auto'
-    }
+    },
 });
 
 // component implementation
