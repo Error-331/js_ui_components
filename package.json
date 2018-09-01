@@ -36,14 +36,15 @@
   "peerDependencies": {
     "@webfuturistics/design_components": "github:WebFuturistics/js_design_components",
     "classnames": ">=2.2.5",
+    "redux-form": ">=7.2.0",
+    "ramda": ">=0.25.0",
+    "moment": ">=2.22.2",
+    "lodash.debounce": ">=4.0.8",
     "react": ">=16.2.0",
     "react-dom": ">=16.2.0",
     "react-jss": ">=8.6.1",
     "react-dnd": ">=5.0.0",
-    "react-dnd-html5-backend": ">=5.0.1",
-    "redux-form": ">=7.2.0",
-    "ramda": ">=0.25.0",
-    "moment": ">=2.22.2"
+    "react-dnd-html5-backend": ">=5.0.1"
   },
   "devDependencies": {
     "util-fns": "^0.1.3",
