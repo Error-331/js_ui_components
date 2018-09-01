@@ -4,3 +4,4 @@
 
 // exports
 export * from './themes';
+export * from './providers';
