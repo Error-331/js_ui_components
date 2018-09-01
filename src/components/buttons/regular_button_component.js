@@ -10,15 +10,17 @@ import classNames from 'classnames';
 import {is, isNil, equals, unless, always} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components';
 
-import {InlineTextBlock} from './../layout/text/inline_text_block';
-
 // local imports
+import type {StateTypes as ThemeProps} from './../../theming/providers/main_theme_provider';
+
+import {InlineTextBlock} from './../layout/text/inline_text_block';
+import {MainThemeContext} from './../../theming';
 
 // type definitions
 type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
 type StyleType = {[string]: mixed};
 
-type PropsTypes = {
+type PropsTypes = ThemeProps & {
     /**
      * Flag that describes how the button will look like
      */
@@ -246,13 +248,12 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class RegularButtonComponent extends React.Component<PropsTypes, StateTypes> {
+export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'RegularButtonComponent';
+    static displayName = 'RegularButtonClass';
 
     static defaultProps = {
         label: '',
-        className: '',
 
         onClick: () => {},
     };
@@ -398,3 +399,13 @@ export class RegularButtonComponent extends React.Component<PropsTypes, StateTyp
 }
 
 // exports
+export function RegularButtonComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <RegularButtonClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+
+RegularButtonComponent.displayName = 'RegularButtonComponent';

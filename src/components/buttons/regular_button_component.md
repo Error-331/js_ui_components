@@ -2,6 +2,8 @@ Enabled button variants with default text color and without icon:
 
 ```jsx
 
+const {RegularButtonComponent} = require('./regular_button_component');
+
 const demoContainerStyles = {
     display: 'flex', 
     
@@ -28,6 +30,8 @@ const componentContainerStyles = {
 Enabled button variants with secondary text color and without icon:
 
 ```jsx
+
+const {RegularButtonComponent} = require('./regular_button_component');
 
 const demoContainerStyles = {
     display: 'flex', 
@@ -56,6 +60,8 @@ Enabled button variants with primary text color and without icon:
 
 ```jsx
 
+const {RegularButtonComponent} = require('./regular_button_component');
+
 const demoContainerStyles = {
     display: 'flex', 
     
@@ -80,6 +86,8 @@ const componentContainerStyles = {
 Enabled button variants with default text color and icon located to the left of caption:
 
 ```jsx
+
+const {RegularButtonComponent} = require('./regular_button_component');
 
 const demoContainerStyles = {
     display: 'flex', 
@@ -108,6 +116,8 @@ Enabled button variants with secondary text color and icon located to the left o
 
 ```jsx
 
+const {RegularButtonComponent} = require('./regular_button_component');
+
 const demoContainerStyles = {
     display: 'flex', 
     
@@ -134,6 +144,8 @@ const componentContainerStyles = {
 Enabled button variants with secondary text color and icon located to the left of caption:
 
 ```jsx
+
+const {RegularButtonComponent} = require('./regular_button_component');
 
 const demoContainerStyles = {
     display: 'flex', 
@@ -162,6 +174,8 @@ Enabled button variants with default text color and icon located to the right of
 
 ```jsx
 
+const {RegularButtonComponent} = require('./regular_button_component');
+
 const demoContainerStyles = {
     display: 'flex', 
     
@@ -189,6 +203,8 @@ Enabled button variants with secondary text color and icon located to the right 
 
 ```jsx
 
+const {RegularButtonComponent} = require('./regular_button_component');
+
 const demoContainerStyles = {
     display: 'flex', 
     
@@ -215,6 +231,8 @@ const componentContainerStyles = {
 Enabled button variants with secondary text color and icon located to the right of caption:
 
 ```jsx
+
+const {RegularButtonComponent} = require('./regular_button_component');
 
 const demoContainerStyles = {
     display: 'flex', 
