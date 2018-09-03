@@ -36,6 +36,8 @@ type PropsTypes = {
 
     data?: DataArrayType,
 
+    minRowSize: number | string,
+
     /**
      * JSS inner classes
      *
@@ -54,7 +56,9 @@ const styles = theme => ({
         display: 'grid',
 
         gridTemplateColumns: 'repeat(auto-fill, minmax(calc(3.125vw + 200px), 1fr))',
-        gridGap: '5px',
+        gridAutoRows: 'minmax(175px, max-content)',
+
+        gridGap: '12px',
     },
 });
 
@@ -101,7 +105,9 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
     // endregion
 
     // region prop accessors
+    _getMinRowSize() {
 
+    }
 
     _getData(): DataArrayType {
         return defaultTo([])(this.props.data);
@@ -120,8 +126,8 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
             draggableCardKey = inc(draggableCardKey);
             return <DraggableCardComponent id={id} data={data} dndType={this._dndType} key={`draggable_card_${draggableCardKey}`}>
                 {card}
-            </DraggableCardComponent>
-        }, this._getData())
+            </DraggableCardComponent>;
+        }, this._getData());
     }
 
     _renderComponentContainer(): React.Node {

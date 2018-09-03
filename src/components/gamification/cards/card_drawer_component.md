@@ -19,20 +19,76 @@ const jobCardStyles = theme => ({
                 boxSizing: 'border-box',
                 display: 'grid',
                 
-            
-                
+                width: '100%',
+                height: '100%',
+                                  
                 gridTemplateAreas: `
                     "company-logo company-name publish-date"
                     "title        title        title"
-                    "salary       salary       location"
+                    "location     location       salary"
                 `,
                 
-                '& > $companyLogoContainer': {gridArea: 'company-logo'},
-                '& > $companyNameContainer': {gridArea: 'company-name'},
-                '& > $publishDateContainer': {gridArea: 'publish-date', textAlign: 'right'},
-                '& > $titleContainer': {gridArea: 'title'},
-                '& > $salaryContainer': {gridArea: 'salary'},
-                '& > $locationContainer': {gridArea: 'location', textAlign: 'right'},
+         
+                gridTemplateColumns: '35px 1fr max-content',
+                gridTemplateRows: 'minMax(35px, max-content) 1fr max-content',
+                
+                cursor: 'pointer',
+                
+                '& > $companyLogoContainer': {
+                    boxSizing: 'border-box', 
+                    
+                    gridArea: 'company-logo', 
+                    alignSelf: 'start', 
+                    
+                    width: '100%'
+                },
+                
+                '& > $companyNameContainer': {
+                    boxSizing: 'border-box', 
+                    
+                    gridArea: 'company-name', 
+                    alignSelf: 'center', 
+                    
+                    paddingLeft: '8px', 
+                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
+                    fontSize: '16px', 
+                    
+                    color: theme.baseStyles.mainPrimaryColor
+                },
+                
+                '& > $publishDateContainer': {
+                    boxSizing: 'border-box', 
+                    
+                    gridArea: 'publish-date', 
+                    textAlign: 'right', 
+                    
+                    paddingLeft: '8px', 
+                    fontSize: '10px', 
+                    color: theme.baseStyles.utilityBGColor
+                },
+                
+                '& > $titleContainer': {
+                    gridArea: 'title', 
+                    paddingTop: '8px', 
+                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
+                    fontSize: '18px', 
+                    color: theme.baseStyles.mainPrimaryColor
+                },     
+                       
+                '& > $locationContainer': {
+                    gridArea: 'location', 
+                    textAlign: 'left', 
+                    fontSize: '14px', 
+                    color: theme.baseStyles.utilityBGColor
+                },
+                
+                '& > $salaryContainer': {
+                    gridArea: 'salary', 
+                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
+                    fontSize: '15px', 
+                    color: theme.baseStyles.accentColorPrimary, 
+                    textAlign: 'right'
+                },
         }
     },
     
@@ -48,7 +104,7 @@ const jobCardStyles = theme => ({
 });
 
 function JobCardFunction(props) {
-    const {date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
+    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
     
     const parsedDate = moment(date);
     const formatedDate = parsedDate.format('LL');
@@ -59,24 +115,24 @@ function JobCardFunction(props) {
         boxSizing: 'border-box',
         display: 'grid',
     
-        gridTemplateColumns: 'repeat(auto-fit, minmax(min-content, max-content))'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min-content, max-content))',
     };
     
     if (isNil(salaryMin) && isNil(salaryMax)) {
         salary = 'Negotiable';
     } else {
-        salary = `${currency}${salaryMin}${salaryMax ? `-${salaryMax}` : ''}`
+        salary = `${currency}${salaryMin ? salaryMin : ''}${salaryMax ? `${salaryMin ? '-' : ''}${salaryMax}` : ''}`
     }
     
-    return <RegularCardComponent containerClassNames={classes.componentContainer} bodyClassNames={classes.regularCardContainer}>
-            <div className={classes.companyLogoContainer}>img</div>
-    
+    return <RegularCardComponent popOnHover={true} maxPopLevel={3} containerClassNames={classes.componentContainer} bodyClassNames={classes.regularCardContainer}>
+            <img src={logoSrc} className={classes.companyLogoContainer}/>
+           
             <InlineTextBlock className={classes.companyNameContainer}>{company}</InlineTextBlock>
             <InlineTextBlock className={classes.publishDateContainer}>{formatedDate}</InlineTextBlock>
             
             <InlineHeader level={6} className={classes.titleContainer}>{title}</InlineHeader>
-            <InlineTextBlock className={classes.salaryContainer}>{location}, {remote ? 'remote' : ''}</InlineTextBlock>
-            <InlineTextBlock className={classes.locationContainer}>{salary}</InlineTextBlock>
+            <InlineTextBlock className={classes.locationContainer}>{location}, {remote ? 'remote' : ''}</InlineTextBlock>
+            <InlineTextBlock className={classes.salaryContainer}>{salary}</InlineTextBlock>
     </RegularCardComponent>;
 }
 
@@ -84,16 +140,16 @@ const JobCard = injectSheet(jobCardStyles)(JobCardFunction);
 
 const cardDrawerHeader = <RegularCardHeaderComponent>Java</RegularCardHeaderComponent>
 
-const javaCard1 = <JobCard date="2018-02-27T10:00:45" company='WeAreBrainless' title='Hybris Engineer' location='Kiev' remote={true} salaryMin={2000} salaryMax={3000} currency='$'/>;
-const javaCard2 = <JobCard date="2017-05-02T12:00:23" company='Solve.DontCare' title='Software Architect (Java)' location='Kiev'/>;
-const javaCard3 = <JobCard date="2017-02-12T14:45:12" company='Oldage Solutions Ukraine' title='Senior Java Developer (TG)' location='Kiev' salaryMin={2000} currency='$'/>;
-const javaCard4 = <JobCard date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
-const javaCard5 = <JobCard date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;
-const javaCard6 = <JobCard date="2018-01-21T16:14:05" company='WeDontPlay!' title='Senior Backend Developer (Java)' location='Kiev' currency='$'/>;
-const javaCard7 = <JobCard date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev' remote={true} currency='$'/>; //
-const javaCard8 = <JobCard date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev' salaryMin={4000} currency='$'/>; //
-const javaCard9 = <JobCard date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev' salaryMax={2500} currency='$'/>; //
-const javaCard10 = <JobCard date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev' salaryMax={3500} currency='$'/>; //
+const javaCard1 = <JobCard logoSrc="/assets/images/logos/logo1.svg" date="2018-02-27T10:00:45" company='WeAreBrainless' title='Hybris Engineer' location='Kiev' remote={true} salaryMin={2000} salaryMax={3000} currency='$'/>;
+const javaCard2 = <JobCard logoSrc="/assets/images/logos/logo2.svg" date="2017-05-02T12:00:23" company='Solve.DontCare' title='Software Architect (Java)' location='Kiev'/>;
+const javaCard3 = <JobCard logoSrc="/assets/images/logos/logo3.svg" date="2017-02-12T14:45:12" company='Oldage Solutions Ukraine' title='Senior Java Developer (TG)' location='Kiev' salaryMin={2000} currency='$'/>;
+const javaCard4 = <JobCard logoSrc="/assets/images/logos/logo4.svg" date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
+const javaCard5 = <JobCard logoSrc="/assets/images/logos/logo5.svg" date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;
+const javaCard6 = <JobCard logoSrc="/assets/images/logos/logo6.svg" date="2018-01-21T16:14:05" company='WeDontPlay!' title='Senior Backend Developer (Java)' location='Kiev' currency='$'/>;
+const javaCard7 = <JobCard logoSrc="/assets/images/logos/logo7.svg" date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev' remote={true} currency='$'/>; //
+const javaCard8 = <JobCard logoSrc="/assets/images/logos/logo8.svg" date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev' salaryMin={4000} currency='$'/>; //
+const javaCard9 = <JobCard logoSrc="/assets/images/logos/logo9.svg" date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev' salaryMax={2500} currency='$'/>; //
+const javaCard10 = <JobCard logoSrc="/assets/images/logos/logo10.svg" date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev' salaryMax={3500} currency='$'/>; //
 
 const cardsData = [
     {id: 1, card: javaCard1},
