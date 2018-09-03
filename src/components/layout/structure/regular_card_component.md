@@ -92,3 +92,13 @@ Card with text body, title and that will pop when user control hover over it:
     consectetur elit. Donec id nisl vitae ex scelerisque suscipit.
 </RegularCardComponent>
 ```
+
+Card with text body, title and that will pop to specific height when user control hover over it:
+
+```jsx
+<RegularCardComponent popOnHover={true} maxPopLevel={3} header={<RegularCardHeaderComponent>Test panel 2</RegularCardHeaderComponent>}>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin vitae nisl eget bibendum. Nunc tristique est a dolor interdum, eu faucibus
+    nunc mollis. Morbi gravida libero ac aliquam rhoncus. Donec diam magna, interdum a urna a, rutrum auctor dui. Mauris id molestie dolor, eu
+    consectetur elit. Donec id nisl vitae ex scelerisque suscipit.
+</RegularCardComponent>
+```
