@@ -125,13 +125,13 @@ function JobCardFunction(props) {
     }
     
     return <RegularCardComponent popOnHover={true} maxPopLevel={3} containerClassNames={classes.componentContainer} bodyClassNames={classes.regularCardContainer}>
-            <img src={logoSrc} className={classes.companyLogoContainer}/>
+            {logoSrc ? <img src={logoSrc} className={classes.companyLogoContainer}/> : <div/>}
            
             <InlineTextBlock className={classes.companyNameContainer}>{company}</InlineTextBlock>
             <InlineTextBlock className={classes.publishDateContainer}>{formatedDate}</InlineTextBlock>
             
             <InlineHeader level={6} className={classes.titleContainer}>{title}</InlineHeader>
-            <InlineTextBlock className={classes.locationContainer}>{location}, {remote ? 'remote' : ''}</InlineTextBlock>
+            <InlineTextBlock className={classes.locationContainer}>{location}{location && remote ? ',' : ''} {remote ? 'Remote' : ''}</InlineTextBlock>
             <InlineTextBlock className={classes.salaryContainer}>{salary}</InlineTextBlock>
     </RegularCardComponent>;
 }
@@ -146,10 +146,17 @@ const javaCard3 = <JobCard logoSrc="/assets/images/logos/logo3.svg" date="2017-0
 const javaCard4 = <JobCard logoSrc="/assets/images/logos/logo4.svg" date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
 const javaCard5 = <JobCard logoSrc="/assets/images/logos/logo5.svg" date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;
 const javaCard6 = <JobCard logoSrc="/assets/images/logos/logo6.svg" date="2018-01-21T16:14:05" company='WeDontPlay!' title='Senior Backend Developer (Java)' location='Kiev' currency='$'/>;
-const javaCard7 = <JobCard logoSrc="/assets/images/logos/logo7.svg" date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev' remote={true} currency='$'/>; //
-const javaCard8 = <JobCard logoSrc="/assets/images/logos/logo8.svg" date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev' salaryMin={4000} currency='$'/>; //
-const javaCard9 = <JobCard logoSrc="/assets/images/logos/logo9.svg" date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev' salaryMax={2500} currency='$'/>; //
-const javaCard10 = <JobCard logoSrc="/assets/images/logos/logo10.svg" date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev' salaryMax={3500} currency='$'/>; //
+const javaCard7 = <JobCard logoSrc="/assets/images/logos/logo7.svg" date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev, Odessa, Bolhrad' remote={true} currency='$'/>; 
+const javaCard8 = <JobCard logoSrc="/assets/images/logos/logo8.svg" date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev, Nikolaev' salaryMin={4000} currency='$'/>;
+const javaCard9 = <JobCard logoSrc="/assets/images/logos/logo9.svg" date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev, Odessa' salaryMax={2500} currency='$'/>;
+const javaCard10 = <JobCard logoSrc="/assets/images/logos/logo10.svg" date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev, Kharkiv' salaryMax={3500} currency='$'/>;
+const javaCard11 = <JobCard date="2018-01-12T10:00:00" company='Logoless' title='Junior Java Developrer' remote={true} salaryMax={1500} currency='hr'/>;
+const javaCard12 = <JobCard logoSrc="/assets/images/logos/logo11.svg" date="2016-03-21T11:00:25" company='OutroLab Systems' title='Java Developer (junior)' location='Nikolaev' salaryMin={300} salaryMax={500} currency='$'/>;
+const javaCard13 = <JobCard logoSrc="/assets/images/logos/logo12.svg" date="2017-10-03T15:34:28" company='PieceTeka' title='Middle Java Developer' location='Nikolaev' salaryMin={800} currency='$'/>;
+const javaCard14 = <JobCard logoSrc="/assets/images/logos/logo13.svg" date="2017-12-16T22:00:00" company='Amdlias' title='Middle/Senior Java Developer' location='Odessa' remote={true} salaryMin={2500} salaryMax={3500} currency='$'/>;
+const javaCard15 = <JobCard logoSrc="/assets/images/logos/logo14.svg" date="2017-10-12T21:20:34" company='Unlucky Labs' title='Junior+/Middle Java Developer' location='Kharkiv' remote={false} currency='$'/>;
+const javaCard16 = <JobCard logoSrc="/assets/images/logos/logo15.svg" date="2018-01-13T23:00:00" company='EBAM' title='Senior Java Developer / Tech Lead (Kharkiv)' location='Kiev, Kharkiv' remote={true} currency='$'/>;
+const javaCard17 = <JobCard logoSrc="/assets/images/logos/logo16.svg" date="2017-11-22T00:00:00" company='DAXX' title='Java Developer' location='Kiev, Kharkiv' currency='$'/>;
 
 const cardsData = [
     {id: 1, card: javaCard1},
@@ -162,11 +169,18 @@ const cardsData = [
     {id: 8, card: javaCard8},
     {id: 9, card: javaCard9},
     {id: 10, card: javaCard10},
+    {id: 11, card: javaCard11},
+    {id: 12, card: javaCard12},
+    {id: 13, card: javaCard13},
+    {id: 14, card: javaCard14},
+    {id: 15, card: javaCard15},
+    {id: 16, card: javaCard16},
+    {id: 17, card: javaCard17},
 ];
 
 
 <RegularCardComponent header={cardDrawerHeader}>
-    <CardDrawerComponent data={cardsData}/>
+    <CardDrawerComponent data={cardsData} rowCount={2}/>
 </RegularCardComponent>
 
 

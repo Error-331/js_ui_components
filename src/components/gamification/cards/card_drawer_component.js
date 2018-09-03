@@ -10,7 +10,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {defaultTo, inc, map} from 'ramda'
+import {is, defaultTo, inc, map} from 'ramda'
 
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
@@ -36,7 +36,13 @@ type PropsTypes = {
 
     data?: DataArrayType,
 
-    minRowSize: number | string,
+    gapSize?: number,
+
+    colSize?: number,
+
+    rowSize?: number,
+
+    rowCount?: number,
 
     /**
      * JSS inner classes
@@ -55,10 +61,10 @@ const styles = theme => ({
         boxSizing: 'border-box',
         display: 'grid',
 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(calc(3.125vw + 200px), 1fr))',
-        gridAutoRows: 'minmax(175px, max-content)',
+        padding: '5px',
 
-        gridGap: '12px',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(295px, 1fr))',
+        gridAutoRows: '175px'
     },
 });
 
@@ -105,8 +111,20 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
     // endregion
 
     // region prop accessors
-    _getMinRowSize() {
+    _getGapSize(): number {
+        return defaultTo(12)(this.props.gapSize);
+    }
 
+    _getColSize(): number {
+        return defaultTo(295)(this.props.colSize);
+    }
+
+    _getRowSize(): number {
+        return defaultTo(175)(this.props.rowSize);
+    }
+
+    _getRowCount(): number | string {
+        return defaultTo('auto')(this.props.rowCount);
     }
 
     _getData(): DataArrayType {
@@ -131,9 +149,34 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
     }
 
     _renderComponentContainer(): React.Node {
-        return <div className={this._getComponentContainerClass()}>
+        const gapSize = this._getGapSize();
+
+        const colWidth = this._getColSize();
+        const rowHeight = this._getRowSize();
+
+        let containerStyles = {
+            gridGap: `${gapSize}px`
+        };
+
+        const rowCount = this._getRowCount();
+console.log(this.props.data.length);
+        if (is(Number, rowHeight)) {
+            if (rowCount === 1) {
+                containerStyles = Object.assign(containerStyles, {
+                    'width': `${gapSize * (this.props.data.length * 2 - 2) + (colWidth * this.props.data.length)}px`,
+                    'height': `${gapSize * 2 + rowHeight}px`,
+                });
+            } else if (rowCount > 1) {
+                containerStyles = Object.assign(containerStyles, {
+                    'height': `${(gapSize * rowCount) + rowHeight * rowCount}px`
+                });
+            }
+        }
+        console.log(containerStyles);
+        return <div style={{ boxSizing: 'border-boz',                   'overflowX': 'hidden',
+            'overflowY': 'scroll',}}><div className={this._getComponentContainerClass()} style={containerStyles}>
             {this._renderDraggableCards()}
-        </div>;
+        </div></div>;
     }
 
     render(): React.Node {

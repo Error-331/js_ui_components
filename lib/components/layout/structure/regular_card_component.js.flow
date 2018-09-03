@@ -38,6 +38,12 @@ type PropsTypes = {
     popOnHover?: boolean,
 
     /**
+     * Number that indicates how high above other elements the card component will pop
+     */
+
+    maxPopLevel?: number,
+
+    /**
      * Class names for card container outer div
      */
 
@@ -130,7 +136,19 @@ const styles = theme => ({
             boxShadow: theme.materialDepthLevels.materialDepth5BoxShadow,
         },
 
-        '&.poppable:hover': {
+        '&.poppable2:hover': {
+            boxShadow: theme.materialDepthLevels.materialDepth2BoxShadow,
+        },
+
+        '&.poppable3:hover': {
+            boxShadow: theme.materialDepthLevels.materialDepth3BoxShadow,
+        },
+
+        '&.poppable4:hover': {
+            boxShadow: theme.materialDepthLevels.materialDepth4BoxShadow,
+        },
+
+        '&.poppable5:hover': {
             boxShadow: theme.materialDepthLevels.materialDepth5BoxShadow,
         },
 
@@ -196,6 +214,16 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     // region constructor
     // endregion
 
+    // region business logic
+    _getHeightLevel(heightLevel: number): number {
+        heightLevel = unless(gt(5), always(5))(heightLevel);
+        heightLevel = unless(lt(1), always(1))(heightLevel);
+
+        return heightLevel;
+    }
+
+    // endregion
+
     // region lifecycle methods
     // endregion
 
@@ -205,16 +233,19 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     }
 
     _getOuterContainerClasses(): string {
-        const heightClassName: string = `height${this._getHeightLevel()}`;
+        const heightClassName: string = `height${this._getCardHeightLevel()}`;
+        const poppableClassName: string = `poppable${this._getCardPopHeightLevel()}`;
 
-        return classNames(
+        const containerClassNames = classNames(
             this.props.classes.componentContainer,
             {
                 [heightClassName]: true,
-                'poppable': this._getPopOnHover()
+                [poppableClassName]: this._getPopOnHover()
             },
             this.props.containerClassNames
         );
+
+        return containerClassNames;
     }
 
     _getBodyClasses(): string {
@@ -233,13 +264,14 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region prop accessors
-    _getHeightLevel(): number {
+    _getCardPopHeightLevel(): number {
+        let {maxPopLevel = 5} = this.props;
+        return this._getHeightLevel(maxPopLevel);
+    }
+
+    _getCardHeightLevel(): number {
         let {heightLevel = 1} = this.props;
-
-        heightLevel = unless(gt(5), always(5))(heightLevel);
-        heightLevel = unless(lt(1), always(1))(heightLevel);
-
-        return heightLevel;
+        return this._getHeightLevel(heightLevel);
     }
 
     _getPopOnHover(): boolean {

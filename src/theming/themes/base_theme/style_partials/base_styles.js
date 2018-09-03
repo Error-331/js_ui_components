@@ -26,8 +26,6 @@ export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteTyp
         subTertiaryColor: colorPalette.materialGrey400,
         subQuaternaryColor: colorPalette.materialGrey300,
 
-        regularTextColor: colorPalette.materialBlack,
-
         hoverColor: colorPalette.materialBlack,
         disabledColor: colorPalette.materialGrey400,
 
