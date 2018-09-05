@@ -137,6 +137,11 @@ module.exports = {
                             components: path.join(__dirname, './../src/components/gamification/cards/**/[A-Za-z_]*_component.js'),
                         },
                     ]
+                },
+
+                {
+                    name: 'Demo',
+                    content: path.join(__dirname, './docs/demo/index.md'),
                 }
             ]
         },
