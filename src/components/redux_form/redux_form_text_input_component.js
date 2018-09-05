@@ -10,6 +10,10 @@ import {Field} from 'redux-form/immutable';
 import {FormTextInputComponent} from './../form/form_text_input_component';
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type InputTypes = 'text' | 'password';
 
 type PropsTypes = {
@@ -50,10 +54,22 @@ type PropsTypes = {
     label?: ?string,
 
     /**
+     * Class name which will be added to the component container (main outer container)
+     */
+
+    componentContainerClassName?: string,
+
+    /**
      * Class names which will be added to the icon container of the current component
      */
 
     iconClassNames?: ?string,
+
+    /**
+     * Styles for component container (main outer container) of the form text input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 };
 
 type StateTypes = {};

@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {isNil, isEmpty, is, complement, clone, toString} from 'ramda';
+import {isNil, isEmpty, is, defaultTo, complement, clone, toString} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 import type {FieldProps} from 'redux-form';
@@ -15,7 +15,13 @@ import type {FieldProps} from 'redux-form';
 // local imports
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
+import {MainThemeContext} from './../../theming';
+
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type InputTypes = 'text' | 'password';
 
 export type FormTextInputTypes = {
@@ -51,10 +57,22 @@ export type FormTextInputTypes = {
     label?: ?string,
 
     /**
+     * Class names which will be added to the component container (main outer container)
+     */
+
+    componentContainerClassNames?: string,
+
+    /**
      * Class names which will be added to the icon container of the current component
      */
 
     iconClassNames?: ?string,
+
+    /**
+     * Styles for component container (main outer container) of the form text input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -84,7 +102,7 @@ const topAdditionalPadding = 7;
 const iconAdditionalPadding = 2;
 
 const styles = theme => ({
-    componentOuterContainer: {
+    componentContainer: {
         boxSizing: 'border-box',
 
         position: 'relative',
@@ -263,9 +281,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class FormTextInputComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormTextInputComponent';
+    static displayName = 'FormTextInputClass';
 
     static defaultProps = {
         type: 'text',
@@ -318,8 +339,9 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
     // endregion
 
     // region style accessors
-    _getComponentOuterContainerClasses(): string {
-        return this.props.classes.componentOuterContainer;
+    _getComponentContainerClasses(): string {
+        const userComponentContainerClassNames: string = defaultTo('')(this.props.componentContainerClassNames);
+        return classNames(this.props.classes.componentContainer, userComponentContainerClassNames);
     }
 
     _getInputClasses(): string {
@@ -359,6 +381,10 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
             {'readOnly': readOnly},
             {'disabled': disabled}
         );
+    }
+
+    _getComponentContainerStyles(): CSSStylesType {
+        return defaultTo({})(this.props.componentContainerStyles);
     }
 
     // endregion
@@ -418,12 +444,12 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
 
     _getMetaData(): ReduxFormFieldComponentMetaDataPropsTypes {
         const {meta}: {meta: ?ReduxFormFieldComponentMetaDataPropsTypes} = this.props;
-        return isNil(meta) ? clone(FormTextInputComponentClass.defaultProps.meta) : meta;
+        return isNil(meta) ? clone(FormTextInputClass.defaultProps.meta) : meta;
     }
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormTextInputComponentClass.defaultProps.input) : input;
+        return isNil(input) ? clone(FormTextInputClass.defaultProps.input) : input;
     }
 
     // endregion
@@ -485,7 +511,7 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
 
     render(): React.Node {
         return (
-            <div className={this._getComponentOuterContainerClasses()}>
+            <div className={this._getComponentContainerClasses()} style={this._getComponentContainerStyles()}>
                 {this._renderInputContainer()}
             </div>
         );
@@ -495,4 +521,13 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
 }
 
 // exports
-export const FormTextInputComponent = injectSheet(styles)(FormTextInputComponentClass);
+export function FormTextInputComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormTextInputClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+
+FormTextInputComponent.displayName = 'FormTextInputComponent';
