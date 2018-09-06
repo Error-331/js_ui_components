@@ -21,7 +21,7 @@ module.exports = {
             links: [
                 {
                     rel: 'stylesheet',
-                    href: '/assets/fonts/fontawesome_pro/web-fonts-with-css/css/fontawesome-all.css'
+                    href: '/assets/fonts/fontawesome_pro/web-fonts-with-css/css/all.css'
                 }
             ]
         }
