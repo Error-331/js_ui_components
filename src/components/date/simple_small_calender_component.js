@@ -7,10 +7,12 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {T, isNil, equals, defaultTo, cond, addIndex, range, gt, lt, add, map} from 'ramda';
+import {T, isNil, equals, defaultTo, unless, cond, addIndex, range, gt, lt, add, map} from 'ramda';
 import moment from 'moment';
 
 // local imports
+import type {ExtendedEventTargetType, CombinedEventType} from './../../types/dom_types';
+
 import {
     SimpleFlexGridContainer as Container,
     SimpleFlexGridRow as Row,
@@ -29,12 +31,14 @@ import {SimpleMonthSelectorComponent} from './simple_month_selector_component';
 // type definitions
 type DateType = moment | Date | string;
 
+type OnDateSelectCallbackType = (date: moment) => void;
+
 type PropsTypes = {
     /**
      * Current selected date
      */
 
-    selectedDate?: DateType,
+    date?: DateType,
 
     /**
      * Flag that indicates whether selected date should be highlighted
@@ -53,6 +57,12 @@ type PropsTypes = {
     showMonthSelector?: boolean,
 
     /**
+     * Callback function which will be called once user selects new date
+     */
+
+    onDateSelect?: OnDateSelectCallbackType,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -66,7 +76,7 @@ type StateTypes = {
      * Internal selected date
      */
 
-    date?: Date | string,
+    date: moment,
 };
 
 // styles definition
@@ -92,7 +102,7 @@ const styles = theme => ({
         },
 
         '& td:hover:not(.c-selected):not(:empty)': {
-            cursor: 'pointer'
+            cursor: 'pointer',
         },
 
         '& td.selected': {
@@ -118,11 +128,13 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     static displayName = 'SimpleSmallCalendarComponent';
 
     static defaultProps = {
-        selectedDate: moment(),
+        date: moment(),
         heightLightDate: true,
         compact: false,
         selectable: true,
-        showMonthSelector: true
+        showMonthSelector: true,
+
+        onDateSelect: () => {},
     };
 
     // endregion
@@ -133,13 +145,12 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         const self: any = this;
 
         self._onMonthSelected = self._onMonthSelected.bind(this);
+        self._onDayCellClick = self._onDayCellClick.bind(this);
 
-        const {selectedDate} = props;
+        const {date} = props;
 
         this.state = {
-            date: isNil(selectedDate) ?
-                this._getDateOrDefault() :
-                this._getDateOrDefault(selectedDate)
+            date: this._getDateOrDefault(date)
         };
     }
 
@@ -176,7 +187,7 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
 
     // region state accessors
     _getDate(): moment {
-        return this.state.date;
+        return this.state.date.clone();
     }
 
     _getDateForMonthSelector(): moment {
@@ -207,6 +218,18 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     // endregion
 
     // region prop accessors
+    _getSelectedDate(): moment | null {
+        if (isNil(this.props.date)) {
+            return null;
+        } else {
+            return moment(this.props.date);
+        }
+    }
+
+    _getOnDateSelectCallback(): OnDateSelectCallbackType {
+        return defaultTo(SimpleSmallCalendarComponentClass.defaultProps.onDateSelect)(this.props.onDateSelect);
+    }
+
     _getShowMonthSelector(): boolean {
         return defaultTo(SimpleSmallCalendarComponentClass.defaultProps.showMonthSelector)(this.props.showMonthSelector);
     }
@@ -214,6 +237,21 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     // endregion
 
     // region handlers
+    _onDayCellClick(event: CombinedEventType): void {
+        const target: ExtendedEventTargetType = event.target;
+
+        const dayCellElement: ExtendedEventTargetType = unless(
+            currentTarget => equals('td', currentTarget.tagName.toLowerCase()),
+            currentTarget => currentTarget.closest('td'))(target);
+
+        const dayCellData: string = dayCellElement.dataset['date'];
+
+        unless(
+            (dayCellData) => isNil(dayCellData) || equals('empty', dayCellData),
+            (dayCellData) => this._getOnDateSelectCallback()(moment(dayCellData))
+        )(dayCellData);
+    }
+
     // endregion
 
     // region render methods
@@ -225,13 +263,14 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         return <tr>{weekDayCells}</tr>;
     }
 
-    _renderDaysSelectionBodyCell(dayIndex: number, cellText: number | string, isSelected: boolean) {
+    _renderDaysSelectionBodyCell(dayIndex: number, cellText: number | string, isSelected: boolean, currentDayDate?: moment) {
+
         const cellClasses = classNames({'c-selected': isSelected});
-        return <td key={`day_${dayIndex}`} className={cellClasses}>{cellText}</td>;
+        return <td key={`day_${dayIndex}`} className={cellClasses} data-date={isNil(currentDayDate) ? 'empty' : currentDayDate.format()}>{cellText}</td>;
     }
 
     _renderDaySelectionDays(weekIndex: number): React.Node {
-        const currentDate: moment = this._getDate();
+        const selectedDate: moment | null = this._getSelectedDate();
         const currentDayDate: moment = this._getDate();
 
         const startingDayNumber: number = this._getStartingDayNumber();
@@ -245,7 +284,9 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
                 const currentDayText: string = (dayIndex + 1 - startingDayNumber).toString();
 
                 currentDayDate.set('date', currentDay);
-                return this._renderDaysSelectionBodyCell(dayIndex, currentDayText, currentDate.isSame(currentDayDate));
+                const isSameDate: boolean = isNil(selectedDate) ? false : currentDayDate.isSame(this._normalizeDate(selectedDate));
+                console.log(currentDayDate.format(), this._normalizeDate(selectedDate).format());
+                return this._renderDaysSelectionBodyCell(dayIndex, currentDayText, isSameDate, currentDayDate);
             }]
         ]), range(7 * weekIndex, (7 * weekIndex) + 7));
     }
@@ -264,7 +305,7 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         return <Container>
             <Row>
                 <Col full={true}>
-                    <table className={this.props.classes.daysSelectionTable}>
+                    <table className={this.props.classes.daysSelectionTable} onClick={this._onDayCellClick}>
                         <thead>
                             {this._renderDaysSelectionHeader()}
                         </thead>
