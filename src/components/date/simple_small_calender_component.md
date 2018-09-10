@@ -15,7 +15,7 @@ class DemoSimpleCalendarComponent1 extends Component {
     }
 
     render() {
-        return <SimpleSmallCalendarComponent selectedDate={this.state.date} onDateSelect={this._onDateSelected}/>
+        return <SimpleSmallCalendarComponent date={this.state.date} onDateSelect={this._onDateSelected}/>
     }
     
     constructor(props) {

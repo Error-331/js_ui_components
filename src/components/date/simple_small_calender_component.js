@@ -105,7 +105,7 @@ const styles = theme => ({
             cursor: 'pointer',
         },
 
-        '& td.selected': {
+        '& td.c-selected': {
             borderRadius: '50%',
             backgroundColor: 'green',
 
@@ -285,7 +285,7 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
 
                 currentDayDate.set('date', currentDay);
                 const isSameDate: boolean = isNil(selectedDate) ? false : currentDayDate.isSame(this._normalizeDate(selectedDate));
-                console.log(currentDayDate.format(), this._normalizeDate(selectedDate).format());
+
                 return this._renderDaysSelectionBodyCell(dayIndex, currentDayText, isSameDate, currentDayDate);
             }]
         ]), range(7 * weekIndex, (7 * weekIndex) + 7));
