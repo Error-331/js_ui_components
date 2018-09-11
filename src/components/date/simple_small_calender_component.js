@@ -81,25 +81,58 @@ type StateTypes = {
 
 // styles definition
 const styles = theme => ({
+    daysSelectionOuterContainer: {
+        boxSizing: 'border-box',
+        display: 'grid',
+
+        gridAutoColumns: '1fr',
+        gridAutoRows: 'max-content max-content',
+
+        '& > $daysSelectionInnerContainer': {
+            boxSizing: 'border-box',
+            display: 'grid',
+
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            gridAutoRows: 'minmax(40px, 1fr)',
+
+            justifyItems: 'center',
+            alignItems: 'center'
+        },
+
+        '& > $daysSelectionHeaderContainer': {},
+        '& > $daysSelectionBodyContainer': {
+            '& > $daySelectionOuterContainer': {
+                '& > $daySelectionInnerContainer': {
+                    padding: '20px',
+
+                    '&.selected': {
+                        borderRadius: '50%',
+                        backgroundColor: 'green',
+
+                        color: 'purple',
+                    }
+                },
+
+                '& > $daySelectionInnerContainer:not(.selected):not(:empty)': {
+                    cursor: 'pointer',
+                },
+            }
+
+        },
+    },
+
+    daysSelectionInnerContainer: {},
+    daysSelectionHeaderContainer: {},
+    daysSelectionBodyContainer: {},
+
+    daySelectionOuterContainer: {},
+    daySelectionInnerContainer: {},
+
     daysSelectionTable: {
         boxSizing: 'border-box',
         tableLayout: 'fixed',
 
         width: '100%',
-
-        '& th, td': {
-            overflow: 'hidden',
-
-            width: '40px',
-            height: '40px',
-
-            border: '0px none',
-            borderCollapse: 'collapse',
-            padding: '10px',
-
-            textAlign: 'center',
-            color: 'red'
-        },
 
         '& td:hover:not(.c-selected):not(:empty)': {
             cursor: 'pointer',
@@ -180,6 +213,20 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     // endregion
 
     // region style accessors
+    _getDaysSelectionOuterContainerClassName(): string {
+        return this.props.classes.daysSelectionOuterContainer;
+    }
+
+    _getDaysSelectionHeaderContainerClassName(): string {
+        const {daysSelectionInnerContainer, daysSelectionBodyContainer} = this.props.classes;
+        return classNames(daysSelectionInnerContainer, daysSelectionBodyContainer);
+    }
+
+    _getDaysSelectionBodyContainerClassName(): string {
+        const {daysSelectionInnerContainer, daysSelectionBodyContainer} = this.props.classes;
+        return classNames(daysSelectionInnerContainer, daysSelectionBodyContainer);
+    }
+
     // endregion
 
     // region label accessors
@@ -202,13 +249,21 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         return this._getDate().endOf('month');
     }
 
+    _getStartOfMonthDay() {
+        return this._getStartOfMonthOfDate().day();
+    }
+
     _getNumberOfDays(): number {
         return this._getEndOfMonthOfDate().date();
     }
 
     _getNumberOfWeeks(): number {
         const numberOfDays: number = this._getNumberOfDays();
-        return Math.floor(numberOfDays / 7) + (numberOfDays % 7 > 0 ? 1 : 0);
+        const startOfMonthDay: number = this._getStartOfMonthDay();
+
+        const numberOfDaysWithPadding: number = numberOfDays + startOfMonthDay;
+
+        return Math.floor(numberOfDaysWithPadding / 7) + (numberOfDaysWithPadding % 7 > 0 ? 1 : 0);
     }
 
     _getStartingDayNumber(): number {
@@ -241,10 +296,10 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         const target: ExtendedEventTargetType = event.target;
 
         const dayCellElement: ExtendedEventTargetType = unless(
-            currentTarget => equals('td', currentTarget.tagName.toLowerCase()),
-            currentTarget => currentTarget.closest('td'))(target);
+            currentTarget => equals('div[data-date]', currentTarget.tagName.toLowerCase()),
+            currentTarget => currentTarget.closest('div[data-date]'))(target);
 
-        const dayCellData: string = dayCellElement.dataset['date'];
+        const dayCellData: string | null = isNil(dayCellElement) ? null : dayCellElement.dataset['date'];
 
         unless(
             (dayCellData) => isNil(dayCellData) || equals('empty', dayCellData),
@@ -255,18 +310,18 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     // endregion
 
     // region render methods
-    _renderDaysSelectionHeader(): React.Node {
+    _renderDaysSelectionHeader(): React.ChildrenArray<React.Node> {
         const weekDays = moment.weekdaysMin();
         const mapIndexed = addIndex(map);
 
-        const weekDayCells = mapIndexed((day, dayIndex) => <th key={`weekDay_${dayIndex}`}>{weekDays[dayIndex]}</th>, weekDays);
-        return <tr>{weekDayCells}</tr>;
+        return mapIndexed((day, dayIndex) => <div key={`weekDay_${dayIndex}`}>{weekDays[dayIndex]}</div>, weekDays);
     }
 
     _renderDaysSelectionBodyCell(dayIndex: number, cellText: number | string, isSelected: boolean, currentDayDate?: moment) {
-
-        const cellClasses = classNames({'c-selected': isSelected});
-        return <td key={`day_${dayIndex}`} className={cellClasses} data-date={isNil(currentDayDate) ? 'empty' : currentDayDate.format()}>{cellText}</td>;
+        const cellClasses2 = classNames(this.props.classes.daySelectionInnerContainer, {'selected': isSelected});
+        return <div key={`day_${dayIndex}`} className={this.props.classes.daySelectionOuterContainer} data-date={isNil(currentDayDate) ? 'empty' : currentDayDate.format()}>
+                <div className={cellClasses2}>{cellText}</div>
+            </div>;
     }
 
     _renderDaySelectionDays(weekIndex: number): React.Node {
@@ -291,9 +346,9 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         ]), range(7 * weekIndex, (7 * weekIndex) + 7));
     }
 
-    _renderDaysSelectionRows(): React.Node {
+    _renderDaysSelectionRows(): React.ChildrenArray<React.Node> {
         const numberOfWeeks: number = this._getNumberOfWeeks();
-        return map((weekIndex: number): React.Node => <tr key={`week_${weekIndex}`}>{this._renderDaySelectionDays(weekIndex)}</tr>,
+        return map((weekIndex: number): React.Node => this._renderDaySelectionDays(weekIndex),
             range(0, numberOfWeeks));
     }
 
@@ -302,21 +357,15 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     }
 
     _renderDaysSelection(): React.Node {
-        return <Container>
-            <Row>
-                <Col full={true}>
-                    <table className={this.props.classes.daysSelectionTable} onClick={this._onDayCellClick}>
-                        <thead>
-                            {this._renderDaysSelectionHeader()}
-                        </thead>
+        return <div className={this._getDaysSelectionOuterContainerClassName()}>
+            <div className={this._getDaysSelectionHeaderContainerClassName()}>
+                {this._renderDaysSelectionHeader()}
+            </div>
 
-                        <tbody>
-                            {this._renderDaysSelectionBody()}
-                        </tbody>
-                    </table>
-                </Col>
-            </Row>
-        </Container>;
+            <div className={this._getDaysSelectionBodyContainerClassName()} onClick={this._onDayCellClick}>
+                {this._renderDaysSelectionBody()}
+            </div>
+        </div>;
     }
 
     _renderMonthSelector(): React.Node {
