@@ -24,6 +24,7 @@ import type {
     ButtonStyleType,
     TableStyleType,
     WindowStylesType,
+    DateStylesType,
 
     BaseThemePartialsType,
     AdditionalThemePartialsType,
@@ -44,7 +45,8 @@ import {
     inputStylesFunc,
     buttonStylesFunc,
     tableStylesFunc,
-    layoutStylesFunc
+    layoutStylesFunc,
+    dateStylesFunc,
 } from './../themes/base_theme';
 
 export const extendTheme = (
@@ -52,7 +54,8 @@ export const extendTheme = (
     newFontStacksFunc: FontStacksFuncType = fontStacksFunc,
     newColorPaletteFunc: ColorPaletteFuncType = colorPaletteFunc,
     newMaterialDepthLevelsFunc: MaterialDepthLevelsFuncType = materialDepthLevelsFunc,
-    newBaseStylesFunc: BaseStylesFuncType = baseStylesFunc
+    newBaseStylesFunc: BaseStylesFuncType = baseStylesFunc,
+    newDateStylesFunc: DateStylesType = dateStylesFunc,
 ): ThemeType => {
     const fontFaces: FontFacesListType = newFontFacesFunc(commonFontFaces);
     const fontStacks: FontStacksType = newFontStacksFunc();
@@ -75,6 +78,7 @@ export const extendTheme = (
     const buttonStyles: ButtonStyleType = buttonStylesFunc(newBaseThemePartials);
     const tableStyles: TableStyleType = tableStylesFunc(newBaseThemePartials);
     const windowStyles: WindowStylesType = windowStylesFunc(newBaseThemePartials);
+    const dateStyles: DateStylesType = newDateStylesFunc(newBaseThemePartials);
 
     const newAdditionalThemePartials: AdditionalThemePartialsType = Object.freeze({
         layoutStyles,
@@ -82,6 +86,7 @@ export const extendTheme = (
         buttonStyles,
         tableStyles,
         windowStyles,
+        dateStyles,
     });
 
     const newTheme: ThemeType = mergeAll([

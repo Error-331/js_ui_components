@@ -14,5 +14,10 @@ export const dateStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStacks
     return Object.freeze({
         fontStack: fontStacks.regularFontFamilyStack,
         regularFontSize: baseStyles.primaryFontSize,
+
+        fontColor: baseStyles.mainPrimaryColor,
+        selectionFontColor: baseStyles.noneTransparentBGColor,
+
+        selectionBackgroundColor: baseStyles.mainQuaternaryColor,
     });
 };

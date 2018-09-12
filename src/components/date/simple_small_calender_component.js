@@ -14,12 +14,6 @@ import moment from 'moment';
 import type {ExtendedEventTargetType, CombinedEventType} from './../../types/dom_types';
 
 import {
-    SimpleFlexGridContainer as Container,
-    SimpleFlexGridRow as Row,
-    SimpleFlexGridColumn as Col,
-} from './../grid';
-
-import {
     RegularCardComponent,
     RegularCardHeaderComponent,
 
@@ -27,6 +21,7 @@ import {
 } from './../layout';
 
 import {SimpleMonthSelectorComponent} from './simple_month_selector_component';
+import {MainThemeContext} from './../../theming';
 
 // type definitions
 type DateType = moment | Date | string;
@@ -80,7 +75,31 @@ type StateTypes = {
 };
 
 // styles definition
+const daySelectionInnerContainer = (theme) => ({
+    padding: '20px',
+
+    color: theme.dateStyles.fontColor,
+});
+
 const styles = theme => ({
+    headerTitleContainer: {
+        boxSizing: 'border-box',
+        display: 'grid',
+
+        width: '100%',
+
+        gridTemplateColumns: '1fr',
+        gridTemplateRows: 'max-content max-content',
+
+        gridRowGap: '2px',
+
+        '& > $headerTitleText': {
+            color: theme.layoutStyles.headerFontColor
+        }
+    },
+
+    headerTitleText: {},
+
     daysSelectionOuterContainer: {
         boxSizing: 'border-box',
         display: 'grid',
@@ -99,21 +118,28 @@ const styles = theme => ({
             alignItems: 'center'
         },
 
-        '& > $daysSelectionHeaderContainer': {},
+        '& > $daysSelectionHeaderContainer': {
+            '& > $daySelectionHeaderOuterContainer': {
+                '& > $daySelectionHeaderInnerContainer': {
+                    extend: daySelectionInnerContainer(theme),
+                }
+            }
+        },
+
         '& > $daysSelectionBodyContainer': {
-            '& > $daySelectionOuterContainer': {
-                '& > $daySelectionInnerContainer': {
-                    padding: '20px',
+            '& > $daySelectionBodyOuterContainer': {
+                '& > $daySelectionBodyInnerContainer': {
+                    extend: daySelectionInnerContainer(theme),
 
                     '&.selected': {
                         borderRadius: '50%',
-                        backgroundColor: 'green',
+                        backgroundColor: theme.dateStyles.selectionBackgroundColor,
 
-                        color: 'purple',
+                        color: theme.dateStyles.selectionFontColor,
                     }
                 },
 
-                '& > $daySelectionInnerContainer:not(.selected):not(:empty)': {
+                '& > $daySelectionBodyInnerContainer:not(.selected):not(:empty)': {
                     cursor: 'pointer',
                 },
             }
@@ -125,27 +151,15 @@ const styles = theme => ({
     daysSelectionHeaderContainer: {},
     daysSelectionBodyContainer: {},
 
-    daySelectionOuterContainer: {},
-    daySelectionInnerContainer: {},
+    daySelectionHeaderOuterContainer: {},
+    daySelectionHeaderInnerContainer: {},
 
-    daysSelectionTable: {
-        boxSizing: 'border-box',
-        tableLayout: 'fixed',
-
-        width: '100%',
-
-        '& td:hover:not(.c-selected):not(:empty)': {
-            cursor: 'pointer',
-        },
-
-        '& td.c-selected': {
-            borderRadius: '50%',
-            backgroundColor: 'green',
-
-            color: 'purple'
-        }
-    }
+    daySelectionBodyOuterContainer: {},
+    daySelectionBodyInnerContainer: {},
 });
+
+// constants declaration
+const EMPTY_DATE_CELL_DATA = 'empty';
 
 /**
  * Simple small calendar component styled according to material-UI guidelines.
@@ -156,9 +170,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class SimpleSmallCalendarComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class SimpleSmallCalendarClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'SimpleSmallCalendarComponent';
+    static displayName = 'SimpleSmallCalendarClass';
 
     static defaultProps = {
         date: moment(),
@@ -213,18 +230,42 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     // endregion
 
     // region style accessors
+    _getHeaderTitleTextClassName(): string {
+        return this.props.classes.headerTitleText;
+    }
+
+    _getHeaderTitleContainerClassName(): string {
+        return this.props.classes.headerTitleContainer;
+    }
+
     _getDaysSelectionOuterContainerClassName(): string {
         return this.props.classes.daysSelectionOuterContainer;
     }
 
     _getDaysSelectionHeaderContainerClassName(): string {
-        const {daysSelectionInnerContainer, daysSelectionBodyContainer} = this.props.classes;
-        return classNames(daysSelectionInnerContainer, daysSelectionBodyContainer);
+        const {daysSelectionInnerContainer, daysSelectionHeaderContainer} = this.props.classes;
+        return classNames(daysSelectionInnerContainer, daysSelectionHeaderContainer);
+    }
+
+    _getDaySelectionHeaderOuterCellClassName(): string {
+        return this.props.classes.daySelectionHeaderOuterContainer;
+    }
+
+    _getDaySelectionHeaderInnerCellClassName(): string {
+        return this.props.classes.daySelectionHeaderInnerContainer;
     }
 
     _getDaysSelectionBodyContainerClassName(): string {
         const {daysSelectionInnerContainer, daysSelectionBodyContainer} = this.props.classes;
         return classNames(daysSelectionInnerContainer, daysSelectionBodyContainer);
+    }
+
+    _getDaySelectionBodyOuterCellClassName(): string {
+        return this.props.classes.daySelectionBodyOuterContainer;
+    }
+
+    _getDaySelectionBodyInnerCellClassName(selected: boolean): string {
+        return classNames(this.props.classes.daySelectionBodyInnerContainer, {'selected': selected});
     }
 
     // endregion
@@ -282,11 +323,11 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     }
 
     _getOnDateSelectCallback(): OnDateSelectCallbackType {
-        return defaultTo(SimpleSmallCalendarComponentClass.defaultProps.onDateSelect)(this.props.onDateSelect);
+        return defaultTo(SimpleSmallCalendarClass.defaultProps.onDateSelect)(this.props.onDateSelect);
     }
 
     _getShowMonthSelector(): boolean {
-        return defaultTo(SimpleSmallCalendarComponentClass.defaultProps.showMonthSelector)(this.props.showMonthSelector);
+        return defaultTo(SimpleSmallCalendarClass.defaultProps.showMonthSelector)(this.props.showMonthSelector);
     }
 
     // endregion
@@ -302,7 +343,7 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         const dayCellData: string | null = isNil(dayCellElement) ? null : dayCellElement.dataset['date'];
 
         unless(
-            (dayCellData) => isNil(dayCellData) || equals('empty', dayCellData),
+            (dayCellData) => isNil(dayCellData) || equals(EMPTY_DATE_CELL_DATA, dayCellData),
             (dayCellData) => this._getOnDateSelectCallback()(moment(dayCellData))
         )(dayCellData);
     }
@@ -314,13 +355,17 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
         const weekDays = moment.weekdaysMin();
         const mapIndexed = addIndex(map);
 
-        return mapIndexed((day, dayIndex) => <div key={`weekDay_${dayIndex}`}>{weekDays[dayIndex]}</div>, weekDays);
+        return mapIndexed((day, dayIndex) => <div key={`weekDay_${dayIndex}`} className={this._getDaySelectionHeaderOuterCellClassName()}>
+            <div className={this._getDaySelectionHeaderInnerCellClassName()}>
+                {weekDays[dayIndex]}
+            </div>
+        </div>, weekDays);
     }
 
     _renderDaysSelectionBodyCell(dayIndex: number, cellText: number | string, isSelected: boolean, currentDayDate?: moment) {
-        const cellClasses2 = classNames(this.props.classes.daySelectionInnerContainer, {'selected': isSelected});
-        return <div key={`day_${dayIndex}`} className={this.props.classes.daySelectionOuterContainer} data-date={isNil(currentDayDate) ? 'empty' : currentDayDate.format()}>
-                <div className={cellClasses2}>{cellText}</div>
+
+        return <div key={`day_${dayIndex}`} className={this._getDaySelectionBodyOuterCellClassName()} data-date={isNil(currentDayDate) ? EMPTY_DATE_CELL_DATA : currentDayDate.format()}>
+                <div className={this._getDaySelectionBodyInnerCellClassName(isSelected)}>{cellText}</div>
             </div>;
     }
 
@@ -352,10 +397,6 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
             range(0, numberOfWeeks));
     }
 
-    _renderDaysSelectionBody(): React.Node {
-        return this._renderDaysSelectionRows();
-    }
-
     _renderDaysSelection(): React.Node {
         return <div className={this._getDaysSelectionOuterContainerClassName()}>
             <div className={this._getDaysSelectionHeaderContainerClassName()}>
@@ -363,7 +404,7 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
             </div>
 
             <div className={this._getDaysSelectionBodyContainerClassName()} onClick={this._onDayCellClick}>
-                {this._renderDaysSelectionBody()}
+                {this._renderDaysSelectionRows()}
             </div>
         </div>;
     }
@@ -376,28 +417,19 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
     }
 
     _renderHeaderDate(): React.Node {
-        return <InlineHeader level={4}>Fri, Jul 28</InlineHeader>;
+        const formattedDate: string = this._getDate().format('dd, MMM MM');
+        return <InlineHeader className={this._getHeaderTitleTextClassName()} level={4}>{formattedDate}</InlineHeader>;
     }
 
     _renderHeaderYear(): React.Node {
-        return <InlineHeader level={6}>2017</InlineHeader>;
+        const formattedDate: string = this._getDate().format('YYYY');
+        return <InlineHeader className={this._getHeaderTitleTextClassName()} level={6}>{formattedDate}</InlineHeader>;
     }
 
     _renderCardHeader(): React.Node {
-        return <RegularCardHeaderComponent>
-            <Container>
-                <Row>
-                    <Col full={true}>
-                        {this._renderHeaderYear()}
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col full={true}>
-                        {this._renderHeaderDate()}
-                    </Col>
-                </Row>
-            </Container>
+        return <RegularCardHeaderComponent titleClassName={this._getHeaderTitleContainerClassName()}>
+            {this._renderHeaderYear()}
+            {this._renderHeaderDate()}
         </RegularCardHeaderComponent>;
     }
 
@@ -416,4 +448,12 @@ export class SimpleSmallCalendarComponentClass extends React.Component<PropsType
 }
 
 // exports
-export const SimpleSmallCalendarComponent = injectSheet(styles)(SimpleSmallCalendarComponentClass);
+export function SimpleSmallCalendarComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <SimpleSmallCalendarClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+SimpleSmallCalendarComponent.displayName = 'SimpleSmallCalendarComponent';

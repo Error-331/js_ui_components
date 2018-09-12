@@ -13,7 +13,6 @@ import {always, complement, gt, lt, isEmpty, ifElse, unless} from 'ramda';
 import type {ThemeType} from './../../../types/theme_types';
 
 // type definitions
-type CardChildrenType = React.ChildrenArray<void | null | string | number | React.Element<any>>;
 type StyleType = {
     [string]: mixed
 };
@@ -23,7 +22,7 @@ type PropsTypes = {
      * Card header
      */
 
-    header?: ?CardChildrenType,
+    header?: React.Node,
 
     /**
      * Number that indicates how high above other elements the card component is placed
@@ -73,7 +72,7 @@ type PropsTypes = {
      * Content for card body
      */
 
-    children?: ?CardChildrenType,
+    children?: React.Node,
 
     /**
      * JSS theme object
@@ -206,7 +205,10 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     static displayName = 'RegularCardComponent';
 
     static defaultProps = {
-        containerClassNames: ''
+        containerClassNames: '',
+
+        theme: {},
+        classes: {}
     };
 
     // endregion
