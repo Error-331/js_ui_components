@@ -12,8 +12,10 @@ import type {DateStylesType} from './../../../../types/theming/date_style_types'
 // exports
 export const dateStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): DateStylesType => {
     return Object.freeze({
+        calendarCompactMaxWidth: 500, // px
+
         fontStack: fontStacks.regularFontFamilyStack,
-        regularFontSize: baseStyles.primaryFontSize,
+        regularFontSize: baseStyles.primaryFontSize, // px
 
         fontColor: baseStyles.mainPrimaryColor,
         selectionFontColor: baseStyles.noneTransparentBGColor,
