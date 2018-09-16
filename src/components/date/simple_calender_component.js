@@ -404,9 +404,11 @@ export class SimpleCalendarClass extends React.Component<PropsTypes, StateTypes>
 
     _renderDaysSelectionBodyCell(dayIndex: number, cellText: number | string, isSelected: boolean, currentDayDate?: moment) {
         const dateData: string = isNil(currentDayDate) ? EMPTY_DATE_CELL_DATA : currentDayDate.format();
+        const nbsp: string = String.fromCharCode(160);
+        const preparedCellText: string = parseInt(cellText) > 10 ? `${cellText}` : `${nbsp}${nbsp}${cellText}`;
 
         return <div key={`day_${dayIndex}`} className={this._getDaySelectionBodyOuterCellClassName()} data-date={dateData}>
-                <div className={this._getDaySelectionBodyInnerCellClassName(isSelected)}>{cellText}</div>
+                <div className={this._getDaySelectionBodyInnerCellClassName(isSelected)}>{preparedCellText}</div>
             </div>;
     }
 

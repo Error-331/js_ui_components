@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import {Form} from 'redux-form';
 import {reduxForm} from 'redux-form/immutable';
 import injectSheet from 'react-jss';
+import moment from 'moment';
 
 // local imports
 import {MAIN_FORM_NAME} from './../constants/redux_constants';
@@ -66,6 +67,14 @@ const ComponentFormContainerConnected = reduxForm({
             testFromDropDownInputComponentWithDefaultValue3: 'option_4',
             testFromDropDownInputComponentWithDefaultValue4: 'option_1',
             testFromDropDownInputComponentWithDefaultValue5: 'option_3',
+        },
+
+        reduxFormDateInputComponents: {
+            testFromDateInputComponentWithDefaultValue1: moment('2013-02-08 09:30:26'),
+            testFromDateInputComponentWithDefaultValue2: moment('2014-02-08 09:30:26'),
+            testFromDateInputComponentWithDefaultValue3: moment('2015-02-08 09:30:26'),
+            testFromDateInputComponentWithDefaultValue4: moment('2016-02-08 09:30:26'),
+            testFromDateInputComponentWithDefaultValue5: moment('2017-02-08 09:30:26'),
         }
     }
 })(ComponentFormContainer);
