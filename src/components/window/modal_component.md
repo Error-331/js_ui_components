@@ -4,6 +4,7 @@ Example usage of modal component with some custom content:
 
 const {Component} = require('react');
 
+const {ModalComponent} = require('./modal_component');
 const {RegularButtonComponent} = require('./../buttons/regular_button_component');
 const {RegularCardHeaderComponent} = require('./../layout/structure/regular_card_header_component');
 

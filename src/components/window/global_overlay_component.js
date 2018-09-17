@@ -13,6 +13,9 @@ import {isNotNil} from '@webfuturistics/design_components';
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 
+import {MainThemeContext} from './../../theming';
+import {ModalClass} from "./modal_component";
+
 // type definitions
 type PropsTypes = {
     /**
@@ -126,9 +129,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class GlobalOverlayComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class GlobalOverlayClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'GlobalOverlayComponent';
+    static displayName = 'GlobalOverlayClass';
 
     // endregion
 
@@ -182,6 +188,16 @@ export class GlobalOverlayComponentClass extends React.Component<PropsTypes, Sta
     // endregion
 
     // region prop accessors
+    _getOpacity(): number {
+        const {opacity, theme} = this.props;
+        return defaultTo(theme.windowStyles.overlayOpacity)(opacity);
+    }
+
+    _shouldShow(): boolean {
+        const {show} = this.props;
+        return defaultTo(ModalClass.defaultProps.show)(show);
+    }
+
     // endregion
 
     // region handlers
@@ -208,8 +224,7 @@ export class GlobalOverlayComponentClass extends React.Component<PropsTypes, Sta
     }
 
     _renderSemiTransparentBackgroundContainer(): React.Node {
-        const {opacity} = this.props;
-        const styles: Object = isNotNil(opacity) ? {opacity} : {};
+        const styles: Object = {opacity: this._getOpacity()};
 
         return <div className={this._getSemiTransparentBackgroundContainerClasses()} style={styles}>
         </div>;
@@ -224,13 +239,20 @@ export class GlobalOverlayComponentClass extends React.Component<PropsTypes, Sta
         </div>;
     }
 
-    render(): React.Node {
-        const {show} = this.props;
-        return defaultTo(false)(show) ? this._renderOverlayContainer() : null;
+    render(): React.Node {;
+        return this._shouldShow() ? this._renderOverlayContainer() : null;
     }
 
     // endregion
 }
 
 // exports
-export const GlobalOverlayComponent = injectSheet(styles)(GlobalOverlayComponentClass);
+export function GlobalOverlayComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <GlobalOverlayClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+GlobalOverlayComponent.displayName = 'GlobalOverlayComponent';
