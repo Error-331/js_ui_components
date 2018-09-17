@@ -407,5 +407,4 @@ export function RegularButtonComponent(props: PropsTypes) {
     );
 }
 
-
 RegularButtonComponent.displayName = 'RegularButtonComponent';
