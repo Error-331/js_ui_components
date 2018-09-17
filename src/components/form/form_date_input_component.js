@@ -19,6 +19,7 @@ import type {ThemeType} from './../../types/theme_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
 import {MainThemeContext} from './../../theming';
+
 import {FormTextInputComponent} from './form_text_input_component';
 import {SimpleCalendarComponent} from './../date/simple_calender_component';
 import {GlobalOverlayComponent} from './../window/global_overlay_component';
@@ -27,6 +28,11 @@ import {GlobalOverlayComponent} from './../window/global_overlay_component';
 type OptionValueType = string | number;
 
 type PropsTypes = FieldProps & {
+    /**
+     * Formatting that will be used when displaying date
+     */
+
+    dateFormat?: string,
 
     /**
      * Flag that indicates whether month selector should be shown
@@ -118,10 +124,6 @@ const styles = theme => ({
         alignItems: 'stretch',
         alignContent: 'flex-start',
 
-        '& > $inputControl': {
-            display: 'none',
-        },
-
         '& > $textInputContainer': {
             position: 'relative',
 
@@ -129,45 +131,9 @@ const styles = theme => ({
             flexShrink: 1,
             flexGrow: 0,
         },
-
-        '& > $optionsContainer': {
-            boxSizing: 'border-box',
-            position: 'absolute',
-
-            top: 0,
-            left: 0,
-
-            width: '100%',
-
-            flexBasis: 'auto',
-            flexShrink: 1,
-            flexGrow: 0,
-
-            '& $optionContainer': {
-                padding: '8px 8px 8px 10px',
-                cursor: 'pointer',
-                color: theme.inputStyles.inactiveColor,
-            },
-
-            '& $optionContainer.selected': {
-                backgroundColor: theme.inputStyles.selectedBGColor,
-            },
-
-            '& $optionContainer:hover': {
-                color: theme.inputStyles.hoverColor,
-            },
-
-            '& $optionContainer.selected:hover': {
-                cursor: 'auto',
-                color: theme.inputStyles.inactiveColor,
-            }
-        }
     },
 
-    inputControl: {},
     textInputContainer: {},
-    optionsContainer: {},
-    optionContainer: {},
 });
 
 /**
@@ -188,6 +154,8 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
     static displayName = 'FormDateInputClass';
 
     static defaultProps = {
+        dateFormat: ' YYYY-MM-DD',
+
         readOnly: false,
         disabled: false,
 
@@ -249,12 +217,12 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
     // endregion
 
     // region style accessors
-    _getInputClasses(): string {
-        return this.props.classes.inputControl;
+    _getComponentOuterContainerClassName(): string {
+        return this.props.classes.componentOuterContainer;
     }
 
-    _getComponentOuterContainerClasses(): string {
-        return this.props.classes.componentOuterContainer;
+    _getTextInputContainerClassName(): string {
+        return this.props.classes.textInputContainer;
     }
 
     // endregion
@@ -277,11 +245,26 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
     // endregion
 
     // region prop accessors
+    _isReadOnly(): boolean {
+        const {readOnly} = this.props;
+        return defaultTo(FormDateInputClass.defaultProps.readOnly)(readOnly);
+    }
+
+    _isDisabled(): boolean {
+        const {disabled} = this.props;
+        return defaultTo(FormDateInputClass.defaultProps.disabled)(disabled);
+    }
+
     _getDate(): moment {
         const {value}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
         const parsedDate: moment = moment(value);
 
         return parsedDate.isValid() ? parsedDate : moment();
+    }
+
+    _getDateFormat(): string {
+        const {dateFormat} = this.props;
+        return defaultTo(FormDateInputClass.defaultProps.dateFormat)(dateFormat);
     }
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
@@ -296,9 +279,11 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
         const currentName: string = defaultTo(this._id)(input.name);
         const currentValue: OptionValueType = defaultTo('')(input.value);
 
+        const dateFormat: string = this._getDateFormat();
+
         const newInput: ReduxFormFieldComponentInputDataPropsTypes = mergeDeepRight(input, {
             name: `${currentName}_subTextField`,
-            value: is(Object, currentValue) ? moment(currentValue).format() : '',
+            value: is(Object, currentValue) ? moment(currentValue).format(dateFormat) : '',
 
             onFocus: () => {},
             onBlur: () => {},
@@ -331,12 +316,7 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _onDateInputClick(): void {
-        let {readOnly, disabled} = this.props;
-
-        readOnly = defaultTo(false)(readOnly);
-        disabled = defaultTo(false)(disabled);
-
-        if (readOnly || disabled) {
+        if (this._isReadOnly() || this._isDisabled()) {
             return;
         }
 
@@ -353,23 +333,20 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _renderTextInputContainer(): React.Node {
-        return <div className={this.props.classes.textInputContainer} onClick={this._onDateInputClick}>
+        return <div className={this._getTextInputContainerClassName()} onClick={this._onDateInputClick}>
             {this._renderTextInputComponent()}
         </div>;
     }
 
     _renderDateSelector(): React.Node {
-        const {onChange}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
-
-
-        return <GlobalOverlayComponent show={this.state.dateSelectorShown} opacity={0.5} onOverlayClick={this._onOverlayClick}>
+        return <GlobalOverlayComponent show={this.state.dateSelectorShown} onOverlayClick={this._onOverlayClick}>
             <SimpleCalendarComponent date={this._getDate()} onDateSelect={this._onDateSelect}/>
         </GlobalOverlayComponent>;
     }
 
     _renderOuterContainer(): React.Node {
         return (
-            <div className={this._getComponentOuterContainerClasses()}>
+            <div className={this._getComponentOuterContainerClassName()}>
                 {this._renderTextInputContainer()}
                 {this._renderDateSelector()}
             </div>

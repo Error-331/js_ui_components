@@ -159,7 +159,7 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
         };
 
         const rowCount = this._getRowCount();
-console.log(this.props.data.length);
+
         if (is(Number, rowHeight)) {
             if (rowCount === 1) {
                 containerStyles = Object.assign(containerStyles, {
@@ -172,7 +172,7 @@ console.log(this.props.data.length);
                 });
             }
         }
-        console.log(containerStyles);
+
         return <div style={{ boxSizing: 'border-boz',                   'overflowX': 'hidden',
             'overflowY': 'scroll',}}><div className={this._getComponentContainerClass()} style={containerStyles}>
             {this._renderDraggableCards()}

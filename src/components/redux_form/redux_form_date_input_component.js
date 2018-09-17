@@ -5,20 +5,23 @@
 // external imports
 import * as React from 'react';
 import {Field} from 'redux-form/immutable';
-import moment from 'moment';
 
 // local imports
 import {FormDateInputComponent} from '../form/form_date_input_component';
 
 // type definitions
-type DateType = moment | Date | string;
-
 type PropsTypes = {
     /**
      * Input name
      */
 
     name: string,
+
+    /**
+     * Formatting that will be used when displaying date
+     */
+
+    dateFormat?: string,
 
     /**
      * Flag that indicates whether month selector should be shown
