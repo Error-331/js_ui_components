@@ -43,17 +43,7 @@ module.exports = {
             name: 'UI Components',
             content: path.join(__dirname, './docs/ui_components_section.md'),
             sections: [
-                {
-                    name: 'Grid',
-                    content: path.join(__dirname, './docs/grid/index.md'),
-                    sections: [
-                        {
-                            name: 'Simple flex grid',
-                            content: path.join(__dirname, './docs/grid/simple_flex_grid/index.md'),
-                            components: path.join(__dirname, './../src/components/grid/simple_flex_grid/**/simple_[A-Za-z_]*.js'),
-                        },
-                    ]
-                },
+
 
                 {
                     name: 'Layout',
@@ -79,70 +69,14 @@ module.exports = {
                     ]
                 },
 
-                {
-                    name: 'Form',
-                    content: path.join(__dirname, './docs/form/index.md'),
-                    components: path.join(__dirname, './../src/components/form/**/[A-Za-z_]*_component.js'),
-                },
 
-                {
-                    name: 'Redux form',
-                    content: path.join(__dirname, './docs/redux_form/index.md'),
-                    components: path.join(__dirname, './../src/components/redux_form/**/[A-Za-z_]*_component.js'),
-                },
-
-                {
-                    name: 'Buttons',
-                    content: path.join(__dirname, './docs/buttons/index.md'),
-                    components: path.join(__dirname, './../src/components/buttons/**/[A-Za-z_]*_component.js'),
-                },
-
-                {
-                    name: 'Tables',
-                    content: path.join(__dirname, './docs/tables/index.md'),
-                    components: path.join(__dirname, './../src/components/tables/**/[A-Za-z_]*_component.js'),
-                },
 
                 {
                     name: 'Navigation',
                     content: path.join(__dirname, './docs/navigation/index.md'),
                     components: path.join(__dirname, './../src/components/navigation/**/[A-Za-z_]*_component.js'),
                 },
-
-                {
-                    name: 'Date',
-                    content: path.join(__dirname, './docs/date/index.md'),
-                    components: path.join(__dirname, './../src/components/date/**/[A-Za-z_]*_component.js'),
-                },
-
-                {
-                    name: 'Utility',
-                    content: path.join(__dirname, './docs/utility/index.md'),
-                    components: path.join(__dirname, './../src/components/utility/**/[A-Za-z_]*_component.js'),
-                },
-
-                {
-                    name: 'Window',
-                    content: path.join(__dirname, './docs/window/index.md'),
-                    components: path.join(__dirname, './../src/components/window/**/[A-Za-z_]*_component.js'),
-                },
-
-                {
-                    name: 'Gamification',
-                    content: path.join(__dirname, './docs/gamification/index.md'),
-                    sections: [
-                        {
-                            name: 'Cards',
-                            content: path.join(__dirname, './docs/gamification/cards/index.md'),
-                            components: path.join(__dirname, './../src/components/gamification/cards/**/[A-Za-z_]*_component.js'),
-                        },
-                    ]
-                },
-
-                {
-                    name: 'Demo',
-                    content: path.join(__dirname, './docs/demo/index.md'),
-                }
+                
             ]
         },
 

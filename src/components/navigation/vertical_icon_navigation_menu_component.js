@@ -7,10 +7,11 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {defaultTo, length, slice} from 'ramda';
+import {defaultTo, length, slice, map} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../theming';
+import {NavigationStylesType} from "../../types/theming/navigation_style_types";
 
 // type definitions
 
@@ -68,6 +69,9 @@ const styles = theme => ({
         maxWidth: '50px',
         height: '100%',
 
+        paddingTop: '3px',
+        paddingBottom: '3px',
+
         flexDirection: 'column',
         flexWrap: 'nowrap',
 
@@ -75,23 +79,68 @@ const styles = theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
-        backgroundColor: 'blue',
+        backgroundColor: theme.navigationStyles.bodyBGColor1,
+
+        '& > $iconsContainer': {
+            boxSizing: 'border-box',
+            display: 'flex',
+
+            flexBasis: 'auto',
+            flexGrow: 0,
+            flexShrink: 1,
+
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            alignContent: 'flex-start',
+
+            '& > $iconContainer': {
+                display: 'flex',
+
+                flexBasis: 'auto',
+                flexGrow: 0,
+                flexShrink: 1,
+
+                flexDirection: 'column',
+                flexWrap: 'nowrap',
+
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'flex-start',
+
+                width: '35px',
+                height: '35px',
+
+                borderRadius: '50%',
+
+                cursor: 'pointer',
+
+                '& > i': {
+                    fontSize: `${theme.navigationStyles.primaryFontSize}px`,
+                    color: theme.navigationStyles.fontColor1,
+                },
+
+                '&:hover': {
+                    backgroundColor: theme.navigationStyles.bodyHoverColor1
+                }
+            },
+        },
 
         '& > $topIconsContainer': {
-            extend: iconsContainer(theme),
-
             alignContent: 'flex-start',
         },
 
         '& > $bottomIconsContainer': {
-            extend: iconsContainer(theme),
-
             alignContent: 'flex-end',
         }
     },
 
+    iconsContainer: {},
     topIconsContainer: {},
-    bottomIconsContainer: {}
+    bottomIconsContainer: {},
+    iconContainer: {}
 });
 
 /**
@@ -134,11 +183,21 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
     }
 
     _getTopIconsContainerClassName(): string {
-        return this.props.classes.topIconsContainer;
+        return classNames(
+            this.props.classes.iconsContainer,
+            this.props.classes.topIconsContainer
+        );
     }
 
     _getBottomIconsContainerClassName(): string {
-        return this.props.classes.bottomIconsContainer;
+        return classNames(
+            this.props.classes.iconsContainer,
+            this.props.classes.bottomIconsContainer
+        );
+    }
+
+    _getIconContainerClassName(): string {
+        return this.props.classes.iconContainer;
     }
 
     // endregion
@@ -161,16 +220,22 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
     // endregion
 
     // region render methods
-    _renderIconContainers(): React.Node {
-
+    _renderIconContainers(icons: Array<React.Node>): React.Node {
+        return map(icon => <div className={this._getIconContainerClassName()}>
+            {icon}
+        </div>, icons);
     }
 
-    _renderBottomIconsContainer(): React.Node {
-
+    _renderBottomIconsContainer(bottomChildren: Array<React.Node>): React.Node {
+        return <div className={this._getBottomIconsContainerClassName()}>
+            {this._renderIconContainers(bottomChildren)}
+        </div>;
     }
 
-    _renderTopIconsContainer(): React.Node {
-
+    _renderTopIconsContainer(topChildren: Array<React.Node>): React.Node {
+        return <div className={this._getTopIconsContainerClassName()}>
+            {this._renderIconContainers(topChildren)}
+        </div>;
     }
 
     _renderComponentContainer(): React.Node {
@@ -181,19 +246,14 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
         const topChildrenCount: number = childrenCount - bottomChildrenCount;
 
         const bottomChildrenStartIndex: number = childrenCount - topChildrenCount;
-        const bottomChildrenEndIndex: number = bottomChildrenStartIndex +  bottomChildrenCount;
+        const bottomChildrenEndIndex: number = bottomChildrenStartIndex + bottomChildrenCount;
 
         const topChildren = slice(0, topChildrenCount, children);
         const bottomChildren = slice(bottomChildrenStartIndex, bottomChildrenEndIndex, children);
 
         return (<div className={this._getComponentContainerClassName()}>
-            <div className={this._getTopIconsContainerClassName()}>
-                {topChildren}
-            </div>
-
-            <div className={this._getBottomIconsContainerClassName()}>
-                {bottomChildren}
-            </div>
+            {this._renderTopIconsContainer(topChildren)}
+            {this._renderBottomIconsContainer(bottomChildren)}
         </div>);
     }
 

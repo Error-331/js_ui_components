@@ -5,7 +5,7 @@ Test documentation:
 const {VerticalIconNavigationMenuComponent} = require('./vertical_icon_navigation_menu_component');
 
 const testContainerStyle = {
-    height: '200px',
+    height: '400px',
 };
 
 <div style={testContainerStyle}>
