@@ -11,11 +11,13 @@ import {defaultTo, length, slice, map} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../theming';
-import {NavigationStylesType} from "../../types/theming/navigation_style_types";
 
 // type definitions
-
 type PropsTypes = {
+    /**
+     * Number of icons that will be placed at the bottom part of the component
+     */
+
     bottomItemsCount?: number,
 
     /**
@@ -66,7 +68,7 @@ const styles = theme => ({
         flexGrow: 0,
         flexShrink: 1,
 
-        maxWidth: '50px',
+        width: '50px',
         height: '100%',
 
         paddingTop: '3px',
@@ -245,10 +247,13 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
         const bottomChildrenCount: number = this._getBottomItemsCount();
         const topChildrenCount: number = childrenCount - bottomChildrenCount;
 
-        const bottomChildrenStartIndex: number = childrenCount - topChildrenCount;
-        const bottomChildrenEndIndex: number = bottomChildrenStartIndex + bottomChildrenCount;
+        const topChildrenStartIndex: number = 0;
+        const topChildrenEndIndex: number = topChildrenCount;
 
-        const topChildren = slice(0, topChildrenCount, children);
+        const bottomChildrenStartIndex: number = topChildrenCount;
+        const bottomChildrenEndIndex: number = childrenCount;
+
+        const topChildren = slice(topChildrenStartIndex, topChildrenEndIndex, children);
         const bottomChildren = slice(bottomChildrenStartIndex, bottomChildrenEndIndex, children);
 
         return (<div className={this._getComponentContainerClassName()}>
