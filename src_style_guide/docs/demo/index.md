@@ -312,7 +312,7 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-windo
         label='Name'
     
         componentContainerStyles={nameControlStyles}
-        iconClassNames='fas fa-user'
+        iconClassNames='fas fa-window-alt'
     />
     
     <ReduxFormCheckboxInputComponent
@@ -326,10 +326,10 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-windo
     <ReduxFormTextInputComponent
         name='edit.template.directory.name'
         placeholder='template directory name...'
-        label='Name'
+        label='Directory name'
         
         componentContainerStyles={directoryControlStyles}
-        iconClassNames='fas fa-user'
+        iconClassNames='fas fa-folder'
     />
     
     <ReduxFormCheckboxInputComponent
@@ -339,6 +339,141 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-windo
                 
         componentContainerStyles={isArchivedControlStyles}
     />  
+    
+    <div style={buttonsContainerStyles}>
+        <RegularButtonComponent label='Cancel' variant='outlined' containerStyles={cancelButtonStyles}/>
+        <RegularButtonComponent label='Save' containerStyles={saveButtonStyles}/>
+    </div>
+
+</RegularCardComponent>
+
+```
+
+Mock-up of 'domain edit' dialog body:
+
+```jsx
+
+const {RegularCardComponent, RegularCardHeaderComponent} = require('./../../../src/components/layout');
+const {
+    ReduxFormTextInputComponent, 
+    ReduxFormCheckboxInputComponent,
+    ReduxFormDateInputComponent,
+    ReduxFormDropDownInputComponent,
+} = require('./../../../src/components/redux_form');
+
+const {RegularButtonComponent} = require('./../../../src/components/buttons/regular_button_component');
+
+const timeZonesJSON = require('./../../modules/resources/time_zones.json');
+
+const cardContainerStyles = {
+    boxSizing: 'border-box',
+    maxWidth: '550px',
+};
+
+const controlsContainerStyles = {
+    boxSizing: 'border-box',
+    display: 'grid',
+   
+    gridTemplateAreas: `
+        "full-name              full-name                   full-name"
+        "date-of-purchase-local date-of-purchase-utc-offset date-of-purchase-utc-offset"
+        "is-active              is-active                   is-active"
+        "buttons                buttons                     buttons"
+    `,
+            
+    gridColumnGap: '25px', 
+    gridRowGap: '15px',
+                    
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gridTemplateRows: 'repeat(auto-fit, max-content)',
+};
+
+const fullNameControlStyles = {
+    boxSizing: 'border-box', 
+                                        
+    gridArea: 'full-name', 
+}
+
+const dateOfPurchaseLocalStyles = {
+    boxSizing: 'border-box', 
+                                        
+    gridArea: 'date-of-purchase-local', 
+}
+
+const dateOfPurchaseUTCOffsetStyles = {
+    boxSizing: 'border-box', 
+                                        
+    gridArea: 'date-of-purchase-utc-offset', 
+}
+
+const isActiveControlStyles = {
+    boxSizing: 'border-box', 
+                                        
+    gridArea: 'is-active', 
+    alignSelf: 'end'
+}
+
+const buttonsContainerStyles = {
+    boxSizing: 'border-box', 
+                                                                                                    
+    gridArea: 'buttons',
+    display: 'grid',
+    
+    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+    gridAutoRows: 'max-content',
+    gridColumnGap: '25px',
+};
+
+const cancelButtonStyles = {
+    gridColumn: '3 / 4',
+}
+
+const saveButtonStyles = {
+    gridColumn: '4 / 5',
+}
+
+const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-globe">Edit domain data</RegularCardHeaderComponent>;
+
+<RegularCardComponent
+    header={headerComponent}
+ 
+    containerStyles={cardContainerStyles} 
+    bodyStyles={controlsContainerStyles}
+>
+    <ReduxFormTextInputComponent
+        name='edit.domain.fullname'
+        placeholder='domain name...'
+        label='Name'
+    
+        componentContainerStyles={fullNameControlStyles}
+        iconClassNames='fas fa-globe'
+    />
+    
+    <ReduxFormDateInputComponent
+        name='edit.domain.dateOfPurchaseLocal'
+        placeholder='date of purchase...'
+        label='Date of purchase (local)'
+                
+        componentContainerStyles={dateOfPurchaseLocalStyles}
+    />      
+    
+    <ReduxFormDropDownInputComponent
+        name='edit.domain.dateOfPurchaseUTCOffset'
+        placeholder='UTC offset...'
+        label='Date of purchase UTC offset'
+        
+        options={timeZonesJSON}
+                
+        componentContainerStyles={dateOfPurchaseUTCOffsetStyles}
+    />    
+    
+    <ReduxFormCheckboxInputComponent
+        name='edit.domain.isActive'
+        labelPosition='right'
+        label='active'
+            
+        componentContainerStyles={isActiveControlStyles}
+    />         
     
     <div style={buttonsContainerStyles}>
         <RegularButtonComponent label='Cancel' variant='outlined' containerStyles={cancelButtonStyles}/>

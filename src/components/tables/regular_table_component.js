@@ -80,7 +80,7 @@ type PropsTypes = {
     /**
      * Callback function which will be called once user mouse hovers over table row
      */
-
+    // TODO: why hover? - click
     onHoverCallback?: OnRowHoverCallbackType,
 
     /**

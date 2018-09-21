@@ -44,3 +44,5 @@
 - if (this._isReadOnly() || this._isDisabled()) {
               return;
           } - in all form stuff;
+- input ellipses;
+- dropdown limit drop menu height;          

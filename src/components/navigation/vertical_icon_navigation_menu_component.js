@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {defaultTo, length, slice, map} from 'ramda';
+import {defaultTo, addIndex, length, slice, map} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../theming';
@@ -38,27 +38,6 @@ type PropsTypes = {
 type StateTypes = {};
 
 // styles definition
-const iconsContainer = (theme) => ({
-    boxSizing: 'border-box',
-    display: 'flex',
-
-    flexBasis: 'auto',
-    flexGrow: 0,
-    flexShrink: 1,
-
-    flexDirection: 'column',
-    flexWrap: 'nowrap',
-
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    alignContent: 'flex-start',
-
-    '& > i': {
-        fontSize: '18px',
-        color: 'white'
-    }
-});
-
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
@@ -222,21 +201,26 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
     // endregion
 
     // region render methods
-    _renderIconContainers(icons: Array<React.Node>): React.Node {
-        return map(icon => <div className={this._getIconContainerClassName()}>
+    _renderIconContainers(icons: Array<React.Node>, sectionKey: string): React.Node {
+        const indexedMap = addIndex(map);
+
+        return indexedMap((icon: React.Node, key: number) => <div
+            className={this._getIconContainerClassName()}
+            key={`${sectionKey}_${key}`}
+        >
             {icon}
         </div>, icons);
     }
 
     _renderBottomIconsContainer(bottomChildren: Array<React.Node>): React.Node {
         return <div className={this._getBottomIconsContainerClassName()}>
-            {this._renderIconContainers(bottomChildren)}
+            {this._renderIconContainers(bottomChildren, 'bottom')}
         </div>;
     }
 
     _renderTopIconsContainer(topChildren: Array<React.Node>): React.Node {
         return <div className={this._getTopIconsContainerClassName()}>
-            {this._renderIconContainers(topChildren)}
+            {this._renderIconContainers(topChildren, 'top')}
         </div>;
     }
 

@@ -27,6 +27,10 @@ import {GlobalOverlayComponent} from './../window/global_overlay_component';
 // type definitions
 type OptionValueType = string | number;
 
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = FieldProps & {
     /**
      * Formatting that will be used when displaying date
@@ -63,6 +67,18 @@ type PropsTypes = FieldProps & {
      */
 
     label?: ?string,
+
+    /**
+     * Class name which will be added to the component container (main outer container)
+     */
+
+    componentContainerClassName?: string,
+
+    /**
+     * Styles for component container (main outer container) of the form date input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -182,7 +198,9 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
             onFocus: () => {},
         },
 
-        classes: {}
+        classes: {},
+
+        componentContainerStyles: {},
     };
 
     _id: string;
@@ -218,7 +236,10 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
 
     // region style accessors
     _getComponentOuterContainerClassName(): string {
-        return this.props.classes.componentOuterContainer;
+        return classNames(
+            this.props.classes.componentOuterContainer,
+            this.props.componentContainerClassName
+        );
     }
 
     _getTextInputContainerClassName(): string {
@@ -301,6 +322,10 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
         };
     }
 
+    _getComponentContainerStyles(): CSSStylesType {
+        return defaultTo(FormDateInputClass.defaultProps.componentContainerStyles)(this.props.componentContainerStyles);
+    }
+
     // endregion
 
     // region handlers
@@ -346,7 +371,10 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
 
     _renderOuterContainer(): React.Node {
         return (
-            <div className={this._getComponentOuterContainerClassName()}>
+            <div
+                className={this._getComponentOuterContainerClassName()}
+                style={this._getComponentContainerStyles()}
+            >
                 {this._renderTextInputContainer()}
                 {this._renderDateSelector()}
             </div>

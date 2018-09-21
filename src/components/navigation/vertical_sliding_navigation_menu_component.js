@@ -5,15 +5,18 @@
 // external imports
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import classNames from 'classnames';
 
 import {isNil, unless, defaultTo, addIndex, bind, map, reduce, clone} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components';
 
 // local imports
+import type {CombinedEventType, ExtendedEventTargetType} from './../../types/dom_types';
+
 import {MainThemeContext} from './../../theming';
 
 // type definitions
+type OnMenuItemClickCallbackType = (itemIndex: number) => void;
+
 type ItemType = {
     /**
      * Class name which will be used for icon element
@@ -54,6 +57,12 @@ type PropsTypes = {
     selectedItems?: Array<number>,
 
     /**
+     * Callback function which will be called once user clicks on menu item
+     */
+
+    onMenuItemClickCallback?: OnMenuItemClickCallbackType,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -68,15 +77,33 @@ type StateTypes = {};
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
-        display: 'flex',
+        display: 'grid',
 
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
+        height: '100%',
 
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
-        alignContent: 'flex-start',
+        gridTemplateColumns: '20px max-content',
+        gridAutoRows: 'max-content',
+
+        gridColumnGap: '5px',
+        gridRowGap: '5px',
+
+        alignItems: 'end',
+
+        '& > $itemNodeContainer': {
+            gridColumn: '1 / span 2',
+        },
+
+        '& > $itemIconContainer': {
+
+        },
+
+        '& > $itemCaptionContainer': {
+        }
     },
+
+    itemNodeContainer: {},
+    itemIconContainer: {},
+    itemCaptionContainer: {},
 });
 
 /**
@@ -98,6 +125,8 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     static defaultProps = {
         items: null,
         selectedItems: null,
+
+        onMenuItemClickCallback: () => {}
     };
 
     // endregion
@@ -112,11 +141,28 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     // endregion
 
     // region lifecycle methods
+    _onMenuItemClick(event: CombinedEventType): void {
+        const target: ExtendedEventTargetType = event.target;
+        unless(isNil, (stringIndex) => this._getOnMenuItemClickCallback()(parseInt(stringIndex)))(target.dataset['index']);
+    }
+
     // endregion
 
     // region style accessors
-    _getComponentContainerClassName(): React.Node {
+    _getComponentContainerClassName(): string {
         return this.props.classes.componentContainer;
+    }
+
+    _getItemNodeContainerClassName(): string {
+        return this.props.classes.itemNodeContainer;
+    }
+
+    _getItemIconContainerClassName(): string {
+        return this.props.classes.itemIconContainer;
+    }
+
+    _getItemCaptionContainerClassName(): string {
+        return this.props.classes. itemCaptionContainer;
     }
 
     // endregion
@@ -142,7 +188,7 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
 
         if (isNotNil(selectedItems)) {
             const newItems: Array<ItemType> | null = reduce((subItems: Array<ItemType> | null, itemIndex: number): Array<ItemType> | null => {
-                if (isNil(subItems)) {
+                if (isNil(itemIndex) || isNil(subItems)) {
                     return null;
                 }
 
@@ -156,23 +202,36 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
 
     }
 
+    _getOnMenuItemClickCallback(): OnMenuItemClickCallbackType {
+        return defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.onMenuItemClickCallback)
+        (this.props.onMenuItemClickCallback);
+    }
+
     // endregion
 
     // region handlers
     // endregion
 
     // region render methods
-    _renderItem({node, caption, iconClassName}: ItemType, index: number): React.Node {
+    _renderItem({node, caption, iconClassName, children}: ItemType, index: number): React.Node {
         const key: string = `item_${index}`;
 
         if (isNotNil(node)) {
-            return <div key={key}>
+            return <div key={key} className={this._getItemNodeContainerClassName()}>
                 {node}
             </div>;
         } else {
-            return <div key={key}>
-                {caption}
-            </div>;
+            const dataIndex: number | null = isNotNil(children) ? index : null;
+
+            return <React.Fragment key={key}>
+                <div className={this._getItemIconContainerClassName()}>
+                    <i className={iconClassName} />
+                </div>
+
+                <div data-index={dataIndex} className={this._getItemCaptionContainerClassName()}>
+                    {caption}
+                </div>
+            </React.Fragment>;
         }
     }
 
@@ -192,7 +251,10 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     }
 
     _renderComponentContainer(): React.Node {
-        return <div className={this._getComponentContainerClassName()}>
+        return <div
+            onClick={bind(this._onMenuItemClick, this)}
+            className={this._getComponentContainerClassName()}
+        >
             {this._renderParentItem()}
             {this._renderItems()}
         </div>;

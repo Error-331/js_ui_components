@@ -10,6 +10,10 @@ import {Field} from 'redux-form/immutable';
 import {FormDateInputComponent} from '../form/form_date_input_component';
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
     /**
      * Input name
@@ -52,6 +56,18 @@ type PropsTypes = {
      */
 
     label?: ?string,
+
+    /**
+     * Class name which will be added to the component container (main outer container)
+     */
+
+    componentContainerClassName?: string,
+
+    /**
+     * Styles for component container (main outer container) of the form date input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 };
 
 type StateTypes = {};
