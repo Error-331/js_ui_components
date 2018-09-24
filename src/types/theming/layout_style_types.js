@@ -20,6 +20,12 @@ export type LayoutStylesType = {
     horizontalSpacing: number,
     verticalSpacing: number,
 
+    bodyTopPadding: number,
+    bodyBottomPadding: number,
+
+    bodyRightPadding: number,
+    bodyLeftPadding: number,
+
     headerFontColor: string,
     bodyFontColor: string,
 

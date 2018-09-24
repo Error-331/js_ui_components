@@ -174,7 +174,12 @@ const styles = theme => ({
             alignItems: 'stretch',
             alignContent: 'flex-start',
 
-            padding: '8px 8px 10px 10px',
+            padding: `${theme.layoutStyles.bodyTopPadding}px 
+                      ${theme.layoutStyles.bodyRightPadding}px 
+                      ${theme.layoutStyles.bodyBottomPadding}px 
+                      ${theme.layoutStyles.bodyBottomPadding}px
+            `,
+
             borderRadius: theme.layoutStyles.headerBorderRadius,
 
             fontFamily: theme.layoutStyles.bodyFontStack,

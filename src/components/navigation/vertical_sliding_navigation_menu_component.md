@@ -52,6 +52,7 @@ class DemoComponent1 extends Component {
         super(props);
         
         this._onMenuItemClick = this._onMenuItemClick.bind(this);
+        this._onMenuParentItemClick = this._onMenuParentItemClick.bind(this);
         
         this.state = {
             selectedItems: []
@@ -66,10 +67,20 @@ class DemoComponent1 extends Component {
             selectedItems
         });
     }
+    
+    _onMenuParentItemClick(index) {
+        const selectedItems = this.state.selectedItems.slice();
+        selectedItems.pop();
+
+        this.setState({
+            selectedItems
+        });    
+    }
    
     render() {
         return <VerticalSlidingNavigationMenuComponent 
             onMenuItemClickCallback={this._onMenuItemClick}
+            onMenuParentItemClickCallback={this._onMenuParentItemClick}
             items={menuItems}
             selectedItems={this.state.selectedItems}
         />;

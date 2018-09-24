@@ -8,7 +8,12 @@
 
 // exports
 export type NavigationStylesType = {
-    primaryFontSize: number, // px
+    verticalNavigationMaxWidth: number, // px
+
+    fontStack: string,
+
+    iconFontSize: number, // px
+    captionFontSize: number, // px
 
     bodyBGColor1: string,
     bodyHoverColor1: string,

@@ -376,11 +376,11 @@ export class SimpleCalendarClass extends React.Component<PropsTypes, StateTypes>
     _onDayCellClick(event: CombinedEventType): void {
         const target: ExtendedEventTargetType = event.target;
 
-        const dayCellElement: ExtendedEventTargetType = unless(
-            currentTarget => equals('div[data-date]', currentTarget.tagName.toLowerCase()),
+        const $dayCellElement: ExtendedEventTargetType = unless(
+            currentTarget => !isNil(currentTarget.dataset['data-date']),
             currentTarget => currentTarget.closest('div[data-date]'))(target);
 
-        const dayCellData: string | null = isNil(dayCellElement) ? null : dayCellElement.dataset['date'];
+        const dayCellData: string | null = isNil($dayCellElement) ? null : $dayCellElement.dataset['date'];
 
         unless(
             (dayCellData) => isNil(dayCellData) || equals(EMPTY_DATE_CELL_DATA, dayCellData),

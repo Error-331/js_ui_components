@@ -6,7 +6,7 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {isNil, unless, defaultTo, addIndex, bind, map, reduce, clone} from 'ramda';
+import {T, isNil, isEmpty, equals, unless, or, cond, always, defaultTo, addIndex, bind, map, reduce, clone} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components';
 
 // local imports
@@ -22,7 +22,7 @@ type ItemType = {
      * Class name which will be used for icon element
      */
 
-    iconClassName:? string,
+    iconClassName?: string,
 
     /**
      * React node which will be used as an menu element (overrides caption)
@@ -63,6 +63,12 @@ type PropsTypes = {
     onMenuItemClickCallback?: OnMenuItemClickCallbackType,
 
     /**
+     * Callback function which will be called once user clicks on menu parent item (back button)
+     */
+
+    onMenuParentItemClickCallback?: OnMenuItemClickCallbackType,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -77,34 +83,103 @@ type StateTypes = {};
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
-        display: 'grid',
+        display: 'flex',
 
+        maxWidth: `${theme.navigationStyles.verticalNavigationMaxWidth}px`,
         height: '100%',
 
-        gridTemplateColumns: '20px max-content',
-        gridAutoRows: 'max-content',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
 
-        gridColumnGap: '5px',
-        gridRowGap: '5px',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        alignContent: 'flex-start',
 
-        alignItems: 'end',
+        padding: `${theme.layoutStyles.bodyTopPadding}px 
+                      ${theme.layoutStyles.bodyRightPadding}px 
+                      ${theme.layoutStyles.bodyBottomPadding}px 
+                      ${theme.layoutStyles.bodyBottomPadding}px
+        `,
 
-        '& > $itemNodeContainer': {
-            gridColumn: '1 / span 2',
+        backgroundColor: theme.navigationStyles.bodyBGColor1,
+
+        '& > $menuItemContainer': {
+            boxSizing: 'border-box',
+            display: 'flex',
+
+            flexBasis: 'auto',
+            flexGrow: '0',
+            flexShrink: '1',
+
+            borderRadius: theme.layoutStyles.headerBorderRadius,
+            padding: '8px 12px 8px 12px',
+
+            flexDirection: 'row',
+            flexWrap: 'nowrap',
+
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            alignContent: 'flex-start',
+
+            cursor: 'pointer',
+
+            '&:hover': {
+                backgroundColor: theme.navigationStyles.bodyHoverColor1,
+            },
+
+            '& > $itemNodeContainer': {
+                boxSizing: 'border-box',
+
+                flexBasis: 'auto',
+                flexGrow: '1',
+                flexShrink: '1',
+            },
+
+            '& > $itemIconContainer': {
+                boxSizing: 'border-box',
+
+                flexBasis: 'auto',
+                flexGrow: '0',
+                flexShrink: '1',
+
+                color: theme.navigationStyles.fontColor1,
+
+                '& > i': {
+                    fontSize: `${theme.navigationStyles.iconFontSize}px`,
+                }
+            },
+
+            '& > $itemCaptionContainer': {
+                boxSizing: 'border-box',
+
+                flexBasis: 'auto',
+                flexGrow: '0',
+                flexShrink: '1',
+
+                paddingLeft: '8px',
+
+                fontFamily: theme.navigationStyles.fontStack,
+                fontSize: `${theme.navigationStyles.captionFontSize}px`,
+
+                color: theme.navigationStyles.fontColor1,
+
+                '&::first-letter': {
+                    textTransform: 'uppercase'
+                }
+            }
         },
-
-        '& > $itemIconContainer': {
-
-        },
-
-        '& > $itemCaptionContainer': {
-        }
     },
 
+    menuItemContainer: {},
     itemNodeContainer: {},
     itemIconContainer: {},
     itemCaptionContainer: {},
 });
+
+// constants definition
+
+const BACK_BUTTON_ICON_CLASS_NAME: string = 'fas fa-arrow-left';
+const BACK_BUTTON_CAPTION: string = 'back';
 
 /**
  * Vertical sliding navigation styled according to material-UI guidelines.
@@ -126,7 +201,8 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
         items: null,
         selectedItems: null,
 
-        onMenuItemClickCallback: () => {}
+        onMenuItemClickCallback: () => {},
+        onMenuParentItemClickCallback: () => {},
     };
 
     // endregion
@@ -143,7 +219,22 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     // region lifecycle methods
     _onMenuItemClick(event: CombinedEventType): void {
         const target: ExtendedEventTargetType = event.target;
-        unless(isNil, (stringIndex) => this._getOnMenuItemClickCallback()(parseInt(stringIndex)))(target.dataset['index']);
+
+        const $menuItemElement: ExtendedEventTargetType = unless(
+            currentTarget => !isNil(currentTarget.dataset['data-menuitemtype']),
+            currentTarget => currentTarget.closest('div[data-menuitemtype]'))(target);
+
+        if (isNil($menuItemElement) || isNil($menuItemElement.dataset['index'])) {
+            return;
+        }
+
+        const menuItemIndex: number = parseInt($menuItemElement.dataset['index']);
+
+        cond([
+            [equals('child'), () => {this._getOnMenuItemClickCallback()(menuItemIndex)}],
+            [equals('parent'), () => {this._getOnMenuParentItemClickCallback()(menuItemIndex)}],
+            [T, always(null)]
+        ])($menuItemElement.dataset['menuitemtype']);
     }
 
     // endregion
@@ -151,6 +242,10 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     // region style accessors
     _getComponentContainerClassName(): string {
         return this.props.classes.componentContainer;
+    }
+
+    _getMenuItemContainer(): string {
+        return this.props.classes.menuItemContainer;
     }
 
     _getItemNodeContainerClassName(): string {
@@ -175,7 +270,10 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
 
     // region prop accessors
     _getSelectedItems(): Array<number> | null {
-        return defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.selectedItems)(this.props.selectedItems);
+        const selectedItems: Array<number> | null =
+            defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.selectedItems)(this.props.selectedItems);
+
+        return unless(isNil, clone)(selectedItems);
     }
 
     _getItems(): Array<ItemType> | null {
@@ -207,31 +305,67 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
         (this.props.onMenuItemClickCallback);
     }
 
+    _getOnMenuParentItemClickCallback(): OnMenuItemClickCallbackType {
+        return defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.onMenuParentItemClickCallback)
+        (this.props.onMenuParentItemClickCallback);
+    }
+
     // endregion
 
     // region handlers
     // endregion
 
     // region render methods
-    _renderItem({node, caption, iconClassName, children}: ItemType, index: number): React.Node {
-        const key: string = `item_${index}`;
+    _renderMenuItemContainer(
+        key: number,
+        type: 'child' | 'parent',
+        index: number | null,
+        children: React.Node,
+    ): React.Node {
+        const composedKey: string = `${type}_${key}`;
 
+        return <div key={composedKey}
+                    data-menuitemtype={type}
+                    data-index={index}
+                    className={this._getMenuItemContainer()}
+        >
+            {children}
+        </div>;
+    }
+
+    _renderNodeContainer(node?: React.Node): React.Node {
+        return <div className={this._getItemNodeContainerClassName()}>
+            {node}
+        </div>;
+    }
+
+    _renderCaptionContainer(
+        caption?: string
+    ): React.Node {
+        return <div
+            className={this._getItemCaptionContainerClassName()}
+        >
+            {caption}
+        </div>;
+    }
+
+    _renderIconContainer(iconClassName?: string): React.Node {
+        return <div className={this._getItemIconContainerClassName()}>
+            <i className={iconClassName} />
+        </div>;
+    }
+
+    _renderItem({node, caption, iconClassName, children}: ItemType, index: number): React.Node {
         if (isNotNil(node)) {
-            return <div key={key} className={this._getItemNodeContainerClassName()}>
-                {node}
-            </div>;
+            return this._renderMenuItemContainer(index, 'child', null, this._renderNodeContainer(node));
         } else {
             const dataIndex: number | null = isNotNil(children) ? index : null;
-
-            return <React.Fragment key={key}>
-                <div className={this._getItemIconContainerClassName()}>
-                    <i className={iconClassName} />
-                </div>
-
-                <div data-index={dataIndex} className={this._getItemCaptionContainerClassName()}>
-                    {caption}
-                </div>
+            const menuItemChildren: React.Node = <React.Fragment>
+                {this._renderIconContainer(iconClassName)}
+                {this._renderCaptionContainer(caption)}
             </React.Fragment>;
+
+            return this._renderMenuItemContainer(index, 'child', dataIndex, menuItemChildren);
         }
     }
 
@@ -247,7 +381,20 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     }
 
     _renderParentItem(): React.Node {
-        return null;
+        const selectedItems: Array<number> | null = this._getSelectedItems();
+
+        return unless(
+            (selectedItems: Array<number> | null) => or(isNil(selectedItems), isEmpty(selectedItems)),
+            (selectedItems: Array<number>) => {
+            const lastSelectedItem: number = selectedItems.pop();
+
+            const menuItemChildren: React.Node = <React.Fragment>
+                {this._renderIconContainer(BACK_BUTTON_ICON_CLASS_NAME)}
+                {this._renderCaptionContainer(BACK_BUTTON_CAPTION)}
+            </React.Fragment>;
+
+            return this._renderMenuItemContainer(0, 'parent', lastSelectedItem, menuItemChildren);
+        })(selectedItems);
     }
 
     _renderComponentContainer(): React.Node {

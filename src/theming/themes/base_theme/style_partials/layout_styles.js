@@ -31,6 +31,12 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         horizontalSpacing: 5, // px
         verticalSpacing: 5, // px
 
+        bodyTopPadding: 8, // px
+        bodyBottomPadding: 10, // px
+
+        bodyRightPadding: 8, // px
+        bodyLeftPadding: 10, // px
+
         headerFontColor: baseStyles.noneTransparentBGColor,
         bodyFontColor: baseStyles.subPrimaryColor,
 

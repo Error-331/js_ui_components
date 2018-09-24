@@ -99,7 +99,7 @@ const styles = theme => ({
                 cursor: 'pointer',
 
                 '& > i': {
-                    fontSize: `${theme.navigationStyles.primaryFontSize}px`,
+                    fontSize: `${theme.navigationStyles.iconFontSize}px`,
                     color: theme.navigationStyles.fontColor1,
                 },
 
