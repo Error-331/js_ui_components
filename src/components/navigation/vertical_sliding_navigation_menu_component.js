@@ -5,6 +5,7 @@
 // external imports
 import * as React from 'react';
 import injectSheet from 'react-jss';
+import classNames from 'classnames';
 
 import {T, isNil, isEmpty, equals, unless, or, cond, always, defaultTo, addIndex, bind, map, reduce, clone} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components';
@@ -13,6 +14,7 @@ import {isNotNil} from '@webfuturistics/design_components';
 import type {CombinedEventType, ExtendedEventTargetType} from './../../types/dom_types';
 
 import {MainThemeContext} from './../../theming';
+import {HorizontalDivider} from './../utility';
 
 // type definitions
 type OnMenuItemClickCallbackType = (itemIndex: number) => void;
@@ -96,9 +98,9 @@ const styles = theme => ({
         alignContent: 'flex-start',
 
         padding: `${theme.layoutStyles.bodyTopPadding}px 
-                      ${theme.layoutStyles.bodyRightPadding}px 
-                      ${theme.layoutStyles.bodyBottomPadding}px 
-                      ${theme.layoutStyles.bodyBottomPadding}px
+                  ${theme.layoutStyles.bodyRightPadding}px 
+                  ${theme.layoutStyles.bodyBottomPadding}px 
+                  ${theme.layoutStyles.bodyBottomPadding}px
         `,
 
         backgroundColor: theme.navigationStyles.bodyBGColor1,
@@ -125,6 +127,22 @@ const styles = theme => ({
 
             '&:hover': {
                 backgroundColor: theme.navigationStyles.bodyHoverColor1,
+            },
+
+            '&.utility': {
+                cursor: 'default',
+
+                '& > $dividerOuterContainer': {
+                    padding: '0px',
+
+                    '& > $dividerInnerContainer': {
+                        backgroundColor: theme.navigationStyles.fontColor1
+                    }
+                },
+            },
+
+            '&.utility:hover': {
+                backgroundColor: 'initial',
             },
 
             '& > $itemNodeContainer': {
@@ -171,9 +189,13 @@ const styles = theme => ({
     },
 
     menuItemContainer: {},
+
     itemNodeContainer: {},
     itemIconContainer: {},
     itemCaptionContainer: {},
+
+    dividerOuterContainer: {},
+    dividerInnerContainer: {}
 });
 
 // constants definition
@@ -316,18 +338,29 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     // endregion
 
     // region render methods
+    _renderDivider(): React.Node {
+        const {dividerOuterContainer, dividerInnerContainer} = this.props.classes;
+
+        return <HorizontalDivider
+            componentContainerClassName={dividerOuterContainer}
+            bodyContainerClassName={dividerInnerContainer}
+        />;
+    }
+
     _renderMenuItemContainer(
-        key: number,
-        type: 'child' | 'parent',
+        key?: number,
+        type: 'child' | 'parent' | 'node',
         index: number | null,
-        children: React.Node,
+        className: string | null,
+        children?: React.Node,
     ): React.Node {
-        const composedKey: string = `${type}_${key}`;
+        const composedKey: string | null = isNil(key) ? null : `${type}_${key}`;
+        const menuItemClassName: string = classNames(this._getMenuItemContainer(), className);
 
         return <div key={composedKey}
                     data-menuitemtype={type}
                     data-index={index}
-                    className={this._getMenuItemContainer()}
+                    className={menuItemClassName}
         >
             {children}
         </div>;
@@ -357,7 +390,7 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
 
     _renderItem({node, caption, iconClassName, children}: ItemType, index: number): React.Node {
         if (isNotNil(node)) {
-            return this._renderMenuItemContainer(index, 'child', null, this._renderNodeContainer(node));
+            return this._renderMenuItemContainer(index, 'node', null, null, this._renderNodeContainer(node));
         } else {
             const dataIndex: number | null = isNotNil(children) ? index : null;
             const menuItemChildren: React.Node = <React.Fragment>
@@ -365,7 +398,7 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
                 {this._renderCaptionContainer(caption)}
             </React.Fragment>;
 
-            return this._renderMenuItemContainer(index, 'child', dataIndex, menuItemChildren);
+            return this._renderMenuItemContainer(index, 'child', dataIndex, null, menuItemChildren);
         }
     }
 
@@ -393,7 +426,10 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
                 {this._renderCaptionContainer(BACK_BUTTON_CAPTION)}
             </React.Fragment>;
 
-            return this._renderMenuItemContainer(0, 'parent', lastSelectedItem, menuItemChildren);
+            return <React.Fragment>
+                {this._renderMenuItemContainer(0, 'parent', lastSelectedItem, null, menuItemChildren)}
+                {this._renderMenuItemContainer(0, 'node', null, 'utility', this._renderDivider())}
+            </React.Fragment>;
         })(selectedItems);
     }
 
