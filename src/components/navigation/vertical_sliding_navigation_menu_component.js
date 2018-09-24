@@ -71,6 +71,18 @@ type PropsTypes = {
     onMenuParentItemClickCallback?: OnMenuItemClickCallbackType,
 
     /**
+     * Custom caption for 'back' button
+     */
+
+    backButtonCaption?: string,
+
+    /**
+     * Custom icon class name for 'back' button
+     */
+
+    backButtonIconClassName?: string,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -198,11 +210,6 @@ const styles = theme => ({
     dividerInnerContainer: {}
 });
 
-// constants definition
-
-const BACK_BUTTON_ICON_CLASS_NAME: string = 'fas fa-arrow-left';
-const BACK_BUTTON_CAPTION: string = 'back';
-
 /**
  * Vertical sliding navigation styled according to material-UI guidelines.
  *
@@ -222,6 +229,9 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     static defaultProps = {
         items: null,
         selectedItems: null,
+
+        backButtonCaption: 'back',
+        backButtonIconClassName: 'fas fa-arrow-left',
 
         onMenuItemClickCallback: () => {},
         onMenuParentItemClickCallback: () => {},
@@ -262,6 +272,10 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     // endregion
 
     // region style accessors
+    _getBackButtonIconClassName(): string {
+        return defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.backButtonIconClassName)(this.props.backButtonIconClassName);
+    }
+
     _getComponentContainerClassName(): string {
         return this.props.classes.componentContainer;
     }
@@ -291,6 +305,10 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     // endregion
 
     // region prop accessors
+    _getBackButtonCaption(): string {
+        return defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.backButtonCaption)(this.props.backButtonCaption);
+    }
+
     _getSelectedItems(): Array<number> | null {
         const selectedItems: Array<number> | null =
             defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.selectedItems)(this.props.selectedItems);
@@ -421,9 +439,12 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
             (selectedItems: Array<number>) => {
             const lastSelectedItem: number = selectedItems.pop();
 
+            const backButtonIconClassName: string = this._getBackButtonIconClassName();
+            const backButtonCaption: string = this._getBackButtonCaption();
+
             const menuItemChildren: React.Node = <React.Fragment>
-                {this._renderIconContainer(BACK_BUTTON_ICON_CLASS_NAME)}
-                {this._renderCaptionContainer(BACK_BUTTON_CAPTION)}
+                {this._renderIconContainer(backButtonIconClassName)}
+                {this._renderCaptionContainer(backButtonCaption)}
             </React.Fragment>;
 
             return <React.Fragment>

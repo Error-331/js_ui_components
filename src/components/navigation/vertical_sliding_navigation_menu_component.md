@@ -1,4 +1,4 @@
-Test: 
+Example vertical sliding navigation menu component: 
 
 ```jsx
 
