@@ -484,3 +484,136 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-globe
 
 ```
 
+Test:
+
+```jsx
+
+const {Component} = require('react');
+
+const {VerticalIconNavigationMenuComponent, VerticalSlidingNavigationMenuComponent} = require('./../../../src/components/navigation');
+const {RegularCardComponent, RegularCardHeaderComponent} = require('./../../../src/components/layout');
+
+const menuItems = [
+    { 
+        iconClassName: 'fas fa-ad', 
+        caption: 'advertisement campaigns', 
+        children: [
+            {
+                iconClassName: 'fas fa-boxes', 
+                caption: 'campaign types', 
+            },
+            
+            {
+                iconClassName: 'fas fa-list-alt', 
+                caption: 'campaign list', 
+            }
+        ]
+    },
+    { 
+        iconClassName: 'fas fa-window-alt', 
+        caption: 'templates' 
+    }, 
+    { 
+        iconClassName: 'fas fa-globe', 
+        caption: 'own domains' 
+    }, 
+    { 
+        iconClassName: 'fas fa-wrench', 
+        caption: 'utilities',
+        children: [
+            {
+                iconClassName: 'fas fa-atlas', 
+                caption: 'country codes',
+            },
+            
+            {
+                iconClassName: 'fas fa-clock', 
+                caption: 'time zones',
+            },
+        ]
+    }, 
+];
+
+class NavigationDemoComponent1 extends Component {
+    constructor(props) {
+        super(props);
+        
+        this._onMenuItemClick = this._onMenuItemClick.bind(this);
+        this._onMenuParentItemClick = this._onMenuParentItemClick.bind(this);
+        
+        this.state = {
+            selectedItems: []
+        }
+    }
+    
+    _getComponentContainerStyle() {
+        return {
+            boxSizing: 'border-box',
+            display: 'grid',
+            
+            gridTemplateColumns: 'max-content max-content 1fr',
+            gridAutoRows: '500px',
+            
+            gridColumnGap: '0px'
+        };
+    }
+    
+    _getCardContainerStyles() {
+        return {
+            marginLeft: '10px'
+        };
+    }
+    
+    _onMenuItemClick(index) {
+        const selectedItems = this.state.selectedItems.slice();
+        selectedItems.push(index);
+
+        this.setState({
+            selectedItems
+        });
+    }
+    
+    _onMenuParentItemClick(index) {
+        const selectedItems = this.state.selectedItems.slice();
+        selectedItems.pop();
+
+        this.setState({
+            selectedItems
+        });    
+    }
+   
+    render() {
+        const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-id-card">Edit</RegularCardHeaderComponent>;
+    
+        return <div style={this._getComponentContainerStyle()}>
+            <VerticalIconNavigationMenuComponent bottomItemsCount={3}>
+                <i className='fas fa-home'/>
+                <i className='fas fa-analytics'/>
+                <i className='fas fa-file-user'/>
+                <i className='fas fa-money-check'/>
+                        
+                <i className='fas fa-bell'/>
+                <i className='fas fa-wifi'/>
+                <i className='fas fa-user'/>  
+            </VerticalIconNavigationMenuComponent>
+        
+            <VerticalSlidingNavigationMenuComponent         
+                onMenuItemClickCallback={this._onMenuItemClick}
+                onMenuParentItemClickCallback={this._onMenuParentItemClick}
+                items={menuItems}
+                selectedItems={this.state.selectedItems}
+            />
+            
+            <RegularCardComponent 
+                header={headerComponent}
+                
+                containerStyles={this._getCardContainerStyles()}
+            >
+            </RegularCardComponent>
+        </div>;
+    }
+}
+
+<NavigationDemoComponent1/>
+
+```

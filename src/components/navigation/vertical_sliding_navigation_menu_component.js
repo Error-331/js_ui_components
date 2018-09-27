@@ -100,6 +100,8 @@ const styles = theme => ({
         display: 'flex',
 
         maxWidth: `${theme.navigationStyles.verticalNavigationMaxWidth}px`,
+        minWidth: '245px',
+
         height: '100%',
 
         flexDirection: 'column',

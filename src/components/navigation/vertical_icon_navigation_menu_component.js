@@ -50,8 +50,8 @@ const styles = theme => ({
         width: '50px',
         height: '100%',
 
-        paddingTop: '3px',
-        paddingBottom: '3px',
+        paddingTop: `${theme.layoutStyles.bodyTopPadding}px`,
+        paddingBottom: `${theme.layoutStyles.bodyBottomPadding}px`,
 
         flexDirection: 'column',
         flexWrap: 'nowrap',
@@ -91,8 +91,8 @@ const styles = theme => ({
                 alignItems: 'center',
                 alignContent: 'flex-start',
 
-                width: '35px',
-                height: '35px',
+                width: '36px',
+                height: '36px',
 
                 borderRadius: '50%',
 

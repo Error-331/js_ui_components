@@ -38,7 +38,6 @@ const testContainerStyle = {
         <i className='fas fa-wifi'/>
         <i className='fas fa-user'/>  
     </VerticalIconNavigationMenuComponent>
-
     
     <VerticalIconNavigationMenuComponent bottomItemsCount={3}>
         <i className='fas fa-home'/>
