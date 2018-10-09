@@ -1,0 +1,1 @@
+Section describes UI components used for alignment of elements used inside dialog boxes.

@@ -66,11 +66,13 @@ module.exports = {
                             sections: [
                                 {
                                     name: 'Elements',
+                                    content: path.join(__dirname, './docs/layout/alignment/elements/index.md'),
                                     components: path.join(__dirname, './../src/components/layout/alignment/**/elements_[A-Za-z_]*.js'),
                                 },
 
                                 {
                                     name: 'Dialog box',
+                                    content: path.join(__dirname, './docs/layout/alignment/dialog_box/index.md'),
                                     components: path.join(__dirname, './../src/components/layout/alignment/**/dialog_box_[A-Za-z_]*.js'),
                                 }
                             ],
