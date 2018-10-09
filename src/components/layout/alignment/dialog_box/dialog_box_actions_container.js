@@ -5,20 +5,41 @@
 // external imports
 import * as React from 'react';
 import injectSheet from 'react-jss';
+import classNames from 'classnames';
 
 import {isNil, defaultTo, reverse} from 'ramda';
 
 // local imports
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
+    /**
+     * Direction in which components will be arranged, default is right to left (rtl)
+     */
+
     direction?: 'ltr' | 'rtl',
 
     /**
-     * Radio buttons
+     * Dialog box actions (buttons)
      */
 
     children?: React.ChildrenArray<void | null | string | number | React.Element<any>>,
+
+    /**
+     * Additional style object which will be applied to container
+     */
+
+    style?: CSSStylesType,
+
+    /**
+     * Additional class name which will be applied to container
+     */
+
+    className?: string,
 
     /**
      * JSS inner classes
@@ -64,7 +85,7 @@ export const LEFT_TO_RIGHT_DIRECTION: string = 'ltr';
 
 // component implementation
 export function DialogBoxActionsContainerFunction(props: PropsTypes): React.Node {
-    let {children, direction, classes} = props;
+    let {children, direction, classes, style, className} = props;
 
     if (isNil(children)) {
         return null;
@@ -75,7 +96,12 @@ export function DialogBoxActionsContainerFunction(props: PropsTypes): React.Node
     let childrenArray: Array<React.Node> =  React.Children.toArray(children);
     childrenArray = direction !== RIGHT_TO_LEFT_DIRECTION ? reverse(childrenArray) : childrenArray;
 
-    return <div className={classes.componentContainer} style={{direction}}>
+    style = defaultTo({})(style);
+    style = Object.assign({}, {direction}, style);
+
+    className = classNames(classes.componentContainer, className);
+
+    return <div className={className} style={style}>
         {childrenArray}
     </div>;
 }

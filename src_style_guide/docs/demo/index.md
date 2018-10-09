@@ -2,7 +2,7 @@ Mock-up of 'log in' dialog body:
 
 ```jsx
 
-const {RegularCardComponent, RegularCardHeaderComponent} = require('./../../../src/components/layout');
+const {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer} = require('./../../../src/components/layout');
 const {ReduxFormTextInputComponent} = require('./../../../src/components/redux_form');
 
 const {RegularButtonComponent} = require('./../../../src/components/buttons/regular_button_component');
@@ -41,17 +41,8 @@ const passwordControlStyles = {
     gridArea: 'password', 
 }
 
-const buttonsContainerStyles = {
-    boxSizing: 'border-box', 
-                                                                                                    
+const buttonsContainerStyles = {                                                                                                    
     gridArea: 'buttons',
-    display: 'grid',
-    
-    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-    gridAutoRows: 'max-content',
-    gridColumnGap: '25px',
-    
-    direction: 'rtl',
 };
 
 const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-sign-in">Login</RegularCardHeaderComponent>;
@@ -82,9 +73,9 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-sign-
         iconClassNames='fas fa-key'
     />
          
-    <div style={buttonsContainerStyles}>
+    <DialogBoxActionsContainer style={buttonsContainerStyles}>
         <RegularButtonComponent label='Login'/>
-    </div>
+    </DialogBoxActionsContainer>
 
 </RegularCardComponent>
 
@@ -94,7 +85,7 @@ Mock-up of 'user edit' dialog body:
 
 ```jsx
 
-const {RegularCardComponent, RegularCardHeaderComponent} = require('./../../../src/components/layout');
+const {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer} = require('./../../../src/components/layout');
 const {ReduxFormTextInputComponent, ReduxFormCheckboxInputComponent} = require('./../../../src/components/redux_form');
 
 const {RegularButtonComponent} = require('./../../../src/components/buttons/regular_button_component');
@@ -146,17 +137,8 @@ const isActiveControlStyles = {
     gridArea: 'is-active',
 };
 
-const buttonsContainerStyles = {
-    boxSizing: 'border-box', 
-                                                                                                    
+const buttonsContainerStyles = {                                                                                                    
     gridArea: 'buttons',
-    display: 'grid',
-    
-    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-    gridAutoRows: 'max-content',
-    gridColumnGap: '25px',
-    
-    direction: 'rtl',
 };
 
 const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-id-card">Edit user data</RegularCardHeaderComponent>;
@@ -204,10 +186,10 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-id-ca
         componentContainerStyles={isActiveControlStyles}
     />       
     
-    <div style={buttonsContainerStyles}>
+    <DialogBoxActionsContainer style={buttonsContainerStyles}>
         <RegularButtonComponent label='Save'/>
         <RegularButtonComponent label='Cancel' variant='outlined'/>
-    </div>
+    </DialogBoxActionsContainer>
 
 </RegularCardComponent>
 
@@ -217,7 +199,7 @@ Mock-up of 'template edit' dialog body:
 
 ```jsx
 
-const {RegularCardComponent, RegularCardHeaderComponent} = require('./../../../src/components/layout');
+const {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer} = require('./../../../src/components/layout');
 const {ReduxFormTextInputComponent, ReduxFormCheckboxInputComponent} = require('./../../../src/components/redux_form');
 
 const {RegularButtonComponent} = require('./../../../src/components/buttons/regular_button_component');
@@ -270,24 +252,9 @@ const isArchivedControlStyles = {
     alignSelf: 'end'
 }
 
-const buttonsContainerStyles = {
-    boxSizing: 'border-box', 
-                                                                                                    
+const buttonsContainerStyles = {                                                                                                    
     gridArea: 'buttons',
-    display: 'grid',
-    
-    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-    gridAutoRows: 'max-content',
-    gridColumnGap: '25px',
 };
-
-const cancelButtonStyles = {
-    gridColumn: '2 / 3',
-}
-
-const saveButtonStyles = {
-    gridColumn: '3 / 4',
-}
 
 const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-window-alt">Edit template data</RegularCardHeaderComponent>;
 
@@ -332,10 +299,10 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-windo
         componentContainerStyles={isArchivedControlStyles}
     />  
     
-    <div style={buttonsContainerStyles}>
-        <RegularButtonComponent label='Cancel' variant='outlined' containerStyles={cancelButtonStyles}/>
-        <RegularButtonComponent label='Save' containerStyles={saveButtonStyles}/>
-    </div>
+    <DialogBoxActionsContainer style={buttonsContainerStyles}>
+        <RegularButtonComponent label='Cancel' variant='outlined'/>
+        <RegularButtonComponent label='Save'/>
+    </DialogBoxActionsContainer>
 
 </RegularCardComponent>
 
@@ -345,7 +312,7 @@ Mock-up of 'domain edit' dialog body:
 
 ```jsx
 
-const {RegularCardComponent, RegularCardHeaderComponent} = require('./../../../src/components/layout');
+const {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer} = require('./../../../src/components/layout');
 const {
     ReduxFormTextInputComponent, 
     ReduxFormCheckboxInputComponent,
@@ -405,24 +372,9 @@ const isActiveControlStyles = {
     alignSelf: 'end'
 }
 
-const buttonsContainerStyles = {
-    boxSizing: 'border-box', 
-                                                                                                    
+const buttonsContainerStyles = {                                                                                                    
     gridArea: 'buttons',
-    display: 'grid',
-    
-    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-    gridAutoRows: 'max-content',
-    gridColumnGap: '25px',
 };
-
-const cancelButtonStyles = {
-    gridColumn: '3 / 4',
-}
-
-const saveButtonStyles = {
-    gridColumn: '4 / 5',
-}
 
 const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-globe">Edit domain data</RegularCardHeaderComponent>;
 
@@ -467,10 +419,10 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-globe
         componentContainerStyles={isActiveControlStyles}
     />         
     
-    <div style={buttonsContainerStyles}>
-        <RegularButtonComponent label='Cancel' variant='outlined' containerStyles={cancelButtonStyles}/>
-        <RegularButtonComponent label='Save' containerStyles={saveButtonStyles}/>
-    </div>
+    <DialogBoxActionsContainer style={buttonsContainerStyles}>
+        <RegularButtonComponent label='Cancel' variant='outlined'/>
+        <RegularButtonComponent label='Save'/>
+    </DialogBoxActionsContainer>
 
 </RegularCardComponent>
 

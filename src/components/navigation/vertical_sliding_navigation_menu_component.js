@@ -40,6 +40,7 @@ type ItemType = {
 
     /**
      * Nested children
+     *
      */
 
     children?: Array<ItemType>,
@@ -265,8 +266,8 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
         const menuItemIndex: number = parseInt($menuItemElement.dataset['index']);
 
         cond([
-            [equals('child'), () => {this._getOnMenuItemClickCallback()(menuItemIndex)}],
-            [equals('parent'), () => {this._getOnMenuParentItemClickCallback()(menuItemIndex)}],
+            [equals('child'), () => {this._getOnMenuItemClickCallback()(menuItemIndex);}],
+            [equals('parent'), () => {this._getOnMenuParentItemClickCallback()(menuItemIndex);}],
             [T, always(null)]
         ])($menuItemElement.dataset['menuitemtype']);
     }
