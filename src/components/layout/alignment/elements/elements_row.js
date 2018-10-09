@@ -8,7 +8,6 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import {defaultTo} from 'ramda';
-import {ElementsGroupFunction} from "./elements_group";
 
 // local imports
 

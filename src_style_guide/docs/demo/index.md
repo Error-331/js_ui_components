@@ -50,11 +50,9 @@ const buttonsContainerStyles = {
     gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
     gridAutoRows: 'max-content',
     gridColumnGap: '25px',
+    
+    direction: 'rtl',
 };
-
-const loginButtonStyles = {
-    gridColumn: '4 / 5',
-}
 
 const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-sign-in">Login</RegularCardHeaderComponent>;
 
@@ -85,7 +83,7 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-sign-
     />
          
     <div style={buttonsContainerStyles}>
-        <RegularButtonComponent label='Login' containerStyles={loginButtonStyles}/>
+        <RegularButtonComponent label='Login'/>
     </div>
 
 </RegularCardComponent>
@@ -157,15 +155,9 @@ const buttonsContainerStyles = {
     gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
     gridAutoRows: 'max-content',
     gridColumnGap: '25px',
+    
+    direction: 'rtl',
 };
-
-const cancelButtonStyles = {
-    gridColumn: '3 / 4',
-}
-
-const saveButtonStyles = {
-    gridColumn: '4 / 5',
-}
 
 const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-id-card">Edit user data</RegularCardHeaderComponent>;
 
@@ -213,8 +205,8 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-id-ca
     />       
     
     <div style={buttonsContainerStyles}>
-        <RegularButtonComponent label='Cancel' variant='outlined' containerStyles={cancelButtonStyles}/>
-        <RegularButtonComponent label='Save' containerStyles={saveButtonStyles}/>
+        <RegularButtonComponent label='Save'/>
+        <RegularButtonComponent label='Cancel' variant='outlined'/>
     </div>
 
 </RegularCardComponent>
@@ -560,7 +552,7 @@ class NavigationDemoComponent1 extends Component {
     
     _getCardContainerStyles() {
         return {
-            marginLeft: '10px'
+            marginLeft: '8px'
         };
     }
     

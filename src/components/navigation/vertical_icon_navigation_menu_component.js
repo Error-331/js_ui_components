@@ -50,8 +50,8 @@ const styles = theme => ({
         width: '50px',
         height: '100%',
 
-        paddingTop: `${theme.layoutStyles.bodyTopPadding}px`,
-        paddingBottom: `${theme.layoutStyles.bodyBottomPadding}px`,
+        paddingTop: `${theme.layoutStyles.topSpacing}px`,
+        paddingBottom: `${theme.layoutStyles.bottomSpacing}px`,
 
         flexDirection: 'column',
         flexWrap: 'nowrap',

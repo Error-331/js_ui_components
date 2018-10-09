@@ -111,10 +111,10 @@ const styles = theme => ({
         alignItems: 'stretch',
         alignContent: 'flex-start',
 
-        padding: `${theme.layoutStyles.bodyTopPadding}px 
-                  ${theme.layoutStyles.bodyRightPadding}px 
-                  ${theme.layoutStyles.bodyBottomPadding}px 
-                  ${theme.layoutStyles.bodyBottomPadding}px
+        padding: `${theme.layoutStyles.topSpacing}px 
+                  ${theme.layoutStyles.rightSpacing}px 
+                  ${theme.layoutStyles.leftSpacing}px 
+                  ${theme.layoutStyles.bottomSpacing}px
         `,
 
         backgroundColor: theme.navigationStyles.bodyBGColor1,

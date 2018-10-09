@@ -62,7 +62,18 @@ module.exports = {
                         {
                             name: 'Alignment',
                             content: path.join(__dirname, './docs/layout/alignment/index.md'),
-                            components: path.join(__dirname, './../src/components/layout/alignment/**/elements_[A-Za-z_]*.js'),
+
+                            sections: [
+                                {
+                                    name: 'Elements',
+                                    components: path.join(__dirname, './../src/components/layout/alignment/**/elements_[A-Za-z_]*.js'),
+                                },
+
+                                {
+                                    name: 'Dialog box',
+                                    components: path.join(__dirname, './../src/components/layout/alignment/**/dialog_box_[A-Za-z_]*.js'),
+                                }
+                            ],
                         },
 
                         {

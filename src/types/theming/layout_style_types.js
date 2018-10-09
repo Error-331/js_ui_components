@@ -20,11 +20,14 @@ export type LayoutStylesType = {
     horizontalSpacing: number,
     verticalSpacing: number,
 
-    bodyTopPadding: number,
-    bodyBottomPadding: number,
+    topSpacing: number,
+    bottomSpacing: number,
 
-    bodyRightPadding: number,
-    bodyLeftPadding: number,
+    rightSpacing: number,
+    leftSpacing: number,
+
+    componentHorizontalSpacing: number,
+    componentVerticalSpacing: number,
 
     headerFontColor: string,
     bodyFontColor: string,

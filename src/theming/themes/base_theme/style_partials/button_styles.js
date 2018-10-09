@@ -15,6 +15,8 @@ export const buttonStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         fontStackRegular: fontStacks.regularFontFamilyStack,
         fontStackBold: fontStacks.boldFontFamilyStack,
 
+        regularButtonMinimumWidth: 110, // px
+
         captionFontSize: 14, // px
         iconFontSize: 17,
 

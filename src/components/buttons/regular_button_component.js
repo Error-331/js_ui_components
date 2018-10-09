@@ -106,6 +106,8 @@ const styles = theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
+        minWidth: `${theme.buttonStyles.regularButtonMinimumWidth}px`,
+
         borderRadius: '2px',
 
         padding: `${verticalPadding}px ${horizontalPadding}px`,

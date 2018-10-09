@@ -46,4 +46,5 @@
           } - in all form stuff;
 - input ellipses;
 - dropdown limit drop menu height;      
-- layoutStyles.headerBorderRadius -> something;    
+- layoutStyles.headerBorderRadius -> something;  
+- const styles = theme =>  - type for theme;  

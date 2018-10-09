@@ -8,7 +8,7 @@ const {ModalComponent} = require('./modal_component');
 const {RegularButtonComponent} = require('./../buttons/regular_button_component');
 const {RegularCardHeaderComponent} = require('./../layout/structure/regular_card_header_component');
 
-const {ElementsRow} = require('./../layout/alignment/elements_row');
+const {ElementsRow} = require('./../layout/alignment/elements/elements_row');
 
 class DemoGlobalModalComponent1 extends Component {
     _onShowModal() {

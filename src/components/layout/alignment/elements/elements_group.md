@@ -3,7 +3,7 @@ A number of radio buttons aligned to the left and arranged into column:
 ```jsx
 
 const {ElementsGroup} = require('./elements_group');
-const {ReduxFormRadioButtonInputComponent} = require('./../../redux_form/redux_form_radio_button_input_component');
+const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
 <ElementsGroup direction='column' alignment='left'>
 
@@ -32,7 +32,7 @@ A number of radio buttons aligned to the right and arranged into column:
 ```jsx
 
 const {ElementsGroup} = require('./elements_group');
-const {ReduxFormRadioButtonInputComponent} = require('./../../redux_form/redux_form_radio_button_input_component');
+const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
 <ElementsGroup direction='column' alignment='right'>
 
@@ -61,7 +61,7 @@ A number of radio buttons aligned to the center and arranged into column:
 ```jsx
 
 const {ElementsGroup} = require('./elements_group');
-const {ReduxFormRadioButtonInputComponent} = require('./../../redux_form/redux_form_radio_button_input_component');
+const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
 <ElementsGroup direction='column' alignment='center'>
 
@@ -90,7 +90,7 @@ A number of radio buttons aligned to the left and arranged into row:
 ```jsx
 
 const {ElementsGroup} = require('./elements_group');
-const {ReduxFormRadioButtonInputComponent} = require('./../../redux_form/redux_form_radio_button_input_component');
+const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
 <ElementsGroup direction='row' alignment='left'>
 
@@ -119,7 +119,7 @@ A number of radio buttons aligned to the right and arranged into row:
 ```jsx
 
 const {ElementsGroup} = require('./elements_group');
-const {ReduxFormRadioButtonInputComponent} = require('./../../redux_form/redux_form_radio_button_input_component');
+const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
 <ElementsGroup direction='row' alignment='right'>
 
@@ -148,7 +148,7 @@ A number of radio buttons aligned to the center and arranged into row:
 ```jsx
 
 const {ElementsGroup} = require('./elements_group');
-const {ReduxFormRadioButtonInputComponent} = require('./../../redux_form/redux_form_radio_button_input_component');
+const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
 <ElementsGroup direction='row' alignment='center'>
 
