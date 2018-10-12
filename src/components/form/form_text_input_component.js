@@ -304,7 +304,9 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
 
             active: false,
             pristine: true,
-            dirty: false
+            dirty: false,
+            touched: false,
+            error: null,
         },
 
         input: {
@@ -412,7 +414,8 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
 
     // region prop accessors
     _isInputHasFocus(): boolean {
-        const {active}: {active: boolean} = this._getMetaData();
+        const {active, error} = this._getMetaData();
+        console.log('error', error);
         return active && this._isInputEditable();
     }
 
@@ -513,6 +516,8 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         return (
             <div className={this._getComponentContainerClasses()} style={this._getComponentContainerStyles()}>
                 {this._renderInputContainer()}
+                {this._renderWarnings()}
+                {this._renderErrors()}
             </div>
         );
     }

@@ -35,7 +35,9 @@ const ComponentFormContainerConnected = reduxForm({
             testFormTextInputComponentWithDefaultValue3: 'Test default value 3...',
             testFormTextInputComponentWithDefaultValue4: 'Test default value 4...',
             testFormTextInputComponentWithDefaultValue5: 'Test default value 5...',
-            testFormTextInputComponentWithDefaultValue6: 'Test default value 6...'
+            testFormTextInputComponentWithDefaultValue6: 'Test default value 6...',
+            testFormTextInputComponentWithDefaultValue7: 'Test default value 7...',
+            testFormTextInputComponentWithDefaultValue8: 'Test default value 8...',
         },
 
         reduxFormSwitchInputComponents: {
@@ -76,7 +78,32 @@ const ComponentFormContainerConnected = reduxForm({
             testFromDateInputComponentWithDefaultValue4: moment('2016-02-08 09:30:26'),
             testFromDateInputComponentWithDefaultValue5: moment('2017-02-08 09:30:26'),
         }
-    }
+    },
+
+    validate: inputValues => {
+        const errorMessages = {
+            reduxFormTextInputComponents: {}
+        };
+
+        if (!inputValues) {
+            return errorMessages;
+        }
+
+        if (inputValues['reduxFormTextInputComponents'] || inputValues.has('reduxFormTextInputComponents')) {
+            const reduxFormTextInputComponentsValues = inputValues['reduxFormTextInputComponents'] || inputValues.get('reduxFormTextInputComponents');
+
+            if (reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue7'] || reduxFormTextInputComponentsValues.has('testFormTextInputComponentWithDefaultValue7')) {
+                const testFormTextInputComponentWithDefaultValue7 = reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue7'] || reduxFormTextInputComponentsValues.get('testFormTextInputComponentWithDefaultValue7');
+
+                if (testFormTextInputComponentWithDefaultValue7.length > 0) {
+                    errorMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue7 = 'fuck...';
+                }
+            }
+        }
+
+
+        return errorMessages;
+    },
 })(ComponentFormContainer);
 
 export default injectSheet(styles)(ComponentFormContainerConnected);
