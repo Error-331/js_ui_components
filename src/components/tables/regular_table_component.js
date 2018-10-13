@@ -6,14 +6,23 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {T, equals, is, isNil, isEmpty, always, unless, defaultTo, bind, mergeDeepRight, cond, map} from 'ramda';
+import {T, equals, is, isNil, ifElse, cond, always, clone, defaultTo, bind, omit, map} from 'ramda';
 import moment from 'moment';
 
 // local imports
-import type {ExtendedEventTargetType, CombinedEventType} from './../../types/dom_types';
+import {
+    commonCellContentStylesFunc,
+    longTextCellStylesFunc,
+} from './../../theming/common_styles';
 
+import type {UserPropsTypes as VerticalTablePropsTypes} from './vertical_table_component';
+import type {UserPropsTypes as HorizontalTablePropsTypes} from './horizontal_table_component';
+
+import {MainThemeContext} from './../../theming';
 import {TextBlock} from './../layout/';
+
 import {FormCheckboxVariant2Component} from './../form/form_checkbox_variants/form_checkbox_variant2_component';
+import {HorizontalTableComponent, VerticalTableComponent} from './';
 
 // type definitions
 type BasicColumnDataType = void | null | string | number | boolean | moment | React.Element<any>;
@@ -21,32 +30,16 @@ type SpecificColumnDataType = {
     type: string,
     data: BasicColumnDataType
 };
-
-type ColumnWidthType = string | number;
+type PreparedColumnDataType = void | null | string | number | React.Element<any>;
 
 type ColumnDataType = BasicColumnDataType | SpecificColumnDataType;
 type RowDataType = Array<ColumnDataType>;
-
-type ColumnNamesType = Array<string>;
-type ColumnWidthsType = Array<ColumnWidthType>;
+type PreparedRowDataType = Array<PreparedColumnDataType>;
 
 type DataType = Array<RowDataType>;
+type PreparedDataType = Array<PreparedRowDataType>;
 
-type OnRowHoverCallbackType = (event: CombinedEventType, rowIndex: number) => void;
-
-type PropsTypes = {
-    /**
-     * Flag that indicates whether table header should be shown
-     */
-
-    showTableHeader?: boolean,
-
-    /**
-     * Flag that indicates whether table footer should be shown
-     */
-
-    showTableFooter?: boolean,
-
+type PropsTypes = (VerticalTablePropsTypes & HorizontalTablePropsTypes) & {
     /**
      * Flag that indicates whether placeholders should be shown for empty cells
      */
@@ -54,34 +47,10 @@ type PropsTypes = {
     showPlaceholder?: boolean,
 
     /**
-     * Array of column names
-     */
-
-    columnNames?: ColumnNamesType,
-
-    /**
-     * Array of column widths
-     */
-
-    columnWidths?: ColumnWidthsType,
-
-    /**
-     * Column index (inside data row) which will use data from this column as id and skip its rendering
-     */
-
-    idColumnIndex?: number,
-
-    /**
      * Array of data for each cell of the table
      */
 
     data?: DataType,
-
-    /**
-     * Callback function which will be called once user mouse hovers over table row
-     */
-    // TODO: why hover? - click
-    onHoverCallback?: OnRowHoverCallbackType,
 
     /**
      * JSS inner classes
@@ -92,162 +61,143 @@ type PropsTypes = {
     classes: any
 };
 
-type StateTypes = {};
-
-// styles definition
-const longTextCellStylesFunc = () => ({
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-});
-
-const commonCellContentStylesFunc = (theme) => ({
-    lineHeight: '18px',
-
-    fontFamily: theme.tableStyles.bodyFontStack,
-    fontSize: `${theme.tableStyles.cellFontSize}px`,
-
-    textAlign: 'left',
-
-    color: theme.tableStyles.cellFontColor,
-    backgroundColor: theme.tableStyles.cellBGColor
-});
-
-const commonCellStylesFunc = (theme) => ({
-    borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
-
-    paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
-    paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
-
-    paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
-    paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
-
-    extend: commonCellContentStylesFunc(theme)
-});
-
-const thStylesFunc = (theme) => {
-    return mergeDeepRight(commonCellStylesFunc(theme), {
-        paddingTop: '0px',
-    });
+type StateTypes = {
+    tableType: string
 };
 
+// styles definition
 const styles = theme => ({
-    componentContainer: {
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-
-        flexBasis: 'auto',
-        flexGrow: 0,
-        flexShrink: 1,
-
-        '& > table': {
-            boxSizing: 'border-box',
-            overflow: 'hidden',
-
-            width: '100%',
-
-            tableLayout: 'fixed',
-            borderCollapse: 'collapse',
-
-            '& > thead': {
-                '& > tr': {
-                    '& th': {
-                        extend: thStylesFunc(theme)
-                    }
-                }
-            },
-
-            '& > tfoot': {
-                '& > tr': {
-                    '& th': {
-                        extend: thStylesFunc(theme)
-                    }
-                }
-            },
-
-            '& > tbody': {
-                '& tr': {
-                    '& td': {
-                        extend: commonCellStylesFunc(theme),
-
-                        '& > $regularTextContainer': {
-                            extend: [commonCellContentStylesFunc(theme), longTextCellStylesFunc()],
-                            height: `${theme.tableStyles.cellLineHeight}px`,
-                        },
-
-                        '& > $longTextContainer': {
-                            extend: [commonCellContentStylesFunc(theme), longTextCellStylesFunc()],
-                            height: `${theme.tableStyles.cellLineHeight * 2}px`,
-                        },
-
-                        '& > $placeholderContainer': {
-                            width: '20px',
-                            borderTop: `1px solid ${theme.tableStyles.cellBorderColor}`
-                        }
-                    }
-                },
-
-                '& tr:hover': {
-                    '& td': {
-                        backgroundColor: theme.tableStyles.cellHoverBGColor
-                    }
-                },
-
-                '& tr:last-child': {
-                    '& td': {
-                        borderBottom: '0px none'
-                    }
-                }
-            }
-        }
+    placeholderContainer: {
+        width: '20px',
+        borderTop: `1px solid ${theme.tableStyles.cellBorderColor}`
     },
 
-    regularTextContainer: {},
-    longTextContainer: {},
+    regularTextContainer: {
+        extend: [commonCellContentStylesFunc(theme), longTextCellStylesFunc()],
+        height: `${theme.tableStyles.cellLineHeight}px`,
+    },
 
-    placeholderContainer: {},
+    longTextContainer: {
+        extend: [commonCellContentStylesFunc(theme), longTextCellStylesFunc()],
+        height: `${theme.tableStyles.cellLineHeight * 2}px`,
+    }
 });
 
 // constants declaration
 export const SPECIFIC_COLUMN_TYPE_LONG_TEXT: string = 'SPECIFIC_COLUMN_TYPE_LONG_TEXT';
 
+export const HORIZONTAL_TABLE_TYPE: string = 'horizontal';
+export const VERTICAL_TABLE_TYPE: string = 'vertical';
+
+/**
+ * Regular table component styled according to material-UI guidelines.
+ * Wrapper component for ['VerticalTableComponent'](#verticaltablecomponent) and ['HorizontalTableComponent'](#horizontaltablecomponent). It will change it representation
+ * based on clients screen dimensions (['VerticalTableComponent'](#verticaltablecomponent) will be used for mobile like devices and
+ * ['HorizontalTableComponent'](#horizontaltablecomponent) will be used for other devices).
+ *
+ * @version 1.0.0
+ * @author [Sergei Selihov](https://github.com/Error-331)
+ *
+ */
+
 // component implementation
-export class RegularTableComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'RegularTableComponent';
+    static displayName = 'RegularTableClass';
 
     static defaultProps = {
-        showTableHeader: true,
-        showTableFooter: true,
         showPlaceholder: false,
-
-        columnNames: [],
-        columnWidths: [],
-
-        idColumnIndex: null,
-        data: [],
-
-        onHoverCallback: () => {}
+        data: null,
     };
 
     // endregion
 
-    // region constructor
+    // region private props
     // endregion
 
-    // region lifecycle methods
-    _onTableClick(event: CombinedEventType): void {
-        const target: ExtendedEventTargetType = event.target;
+    // region constructor
+    constructor(props: PropsTypes) {
+        super(props);
 
-        const rowElement: ExtendedEventTargetType = unless(
-            currentTarget => equals('tr', currentTarget.tagName.toLowerCase()),
-            currentTarget => currentTarget.closest('tr'))(target);
-
-        this._getOnHoverCallback()(event, parseInt(rowElement.dataset['row-index']));
+        this.state = {
+            tableType: VERTICAL_TABLE_TYPE
+        };
     }
 
     // endregion
 
+    // region business logic
+    _prepareNilColumnData(): React.Node {
+        const showPlaceholder: boolean = this._getShowPlaceholder();
+        return showPlaceholder ? <div className={this._getPlaceholderContainerClassName()}/> : '';
+    }
+
+    _prepareStringColumn(columnData: string): React.Node {
+        return <TextBlock className={this._getRegularTextContainerClassName()}>
+            {columnData}
+        </TextBlock>;
+    }
+
+    _prepareLongTextColumn(columnData: SpecificColumnDataType): React.Node {
+        const {data} = columnData;
+
+        return <TextBlock className={this._getLongTextContainerClassName()}>
+            {data}
+        </TextBlock>;
+    }
+
+    _prepareSpecificColumnData(columnData: ColumnDataType): string | React.Node {
+        if (typeof columnData !== 'object' || isNil(columnData)) {
+            return this._prepareNilColumnData();
+        }
+
+        if (columnData instanceof React.Component) {
+            return columnData;
+        }
+
+        if (!columnData.type || !columnData.data) {
+            return '';
+        }
+
+        return cond([
+            [({type}) => equals(SPECIFIC_COLUMN_TYPE_LONG_TEXT, type), bind(this._prepareLongTextColumn, this)],
+            [T, always('')]
+        ])(columnData);
+    }
+
+    _prepareColumnData(columnData: ColumnDataType): PreparedColumnDataType {
+        return cond([
+            [isNil, bind(this._prepareNilColumnData, this)],
+            [(columnData: ColumnDataType) => moment.isMoment(columnData), (columnData: moment) => columnData.format('YYYY-M-d H:mm:ss')],
+            [is(Date), (columnData: moment) => moment(columnData).format('YYYY-M-d H:mm:ss')],
+            [is(Boolean), (columnData: ColumnDataType) => <FormCheckboxVariant2Component forceCheck={columnData}/>],
+            [is(String), bind(this._prepareStringColumn, this)],
+            [is(Object), bind(this._prepareSpecificColumnData, this)],
+            [T, bind(this._prepareNilColumnData, this)]
+        ])(columnData);
+    }
+
+    // endregion
+
+    // region lifecycle methods
+    // endregion
+
     // region style accessors
+    _getLongTextContainerClassName(): string {
+        return this.props.classes.longTextContainer;
+    }
+
+    _getRegularTextContainerClassName(): string {
+        return this.props.classes.regularTextContainer;
+    }
+
+    _getPlaceholderContainerClassName(): string {
+        return this.props.classes.placeholderContainer;
+    }
+
     // endregion
 
     // region label accessors
@@ -257,53 +207,12 @@ export class RegularTableComponentClass extends React.Component<PropsTypes, Stat
     // endregion
 
     // region prop accessors
-    _getColumnNames(): ColumnNamesType {
-        return defaultTo(RegularTableComponentClass.defaultProps.columnNames)(this.props.columnNames);
-    }
-
-    _getColumnWidths(): ColumnWidthsType {
-        return defaultTo(RegularTableComponentClass.defaultProps.columnWidths)(this.props.columnWidths);
-    }
-
-    _getColumnWidth(columnIndex: number): ColumnWidthType {
-        const columnWidth: ColumnWidthType = this._getColumnWidths()[columnIndex];
-
-        return cond([
-            [isNil, always('auto')],
-            [is(Number), columnWidth => `${columnWidth}px`],
-            [is(String), always(columnWidth)]
-        ])
-        (columnWidth);
-    }
-
-    _getData(): DataType {
-        return defaultTo(RegularTableComponentClass.defaultProps.data)(this.props.data);
-    }
-
-    _getDataRow(dataRow: RowDataType): RowDataType {
-        return defaultTo([])(dataRow);
-    }
-
-    _getDataColumn(dataColumn: ColumnDataType): ColumnDataType {
-        return defaultTo(null)(dataColumn);
-    }
-
-    _isIdColumn(columnIndex: number): boolean {
-        const {idColumnIndex} = this.props;
-
-        if (isNil(idColumnIndex)) {
-            return false;
-        }
-
-        return columnIndex === idColumnIndex;
-    }
-
     _getShowPlaceholder(): boolean {
-        return defaultTo(RegularTableComponentClass.defaultProps.showPlaceholder)(this.props.showPlaceholder);
+        return defaultTo(RegularTableClass.defaultProps.showPlaceholder)(this.props.showPlaceholder);
     }
 
-    _getOnHoverCallback(): OnRowHoverCallbackType {
-        return defaultTo(RegularTableComponentClass.defaultProps.onHoverCallback)(this.props.onHoverCallback);
+    _getData(): DataType | null {
+        return defaultTo(clone(RegularTableClass.defaultProps.data))(this.props.data);
     }
 
     // endregion
@@ -312,143 +221,32 @@ export class RegularTableComponentClass extends React.Component<PropsTypes, Stat
     // endregion
 
     // region render methods
-    _renderTableBodyNilColumn(): React.Node | boolean {
-        const showPlaceholder: boolean = this._getShowPlaceholder();
+    render(): React.Node {
+        const data: DataType | null = this._getData();
 
-        return showPlaceholder ? <div className={this.props.classes.placeholderContainer}/> : '';
-    }
-
-    _renderTableBodyStringColumn(columnData: string): React.Node {
-        return <TextBlock className={this.props.classes.regularTextContainer}>
-            {columnData}
-        </TextBlock>;
-    }
-
-    _renderTableBodyLongTextColumn(columnData: SpecificColumnDataType): React.Node {
-        const {data} = columnData;
-
-        return <TextBlock className={this.props.classes.longTextContainer}>
-            {data}
-        </TextBlock>;
-    }
-
-    _renderSpecificColumnData(columnData: ColumnDataType): BasicColumnDataType {
-        if (!is(Object, columnData) || isNil(columnData.type) || isNil(columnData.data)) {
-            return this._renderTableBodyNilColumn();
+        if (isNil(data)) {
+            return null;
         }
 
-        const preparedColumnData: SpecificColumnDataType = columnData;
+        const preparedData: PreparedDataType = map(map(bind(this._prepareColumnData, this)), data);
 
-        return cond([
-            [({type}) => equals(SPECIFIC_COLUMN_TYPE_LONG_TEXT, type), bind(this._renderTableBodyLongTextColumn, this)]
-        ])(preparedColumnData);
-    }
-
-    _renderTableBodyColumn(columnData: ColumnDataType, columnIndex: number): React.Node {
-        const preparedColumnData: BasicColumnDataType = cond([
-            [isNil, bind(this._renderTableBodyNilColumn, this)],
-            [(columnData: ColumnDataType) => moment.isMoment(columnData), (columnData: moment) => columnData.format('YYYY-M-d H:mm:ss')],
-            [is(Date), (columnData: moment) => moment(columnData).format('YYYY-M-d H:mm:ss')],
-            [is(Boolean), (columnData: ColumnDataType) => <FormCheckboxVariant2Component forceCheck={columnData}/>],
-            [(columnData: ColumnDataType) => columnData instanceof React.Component, always(columnData)],
-            [is(String), bind(this._renderTableBodyStringColumn, this)],
-            [is(Object), bind(this._renderSpecificColumnData, this)],
-            [T, bind(this._renderTableBodyNilColumn, this)]
-        ])(columnData);
-
-        return <td key={`column_${columnIndex}`}>{preparedColumnData}</td>;
-    }
-
-    _renderTableBodyColumns(rowData: RowDataType): React.Node {
-        let columnIndex: number = -1;
-
-        return map((columnData: ColumnDataType) => {
-            ++columnIndex;
-
-            if (this._isIdColumn(columnIndex)) {
-                return null;
-            }
-
-            return this._renderTableBodyColumn(this._getDataColumn(columnData), columnIndex);
-        }, rowData);
-    }
-
-    _renderTableBodyRows(): React.Node {
-        let rowIndex: number = -1;
-
-        return map((rowData: RowDataType) => {
-            ++rowIndex;
-            rowData = this._getDataRow(rowData);
-
-            return <tr key={`row_${rowIndex}`} data-row-index={rowIndex}>{this._renderTableBodyColumns(rowData)}</tr>;
-        }, this._getData());
-    }
-
-    _renderTableBody(): React.Node {
-        const {data} = this.props;
-        const renderedData = (isNil(data) || isEmpty(data)) ? null : this._renderTableBodyRows();
-
-        return <tbody onClick={bind(this._onTableClick, this)}>{renderedData}</tbody>;
-    }
-
-    _renderTableHeaderCells(): React.Node {
-        let columnIndex: number = -1;
-
-        return map((columnName: string) => {
-            ++columnIndex;
-
-            return <th
-                style={{width: this._getColumnWidth(columnIndex)}}
-                key={`headerColumn_${columnIndex}`}
-            >{columnName}</th>;
-        }, this._getColumnNames());
-    }
-
-    _renderTableFooter(): React.Node {
-        return (
-            <tfoot>
-                <tr>
-                    {this._renderTableHeaderCells()}
-                </tr>
-            </tfoot>
-        );
-    }
-
-    _renderTableHeader(): React.Node {
-        return (
-            <thead>
-                <tr>
-                    {this._renderTableHeaderCells()}
-                </tr>
-            </thead>
-        );
-    }
-
-    _renderTable(): React.Node {
-        const {showTableHeader, showTableFooter} = this.props;
-
-        return <table>
-            {showTableHeader && this._renderTableHeader()}
-            {showTableFooter && this._renderTableFooter()}
-
-            {this._renderTableBody()}
-        </table>;
-    }
-
-    _renderComponentContainer(): React.Node {
-        const {componentContainer} = this.props.classes;
-
-        return <div className={componentContainer}>
-            {this._renderTable()}
-        </div>;
-    }
-
-    render(): React.Node {
-        return this._renderComponentContainer();
+        return ifElse(
+            equals(HORIZONTAL_TABLE_TYPE),
+            always(<HorizontalTableComponent {...omit(['data', 'classes'], this.props)} data={data}/>),
+            always(<VerticalTableComponent {...omit(['data', 'classes'], this.props)} data={preparedData} />)
+        )(this.state.tableType);
     }
 
     // endregion
 }
 
 // exports
-export const RegularTableComponent = injectSheet(styles)(RegularTableComponentClass);
+export function RegularTableComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <RegularTableClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+RegularTableComponent.displayName = 'RegularTableComponent';

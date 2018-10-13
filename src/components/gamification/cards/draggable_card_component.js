@@ -8,16 +8,28 @@ import {DragSource, DropTarget} from 'react-dnd';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
+import {defaultTo} from 'ramda';
+
 // local imports
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 
 // type definitions
 type ConnectDragSourceType = (dragSource: React.Element<any>) => React.Node;
 
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
     dndType: string,
 
     connectDragSource: ConnectDragSourceType,
+
+    /**
+     * Additional style object which will be applied to card
+     */
+
+    style?: CSSStylesType,
 
     /**
      * JSS inner classes
@@ -87,16 +99,26 @@ export class DraggableCardComponent extends React.Component<PropsTypes, StateTyp
         classes: {}
     };
 
+    //TODO: DEFAULT PROPS FUNCTIONS!!!
+
     /*
         const childrenWithProps = React.Children.map(children, child =>
       React.cloneElement(child, { doSomething: this.doSomething }));
      */
 
-    render() {
+    _getStyle(): CSSStylesType {
+        return defaultTo({})(this.props.style);
+    }
+
+    _getComponentContainerStyle(): CSSStylesType {
+        return Object.assign({}, this._getStyle());
+    }
+
+    render(): React.NOde {
         const { children, connectDragSource, connectDropTarget, isDragging, isOver } = this.props;
 
         return connectDropTarget(connectDragSource(
-            <div>
+            <div style={this._getComponentContainerStyle()}>
                 {React.Children.map(children, child => React.cloneElement(child, {
                     isDragging, isOver
                 }))}
