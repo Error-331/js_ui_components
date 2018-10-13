@@ -274,3 +274,16 @@ Editable text input field with specified label, placeholder text, icon and defau
     iconClassNames='fas fa-dumbbell'
 />
 ```
+
+Test:
+
+```jsx
+
+<ReduxFormTextInputComponent
+    name='reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue7'
+
+    label='Test label'
+    placeholder='Test placeholder text...'
+    iconClassNames='fas fa-dumbbell'
+/>
+```
