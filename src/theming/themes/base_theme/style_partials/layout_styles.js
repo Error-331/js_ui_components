@@ -37,6 +37,9 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         rightSpacing: 8, // px
         leftSpacing: 10, // px
 
+        sectionHorizontalSpacing: 12, // px
+        sectionVerticalSpacing: 12, // px
+
         componentHorizontalSpacing: 25, // px
         componentVerticalSpacing: 15, // px
 

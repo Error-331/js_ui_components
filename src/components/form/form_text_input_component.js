@@ -512,6 +512,14 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         </div>;
     }
 
+    _renderWarnings(): React.Node {
+        return null;
+    }
+
+    _renderErrors(): React.Node {
+        return null;
+    }
+
     render(): React.Node {
         return (
             <div className={this._getComponentContainerClasses()} style={this._getComponentContainerStyles()}>

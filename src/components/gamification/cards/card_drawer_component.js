@@ -15,7 +15,10 @@ import {is, equals, gt, and, defaultTo, inc, map} from 'ramda'
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 // local imports
+import type {ThemeType} from './../../../types/theme_types';
+
 import {DraggableCardComponent} from './draggable_card_component';
+import {MainThemeContext} from './../../../theming';
 
 // type definitions
 type CSSStylesType = {
@@ -34,19 +37,48 @@ type DataArrayType = Array<DataType>;
 
 type PropsTypes = {
     /**
+     * Unique drag and drop type (it will be passed to child cards) which, if not provided, will be auto-generated
+     */
+
+    dndType?: string,
+
+    /**
      * Data for each card in the card drawer
-     *
      */
 
     data?: DataArrayType,
 
+    /**
+     * Size of the gap between cards (CSS grid gap), default: 12px
+     */
+
     gapSize?: number,
+
+    /**
+     * Width of the card (CSS grid column), default: 295px
+     */
 
     colSize?: number,
 
+    /**
+     * Width of the card (CSS grid row), default: 175px
+     */
+
     rowSize?: number,
 
+    /**
+     * Row count (if not specified - all cards will be rendered)
+     */
+
     rowCount?: number,
+
+    /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
 
     /**
      * JSS inner classes
@@ -79,8 +111,6 @@ const styles = theme => ({
             display: 'grid',
 
             padding: '5px',
-
-            gridTemplateColumns: 'repeat(auto-fill, minmax(295px, 1fr))',
         },
     },
 
@@ -92,19 +122,22 @@ const styles = theme => ({
 // $FlowFixMe decorators
 @DragDropContext(HTML5Backend)
 @injectSheet(styles)
-export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes> {
+export class CardDrawerClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'CardDrawerComponent';
-//TODO: DEFAULT PROPS FUNCTIONS!!!
+    static displayName = 'CardDrawerClass';
+
     static defaultProps = {
+        dndType: `card_drawer_${generateRandomIdNumber()}`,
+
+        colSize: 295,
+        rowSize: 175,
+
         classes: {}
     };
 
     // endregion
 
     // region private props
-    _dndType: string = `card_drawer_${generateRandomIdNumber()}`;
-
     // endregion
 
     // region constructor
@@ -124,15 +157,14 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
     _getCardStyle(): CSSStylesType {
         let cardStyle: CSSStylesType = {};
 
-        const gapSize: number = this._getGapSize();
+        const verticalGapSize: number = this._getVerticalGapSize();
         const rowCount: number | string = this._getRowCount();
 
         if (this._isOneLine() && is(Number, rowCount)) {
             return cardStyle;
         } else if (this._isRestrictedVertically() && is(Number, rowCount)) {
             return Object.assign(cardStyle, {
-                marginBottom: `${gapSize}px`,
-                marginRight: '10px'
+                paddingBottom: `${verticalGapSize}px`,
             });
         } else {
             return cardStyle;
@@ -140,7 +172,8 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
     }
 
     _getInnerComponentContainerStyle(): CSSStylesType {
-        const gapSize: number = this._getGapSize();
+        const horizontalGapSize: number = this._getHorizontalGapSize();
+        const verticalGapSize: number = this._getVerticalGapSize();
 
         const colWidth: number = this._getColSize();
         const rowHeight: number = this._getRowSize();
@@ -149,32 +182,40 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
 
         let containerStyle: CSSStylesType = {
             gridAutoRows: `${rowHeight}px`,
-            gridGap: `${gapSize}px`
+
+            gridColumnGap: `${horizontalGapSize}px`,
+            gridRowGap: `${verticalGapSize}px`,
+
+            gridTemplateColumns: `repeat(auto-fill, minmax(${colWidth}px, 1fr))`,
         };
 
-        if (this._isOneLine() && is(Number, rowCount)) {
+        if (this._isOneLine() && typeof rowCount === 'number') {
             const data: DataArrayType = this._getData();
 
             const totalGaps: number = (data.length * 2 - 2);
-            const totalGapsWidth: number = gapSize * totalGaps;
+            const totalGapsWidth: number = horizontalGapSize * totalGaps;
             const totalColumnsWidth: number = colWidth * data.length;
 
             const width: number = totalGapsWidth + totalColumnsWidth;
-            const height: number = gapSize * 2 + rowHeight;
+            const height: number = verticalGapSize * 2 + rowHeight;
 
             return Object.assign(containerStyle, {
+                'gridRowGap': `0px`,
+
                 'width': `${width}px`,
                 'height': `${height}px`,
             });
-        } else if (this._isRestrictedVertically() && is(Number, rowCount)) {
-            const gridRowsHeight: number = rowHeight + gapSize;
+        } else if (this._isRestrictedVertically() && typeof rowCount === 'number') {
+            const gridRowsHeight: number = rowHeight + verticalGapSize;
 
-            const gapsHeight: number = gapSize * rowCount;
+            const gapsHeight: number = verticalGapSize * rowCount;
             const rowsHeight: number = rowHeight * rowCount;
-            const height: number = gapsHeight + gapSize + rowsHeight;
+            const height: number = gapsHeight + rowsHeight;
 
             return Object.assign(containerStyle, {
                 'gridAutoRows': `${gridRowsHeight}px`,
+                'gridRowGap': `0px`,
+
                 'height': `${height}px`
             });
         } else {
@@ -202,16 +243,20 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
     // endregion
 
     // region prop accessors
-    _getGapSize(): number {
-        return defaultTo(12)(this.props.gapSize);
+    _getVerticalGapSize(): number {
+        return defaultTo(this.props.theme.layoutStyles.sectionVerticalSpacing)(this.props.gapSize);
+    }
+
+    _getHorizontalGapSize(): number {
+        return defaultTo(this.props.theme.layoutStyles.sectionHorizontalSpacing)(this.props.gapSize);
     }
 
     _getColSize(): number {
-        return defaultTo(295)(this.props.colSize);
+        return defaultTo(CardDrawerClass.defaultProps.colSize)(this.props.colSize);
     }
 
     _getRowSize(): number {
-        return defaultTo(175)(this.props.rowSize);
+        return defaultTo(CardDrawerClass.defaultProps.rowSize)(this.props.rowSize);
     }
 
     _getRowCount(): number | string {
@@ -220,6 +265,10 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
 
     _getData(): DataArrayType {
         return defaultTo([])(this.props.data);
+    }
+
+    _getDndType(): string | number {
+        return defaultTo(CardDrawerClass.defaultProps.dndType)(this.props.dndType)
     }
 
     _isOneLine(): boolean {
@@ -246,7 +295,7 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
             return <DraggableCardComponent
                 id={id}
                 data={data}
-                dndType={this._dndType}
+                dndType={this._getDndType()}
                 style={this._getCardStyle()}
                 key={`draggable_card_${draggableCardKey}`}
             >
@@ -279,3 +328,13 @@ export class CardDrawerComponent extends React.Component<PropsTypes, StateTypes>
 }
 
 // exports
+// exports
+export function CardDrawerComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <CardDrawerClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+CardDrawerComponent.displayName = 'CardDrawerComponent';

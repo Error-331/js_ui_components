@@ -26,6 +26,9 @@ export type LayoutStylesType = {
     rightSpacing: number,
     leftSpacing: number,
 
+    sectionHorizontalSpacing: number,
+    sectionVerticalSpacing: number,
+
     componentHorizontalSpacing: number,
     componentVerticalSpacing: number,
 

@@ -1,162 +1,30 @@
-Test...
+Example usage of card drawer without limitation on number of rows:
 
 ```jsx
 
-const moment = require('moment');
-const {isNil} = require('ramda');
-const injectSheet = require('react-jss').default;
-
-const {RegularCardComponent} = require('./../../layout/structure/regular_card_component');
-const {RegularCardHeaderComponent} = require('./../../layout/structure/regular_card_header_component');
-
-const {InlineHeader, InlineTextBlock} = require('./../../layout/text');
-
-const jobCardStyles = theme => ({
-    componentContainer: {
-        height: '100%',
-        
-        '& > $regularCardContainer': {
-                boxSizing: 'border-box',
-                display: 'grid',
-                
-                width: '100%',
-                height: '100%',
-                                                
-                gridTemplateAreas: `
-                    "company-logo company-name publish-date"
-                    "title        title        title"
-                    "location     location       salary"
-                `,
-                
-         
-                gridTemplateColumns: '35px 1fr max-content',
-                gridTemplateRows: 'minMax(35px, max-content) 1fr max-content',
-                
-                cursor: 'pointer',
-                
-                '& > $companyLogoContainer': {
-                    boxSizing: 'border-box', 
-                    
-                    gridArea: 'company-logo', 
-                    alignSelf: 'start', 
-                    
-                    width: '100%'
-                },
-                
-                '& > $companyNameContainer': {
-                    boxSizing: 'border-box', 
-                    
-                    gridArea: 'company-name', 
-                    alignSelf: 'center', 
-                    
-                    paddingLeft: '8px', 
-                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
-                    fontSize: '16px', 
-                    
-                    color: theme.baseStyles.mainPrimaryColor
-                },
-                
-                '& > $publishDateContainer': {
-                    boxSizing: 'border-box', 
-                    
-                    gridArea: 'publish-date', 
-                    textAlign: 'right', 
-                    
-                    paddingLeft: '8px', 
-                    fontSize: '10px', 
-                    color: theme.baseStyles.utilityBGColor
-                },
-                
-                '& > $titleContainer': {
-                    gridArea: 'title', 
-                    paddingTop: '8px', 
-                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
-                    fontSize: '18px', 
-                    color: theme.baseStyles.mainPrimaryColor
-                },     
-                       
-                '& > $locationContainer': {
-                    gridArea: 'location', 
-                    textAlign: 'left', 
-                    fontSize: '14px', 
-                    color: theme.baseStyles.utilityBGColor
-                },
-                
-                '& > $salaryContainer': {
-                    gridArea: 'salary', 
-                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
-                    fontSize: '15px', 
-                    color: theme.baseStyles.accentColorPrimary, 
-                    textAlign: 'right'
-                },
-        }
-    },
-    
-    regularCardContainer: {},
-    
-    companyLogoContainer: {},
-    companyNameContainer: {},
-    publishDateContainer: {},
-    
-    titleContainer: {},
-    salaryContainer: {},
-    locationContainer: {}
-});
-
-function JobCardFunction(props) {
-    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
-    
-    const parsedDate = moment(date);
-    const formatedDate = parsedDate.format('LL');
-
-    let salary = '';
-    
-    const styles = {
-        boxSizing: 'border-box',
-        display: 'grid',
-    
-        gridTemplateColumns: 'repeat(auto-fit, minmax(min-content, max-content))',
-    };
-    
-    if (isNil(salaryMin) && isNil(salaryMax)) {
-        salary = 'Negotiable';
-    } else {
-        salary = `${currency}${salaryMin ? salaryMin : ''}${salaryMax ? `${salaryMin ? '-' : ''}${salaryMax}` : ''}`
-    }
-    
-    return <RegularCardComponent popOnHover={true} maxPopLevel={3} containerClassNames={classes.componentContainer} bodyClassNames={classes.regularCardContainer}>
-            {logoSrc ? <img src={logoSrc} className={classes.companyLogoContainer}/> : <div/>}
-           
-            <InlineTextBlock className={classes.companyNameContainer}>{company}</InlineTextBlock>
-            <InlineTextBlock className={classes.publishDateContainer}>{formatedDate}</InlineTextBlock>
-            
-            <InlineHeader level={6} className={classes.titleContainer}>{title}</InlineHeader>
-            <InlineTextBlock className={classes.locationContainer}>{location}{location && remote ? ',' : ''} {remote ? 'Remote' : ''}</InlineTextBlock>
-            <InlineTextBlock className={classes.salaryContainer}>{salary}</InlineTextBlock>
-    </RegularCardComponent>;
-}
-
-const JobCard = injectSheet(jobCardStyles)(JobCardFunction);
+const {RegularCardHeaderComponent, RegularCardComponent} = require('./../../layout/structure');
+const {CardDrawerComponent} = require('./card_drawer_component');
+const {VacancyCard1} = require('./../../premade');
 
 const cardDrawerHeader = <RegularCardHeaderComponent>Java</RegularCardHeaderComponent>
 
-const javaCard1 = <JobCard logoSrc="/assets/images/logos/logo1.svg" date="2018-02-27T10:00:45" company='WeAreBrainless' title='Hybris Engineer' location='Kiev' remote={true} salaryMin={2000} salaryMax={3000} currency='$'/>;
-const javaCard2 = <JobCard logoSrc="/assets/images/logos/logo2.svg" date="2017-05-02T12:00:23" company='Solve.DontCare' title='Software Architect (Java)' location='Kiev'/>;
-const javaCard3 = <JobCard logoSrc="/assets/images/logos/logo3.svg" date="2017-02-12T14:45:12" company='Oldage Solutions Ukraine' title='Senior Java Developer (TG)' location='Kiev' salaryMin={2000} currency='$'/>;
-const javaCard4 = <JobCard logoSrc="/assets/images/logos/logo4.svg" date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
-const javaCard5 = <JobCard logoSrc="/assets/images/logos/logo5.svg" date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;
-const javaCard6 = <JobCard logoSrc="/assets/images/logos/logo6.svg" date="2018-01-21T16:14:05" company='WeDontPlay!' title='Senior Backend Developer (Java)' location='Kiev' currency='$'/>;
-const javaCard7 = <JobCard logoSrc="/assets/images/logos/logo7.svg" date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev, Odessa, Bolhrad' remote={true} currency='$'/>; 
-const javaCard8 = <JobCard logoSrc="/assets/images/logos/logo8.svg" date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev, Nikolaev' salaryMin={4000} currency='$'/>;
-const javaCard9 = <JobCard logoSrc="/assets/images/logos/logo9.svg" date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev, Odessa' salaryMax={2500} currency='$'/>;
-const javaCard10 = <JobCard logoSrc="/assets/images/logos/logo10.svg" date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev, Kharkiv' salaryMax={3500} currency='$'/>;
-const javaCard11 = <JobCard date="2018-01-12T10:00:00" company='Logoless' title='Junior Java Developrer' remote={true} salaryMax={1500} currency='hr'/>;
-const javaCard12 = <JobCard logoSrc="/assets/images/logos/logo11.svg" date="2016-03-21T11:00:25" company='OutroLab Systems' title='Java Developer (junior)' location='Nikolaev' salaryMin={300} salaryMax={500} currency='$'/>;
-const javaCard13 = <JobCard logoSrc="/assets/images/logos/logo12.svg" date="2017-10-03T15:34:28" company='PieceTeka' title='Middle Java Developer' location='Nikolaev' salaryMin={800} currency='$'/>;
-const javaCard14 = <JobCard logoSrc="/assets/images/logos/logo13.svg" date="2017-12-16T22:00:00" company='Amdlias' title='Middle/Senior Java Developer' location='Odessa' remote={true} salaryMin={2500} salaryMax={3500} currency='$'/>;
-const javaCard15 = <JobCard logoSrc="/assets/images/logos/logo14.svg" date="2017-10-12T21:20:34" company='Unlucky Labs' title='Junior+/Middle Java Developer' location='Kharkiv' remote={false} currency='$'/>;
-const javaCard16 = <JobCard logoSrc="/assets/images/logos/logo15.svg" date="2018-01-13T23:00:00" company='EBAM' title='Senior Java Developer / Tech Lead (Kharkiv)' location='Kiev, Kharkiv' remote={true} currency='$'/>;
-const javaCard17 = <JobCard logoSrc="/assets/images/logos/logo16.svg" date="2017-11-22T00:00:00" company='DAXX' title='Java Developer' location='Kiev, Kharkiv' currency='$'/>;
+const javaCard1 = <VacancyCard1 logoSrc="/assets/images/logos/logo1.svg" date="2018-02-27T10:00:45" company='WeAreBrainless' title='Hybris Engineer' location='Kiev' remote={true} salaryMin={2000} salaryMax={3000} currency='$'/>;
+const javaCard2 = <VacancyCard1 logoSrc="/assets/images/logos/logo2.svg" date="2017-05-02T12:00:23" company='Solve.DontCare' title='Software Architect (Java)' location='Kiev'/>;
+const javaCard3 = <VacancyCard1 logoSrc="/assets/images/logos/logo3.svg" date="2017-02-12T14:45:12" company='Oldage Solutions Ukraine' title='Senior Java Developer (TG)' location='Kiev' salaryMin={2000} currency='$'/>;
+const javaCard4 = <VacancyCard1 logoSrc="/assets/images/logos/logo4.svg" date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
+const javaCard5 = <VacancyCard1 logoSrc="/assets/images/logos/logo5.svg" date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;
+const javaCard6 = <VacancyCard1 logoSrc="/assets/images/logos/logo6.svg" date="2018-01-21T16:14:05" company='WeDontPlay!' title='Senior Backend Developer (Java)' location='Kiev' currency='$'/>;
+const javaCard7 = <VacancyCard1 logoSrc="/assets/images/logos/logo7.svg" date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev, Odessa, Bolhrad' remote={true} currency='$'/>; 
+const javaCard8 = <VacancyCard1 logoSrc="/assets/images/logos/logo8.svg" date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev, Nikolaev' salaryMin={4000} currency='$'/>;
+const javaCard9 = <VacancyCard1 logoSrc="/assets/images/logos/logo9.svg" date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev, Odessa' salaryMax={2500} currency='$'/>;
+const javaCard10 = <VacancyCard1 logoSrc="/assets/images/logos/logo10.svg" date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev, Kharkiv' salaryMax={3500} currency='$'/>;
+const javaCard11 = <VacancyCard1 date="2018-01-12T10:00:00" company='Logoless' title='Junior Java Developrer' remote={true} salaryMax={1500} currency='hr'/>;
+const javaCard12 = <VacancyCard1 logoSrc="/assets/images/logos/logo11.svg" date="2016-03-21T11:00:25" company='OutroLab Systems' title='Java Developer (junior)' location='Nikolaev' salaryMin={300} salaryMax={500} currency='$'/>;
+const javaCard13 = <VacancyCard1 logoSrc="/assets/images/logos/logo12.svg" date="2017-10-03T15:34:28" company='PieceTeka' title='Middle Java Developer' location='Nikolaev' salaryMin={800} currency='$'/>;
+const javaCard14 = <VacancyCard1 logoSrc="/assets/images/logos/logo13.svg" date="2017-12-16T22:00:00" company='Amdlias' title='Middle/Senior Java Developer' location='Odessa' remote={true} salaryMin={2500} salaryMax={3500} currency='$'/>;
+const javaCard15 = <VacancyCard1 logoSrc="/assets/images/logos/logo14.svg" date="2017-10-12T21:20:34" company='Unlucky Labs' title='Junior+/Middle Java Developer' location='Kharkiv' remote={false} currency='$'/>;
+const javaCard16 = <VacancyCard1 logoSrc="/assets/images/logos/logo15.svg" date="2018-01-13T23:00:00" company='EBAM' title='Senior Java Developer / Tech Lead (Kharkiv)' location='Kiev, Kharkiv' remote={true} currency='$'/>;
+const javaCard17 = <VacancyCard1 logoSrc="/assets/images/logos/logo16.svg" date="2017-11-22T00:00:00" company='DAXX' title='Java Developer' location='Kiev, Kharkiv' currency='$'/>;
 
 const cardsData = [
     {id: 1, card: javaCard1},
@@ -180,170 +48,92 @@ const cardsData = [
 
 
 <RegularCardComponent header={cardDrawerHeader}>
+    <CardDrawerComponent data={cardsData}/>
+</RegularCardComponent>
+
+```
+
+Example usage of card drawer with limitation on number of rows:
+
+```jsx
+
+const {RegularCardHeaderComponent, RegularCardComponent} = require('./../../layout/structure');
+const {CardDrawerComponent} = require('./card_drawer_component');
+const {VacancyCard1} = require('./../../premade');
+
+const cardDrawerHeader = <RegularCardHeaderComponent>Java</RegularCardHeaderComponent>
+
+const javaCard1 = <VacancyCard1 logoSrc="/assets/images/logos/logo1.svg" date="2018-02-27T10:00:45" company='WeAreBrainless' title='Hybris Engineer' location='Kiev' remote={true} salaryMin={2000} salaryMax={3000} currency='$'/>;
+const javaCard2 = <VacancyCard1 logoSrc="/assets/images/logos/logo2.svg" date="2017-05-02T12:00:23" company='Solve.DontCare' title='Software Architect (Java)' location='Kiev'/>;
+const javaCard3 = <VacancyCard1 logoSrc="/assets/images/logos/logo3.svg" date="2017-02-12T14:45:12" company='Oldage Solutions Ukraine' title='Senior Java Developer (TG)' location='Kiev' salaryMin={2000} currency='$'/>;
+const javaCard4 = <VacancyCard1 logoSrc="/assets/images/logos/logo4.svg" date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
+const javaCard5 = <VacancyCard1 logoSrc="/assets/images/logos/logo5.svg" date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;
+const javaCard6 = <VacancyCard1 logoSrc="/assets/images/logos/logo6.svg" date="2018-01-21T16:14:05" company='WeDontPlay!' title='Senior Backend Developer (Java)' location='Kiev' currency='$'/>;
+const javaCard7 = <VacancyCard1 logoSrc="/assets/images/logos/logo7.svg" date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev, Odessa, Bolhrad' remote={true} currency='$'/>; 
+const javaCard8 = <VacancyCard1 logoSrc="/assets/images/logos/logo8.svg" date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev, Nikolaev' salaryMin={4000} currency='$'/>;
+const javaCard9 = <VacancyCard1 logoSrc="/assets/images/logos/logo9.svg" date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev, Odessa' salaryMax={2500} currency='$'/>;
+const javaCard10 = <VacancyCard1 logoSrc="/assets/images/logos/logo10.svg" date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev, Kharkiv' salaryMax={3500} currency='$'/>;
+const javaCard11 = <VacancyCard1 date="2018-01-12T10:00:00" company='Logoless' title='Junior Java Developrer' remote={true} salaryMax={1500} currency='hr'/>;
+const javaCard12 = <VacancyCard1 logoSrc="/assets/images/logos/logo11.svg" date="2016-03-21T11:00:25" company='OutroLab Systems' title='Java Developer (junior)' location='Nikolaev' salaryMin={300} salaryMax={500} currency='$'/>;
+const javaCard13 = <VacancyCard1 logoSrc="/assets/images/logos/logo12.svg" date="2017-10-03T15:34:28" company='PieceTeka' title='Middle Java Developer' location='Nikolaev' salaryMin={800} currency='$'/>;
+const javaCard14 = <VacancyCard1 logoSrc="/assets/images/logos/logo13.svg" date="2017-12-16T22:00:00" company='Amdlias' title='Middle/Senior Java Developer' location='Odessa' remote={true} salaryMin={2500} salaryMax={3500} currency='$'/>;
+const javaCard15 = <VacancyCard1 logoSrc="/assets/images/logos/logo14.svg" date="2017-10-12T21:20:34" company='Unlucky Labs' title='Junior+/Middle Java Developer' location='Kharkiv' remote={false} currency='$'/>;
+const javaCard16 = <VacancyCard1 logoSrc="/assets/images/logos/logo15.svg" date="2018-01-13T23:00:00" company='EBAM' title='Senior Java Developer / Tech Lead (Kharkiv)' location='Kiev, Kharkiv' remote={true} currency='$'/>;
+const javaCard17 = <VacancyCard1 logoSrc="/assets/images/logos/logo16.svg" date="2017-11-22T00:00:00" company='DAXX' title='Java Developer' location='Kiev, Kharkiv' currency='$'/>;
+
+const cardsData = [
+    {id: 1, card: javaCard1},
+    {id: 2, card: javaCard2},
+    {id: 3, card: javaCard3},
+    {id: 4, card: javaCard4},
+    {id: 5, card: javaCard5},
+    {id: 6, card: javaCard6},
+    {id: 7, card: javaCard7},
+    {id: 8, card: javaCard8},
+    {id: 9, card: javaCard9},
+    {id: 10, card: javaCard10},
+    {id: 11, card: javaCard11},
+    {id: 12, card: javaCard12},
+    {id: 13, card: javaCard13},
+    {id: 14, card: javaCard14},
+    {id: 15, card: javaCard15},
+    {id: 16, card: javaCard16},
+    {id: 17, card: javaCard17},
+];
+
+<RegularCardComponent header={cardDrawerHeader}>
     <CardDrawerComponent data={cardsData} rowCount={2}/>
 </RegularCardComponent>
 
 ```
 
-test...
+Example usage of card drawer with limitation to one row of cards:
 
 ```jsx
 
-const moment = require('moment');
-const {isNil} = require('ramda');
-const injectSheet = require('react-jss').default;
-
-const {RegularCardComponent} = require('./../../layout/structure/regular_card_component');
-const {RegularCardHeaderComponent} = require('./../../layout/structure/regular_card_header_component');
-
-const {InlineHeader, InlineTextBlock} = require('./../../layout/text');
-
-const jobCardStyles = theme => ({
-    componentContainer: {
-        height: '100%',
-        
-        '& > $regularCardContainer': {
-                boxSizing: 'border-box',
-                display: 'grid',
-                
-                width: '100%',
-                height: '100%',
-                                                
-                gridTemplateAreas: `
-                    "company-logo company-name publish-date"
-                    "title        title        title"
-                    "location     location       salary"
-                `,
-                
-         
-                gridTemplateColumns: '35px 1fr max-content',
-                gridTemplateRows: 'minMax(35px, max-content) 1fr max-content',
-                
-                cursor: 'pointer',
-                
-                '& > $companyLogoContainer': {
-                    boxSizing: 'border-box', 
-                    
-                    gridArea: 'company-logo', 
-                    alignSelf: 'start', 
-                    
-                    width: '100%'
-                },
-                
-                '& > $companyNameContainer': {
-                    boxSizing: 'border-box', 
-                    
-                    gridArea: 'company-name', 
-                    alignSelf: 'center', 
-                    
-                    paddingLeft: '8px', 
-                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
-                    fontSize: '16px', 
-                    
-                    color: theme.baseStyles.mainPrimaryColor
-                },
-                
-                '& > $publishDateContainer': {
-                    boxSizing: 'border-box', 
-                    
-                    gridArea: 'publish-date', 
-                    textAlign: 'right', 
-                    
-                    paddingLeft: '8px', 
-                    fontSize: '10px', 
-                    color: theme.baseStyles.utilityBGColor
-                },
-                
-                '& > $titleContainer': {
-                    gridArea: 'title', 
-                    paddingTop: '8px', 
-                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
-                    fontSize: '18px', 
-                    color: theme.baseStyles.mainPrimaryColor
-                },     
-                       
-                '& > $locationContainer': {
-                    gridArea: 'location', 
-                    textAlign: 'left', 
-                    fontSize: '14px', 
-                    color: theme.baseStyles.utilityBGColor
-                },
-                
-                '& > $salaryContainer': {
-                    gridArea: 'salary', 
-                    fontFamily: theme.fontStacks.boldFontFamilyStack, 
-                    fontSize: '15px', 
-                    color: theme.baseStyles.accentColorPrimary, 
-                    textAlign: 'right'
-                },
-        }
-    },
-    
-    regularCardContainer: {},
-    
-    companyLogoContainer: {},
-    companyNameContainer: {},
-    publishDateContainer: {},
-    
-    titleContainer: {},
-    salaryContainer: {},
-    locationContainer: {}
-});
-
-function JobCardFunction(props) {
-    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
-    
-    const parsedDate = moment(date);
-    const formatedDate = parsedDate.format('LL');
-
-    let salary = '';
-    
-    const styles = {
-        boxSizing: 'border-box',
-        display: 'grid',
-    
-        gridTemplateColumns: 'repeat(auto-fit, minmax(min-content, max-content))',
-    };
-    
-    if (isNil(salaryMin) && isNil(salaryMax)) {
-        salary = 'Negotiable';
-    } else {
-        salary = `${currency}${salaryMin ? salaryMin : ''}${salaryMax ? `${salaryMin ? '-' : ''}${salaryMax}` : ''}`
-    }
-    
-    return <RegularCardComponent popOnHover={true} maxPopLevel={3} containerClassNames={classes.componentContainer} bodyClassNames={classes.regularCardContainer}>
-            {logoSrc ? <img src={logoSrc} className={classes.companyLogoContainer}/> : <div/>}
-           
-            <InlineTextBlock className={classes.companyNameContainer}>{company}</InlineTextBlock>
-            <InlineTextBlock className={classes.publishDateContainer}>{formatedDate}</InlineTextBlock>
-            
-            <InlineHeader level={6} className={classes.titleContainer}>{title}</InlineHeader>
-            <InlineTextBlock className={classes.locationContainer}>{location}{location && remote ? ',' : ''} {remote ? 'Remote' : ''}</InlineTextBlock>
-            <InlineTextBlock className={classes.salaryContainer}>{salary}</InlineTextBlock>
-    </RegularCardComponent>;
-}
-
-const JobCard = injectSheet(jobCardStyles)(JobCardFunction);
+const {RegularCardHeaderComponent, RegularCardComponent} = require('./../../layout/structure');
+const {CardDrawerComponent} = require('./card_drawer_component');
+const {VacancyCard1} = require('./../../premade');
 
 const cardDrawerHeader = <RegularCardHeaderComponent>Java</RegularCardHeaderComponent>
 
-const javaCard1 = <JobCard logoSrc="/assets/images/logos/logo1.svg" date="2018-02-27T10:00:45" company='WeAreBrainless' title='Hybris Engineer' location='Kiev' remote={true} salaryMin={2000} salaryMax={3000} currency='$'/>;
-const javaCard2 = <JobCard logoSrc="/assets/images/logos/logo2.svg" date="2017-05-02T12:00:23" company='Solve.DontCare' title='Software Architect (Java)' location='Kiev'/>;
-const javaCard3 = <JobCard logoSrc="/assets/images/logos/logo3.svg" date="2017-02-12T14:45:12" company='Oldage Solutions Ukraine' title='Senior Java Developer (TG)' location='Kiev' salaryMin={2000} currency='$'/>;
-const javaCard4 = <JobCard logoSrc="/assets/images/logos/logo4.svg" date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
-const javaCard5 = <JobCard logoSrc="/assets/images/logos/logo5.svg" date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;
-const javaCard6 = <JobCard logoSrc="/assets/images/logos/logo6.svg" date="2018-01-21T16:14:05" company='WeDontPlay!' title='Senior Backend Developer (Java)' location='Kiev' currency='$'/>;
-const javaCard7 = <JobCard logoSrc="/assets/images/logos/logo7.svg" date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev, Odessa, Bolhrad' remote={true} currency='$'/>; 
-const javaCard8 = <JobCard logoSrc="/assets/images/logos/logo8.svg" date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev, Nikolaev' salaryMin={4000} currency='$'/>;
-const javaCard9 = <JobCard logoSrc="/assets/images/logos/logo9.svg" date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev, Odessa' salaryMax={2500} currency='$'/>;
-const javaCard10 = <JobCard logoSrc="/assets/images/logos/logo10.svg" date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev, Kharkiv' salaryMax={3500} currency='$'/>;
-const javaCard11 = <JobCard date="2018-01-12T10:00:00" company='Logoless' title='Junior Java Developrer' remote={true} salaryMax={1500} currency='hr'/>;
-const javaCard12 = <JobCard logoSrc="/assets/images/logos/logo11.svg" date="2016-03-21T11:00:25" company='OutroLab Systems' title='Java Developer (junior)' location='Nikolaev' salaryMin={300} salaryMax={500} currency='$'/>;
-const javaCard13 = <JobCard logoSrc="/assets/images/logos/logo12.svg" date="2017-10-03T15:34:28" company='PieceTeka' title='Middle Java Developer' location='Nikolaev' salaryMin={800} currency='$'/>;
-const javaCard14 = <JobCard logoSrc="/assets/images/logos/logo13.svg" date="2017-12-16T22:00:00" company='Amdlias' title='Middle/Senior Java Developer' location='Odessa' remote={true} salaryMin={2500} salaryMax={3500} currency='$'/>;
-const javaCard15 = <JobCard logoSrc="/assets/images/logos/logo14.svg" date="2017-10-12T21:20:34" company='Unlucky Labs' title='Junior+/Middle Java Developer' location='Kharkiv' remote={false} currency='$'/>;
-const javaCard16 = <JobCard logoSrc="/assets/images/logos/logo15.svg" date="2018-01-13T23:00:00" company='EBAM' title='Senior Java Developer / Tech Lead (Kharkiv)' location='Kiev, Kharkiv' remote={true} currency='$'/>;
-const javaCard17 = <JobCard logoSrc="/assets/images/logos/logo16.svg" date="2017-11-22T00:00:00" company='DAXX' title='Java Developer' location='Kiev, Kharkiv' currency='$'/>;
+const javaCard1 = <VacancyCard1 logoSrc="/assets/images/logos/logo1.svg" date="2018-02-27T10:00:45" company='WeAreBrainless' title='Hybris Engineer' location='Kiev' remote={true} salaryMin={2000} salaryMax={3000} currency='$'/>;
+const javaCard2 = <VacancyCard1 logoSrc="/assets/images/logos/logo2.svg" date="2017-05-02T12:00:23" company='Solve.DontCare' title='Software Architect (Java)' location='Kiev'/>;
+const javaCard3 = <VacancyCard1 logoSrc="/assets/images/logos/logo3.svg" date="2017-02-12T14:45:12" company='Oldage Solutions Ukraine' title='Senior Java Developer (TG)' location='Kiev' salaryMin={2000} currency='$'/>;
+const javaCard4 = <VacancyCard1 logoSrc="/assets/images/logos/logo4.svg" date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
+const javaCard5 = <VacancyCard1 logoSrc="/assets/images/logos/logo5.svg" date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;
+const javaCard6 = <VacancyCard1 logoSrc="/assets/images/logos/logo6.svg" date="2018-01-21T16:14:05" company='WeDontPlay!' title='Senior Backend Developer (Java)' location='Kiev' currency='$'/>;
+const javaCard7 = <VacancyCard1 logoSrc="/assets/images/logos/logo7.svg" date="2018-03-12T11:23:17" company='DataFart' title='Java Engineer, Online Supermarket Services' location='Kiev, Odessa, Bolhrad' remote={true} currency='$'/>; 
+const javaCard8 = <VacancyCard1 logoSrc="/assets/images/logos/logo8.svg" date="2018-07-21T17:43:25" company='AgileTube' title='Lead Java/Scala Developer' location='Kiev, Nikolaev' salaryMin={4000} currency='$'/>;
+const javaCard9 = <VacancyCard1 logoSrc="/assets/images/logos/logo9.svg" date="2017-02-14T08:00:01" company='Beta Software' title='Java Developer' location='Kiev, Odessa' salaryMax={2500} currency='$'/>;
+const javaCard10 = <VacancyCard1 logoSrc="/assets/images/logos/logo10.svg" date="2017-03-21T09:12:42" company='Buintellias' title='Middle/Senior Java Developer, PN Backend Services, HERE' location='Kiev, Kharkiv' salaryMax={3500} currency='$'/>;
+const javaCard11 = <VacancyCard1 date="2018-01-12T10:00:00" company='Logoless' title='Junior Java Developrer' remote={true} salaryMax={1500} currency='hr'/>;
+const javaCard12 = <VacancyCard1 logoSrc="/assets/images/logos/logo11.svg" date="2016-03-21T11:00:25" company='OutroLab Systems' title='Java Developer (junior)' location='Nikolaev' salaryMin={300} salaryMax={500} currency='$'/>;
+const javaCard13 = <VacancyCard1 logoSrc="/assets/images/logos/logo12.svg" date="2017-10-03T15:34:28" company='PieceTeka' title='Middle Java Developer' location='Nikolaev' salaryMin={800} currency='$'/>;
+const javaCard14 = <VacancyCard1 logoSrc="/assets/images/logos/logo13.svg" date="2017-12-16T22:00:00" company='Amdlias' title='Middle/Senior Java Developer' location='Odessa' remote={true} salaryMin={2500} salaryMax={3500} currency='$'/>;
+const javaCard15 = <VacancyCard1 logoSrc="/assets/images/logos/logo14.svg" date="2017-10-12T21:20:34" company='Unlucky Labs' title='Junior+/Middle Java Developer' location='Kharkiv' remote={false} currency='$'/>;
+const javaCard16 = <VacancyCard1 logoSrc="/assets/images/logos/logo15.svg" date="2018-01-13T23:00:00" company='EBAM' title='Senior Java Developer / Tech Lead (Kharkiv)' location='Kiev, Kharkiv' remote={true} currency='$'/>;
+const javaCard17 = <VacancyCard1 logoSrc="/assets/images/logos/logo16.svg" date="2017-11-22T00:00:00" company='DAXX' title='Java Developer' location='Kiev, Kharkiv' currency='$'/>;
 
 const cardsData = [
     {id: 1, card: javaCard1},
