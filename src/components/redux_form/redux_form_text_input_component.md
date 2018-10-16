@@ -275,12 +275,47 @@ Editable text input field with specified label, placeholder text, icon and defau
 />
 ```
 
-Test:
+Editable text input with errors shown (note that 'errorsIfTouched' flag is set to true):
 
 ```jsx
 
 <ReduxFormTextInputComponent
     name='reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue7'
+
+    errorsIfTouched={false}
+    warningsIfTouched={false}
+
+    label='Test label'
+    placeholder='Test placeholder text...'
+    iconClassNames='fas fa-dumbbell'
+/>
+```
+
+Editable text input with warnings shown (note that 'warningsIfTouched' flag is set to true):
+
+```jsx
+
+<ReduxFormTextInputComponent
+    name='reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue8'
+
+    errorsIfTouched={false}
+    warningsIfTouched={false}
+
+    label='Test label'
+    placeholder='Test placeholder text...'
+    iconClassNames='fas fa-dumbbell'
+/>
+```
+
+Editable text input with errors and warnings shown (note that 'errorsIfTouched' and 'warningsIfTouched' flags are both set to true):
+
+```jsx
+
+<ReduxFormTextInputComponent
+    name='reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue9'
+
+    errorsIfTouched={false}
+    warningsIfTouched={false}
 
     label='Test label'
     placeholder='Test placeholder text...'

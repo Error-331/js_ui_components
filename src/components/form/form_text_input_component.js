@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {isNil, isEmpty, is, defaultTo, complement, clone, toString} from 'ramda';
+import {isNil, isEmpty, is, and, not, defaultTo, complement, addIndex, clone, toString, map} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 import type {FieldProps} from 'redux-form';
@@ -43,6 +43,18 @@ export type FormTextInputTypes = {
      */
 
     disabled?: ?boolean,
+
+    /**
+     * Flag that dictates whether errors should be shown only after user interacts with input or always (e.g. even if initial value is set)
+     */
+
+    errorsIfTouched?: boolean,
+
+    /**
+     * Flag that dictates whether warnings should be shown only after user interacts with input or always (e.g. even if initial value is set)
+     */
+
+    warningsIfTouched?: boolean,
 
     /**
      * Placeholder text used as hint for the user of how appropriate data should look like
@@ -186,6 +198,11 @@ const styles = theme => ({
                     color: theme.inputStyles.activeColor
                 },
 
+                '&.error': {
+                    color: theme.inputStyles.attentionColor,
+                    borderBottom: `1px solid ${theme.inputStyles.attentionColor}`
+                },
+
                 '&.readOnly': {
                     color: theme.inputStyles.readOnlyColor,
                     borderBottom: `1px solid ${theme.inputStyles.readOnlyColor}`
@@ -224,11 +241,15 @@ const styles = theme => ({
                 },
 
                 '&.focus': {
-                    color: theme.inputStyles.activeColor
+                    color: theme.inputStyles.activeColor,
+                },
+
+                '&.error': {
+                    color: theme.inputStyles.attentionColor,
                 },
 
                 '&.readOnly': {
-                    color: theme.inputStyles.readOnlyColor
+                    color: theme.inputStyles.readOnlyColor,
                 },
 
                 '&.disabled': {
@@ -255,6 +276,10 @@ const styles = theme => ({
                     color: theme.inputStyles.activeColor
                 },
 
+                '&.error': {
+                    color: theme.inputStyles.attentionColor
+                },
+
                 '&.readOnly': {
                     color: theme.inputStyles.readOnlyColor
                 },
@@ -263,12 +288,58 @@ const styles = theme => ({
                     color: theme.inputStyles.disabledColor
                 },
             }
-        }
+        },
+
+        '& > $subMessagesContainer': {
+            boxSizing: 'border-box',
+            display: 'flex',
+
+            flexBasis: 'auto',
+            flexShrink: '1',
+            flexGrow: '0',
+
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            alignContent: 'flex-start',
+        },
+
+        '& > $errorsContainer': {
+            '& > $errorContainer': {
+                marginTop: '2px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: theme.inputStyles.errorFontSize,
+
+                color: theme.inputStyles.attentionColor,
+            }
+        },
+
+        '& > $warningsContainer': {
+            '& > $warningContainer': {
+                marginTop: '2px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: theme.inputStyles.errorFontSize,
+
+                color: theme.inputStyles.activeColor,
+            }
+        },
     },
 
     inputContainer: {},
     inputControl: {},
-    inputControlLabel: {}
+    inputControlLabel: {},
+
+    subMessagesContainer: {},
+
+    errorsContainer: {},
+    errorContainer: {},
+
+    warningsContainer: {},
+    warningContainer: {},
 });
 
 /**
@@ -293,6 +364,9 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
 
         readOnly: false,
         disabled: false,
+
+        errorsIfTouched: true,
+        warningsIfTouched: true,
 
         placeholder: '',
         label: '',
@@ -353,14 +427,16 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         return classNames(
             this.props.classes.inputControl,
             {'focus': hasFocus},
+            {'error': this._hasErrors()},
             {'readOnly': readOnly},
-            {'disabled': disabled}
+            {'disabled': disabled},
         );
     }
 
     _getLabelClasses(): string {
         const isActive: boolean = this._isInputActive();
         const hasFocus: boolean = this._isInputHasFocus();
+        const hasErrors: boolean = this._hasErrors();
         const {readOnly, disabled}: {readOnly: ?boolean, disabled: ?boolean} = this.props;
 
         return classNames(
@@ -368,6 +444,7 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
             {'active': isActive},
             {'passive': !isActive},
             {'focus': hasFocus},
+            {'error': hasErrors},
             {'readOnly': readOnly},
             {'disabled': disabled}
         );
@@ -375,11 +452,13 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
 
     _getIconClasses(): string {
         const hasFocus: boolean = this._isInputHasFocus();
+        const hasErrors: boolean = this._hasErrors();
         const {readOnly, disabled}: {readOnly: ?boolean, disabled: ?boolean} = this.props;
 
         return classNames(
             this.props.iconClassNames,
             {'focus': hasFocus},
+            {'error': hasErrors},
             {'readOnly': readOnly},
             {'disabled': disabled}
         );
@@ -387,6 +466,28 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
 
     _getComponentContainerStyles(): CSSStylesType {
         return defaultTo({})(this.props.componentContainerStyles);
+    }
+
+    _getErrorsContainerClassName(): string {
+        return this.props.classes.errorsContainer;
+    }
+
+    _getErrorContainerClassName(): string {
+        return classNames(
+            this.props.classes.subMessagesContainer,
+            this.props.classes.errorContainer
+        );
+    }
+
+    _getWarningsContainerClassName(): string {
+        return classNames(
+            this.props.classes.subMessagesContainer,
+            this.props.classes.warningsContainer
+        );
+    }
+
+    _getWarningContainerClassName(): string {
+        return this.props.classes.warningContainer;
     }
 
     // endregion
@@ -414,8 +515,7 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
 
     // region prop accessors
     _isInputHasFocus(): boolean {
-        const {active, error} = this._getMetaData();
-        console.log('error', error);
+        const {active} = this._getMetaData();
         return active && this._isInputEditable();
     }
 
@@ -453,6 +553,56 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
         return isNil(input) ? clone(FormTextInputClass.defaultProps.input) : input;
+    }
+
+    _getErrorsIfTouched(): boolean {
+        return defaultTo(FormTextInputClass.defaultProps.errorsIfTouched)(this.props.errorsIfTouched);
+    }
+
+    _getWarningsIfTouched(): boolean {
+        return defaultTo(FormTextInputClass.defaultProps.warningsIfTouched)(this.props.warningsIfTouched);
+    }
+
+    _hasErrors(): boolean {
+        const {touched, error} = this._getMetaData();
+        const errorsIfTouched: boolean = this._getErrorsIfTouched();
+
+        if (and(errorsIfTouched, not(touched))) {
+            return false;
+        }
+
+        return and(complement(isNil)(error), complement(isEmpty)(error));
+    }
+
+    _hasWarnings(): boolean {
+        const {touched, warning} = this._getMetaData();
+        const warningsIfTouched: boolean = this._getWarningsIfTouched();
+
+        if (and(warningsIfTouched, not(touched))) {
+            return false;
+        }
+
+        return complement(isNil)(warning);
+    }
+
+    _getWarning(): string | Array<string> | null {
+        const {warning} = this._getMetaData();
+
+        if (isNil(warning)) {
+            return null;
+        }
+
+        return warning;
+    }
+
+    _getError(): string | Array<string> | null {
+        const {error} = this._getMetaData();
+
+        if (isNil(error)) {
+            return null;
+        }
+
+        return error;
     }
 
     // endregion
@@ -516,16 +666,60 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         return null;
     }
 
-    _renderErrors(): React.Node {
-        return null;
+    _renderErrors(errors: Array<string>): React.Node {
+        return addIndex(map)(
+            (error: string, index: number) => <div
+                key={`error_${index}`}
+                className={this._getErrorContainerClassName()}
+            >{error}</div>,
+            errors
+        );
+    }
+
+    _renderErrorsContainer(): React.Node {
+        let errors: string | Array<string> | null = this._getError();
+
+        if (isNil(errors) || !this._hasErrors()) {
+            return null;
+        } else if (typeof errors === 'string') {
+            errors = [errors];
+        }
+
+        return (<div className={this._getErrorsContainerClassName()}>
+            {this._renderErrors(errors)}
+        </div>);
+    }
+
+    _renderWarnings(warnings: Array<string>): React.Node {
+        return addIndex(map)(
+            (error: string, index: number) => <div
+                key={`warning_${index}`}
+                className={this._getWarningContainerClassName()}
+            >{error}</div>,
+            warnings
+        );
+    }
+
+    _renderWarningsContainer(): React.Node {
+        let warnings: string | Array<string> | null = this._getWarning();
+
+        if (isNil(warnings) || !this._hasWarnings()) {
+            return null;
+        } else if (typeof warnings === 'string') {
+            warnings = [warnings];
+        }
+
+        return (<div className={this._getWarningsContainerClassName()}>
+            {this._renderWarnings(warnings)}
+        </div>);
     }
 
     render(): React.Node {
         return (
             <div className={this._getComponentContainerClasses()} style={this._getComponentContainerStyles()}>
                 {this._renderInputContainer()}
-                {this._renderWarnings()}
-                {this._renderErrors()}
+                {this._renderErrorsContainer()}
+                {this._renderWarningsContainer()}
             </div>
         );
     }

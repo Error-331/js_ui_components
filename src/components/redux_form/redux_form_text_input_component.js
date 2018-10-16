@@ -42,6 +42,18 @@ type PropsTypes = {
     disabled?: ?boolean,
 
     /**
+     * Flag that dictates whether errors should be shown only after user interacts with input or always (e.g. even if initial value is set)
+     */
+
+    errorsIfTouched?: boolean,
+
+    /**
+     * Flag that dictates whether warnings should be shown only after user interacts with input or always (e.g. even if initial value is set)
+     */
+
+    warningsIfTouched?: boolean,
+
+    /**
      * Placeholder text used as hint for the user of how appropriate data should look like
      */
 

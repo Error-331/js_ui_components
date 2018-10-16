@@ -38,6 +38,7 @@ const ComponentFormContainerConnected = reduxForm({
             testFormTextInputComponentWithDefaultValue6: 'Test default value 6...',
             testFormTextInputComponentWithDefaultValue7: 'Test default value 7...',
             testFormTextInputComponentWithDefaultValue8: 'Test default value 8...',
+            testFormTextInputComponentWithDefaultValue9: 'Test default value 9...',
         },
 
         reduxFormSwitchInputComponents: {
@@ -80,6 +81,51 @@ const ComponentFormContainerConnected = reduxForm({
         }
     },
 
+    warn: inputValues => {
+        const warnMessages = {
+            reduxFormTextInputComponents: {}
+        };
+
+        if (!inputValues) {
+            return warnMessages;
+        }
+
+        if (inputValues['reduxFormTextInputComponents'] || inputValues.has('reduxFormTextInputComponents')) {
+            const reduxFormTextInputComponentsValues = inputValues['reduxFormTextInputComponents'] || inputValues.get('reduxFormTextInputComponents');
+
+            if (reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue8'] || reduxFormTextInputComponentsValues.has('testFormTextInputComponentWithDefaultValue8')) {
+                const testFormTextInputComponentWithDefaultValue8 = reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue8'] || reduxFormTextInputComponentsValues.get('testFormTextInputComponentWithDefaultValue8');
+
+                warnMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue8 = [];
+
+                if (testFormTextInputComponentWithDefaultValue8.includes('Test')) {
+                    warnMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue8.push('Why use "test" keyword?');
+                }
+
+                if (testFormTextInputComponentWithDefaultValue8.includes('...')) {
+                    warnMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue8.push('Why use ellipses at the end?');
+                }
+            }
+
+            if (reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue9'] || reduxFormTextInputComponentsValues.has('testFormTextInputComponentWithDefaultValue9')) {
+                const testFormTextInputComponentWithDefaultValue9 = reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue9'] || reduxFormTextInputComponentsValues.get('testFormTextInputComponentWithDefaultValue9');
+
+                warnMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue9 = [];
+
+                if (testFormTextInputComponentWithDefaultValue9.includes('Test')) {
+                    warnMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue9.push('Why use "test" keyword?');
+                }
+
+                if (testFormTextInputComponentWithDefaultValue9.includes('...')) {
+                    warnMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue9.push('Why use ellipses at the end?');
+                }
+            }
+        }
+
+
+        return warnMessages;
+    },
+
     validate: inputValues => {
         const errorMessages = {
             reduxFormTextInputComponents: {}
@@ -95,8 +141,28 @@ const ComponentFormContainerConnected = reduxForm({
             if (reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue7'] || reduxFormTextInputComponentsValues.has('testFormTextInputComponentWithDefaultValue7')) {
                 const testFormTextInputComponentWithDefaultValue7 = reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue7'] || reduxFormTextInputComponentsValues.get('testFormTextInputComponentWithDefaultValue7');
 
-                if (testFormTextInputComponentWithDefaultValue7.length > 0) {
-                    errorMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue7 = 'fuck...';
+                errorMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue7 = [];
+
+                if (testFormTextInputComponentWithDefaultValue7.length > 20) {
+                    errorMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue7.push('Text length cannot exceed 20 symbols...');
+                }
+
+                if (testFormTextInputComponentWithDefaultValue7.includes('7')) {
+                    errorMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue7.push('Text cannot contain "7" symbol...');
+                }
+            }
+
+            if (reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue9'] || reduxFormTextInputComponentsValues.has('testFormTextInputComponentWithDefaultValue9')) {
+                const testFormTextInputComponentWithDefaultValue9 = reduxFormTextInputComponentsValues['testFormTextInputComponentWithDefaultValue9'] || reduxFormTextInputComponentsValues.get('testFormTextInputComponentWithDefaultValue9');
+
+                errorMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue9 = [];
+
+                if (testFormTextInputComponentWithDefaultValue9.length > 20) {
+                    errorMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue9.push('Text length cannot exceed 20 symbols...');
+                }
+
+                if (testFormTextInputComponentWithDefaultValue9.includes('9')) {
+                    errorMessages.reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue9.push('Text cannot contain "9" symbol...');
                 }
             }
         }
