@@ -24,6 +24,11 @@ import {RegularCardComponent} from './../layout/structure/regular_card_component
 type OptionValueType = string | number;
 type OptionType = { [string]: OptionValueType }
 
+type CSSStylesType = {
+    [string]: mixed
+};
+
+
 type PropsTypes = FieldProps & {
 
     /**
@@ -55,6 +60,18 @@ type PropsTypes = FieldProps & {
      */
 
     label?: ?string,
+
+    /**
+     * Class name which will be added to the component container (main outer container)
+     */
+
+    componentContainerClassName?: string,
+
+    /**
+     * Styles for component container (main outer container) of the form drop down input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -215,7 +232,9 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
             onFocus: () => {},
         },
 
-        classes: {}
+        classes: {},
+
+        componentContainerStyles: {},
     };
 
     _id: string;
@@ -269,7 +288,10 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     }
 
     _getComponentOuterContainerClasses(): string {
-        return this.props.classes.componentOuterContainer;
+        return classNames(
+            this.props.classes.componentOuterContainer,
+            this.props.componentContainerClassName,
+        );
     }
 
     // endregion
@@ -294,7 +316,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // region prop accessors
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormDropDownInputComponentClas.defaultProps.input) : input;
+        return isNil(input) ? clone(FormDropDownInputComponentClass.defaultProps.input) : input;
     }
 
     _getFormTextInputComponentProps(): FormTextInputTypes {
@@ -354,6 +376,10 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         }
 
         return equals(optionValue, toPairs(selectedOption)[0][1]);
+    }
+
+    _getComponentContainerStyles(): CSSStylesType {
+        return defaultTo(FormDropDownInputComponentClass.defaultProps.componentContainerStyles)(this.props.componentContainerStyles);
     }
 
     // endregion
@@ -473,7 +499,10 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
 
     _renderOuterContainer(): React.Node {
         return (
-            <div className={this._getComponentOuterContainerClasses()}>
+            <div
+                className={this._getComponentOuterContainerClasses()}
+                style={this._getComponentContainerStyles()}
+            >
                 {this._renderInput()}
                 {this._renderTextInputContainer()}
                 {this._renderGlobalOverlayComponent()}

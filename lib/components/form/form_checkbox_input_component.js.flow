@@ -16,8 +16,14 @@ import type {FieldProps} from 'redux-form';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
 import {FormCheckboxVariant1Component, FormCheckboxVariant2Component} from './form_checkbox_variants';
+import {MainThemeContext} from './../../theming';
+
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = FieldProps & {
     /**
      * Number that indicates which visual variant will be used to represent the checkbox
@@ -42,6 +48,12 @@ type PropsTypes = FieldProps & {
      */
 
     labelPosition?: 'left' | 'right',
+
+    /**
+     * Styles for component container (main outer container) of the form checkbox input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -135,9 +147,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class FormCheckboxInputComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class FormCheckboxInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormCheckboxInputComponent';
+    static displayName = 'FormCheckboxInputClass';
 
     static defaultProps = {
         variant: 1,
@@ -197,6 +212,10 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
         );
     }
 
+    _getComponentContainerStyles(): CSSStylesType {
+        return defaultTo({})(this.props.componentContainerStyles);
+    }
+
     // endregion
 
     // region label accessors
@@ -218,7 +237,7 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
 
     // region prop accessors
     _getVariant(): number {
-        return defaultTo(FormCheckboxInputComponentClass.defaultProps.variant)(this.props.variant);
+        return defaultTo(FormCheckboxInputClass.defaultProps.variant)(this.props.variant);
     }
 
     _isChecked(): boolean {
@@ -228,7 +247,7 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormCheckboxInputComponentClass.defaultProps.input) : input;
+        return isNil(input) ? clone(FormCheckboxInputClass.defaultProps.input) : input;
     }
 
     // endregion
@@ -282,7 +301,10 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
         const {labelPosition} = this.props;
 
         return (
-            <div className={this.props.classes.componentContainer}>
+            <div
+                className={this.props.classes.componentContainer}
+                style={this._getComponentContainerStyles()}
+            >
                 {labelPosition === 'left' ? this._renderLabel() : null}
                 {this._renderInput()}
                 {this._renderCheckbox()}
@@ -299,4 +321,13 @@ export class FormCheckboxInputComponentClass extends React.Component<PropsTypes,
 }
 
 // exports
-export const FormCheckboxInputComponent = injectSheet(styles)(FormCheckboxInputComponentClass);
+export function FormCheckboxInputComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormCheckboxInputClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+
+FormCheckboxInputComponent.displayName = 'FormCheckboxInputComponent';

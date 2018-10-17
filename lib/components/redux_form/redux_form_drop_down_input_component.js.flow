@@ -10,6 +10,10 @@ import {Field} from 'redux-form/immutable';
 import {FormDropDownInputComponent} from '../form/form_drop_down_input_component';
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
     /**
      * Input name
@@ -48,6 +52,18 @@ type PropsTypes = {
      */
 
     label?: ?string,
+
+    /**
+     * Class name which will be added to the component container (main outer container)
+     */
+
+    componentContainerClassName?: string,
+
+    /**
+     * Styles for component container (main outer container) of the form drop down input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 };
 
 type StateTypes = {};

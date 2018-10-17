@@ -20,6 +20,18 @@ export type LayoutStylesType = {
     horizontalSpacing: number,
     verticalSpacing: number,
 
+    topSpacing: number,
+    bottomSpacing: number,
+
+    rightSpacing: number,
+    leftSpacing: number,
+
+    sectionHorizontalSpacing: number,
+    sectionVerticalSpacing: number,
+
+    componentHorizontalSpacing: number,
+    componentVerticalSpacing: number,
+
     headerFontColor: string,
     bodyFontColor: string,
 

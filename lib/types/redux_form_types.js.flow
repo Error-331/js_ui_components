@@ -13,7 +13,11 @@ export type ReduxFormFieldComponentMetaDataPropsTypes = {
 
     active: boolean,
     pristine: boolean,
-    dirty: boolean
+    dirty: boolean,
+    touched: boolean,
+
+    error?: string | Array<string>,
+    warning?: string | Array<string>,
 }
 
 export type ReduxFormFieldComponentInputDataPropsTypes = InputProps & {

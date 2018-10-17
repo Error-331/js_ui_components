@@ -11,6 +11,8 @@ export type ButtonStyleType = {
     fontStackRegular: string,
     fontStackBold: string,
 
+    regularButtonMinimumWidth: number,
+
     captionFontSize: number,
     iconFontSize: number,
 

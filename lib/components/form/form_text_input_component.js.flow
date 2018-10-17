@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {isNil, isEmpty, is, complement, clone, toString} from 'ramda';
+import {isNil, isEmpty, is, and, not, defaultTo, complement, addIndex, clone, toString, map} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components';
 
 import type {FieldProps} from 'redux-form';
@@ -15,7 +15,13 @@ import type {FieldProps} from 'redux-form';
 // local imports
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
+import {MainThemeContext} from './../../theming';
+
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type InputTypes = 'text' | 'password';
 
 export type FormTextInputTypes = {
@@ -39,6 +45,18 @@ export type FormTextInputTypes = {
     disabled?: ?boolean,
 
     /**
+     * Flag that dictates whether errors should be shown only after user interacts with input or always (e.g. even if initial value is set)
+     */
+
+    errorsIfTouched?: boolean,
+
+    /**
+     * Flag that dictates whether warnings should be shown only after user interacts with input or always (e.g. even if initial value is set)
+     */
+
+    warningsIfTouched?: boolean,
+
+    /**
      * Placeholder text used as hint for the user of how appropriate data should look like
      */
 
@@ -51,10 +69,22 @@ export type FormTextInputTypes = {
     label?: ?string,
 
     /**
+     * Class names which will be added to the component container (main outer container)
+     */
+
+    componentContainerClassNames?: string,
+
+    /**
      * Class names which will be added to the icon container of the current component
      */
 
     iconClassNames?: ?string,
+
+    /**
+     * Styles for component container (main outer container) of the form text input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -74,6 +104,12 @@ export type FormTextInputTypes = {
 };
 
 type PropsTypes = FieldProps & FormTextInputTypes & {
+    /**
+     * JSS inner classes
+     *
+     * @ignore
+     */
+
     classes: any
 };
 
@@ -84,7 +120,7 @@ const topAdditionalPadding = 7;
 const iconAdditionalPadding = 2;
 
 const styles = theme => ({
-    componentOuterContainer: {
+    componentContainer: {
         boxSizing: 'border-box',
 
         position: 'relative',
@@ -168,6 +204,11 @@ const styles = theme => ({
                     color: theme.inputStyles.activeColor
                 },
 
+                '&.error': {
+                    color: theme.inputStyles.attentionColor,
+                    borderBottom: `1px solid ${theme.inputStyles.attentionColor}`
+                },
+
                 '&.readOnly': {
                     color: theme.inputStyles.readOnlyColor,
                     borderBottom: `1px solid ${theme.inputStyles.readOnlyColor}`
@@ -206,11 +247,15 @@ const styles = theme => ({
                 },
 
                 '&.focus': {
-                    color: theme.inputStyles.activeColor
+                    color: theme.inputStyles.activeColor,
+                },
+
+                '&.error': {
+                    color: theme.inputStyles.attentionColor,
                 },
 
                 '&.readOnly': {
-                    color: theme.inputStyles.readOnlyColor
+                    color: theme.inputStyles.readOnlyColor,
                 },
 
                 '&.disabled': {
@@ -237,6 +282,10 @@ const styles = theme => ({
                     color: theme.inputStyles.activeColor
                 },
 
+                '&.error': {
+                    color: theme.inputStyles.attentionColor
+                },
+
                 '&.readOnly': {
                     color: theme.inputStyles.readOnlyColor
                 },
@@ -245,12 +294,58 @@ const styles = theme => ({
                     color: theme.inputStyles.disabledColor
                 },
             }
-        }
+        },
+
+        '& > $subMessagesContainer': {
+            boxSizing: 'border-box',
+            display: 'flex',
+
+            flexBasis: 'auto',
+            flexShrink: '1',
+            flexGrow: '0',
+
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            alignContent: 'flex-start',
+        },
+
+        '& > $errorsContainer': {
+            '& > $errorContainer': {
+                marginTop: '2px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: theme.inputStyles.errorFontSize,
+
+                color: theme.inputStyles.attentionColor,
+            }
+        },
+
+        '& > $warningsContainer': {
+            '& > $warningContainer': {
+                marginTop: '2px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: theme.inputStyles.errorFontSize,
+
+                color: theme.inputStyles.activeColor,
+            }
+        },
     },
 
     inputContainer: {},
     inputControl: {},
-    inputControlLabel: {}
+    inputControlLabel: {},
+
+    subMessagesContainer: {},
+
+    errorsContainer: {},
+    errorContainer: {},
+
+    warningsContainer: {},
+    warningContainer: {},
 });
 
 /**
@@ -263,15 +358,21 @@ const styles = theme => ({
  */
 
 // component implementation
-export class FormTextInputComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormTextInputComponent';
+    static displayName = 'FormTextInputClass';
 
     static defaultProps = {
         type: 'text',
 
         readOnly: false,
         disabled: false,
+
+        errorsIfTouched: true,
+        warningsIfTouched: true,
 
         placeholder: '',
         label: '',
@@ -283,7 +384,9 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
 
             active: false,
             pristine: true,
-            dirty: false
+            dirty: false,
+            touched: false,
+            error: null,
         },
 
         input: {
@@ -318,8 +421,9 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
     // endregion
 
     // region style accessors
-    _getComponentOuterContainerClasses(): string {
-        return this.props.classes.componentOuterContainer;
+    _getComponentContainerClasses(): string {
+        const userComponentContainerClassNames: string = defaultTo('')(this.props.componentContainerClassNames);
+        return classNames(this.props.classes.componentContainer, userComponentContainerClassNames);
     }
 
     _getInputClasses(): string {
@@ -329,14 +433,16 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
         return classNames(
             this.props.classes.inputControl,
             {'focus': hasFocus},
+            {'error': this._hasErrors()},
             {'readOnly': readOnly},
-            {'disabled': disabled}
+            {'disabled': disabled},
         );
     }
 
     _getLabelClasses(): string {
         const isActive: boolean = this._isInputActive();
         const hasFocus: boolean = this._isInputHasFocus();
+        const hasErrors: boolean = this._hasErrors();
         const {readOnly, disabled}: {readOnly: ?boolean, disabled: ?boolean} = this.props;
 
         return classNames(
@@ -344,6 +450,7 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
             {'active': isActive},
             {'passive': !isActive},
             {'focus': hasFocus},
+            {'error': hasErrors},
             {'readOnly': readOnly},
             {'disabled': disabled}
         );
@@ -351,14 +458,42 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
 
     _getIconClasses(): string {
         const hasFocus: boolean = this._isInputHasFocus();
+        const hasErrors: boolean = this._hasErrors();
         const {readOnly, disabled}: {readOnly: ?boolean, disabled: ?boolean} = this.props;
 
         return classNames(
             this.props.iconClassNames,
             {'focus': hasFocus},
+            {'error': hasErrors},
             {'readOnly': readOnly},
             {'disabled': disabled}
         );
+    }
+
+    _getComponentContainerStyles(): CSSStylesType {
+        return defaultTo({})(this.props.componentContainerStyles);
+    }
+
+    _getErrorsContainerClassName(): string {
+        return this.props.classes.errorsContainer;
+    }
+
+    _getErrorContainerClassName(): string {
+        return classNames(
+            this.props.classes.subMessagesContainer,
+            this.props.classes.errorContainer
+        );
+    }
+
+    _getWarningsContainerClassName(): string {
+        return classNames(
+            this.props.classes.subMessagesContainer,
+            this.props.classes.warningsContainer
+        );
+    }
+
+    _getWarningContainerClassName(): string {
+        return this.props.classes.warningContainer;
     }
 
     // endregion
@@ -386,7 +521,7 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
 
     // region prop accessors
     _isInputHasFocus(): boolean {
-        const {active}: {active: boolean} = this._getMetaData();
+        const {active} = this._getMetaData();
         return active && this._isInputEditable();
     }
 
@@ -418,12 +553,62 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
 
     _getMetaData(): ReduxFormFieldComponentMetaDataPropsTypes {
         const {meta}: {meta: ?ReduxFormFieldComponentMetaDataPropsTypes} = this.props;
-        return isNil(meta) ? clone(FormTextInputComponentClass.defaultProps.meta) : meta;
+        return isNil(meta) ? clone(FormTextInputClass.defaultProps.meta) : meta;
     }
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormTextInputComponentClass.defaultProps.input) : input;
+        return isNil(input) ? clone(FormTextInputClass.defaultProps.input) : input;
+    }
+
+    _getErrorsIfTouched(): boolean {
+        return defaultTo(FormTextInputClass.defaultProps.errorsIfTouched)(this.props.errorsIfTouched);
+    }
+
+    _getWarningsIfTouched(): boolean {
+        return defaultTo(FormTextInputClass.defaultProps.warningsIfTouched)(this.props.warningsIfTouched);
+    }
+
+    _hasErrors(): boolean {
+        const {touched, error} = this._getMetaData();
+        const errorsIfTouched: boolean = this._getErrorsIfTouched();
+
+        if (and(errorsIfTouched, not(touched))) {
+            return false;
+        }
+
+        return and(complement(isNil)(error), complement(isEmpty)(error));
+    }
+
+    _hasWarnings(): boolean {
+        const {touched, warning} = this._getMetaData();
+        const warningsIfTouched: boolean = this._getWarningsIfTouched();
+
+        if (and(warningsIfTouched, not(touched))) {
+            return false;
+        }
+
+        return complement(isNil)(warning);
+    }
+
+    _getWarning(): string | Array<string> | null {
+        const {warning} = this._getMetaData();
+
+        if (isNil(warning)) {
+            return null;
+        }
+
+        return warning;
+    }
+
+    _getError(): string | Array<string> | null {
+        const {error} = this._getMetaData();
+
+        if (isNil(error)) {
+            return null;
+        }
+
+        return error;
     }
 
     // endregion
@@ -483,10 +668,64 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
         </div>;
     }
 
+    _renderWarnings(): React.Node {
+        return null;
+    }
+
+    _renderErrors(errors: Array<string>): React.Node {
+        return addIndex(map)(
+            (error: string, index: number) => <div
+                key={`error_${index}`}
+                className={this._getErrorContainerClassName()}
+            >{error}</div>,
+            errors
+        );
+    }
+
+    _renderErrorsContainer(): React.Node {
+        let errors: string | Array<string> | null = this._getError();
+
+        if (isNil(errors) || !this._hasErrors()) {
+            return null;
+        } else if (typeof errors === 'string') {
+            errors = [errors];
+        }
+
+        return (<div className={this._getErrorsContainerClassName()}>
+            {this._renderErrors(errors)}
+        </div>);
+    }
+
+    _renderWarnings(warnings: Array<string>): React.Node {
+        return addIndex(map)(
+            (error: string, index: number) => <div
+                key={`warning_${index}`}
+                className={this._getWarningContainerClassName()}
+            >{error}</div>,
+            warnings
+        );
+    }
+
+    _renderWarningsContainer(): React.Node {
+        let warnings: string | Array<string> | null = this._getWarning();
+
+        if (isNil(warnings) || !this._hasWarnings()) {
+            return null;
+        } else if (typeof warnings === 'string') {
+            warnings = [warnings];
+        }
+
+        return (<div className={this._getWarningsContainerClassName()}>
+            {this._renderWarnings(warnings)}
+        </div>);
+    }
+
     render(): React.Node {
         return (
-            <div className={this._getComponentOuterContainerClasses()}>
+            <div className={this._getComponentContainerClasses()} style={this._getComponentContainerStyles()}>
                 {this._renderInputContainer()}
+                {this._renderErrorsContainer()}
+                {this._renderWarningsContainer()}
             </div>
         );
     }
@@ -495,4 +734,13 @@ export class FormTextInputComponentClass extends React.Component<PropsTypes, Sta
 }
 
 // exports
-export const FormTextInputComponent = injectSheet(styles)(FormTextInputComponentClass);
+export function FormTextInputComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormTextInputClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+
+FormTextInputComponent.displayName = 'FormTextInputComponent';

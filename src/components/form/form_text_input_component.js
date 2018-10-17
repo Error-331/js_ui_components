@@ -104,6 +104,12 @@ export type FormTextInputTypes = {
 };
 
 type PropsTypes = FieldProps & FormTextInputTypes & {
+    /**
+     * JSS inner classes
+     *
+     * @ignore
+     */
+
     classes: any
 };
 

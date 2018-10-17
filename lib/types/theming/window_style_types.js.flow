@@ -8,5 +8,6 @@
 
 // exports
 export type WindowStylesType = {
+    overlayOpacity: number,
     overlayColor: string,
 };

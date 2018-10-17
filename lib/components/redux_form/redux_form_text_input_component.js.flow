@@ -10,6 +10,10 @@ import {Field} from 'redux-form/immutable';
 import {FormTextInputComponent} from './../form/form_text_input_component';
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type InputTypes = 'text' | 'password';
 
 type PropsTypes = {
@@ -38,6 +42,18 @@ type PropsTypes = {
     disabled?: ?boolean,
 
     /**
+     * Flag that dictates whether errors should be shown only after user interacts with input or always (e.g. even if initial value is set)
+     */
+
+    errorsIfTouched?: boolean,
+
+    /**
+     * Flag that dictates whether warnings should be shown only after user interacts with input or always (e.g. even if initial value is set)
+     */
+
+    warningsIfTouched?: boolean,
+
+    /**
      * Placeholder text used as hint for the user of how appropriate data should look like
      */
 
@@ -50,10 +66,22 @@ type PropsTypes = {
     label?: ?string,
 
     /**
+     * Class name which will be added to the component container (main outer container)
+     */
+
+    componentContainerClassName?: string,
+
+    /**
      * Class names which will be added to the icon container of the current component
      */
 
     iconClassNames?: ?string,
+
+    /**
+     * Styles for component container (main outer container) of the form text input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
 };
 
 type StateTypes = {};

@@ -19,6 +19,7 @@ import type {
     TableStyleType,
     WindowStylesType,
     DateStylesType,
+    NavigationStylesType,
 
     BaseThemePartialsType,
     AdditionalThemePartialsType,
@@ -40,7 +41,8 @@ import {
     buttonStylesFunc,
     tableStylesFunc,
     windowStylesFunc,
-    dateStylesFunc
+    dateStylesFunc,
+    navigationStylesFunc,
 } from './';
 
 import {colorUtilities} from './../../business_logic/color_utilities';
@@ -73,6 +75,7 @@ const buttonStyles: ButtonStyleType = buttonStylesFunc(baseThemePartials);
 const tableStyles: TableStyleType = tableStylesFunc(baseThemePartials);
 const windowStyles: WindowStylesType = windowStylesFunc(baseThemePartials);
 const dateStyles: DateStylesType = dateStylesFunc(baseThemePartials);
+const navigationStyles: NavigationStylesType = navigationStylesFunc(baseThemePartials);
 
 export const additionalThemePartials: AdditionalThemePartialsType = Object.freeze({
     layoutStyles,
@@ -80,7 +83,8 @@ export const additionalThemePartials: AdditionalThemePartialsType = Object.freez
     buttonStyles,
     tableStyles,
     windowStyles,
-    dateStyles
+    dateStyles,
+    navigationStyles,
 });
 
 // exports

@@ -12,6 +12,12 @@ import classNames from 'classnames';
 // type definitions
 type PropsTypes = {
     /**
+     * Class names which will be added to title container
+     */
+
+    titleClassName?: string,
+
+    /**
      * Class names which will be used to display icon
      */
 
@@ -125,6 +131,10 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region style accessors
+    _geTitleContainerClassName(): string {
+        return classNames(this.props.classes.titleContainer, this.props.titleClassName);
+    }
+
     _getIconClasses(): string {
         return classNames(
             this.props.classes.iconContainer,
@@ -154,7 +164,7 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     }
 
     _renderTitleContainer(): React.Node {
-        return <div className={this.props.classes.titleContainer}>
+        return <div className={this._geTitleContainerClassName()}>
             {this.props.children}
         </div>;
     }

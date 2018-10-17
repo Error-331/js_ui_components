@@ -6,18 +6,59 @@
 import * as React from 'react';
 import {DragSource, DropTarget} from 'react-dnd';
 import injectSheet from 'react-jss';
-import classNames from 'classnames';
+
+import {defaultTo} from 'ramda';
 
 // local imports
-import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 
 // type definitions
 type ConnectDragSourceType = (dragSource: React.Element<any>) => React.Node;
+type ConnectDropTargetType = (dragTarget: React.Element<any>) => React.Node;
+
+type CSSStylesType = {
+    [string]: mixed
+};
 
 type PropsTypes = {
-    dndType: string,
+    /**
+     * Unique drag and drop type (usually the same for each card if used inside card drawer component)
+     */
+
+    dndType: number | string,
+
+    /**
+     * Unique card id
+     */
+
+    id: number | string,
+
+    /**
+     * Data associated with the card
+     */
+
+    data: any,
+
+    /**
+     * Function used to connect DOM node with 'drag source' role
+     *
+     * @ignore
+     */
 
     connectDragSource: ConnectDragSourceType,
+
+    /**
+     * Function used to connect DOM node with 'drop target' role
+     *
+     * @ignore
+     */
+
+    connectDropTarget: ConnectDropTargetType,
+
+    /**
+     * Additional style object which will be applied to card
+     */
+
+    style?: CSSStylesType,
 
     /**
      * JSS inner classes
@@ -37,41 +78,41 @@ const styles = theme => ({
 });
 
 // component implementation
-
-const cardTarget = {
-    drop(props) {
-        return 'bb'
-    },
-}
-
-const cardSource = {
-
+const cardSourceSpec = {
     beginDrag(props) {
         return {
-            text: 'vv'
+            dragId: props,
+            dragData: props.data
         };
     },
 
-    endDrag(props, monitor, component) {
+    endDrag(props, monitor) {
         if (!monitor.didDrop()) {
             return;
         }
-
-        // When dropped on a compatible target, do something
-      //  const item = monitor.getItem();
-      //  const dropResult = monitor.getDropResult();
-       // CardActions.moveCardToList(item.id, dropResult.listId);
+        
+        const item = monitor.getItem();
+        const dropResult = monitor.getDropResult();
     }
 };
 
-function collect1(connect, monitor) {
+const cardTargetSpec = {
+    drop(props) {
+        return {
+            dragId: props,
+            dragData: props.data
+        };
+    },
+};
+
+function dragSourceCollector(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging(),
     }
 }
 
-function collect2(connect, monitor) {
+function dragTargetCollector(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
         isOver: monitor.isOver()
@@ -79,30 +120,66 @@ function collect2(connect, monitor) {
 }
 
 // $FlowFixMe decorators
-@DragSource(({dndType}) => dndType, cardSource, collect1)
-@DropTarget(({dndType}) => dndType, cardTarget, collect2)
+@DragSource(({dndType}) => dndType, cardSourceSpec, dragSourceCollector)
+@DropTarget(({dndType}) => dndType, cardTargetSpec, dragTargetCollector)
 @injectSheet(styles)
 export class DraggableCardComponent extends React.Component<PropsTypes, StateTypes> {
+    // region static props
     static defaultProps = {
         classes: {}
     };
 
-    /*
-        const childrenWithProps = React.Children.map(children, child =>
-      React.cloneElement(child, { doSomething: this.doSomething }));
-     */
+    // endregion
 
-    render() {
+    // region private props
+    // endregion
+
+    // region constructor
+    // endregion
+
+    // region business logic
+    // endregion
+
+    // region lifecycle methods
+    // endregion
+
+    // region style accessors
+    _getStyle(): CSSStylesType {
+        return defaultTo({})(this.props.style);
+    }
+
+    _getComponentContainerStyle(): CSSStylesType {
+        return Object.assign({}, this._getStyle());
+    }
+
+    // endregion
+
+    // region label accessors
+    // endregion
+
+    // region state accessors
+    // endregion
+
+    // region prop accessors
+    // endregion
+
+    // region handlers
+    // endregion
+
+    // region render methods
+    render(): React.Node {
         const { children, connectDragSource, connectDropTarget, isDragging, isOver } = this.props;
 
         return connectDropTarget(connectDragSource(
-            <div>
+            <div style={this._getComponentContainerStyle()}>
                 {React.Children.map(children, child => React.cloneElement(child, {
                     isDragging, isOver
                 }))}
             </div>
         ));
     }
+
+    // endregion
 }
 
 // exports

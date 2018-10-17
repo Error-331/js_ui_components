@@ -10,6 +10,10 @@ import {Field} from 'redux-form/immutable';
 import {FormCheckboxInputComponent} from '../form/form_checkbox_input_component';
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
     /**
      * Number that indicates which visual variant will be used to represent the checkbox
@@ -39,7 +43,13 @@ type PropsTypes = {
      * Value that indicates where label should be placed on left side of the checkbox or on the right
      */
 
-    labelPosition?: 'left' | 'right'
+    labelPosition?: 'left' | 'right',
+
+    /**
+     * Styles for component container (main outer container) of the form text input component
+     */
+
+    componentContainerStyles?: CSSStylesType
 };
 
 type StateTypes = {};
@@ -66,6 +76,8 @@ export class ReduxFormCheckboxInputComponentClass extends React.Component<PropsT
 
             label={this.props.label}
             labelPosition={this.props.labelPosition}
+
+            componentContainerStyles={this.props.componentContainerStyles}
 
             component={FormCheckboxInputComponent}
         />;

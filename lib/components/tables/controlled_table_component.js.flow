@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import {mergeDeepRight} from 'ramda';
 
 // local imports
-import {RegularTableComponentClass, RegularTableComponent} from './regular_table_component';
+import {RegularTableComponent} from './';
 
 // type definitions
 type PropsTypes = {
@@ -79,9 +79,9 @@ export class ControlledTableComponentClass extends React.Component<PropsTypes, S
     // region static props
     static displayName = 'ControlledTableComponent';
 
-    static defaultProps = mergeDeepRight(RegularTableComponentClass.defaultProps, {
+    static defaultProps = {
 
-    });
+    };
 
     // endregion
 

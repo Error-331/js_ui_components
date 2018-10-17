@@ -9,6 +9,10 @@ import injectSheet from 'react-jss';
 import {merge, defaultTo} from 'ramda';
 
 // local imports
+import type {ThemeType} from './../../types/theme_types';
+
+import {MainThemeContext} from './../../theming';
+
 import {GlobalOverlayComponent} from './global_overlay_component';
 import {RegularCardComponent} from './../layout/structure/regular_card_component';
 
@@ -62,6 +66,14 @@ type PropsTypes = {
     bodyInnerStyles?: CSSStylesType,
 
     /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -90,9 +102,16 @@ const styles = theme => ({});
  */
 
 // component implementation
-export class ModalComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class ModalClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'ModalComponent';
+    static displayName = 'ModalClass';
+
+    static defaultProps = {
+        show: false
+    };
 
     // endregion
 
@@ -122,6 +141,16 @@ export class ModalComponentClass extends React.Component<PropsTypes, StateTypes>
     // endregion
 
     // region prop accessors
+    _getOverlayOpacity(): number {
+        const {overlayOpacity, theme} = this.props;
+        return defaultTo(theme.windowStyles.overlayOpacity)(overlayOpacity);
+    }
+
+    _shouldShow(): boolean {
+        const {show} = this.props;
+        return defaultTo(ModalClass.defaultProps.show)(show);
+    }
+
     // endregion
 
     // region handlers
@@ -146,9 +175,7 @@ export class ModalComponentClass extends React.Component<PropsTypes, StateTypes>
     }
 
     _renderOverlayComponent(): React.Node {
-        const {show, overlayOpacity} = this.props;
-
-        return <GlobalOverlayComponent show={show} opacity={overlayOpacity}>
+        return <GlobalOverlayComponent show={this._shouldShow()} opacity={this._getOverlayOpacity()}>
             {this._renderBody()}
         </GlobalOverlayComponent>;
     }
@@ -161,4 +188,12 @@ export class ModalComponentClass extends React.Component<PropsTypes, StateTypes>
 }
 
 // exports
-export const ModalComponent = injectSheet(styles)(ModalComponentClass);
+export function ModalComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <ModalClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+ModalComponent.displayName = 'ModalComponent';

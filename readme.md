@@ -1,6 +1,7 @@
 # UI Components (WebFuturistics)
 
 # Component sections
+
     // region static props
     // endregion
     
