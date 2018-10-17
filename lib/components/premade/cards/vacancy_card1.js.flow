@@ -191,8 +191,8 @@ export function VacancyCard1Function(props: PropsTypes): React.Node {
     return <RegularCardComponent
         popOnHover={true}
         maxPopLevel={3}
-        containerClassNames={classes.componentContainer}
-        bodyClassNames={classes.regularCardContainer}
+        containerClassName={classes.componentContainer}
+        bodyClassName={classes.regularCardContainer}
     >
         {logoSrc ? <img src={logoSrc} className={classes.companyLogoContainer}/> : <div/>}
 

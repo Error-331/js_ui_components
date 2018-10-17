@@ -479,7 +479,7 @@ export class SimpleCalendarClass extends React.Component<PropsTypes, StateTypes>
     }
 
     _renderCard(): React.Node {
-        return <RegularCardComponent header={this._renderCardHeader()} containerClassNames={this._getCardContainerClassName()}>
+        return <RegularCardComponent header={this._renderCardHeader()} containerClassName={this._getCardContainerClassName()}>
             {this._renderMonthSelector()}
             {this._renderDaysSelection()}
         </RegularCardComponent>;

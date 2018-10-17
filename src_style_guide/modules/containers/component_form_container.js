@@ -5,6 +5,8 @@ import React, {Component} from 'react';
 import {Form} from 'redux-form';
 import {reduxForm} from 'redux-form/immutable';
 import injectSheet from 'react-jss';
+
+import {clone} from 'ramda';
 import moment from 'moment';
 
 // local imports
@@ -28,7 +30,7 @@ class ComponentFormContainer extends Component {
 const ComponentFormContainerConnected = reduxForm({
     form: MAIN_FORM_NAME,
 
-    initialValues: {
+    initialValues: clone({
         reduxFormTextInputComponents: {
             testFormTextInputComponentWithDefaultValue1: 'Test default value 1...',
             testFormTextInputComponentWithDefaultValue2: 'Test default value 2...',
@@ -78,8 +80,13 @@ const ComponentFormContainerConnected = reduxForm({
             testFromDateInputComponentWithDefaultValue3: moment('2015-02-08 09:30:26'),
             testFromDateInputComponentWithDefaultValue4: moment('2016-02-08 09:30:26'),
             testFromDateInputComponentWithDefaultValue5: moment('2017-02-08 09:30:26'),
-        }
-    },
+        },
+
+        login: {
+          email: '',
+          password: '',
+        },
+    }),
 
     warn: inputValues => {
         const warnMessages = {

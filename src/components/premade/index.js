@@ -4,3 +4,4 @@
 
 // exports
 export * from './cards';
+export * from './dialog_boxes';

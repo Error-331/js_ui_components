@@ -69,10 +69,10 @@ export type FormTextInputTypes = {
     label?: ?string,
 
     /**
-     * Class names which will be added to the component container (main outer container)
+     * Class name which will be added to the component container (main outer container)
      */
 
-    componentContainerClassNames?: string,
+    componentContainerClassName?: string,
 
     /**
      * Class names which will be added to the icon container of the current component
@@ -422,8 +422,8 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
 
     // region style accessors
     _getComponentContainerClasses(): string {
-        const userComponentContainerClassNames: string = defaultTo('')(this.props.componentContainerClassNames);
-        return classNames(this.props.classes.componentContainer, userComponentContainerClassNames);
+        const userComponentContainerClassName: string = defaultTo('')(this.props.componentContainerClassName);
+        return classNames(this.props.classes.componentContainer, userComponentContainerClassName);
     }
 
     _getInputClasses(): string {

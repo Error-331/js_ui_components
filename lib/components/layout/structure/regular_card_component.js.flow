@@ -43,10 +43,10 @@ type PropsTypes = {
     maxPopLevel?: number,
 
     /**
-     * Class names for card container outer div
+     * Class name for card container outer div
      */
 
-    containerClassNames?: string,
+    containerClassName?: string,
 
     /**
      * Styles for card container outer div
@@ -55,10 +55,10 @@ type PropsTypes = {
     containerStyles?: StyleType,
 
     /**
-     * Class names for card body container div
+     * Class name for card body container div
      */
 
-    bodyClassNames?: string,
+    bodyClassName?: string,
 
     /**
      * Styles for card container body div
@@ -210,7 +210,7 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     static displayName = 'RegularCardComponent';
 
     static defaultProps = {
-        containerClassNames: '',
+        containerClassName: '',
 
         theme: {},
         classes: {}
@@ -243,22 +243,22 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
         const heightClassName: string = `height${this._getCardHeightLevel()}`;
         const poppableClassName: string = `poppable${this._getCardPopHeightLevel()}`;
 
-        const containerClassNames = classNames(
+        const containerClassName = classNames(
             this.props.classes.componentContainer,
             {
                 [heightClassName]: true,
                 [poppableClassName]: this._getPopOnHover()
             },
-            this.props.containerClassNames
+            this.props.containerClassName
         );
 
-        return containerClassNames;
+        return containerClassName;
     }
 
     _getBodyClasses(): string {
         return classNames(
             this.props.classes.componentBody,
-            this.props.bodyClassNames
+            this.props.bodyClassName
         );
     }
 

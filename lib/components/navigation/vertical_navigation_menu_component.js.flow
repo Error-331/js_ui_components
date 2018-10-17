@@ -202,7 +202,7 @@ export class VerticalNavigationMenuComponentClass extends Component {
         const {title, data} = this.props;
 
         return (
-            <RegularCardComponent title={title} containerClassNames={componentContainer}>
+            <RegularCardComponent title={title} containerClassName={componentContainer}>
                 <nav className={navigationContainer}>
                     {this._renderElementsList(data)}
                 </nav>
