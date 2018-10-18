@@ -153,6 +153,16 @@ module.exports = {
                 },
 
                 {
+                    name: 'Pre-made',
+                    sections: [
+                        {
+                            name: 'Dialog boxes',
+                            components: path.join(__dirname, './../src/components/premade/dialog_boxes/**/[A-Za-z_]*_dialog_box[0-1]*.js'),
+                        },
+                    ]
+                },
+
+                {
                     name: 'Demo',
                     content: path.join(__dirname, './docs/demo/index.md'),
                 }
