@@ -208,7 +208,6 @@ export class DialogBoxActionsContainerClass extends React.Component<PropsTypes, 
         const childrenCount: number = length(children);
 
         const leftChildrenCount: number = this._getMainGroupCount();
-        const rightChildrenCount: number = childrenCount - leftChildrenCount;
 
         const leftChildrenStartIndex: number = 0;
         const leftChildrenEndIndex: number = leftChildrenCount;
@@ -223,8 +222,7 @@ export class DialogBoxActionsContainerClass extends React.Component<PropsTypes, 
 
         leftChildren = direction !== RIGHT_TO_LEFT_DIRECTION ? reverse(leftChildren) : leftChildren;
         rightChildren = direction !== RIGHT_TO_LEFT_DIRECTION ? reverse(rightChildren) : rightChildren;
-console.log('ff', leftChildrenStartIndex, leftChildrenEndIndex, children);
-console.log('gg', rightChildrenStartIndex, rightChildrenEndIndex, children);
+
         const groupContainerStyle: CSSStylesType = Object.assign({direction}, this._getComponentContainerStyle());
         const leftGroupDirection: string = direction !== RIGHT_TO_LEFT_DIRECTION ? 'ltr' : 'rtl' ;
         const rightGroupDirection: string = direction !== RIGHT_TO_LEFT_DIRECTION ? 'rtl' : 'ltr' ;

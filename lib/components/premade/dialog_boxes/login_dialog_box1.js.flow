@@ -131,7 +131,7 @@ type StateTypes = {};
 const styles = theme => ({
     cardContainer: {
         boxSizing: 'border-box',
-        maxWidth: '510px',
+        minWidth: '510px',
     },
 
     controlsContainer: {
