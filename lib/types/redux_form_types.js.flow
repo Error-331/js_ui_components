@@ -23,3 +23,5 @@ export type ReduxFormFieldComponentMetaDataPropsTypes = {
 export type ReduxFormFieldComponentInputDataPropsTypes = InputProps & {
     value?: ReduxFormFieldComponentValueType,
 }
+
+export type OnSubmitCallbackType = (any) => any;

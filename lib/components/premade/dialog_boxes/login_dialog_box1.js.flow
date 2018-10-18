@@ -17,7 +17,7 @@ import {ReduxFormTextInputComponent} from './../../redux_form';
 import {RegularButtonComponent} from './../../buttons';
 
 // type definitions
-type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
+type ClickCallbackType = (any) => any;
 
 type PropsTypes = {
     /**
