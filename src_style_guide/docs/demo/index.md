@@ -103,7 +103,7 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-id-ca
         componentContainerStyles={isActiveControlStyles}
     />       
     
-    <DialogBoxActionsContainer style={buttonsContainerStyles}>
+    <DialogBoxActionsContainer containerStyle={buttonsContainerStyles}>
         <RegularButtonComponent label='Save'/>
         <RegularButtonComponent label='Cancel' variant='outlined'/>
     </DialogBoxActionsContainer>
@@ -216,9 +216,9 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-windo
         componentContainerStyles={isArchivedControlStyles}
     />  
     
-    <DialogBoxActionsContainer style={buttonsContainerStyles}>
-        <RegularButtonComponent label='Cancel' variant='outlined'/>
+    <DialogBoxActionsContainer containerStyle={buttonsContainerStyles}>
         <RegularButtonComponent label='Save'/>
+        <RegularButtonComponent label='Cancel' variant='outlined'/>
     </DialogBoxActionsContainer>
 
 </RegularCardComponent>
@@ -336,9 +336,9 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-globe
         componentContainerStyles={isActiveControlStyles}
     />         
     
-    <DialogBoxActionsContainer style={buttonsContainerStyles}>
-        <RegularButtonComponent label='Cancel' variant='outlined'/>
+    <DialogBoxActionsContainer containerStyle={buttonsContainerStyles}>
         <RegularButtonComponent label='Save'/>
+        <RegularButtonComponent label='Cancel' variant='outlined'/>
     </DialogBoxActionsContainer>
 
 </RegularCardComponent>

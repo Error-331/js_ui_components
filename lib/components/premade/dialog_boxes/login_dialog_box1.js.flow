@@ -26,25 +26,94 @@ type PropsTypes = {
 
     headerText?: string,
 
+    /**
+     * Login input form name
+     */
+
     loginInputName: string,
+
+    /**
+     * Password input form name
+     */
+
     passwordInputName: string,
 
+    /**
+     * Login input label
+     */
+
     loginInputLabel?: string,
+
+    /**
+     * Login input placeholder text
+     */
+
     loginInputPlaceholder?: string,
+
+    /**
+     * Login input icon class name
+     */
+
     loginInputIconClassName?: string,
 
+    /**
+     * Password input label
+     */
+
     passwordInputLabel?: string,
+
+    /**
+     * Login input placeholder text
+     */
+
     passwordInputPlaceholder?: string,
 
+    /**
+     * Login button label
+     */
+
     loginButtonLabel?: string,
+
+    /**
+     * 'Forgot password' button label
+     */
+
     forgotPasswordButtonLabel?: string,
+
+    /**
+     * 'Register' button label
+     */
+
     registerButtonLabel?: string,
 
+    /**
+     * Flag that indicates whether to show (or not to show) 'register' button
+     */
+
     showRegisterButton?: boolean,
+
+    /**
+     * Flag that indicates whether to show (or not to show) 'forgot password' button
+     */
+
     showForgotPasswordButton?: boolean,
 
+    /**
+     * Callback function which will be called when user will click on 'login' button
+     */
+
     onClickLogin?: ClickCallbackType,
+
+    /**
+     * Callback function which will be called when user will click on 'register' button
+     */
+
     onClickRegister?: ClickCallbackType,
+
+    /**
+     * Callback function which will be called when user will click on 'forgot password' button
+     */
+
     onClickForgotPassword?: ClickCallbackType,
 
     /**
@@ -62,7 +131,7 @@ type StateTypes = {};
 const styles = theme => ({
     cardContainer: {
         boxSizing: 'border-box',
-        maxWidth: '500px',
+        maxWidth: '510px',
     },
 
     controlsContainer: {
@@ -75,8 +144,8 @@ const styles = theme => ({
             "buttons "
         `,
 
-        gridColumnGap: '25px',
-        gridRowGap: '15px',
+        gridColumnGap: `${theme.layoutStyles.componentHorizontalSpacing}px`,
+        gridRowGap: `${theme.layoutStyles.componentVerticalSpacing}px`,
 
         gridTemplateColumns: '1fr',
         gridTemplateRows: 'repeat(auto-fit, max-content)',
@@ -189,6 +258,15 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region prop accessors
+    _getMainButtonsGroupCount(): number {
+        let buttonsCount: number = 0;
+
+        buttonsCount = this._renderLoginButton() ? buttonsCount + 1 : buttonsCount;
+        buttonsCount = this._renderRegisterButton() ? buttonsCount + 1 : buttonsCount;
+
+        return buttonsCount;
+    }
+
     _getClickRegisterButtonCallback(): ClickCallbackType {
         return defaultTo(LoginDialogBox1Class.defaultProps.onClickRegister)(this.props.onClickRegister);
     }
@@ -284,8 +362,10 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
     }
 
     _renderActionsContainer(): React.Node {
+
         return <DialogBoxActionsContainer
-            className={this._getActionsContainerClassName()}
+            mainGroupCount={this._getMainButtonsGroupCount()}
+            containerClassName={this._getActionsContainerClassName()}
         >
             {this._renderLoginButton()}
             {this._renderRegisterButton()}

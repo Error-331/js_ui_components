@@ -7,9 +7,10 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {isNil, defaultTo, reverse} from 'ramda';
+import {defaultTo, length, reverse, slice} from 'ramda';
 
 // local imports
+import {MainThemeContext} from './../../../../theming';
 
 // type definitions
 type CSSStylesType = {
@@ -24,6 +25,12 @@ type PropsTypes = {
     direction?: 'ltr' | 'rtl',
 
     /**
+     * Indicates how many elements (buttons) will be in the main group (remaining elements goes to subgroup)
+     */
+
+    mainGroupCount?: number,
+
+    /**
      * Dialog box actions (buttons)
      */
 
@@ -33,13 +40,13 @@ type PropsTypes = {
      * Additional style object which will be applied to container
      */
 
-    style?: CSSStylesType,
+    containerStyle?: CSSStylesType,
 
     /**
      * Additional class name which will be applied to container
      */
 
-    className?: string,
+    containerClassName?: string,
 
     /**
      * JSS inner classes
@@ -56,18 +63,45 @@ type StateTypes = {};
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
+        display: 'flex',
 
-        gridArea: 'buttons',
-        display: 'grid',
+        flexBasis: 'auto',
+        flexGrow: 0,
+        flexShrink: 1,
 
-        gridTemplateColumns: `repeat(auto-fill, minmax(max-content, ${theme.buttonStyles.regularButtonMinimumWidth}px))`,
-        gridAutoRows: 'max-content',
-        gridColumnGap: `${theme.layoutStyles.componentHorizontalSpacing}px`,
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
 
-        '& > *': {
-            direction: LEFT_TO_RIGHT_DIRECTION
-        }
-    }
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        alignContent: 'flex-start',
+
+        '& > $buttonsContainer': {
+            boxSizing: 'border-box',
+
+            flexBasis: '50%',
+            flexGrow: 0,
+            flexShrink: 0,
+
+            gridArea: 'buttons',
+            display: 'grid',
+
+            gridTemplateColumns: `repeat(auto-fill, minmax(max-content, ${theme.buttonStyles.regularButtonMinimumWidth}px))`,
+            gridAutoRows: 'max-content',
+            gridColumnGap: `${theme.layoutStyles.componentHorizontalSpacing}px`,
+
+            '&.fullWidth': {
+                flexBasis: '100%',
+            },
+
+            '& > *': {
+                direction: LEFT_TO_RIGHT_DIRECTION
+            },
+        },
+
+    },
+
+    buttonsContainer: {},
 });
 
 // constants definition
@@ -84,29 +118,137 @@ export const LEFT_TO_RIGHT_DIRECTION: string = 'ltr';
  */
 
 // component implementation
-export function DialogBoxActionsContainerFunction(props: PropsTypes): React.Node {
-    let {children, direction, classes, style, className} = props;
 
-    if (isNil(children)) {
-        return null;
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class DialogBoxActionsContainerClass extends React.Component<PropsTypes, StateTypes> {
+    // region static props
+    static displayName = 'DialogBoxActionsContainerClass';
+
+    static defaultProps = {
+        direction: RIGHT_TO_LEFT_DIRECTION,
+        mainGroupCount: 0,
+        containerClassName: '',
+    };
+
+    // endregion
+
+    // region private props
+    // endregion
+
+    // region constructor
+    // endregion
+
+    // region business logic
+    // endregion
+
+    // region lifecycle methods
+    // endregion
+
+    // region style accessors
+    _getComponentContainerStyle(): CSSStylesType {
+        return defaultTo({})(this.props.containerStyle);
     }
 
-    direction = defaultTo(RIGHT_TO_LEFT_DIRECTION)(direction);
+    _getComponentContainerClassName(): string {
+        return classNames(this.props.classes.componentContainer, this.props.containerClassName);
+    }
 
-    let childrenArray: Array<React.Node> =  React.Children.toArray(children);
-    childrenArray = direction !== RIGHT_TO_LEFT_DIRECTION ? reverse(childrenArray) : childrenArray;
+    _getRightContainerClassName(): string {
+        return this.props.classes.buttonsContainer;
+    }
 
-    style = defaultTo({})(style);
-    style = Object.assign({}, {direction}, style);
+    _getLeftContainerClassName(): string {
+        return classNames(this.props.classes.buttonsContainer, {
+            'fullWidth': this._getMainGroupCount() === 0
+        });
+    }
 
-    className = classNames(classes.componentContainer, className);
+    // endregion
 
-    return <div className={className} style={style}>
-        {childrenArray}
-    </div>;
+    // region label accessors
+    // endregion
+
+    // region state accessors
+    // endregion
+
+    // region prop accessors
+    _getMainGroupCount(): number {
+        return defaultTo(DialogBoxActionsContainerClass.defaultProps.mainGroupCount)(this.props.mainGroupCount);
+    }
+
+    _getDirection(): string {
+        return  defaultTo(DialogBoxActionsContainerClass.defaultProps.direction)(this.props.direction);
+    }
+
+    // endregion
+
+    // region handlers
+    // endregion
+
+    // region render methods
+    _renderRightGroup(children: Array<React.Node>, style: CSSStylesType): React.Node {
+        if (this._getMainGroupCount() === 0) {
+            return null;
+        }
+
+        return <div className={this._getRightContainerClassName()} style={style}>
+            {children}
+        </div>;
+    }
+
+    _renderLeftGroup(children: Array<React.Node>, style: CSSStylesType): React.Node {
+        return <div className={this._getLeftContainerClassName()} style={style}>
+            {children}
+        </div>;
+    }
+
+    _renderComponentContainer(): React.Node {
+        const children: Array<React.Node> = React.Children.toArray(this.props.children);
+        const childrenCount: number = length(children);
+
+        const leftChildrenCount: number = this._getMainGroupCount();
+        const rightChildrenCount: number = childrenCount - leftChildrenCount;
+
+        const leftChildrenStartIndex: number = 0;
+        const leftChildrenEndIndex: number = leftChildrenCount;
+
+        const rightChildrenStartIndex: number = leftChildrenCount;
+        const rightChildrenEndIndex: number = childrenCount;
+
+        let leftChildren: Array<React.Node> = slice(leftChildrenStartIndex, leftChildrenEndIndex, children);
+        let rightChildren: Array<React.Node> = slice(rightChildrenStartIndex, rightChildrenEndIndex, children);
+
+        const direction: string = this._getDirection();
+
+        leftChildren = direction !== RIGHT_TO_LEFT_DIRECTION ? reverse(leftChildren) : leftChildren;
+        rightChildren = direction !== RIGHT_TO_LEFT_DIRECTION ? reverse(rightChildren) : rightChildren;
+console.log('ff', leftChildrenStartIndex, leftChildrenEndIndex, children);
+console.log('gg', rightChildrenStartIndex, rightChildrenEndIndex, children);
+        const groupContainerStyle: CSSStylesType = Object.assign({direction}, this._getComponentContainerStyle());
+        const leftGroupDirection: string = direction !== RIGHT_TO_LEFT_DIRECTION ? 'ltr' : 'rtl' ;
+        const rightGroupDirection: string = direction !== RIGHT_TO_LEFT_DIRECTION ? 'rtl' : 'ltr' ;
+
+        return <div className={this._getComponentContainerClassName()} style={groupContainerStyle}>
+            {this._renderLeftGroup(leftChildren, {direction: leftGroupDirection})}
+            {this._renderRightGroup(rightChildren, {direction: rightGroupDirection})}
+        </div>;
+    }
+
+    render(): React.Node {
+        return this._renderComponentContainer();
+    }
+
+    // endregion
 }
 
-DialogBoxActionsContainerFunction.displayName = 'DialogBoxActionsContainer';
-
 // exports
-export const DialogBoxActionsContainer = injectSheet(styles)(DialogBoxActionsContainerFunction);
+export function DialogBoxActionsContainer(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <DialogBoxActionsContainerClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+DialogBoxActionsContainer.displayName = 'DialogBoxActionsContainer';

@@ -237,8 +237,8 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
         const bottomChildrenStartIndex: number = topChildrenCount;
         const bottomChildrenEndIndex: number = childrenCount;
 
-        const topChildren = slice(topChildrenStartIndex, topChildrenEndIndex, children);
-        const bottomChildren = slice(bottomChildrenStartIndex, bottomChildrenEndIndex, children);
+        const topChildren: Array<React.Node> = slice(topChildrenStartIndex, topChildrenEndIndex, children);
+        const bottomChildren: Array<React.Node> = slice(bottomChildrenStartIndex, bottomChildrenEndIndex, children);
 
         return (<div className={this._getComponentContainerClassName()}>
             {this._renderTopIconsContainer(topChildren)}
