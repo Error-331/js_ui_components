@@ -38,6 +38,7 @@ type PropsTypes = {
     children?: React.ChildrenArray<any>,
 };
 
+// styles definition
 const styles = theme => ({
     componentContainer: {
         fontFamily: theme.layoutStyles.fontStack,

@@ -12,6 +12,19 @@ export type LayoutStylesType = {
     headerFontStack: string,
     bodyFontStack: string,
 
+    inlineHeaderLevel1FontSize: number,
+    inlineHeaderLevel2FontSize: number,
+    inlineHeaderLevel3FontSize: number,
+    inlineHeaderLevel4FontSize: number,
+    inlineHeaderLevel5FontSize: number,
+    inlineHeaderLevel6FontSize: number,
+
+    tinyIconSize: number,
+    smallIconSize: number,
+    mediumIconSize: number,
+    largeIconSize: number,
+    extraLargeIconSize: number,
+
     headerFontSize: number,
     bodyFontSize: number,
 
@@ -37,4 +50,6 @@ export type LayoutStylesType = {
 
     headerBGColor: string,
     bodyBGColor: string,
+
+    iconColor: string,
 };

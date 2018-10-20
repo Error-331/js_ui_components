@@ -23,6 +23,12 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         inlineHeaderLevel5FontSize: baseStyles.inlineHeaderLevel5FontSize,
         inlineHeaderLevel6FontSize: baseStyles.inlineHeaderLevel6FontSize,
 
+        tinyIconSize: 10, // px
+        smallIconSize: 15, // px
+        mediumIconSize: 30, // px
+        largeIconSize: 60, // px
+        extraLargeIconSize: 120, // px
+
         headerFontSize: baseStyles.inlineHeaderLevel6FontSize,
         bodyFontSize: baseStyles.secondaryFontSize,
 
@@ -47,6 +53,8 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         bodyFontColor: baseStyles.subPrimaryColor,
 
         headerBGColor: baseStyles.primaryBGColor,
-        bodyBGColor: baseStyles.noneTransparentBGColor
+        bodyBGColor: baseStyles.noneTransparentBGColor,
+
+        iconColor: baseStyles.mainSecondaryColor,
     });
 };
