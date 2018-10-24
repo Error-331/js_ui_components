@@ -26,3 +26,26 @@ const {LoginDialogBox1Component} = require('./');
 />
 
 ```
+
+Login dialog box (variant 1) with enabled dropdown component:
+
+```jsx
+
+const {LoginDialogBox1Component} = require('./');
+
+<LoginDialogBox1Component
+    loginInputName='login.email'
+    passwordInputName='login.password'
+    
+    showDropDownInput={true}
+    dropDownInputName='login.role'
+    dropDownInputLabel='Role'
+    dropDownInputPlaceholder='user role...'
+    
+    dropDownInputOptions={{
+        'Manager': 'manager',
+        'Developer': 'developer',
+    }}
+/>
+
+```

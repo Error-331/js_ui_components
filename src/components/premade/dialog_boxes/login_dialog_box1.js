@@ -12,12 +12,13 @@ import {defaultTo} from 'ramda';
 import {MainThemeContext} from './../../../theming';
 
 import {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer}from './../../layout';
-import {ReduxFormTextInputComponent} from './../../redux_form';
+import {ReduxFormTextInputComponent, ReduxFormDropDownInputComponent} from './../../redux_form';
 
 import {RegularButtonComponent} from './../../buttons';
 
 // type definitions
 type ClickCallbackType = (any) => any;
+type OptionType = { [string]: OptionValueType };
 
 type PropsTypes = {
     /**
@@ -37,6 +38,12 @@ type PropsTypes = {
      */
 
     passwordInputName: string,
+
+    /**
+     * Dropdown input form name
+     */
+
+    dropDownInputName?: string,
 
     /**
      * Login input label
@@ -69,6 +76,24 @@ type PropsTypes = {
     passwordInputPlaceholder?: string,
 
     /**
+     * Dropdown input label text
+     */
+
+    dropDownInputLabel?: string,
+
+    /**
+     * Dropdown input placeholder text
+     */
+
+    dropDownInputPlaceholder?: string,
+
+    /**
+     * Dropdown input options
+     */
+
+    dropDownInputOptions?: dropDownInputPlaceholder,
+
+    /**
      * Login button label
      */
 
@@ -85,6 +110,12 @@ type PropsTypes = {
      */
 
     registerButtonLabel?: string,
+
+    /**
+     * Flag that indicates whether to show (or not to show) dropdown input component
+     */
+
+    showDropDownInput?: boolean,
 
     /**
      * Flag that indicates whether to show (or not to show) 'register' button
@@ -131,7 +162,7 @@ type StateTypes = {};
 const styles = theme => ({
     cardContainer: {
         boxSizing: 'border-box',
-        minWidth: '510px',
+        maxWidth: '510px',
     },
 
     controlsContainer: {
@@ -139,9 +170,10 @@ const styles = theme => ({
         display: 'grid',
 
         gridTemplateAreas: `
-            "email   "
-            "password"
-            "buttons "
+            "email    "
+            "password "
+            "selection"
+            "actions  "
         `,
 
         gridColumnGap: `${theme.layoutStyles.componentHorizontalSpacing}px`,
@@ -162,13 +194,18 @@ const styles = theme => ({
             gridArea: 'password',
         },
 
+        '& > $selectionContainer': {
+            gridArea: 'selection',
+        },
+
         '& > $actionsContainer': {
-            gridArea: 'buttons',
+            gridArea: 'actions',
         },
     },
 
     emailControl: {},
     passwordControl: {},
+    selectionContainer: {},
     actionsContainer: {},
 });
 
@@ -198,6 +235,11 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
         passwordInputLabel: 'Password',
         passwordInputPlaceholder: 'user password...',
 
+        dropDownInputLabel: '',
+        dropDownInputPlaceholder: '',
+        dropDownInputOptions: {},
+
+        showDropDownInput: false,
         showRegisterButton: false,
         showForgotPasswordButton: false,
 
@@ -227,6 +269,10 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
     // region style accessors
     _getActionsContainerClassName(): string {
         return this.props.classes.actionsContainer;
+    }
+
+    _getSelectionContainer(): string {
+        return this.props.classes.selectionContainer;
     }
 
     _getPasswordInputClassName(): string {
@@ -279,6 +325,14 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
         return defaultTo(LoginDialogBox1Class.defaultProps.onClickLogin)(this.props.onClickLogin);
     }
 
+    _getDropDownInputOptions(): OptionType {
+        return defaultTo(LoginDialogBox1Class.defaultProps.dropDownInputOptions)(this.props.dropDownInputOptions);
+    }
+
+    _showDropDownInput(): boolean {
+        return defaultTo(LoginDialogBox1Class.defaultProps.showDropDownInput)(this.props.showDropDownInput);
+    }
+
     _showRegisterButton(): boolean {
         return defaultTo(LoginDialogBox1Class.defaultProps.showRegisterButton)(this.props.showRegisterButton);
     }
@@ -299,12 +353,20 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
         return defaultTo(LoginDialogBox1Class.defaultProps.loginButtonLabel)(this.props.loginButtonLabel);
     }
 
+    _getDropDownInputPlaceholder(): string {
+        return defaultTo(LoginDialogBox1Class.defaultProps.dropDownInputPlaceholder)(this.props.dropDownInputPlaceholder);
+    }
+
     _getPasswordInputPlaceholder(): string {
         return defaultTo(LoginDialogBox1Class.defaultProps.passwordInputPlaceholder)(this.props.passwordInputPlaceholder);
     }
 
     _getLoginInputPlaceholder(): string {
         return defaultTo(LoginDialogBox1Class.defaultProps.loginInputPlaceholder)(this.props.loginInputPlaceholder);
+    }
+
+    _getDropDownInputLabel(): string {
+        return defaultTo(LoginDialogBox1Class.defaultProps.dropDownInputLabel)(this.props.dropDownInputLabel);
     }
 
     _getPasswordInputLabel(): string {
@@ -321,6 +383,10 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
 
     _getLoginInputName(): string {
         return this.props.loginInputName
+    }
+
+    _getDropDownInputName(): string {
+        return defaultTo('')(this.props.dropDownInputName);
     }
 
     _getHeaderText(): string {
@@ -385,6 +451,25 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
         />;
     }
 
+    _renderSelectionInput(): React.Node {
+        if (!this._showDropDownInput()) {
+            return null;
+        }
+
+        return <ReduxFormDropDownInputComponent
+            name={this._getDropDownInputName()}
+            label={this._getDropDownInputLabel()}
+            placeholder={this._getDropDownInputPlaceholder()}
+            options={this._getDropDownInputOptions()}
+        />
+    }
+
+    _renderSelectionContainer(): React.Node {
+        return <div className={this._getSelectionContainer()}>
+            {this._renderSelectionInput()}
+        </div>;
+    }
+
     _renderLoginInput(): React.Node {
         return <ReduxFormTextInputComponent
             name={this._getLoginInputName()}
@@ -400,6 +485,7 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
         return <div className={this._getControlsContainerClassName()}>
             {this._renderLoginInput()}
             {this._renderPasswordInput()}
+            {this._renderSelectionContainer()}
             {this._renderActionsContainer()}
         </div>;
     }

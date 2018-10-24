@@ -49,3 +49,4 @@
 - dropdown limit drop menu height;      
 - layoutStyles.headerBorderRadius -> something;  
 - const styles = theme =>  - type for theme;  
+- update webpack and stylegist;

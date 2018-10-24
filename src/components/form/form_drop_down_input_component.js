@@ -22,7 +22,7 @@ import {RegularCardComponent} from './../layout/structure/regular_card_component
 
 // type definitions
 type OptionValueType = string | number;
-type OptionType = { [string]: OptionValueType }
+type OptionType = { [string]: OptionValueType };
 
 type CSSStylesType = {
     [string]: mixed
@@ -489,7 +489,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         const bodyStyles: {[string]: mixed}  = {padding: '0px'};
 
         return this.state.optionsShown ? <RegularCardComponent
-            containerClassNames={this.props.classes.optionsContainer}
+            containerClassName={this.props.classes.optionsContainer}
             containerStyles={containerStyles}
             bodyStyles={bodyStyles}
         >
