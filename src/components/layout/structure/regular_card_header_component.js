@@ -7,10 +7,28 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
+import {defaultTo} from 'ramda';
+
 // local imports
 
 // type definitions
+type StyleType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
+    /**
+     * Class name for card header container outer div
+     */
+
+    containerClassName?: string,
+
+    /**
+     * Styles for card header container outer div
+     */
+
+    containerStyle?: StyleType,
+
     /**
      * Class names which will be added to title container
      */
@@ -131,7 +149,15 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region style accessors
-    _geTitleContainerClassName(): string {
+    _getComponentContainerStyle(): StyleType {
+        return Object.assign({}, this._getContainerStyle())
+    }
+
+    _getComponentClassName(): string {
+        return classNames(this.props.classes.componentContainer, this.props.containerClassName);
+    }
+
+    _getTitleContainerClassName(): string {
         return classNames(this.props.classes.titleContainer, this.props.titleClassName);
     }
 
@@ -152,6 +178,10 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region prop accessors
+    _getContainerStyle(): StyleType {
+        return defaultTo({})(this.props.containerStyle);
+    }
+
     // endregion
 
     // region handlers
@@ -164,13 +194,16 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     }
 
     _renderTitleContainer(): React.Node {
-        return <div className={this._geTitleContainerClassName()}>
+        return <div className={this._getTitleContainerClassName()}>
             {this.props.children}
         </div>;
     }
 
     _renderComponentContainer(): React.Node {
-        return <div className={this.props.classes.componentContainer}>
+        return <div
+            style={this._getComponentContainerStyle()}
+            className={this._getComponentClassName()}
+        >
             {this._renderTitleContainer()}
             {this._renderIconContainer()}
         </div>;

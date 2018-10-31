@@ -98,7 +98,7 @@ function FontIconFunction(props: PropsTypes) {
     let {size, style, iconClassName, className, classes} = props;
     size = defaultTo(MEDIUM_ICON_SIZE)(size);
 
-    const combinedClassName = classNames(
+    const combinedClassName: string = classNames(
         classes.componentContainer,
         iconClassName,
         size,
