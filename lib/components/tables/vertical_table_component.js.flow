@@ -11,7 +11,7 @@ import {equals, is, isNil, isEmpty, always, unless, defaultTo, bind, cond, map} 
 // local imports
 import type {ExtendedEventTargetType, CombinedEventType} from './../../types/dom_types';
 
-import {MainThemeContext} from './../../theming';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 import {
     commonHeaderCellStylesFunc,
     commonCellStylesFunc,
