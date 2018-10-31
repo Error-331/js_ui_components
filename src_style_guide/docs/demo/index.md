@@ -478,3 +478,56 @@ class NavigationDemoComponent1 extends Component {
 <NavigationDemoComponent1/>
 
 ```
+tt
+
+```jsx
+
+const {
+    RegularCardComponent, 
+    RegularCardHeaderComponent, 
+    DialogBoxActionsContainer,
+    
+    InlineHeader,
+    FontIcon,
+} = require('./../../../src/components/layout');
+
+const componentContainerStyles = {
+    boxSizing: 'border-box',
+    display: 'grid',
+   
+    gridTemplateAreas: `
+        "title    title"
+        "header   header"
+        "employee employer"
+    `,
+            
+    gridColumnGap: '25px', 
+    gridRowGap: '15px',
+                    
+    gridTemplateColumns: '1fr 1fr',
+    gridTemplateRows: 'repeat(auto-fit, max-content)',
+};
+
+const nameControlStyles = {
+    boxSizing: 'border-box', 
+                                        
+    gridArea: 'title', 
+};
+
+<div>
+    <RegularCardHeaderComponent>
+        <InlineHeader style={{color: 'inherit'}} level={5}>JobDealer</InlineHeader>
+    </RegularCardHeaderComponent>
+    
+    <InlineHeader level={3}>Looking for a job?</InlineHeader>
+    
+    <RegularCardComponent>
+    a
+    </RegularCardComponent>
+    
+    <RegularCardComponent>
+    a
+    </RegularCardComponent>
+</div>
+
+```
