@@ -11,7 +11,7 @@ import {merge, defaultTo} from 'ramda';
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 
-import {MainThemeContext} from './../../theming';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 import {GlobalOverlayComponent} from './global_overlay_component';
 import {RegularCardComponent} from './../layout/structure/regular_card_component';

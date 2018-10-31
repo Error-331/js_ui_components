@@ -14,7 +14,7 @@ import {isNotNil} from '@webfuturistics/design_components';
 import type {StateTypes as ThemeProps} from './../../theming/providers/main_theme_provider';
 
 import {InlineTextBlock} from './../layout/text/inline_text_block';
-import {MainThemeContext} from './../../theming';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;

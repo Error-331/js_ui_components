@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import {defaultTo, length, reverse, slice} from 'ramda';
 
 // local imports
-import {MainThemeContext} from './../../../../theming';
+import {MainThemeContext} from './../../../../theming/providers/main_theme_provider';
 
 // type definitions
 type CSSStylesType = {

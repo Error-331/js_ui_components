@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import {defaultTo, addIndex, length, slice, map} from 'ramda';
 
 // local imports
-import {MainThemeContext} from './../../theming';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 type PropsTypes = {

@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import {FormDateInputComponent} from '../form/form_date_input_component';
+import {FormDateInputComponent} from './../form/form_date_input_component';
 
 // type definitions
 type CSSStylesType = {

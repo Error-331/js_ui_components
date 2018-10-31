@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import {FormRadioButtonInputComponent} from '../form/form_radio_button_input_component';
+import {FormRadioButtonInputComponent} from './../form/form_radio_button_input_component';
 
 // type definitions
 type PropsTypes = {

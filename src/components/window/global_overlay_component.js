@@ -13,8 +13,8 @@ import {isNotNil} from '@webfuturistics/design_components';
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 
-import {MainThemeContext} from './../../theming';
-import {ModalClass} from "./modal_component";
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+import {ModalClass} from './modal_component';
 
 // type definitions
 type PropsTypes = {

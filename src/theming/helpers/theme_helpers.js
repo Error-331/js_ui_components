@@ -32,7 +32,7 @@ import type {
 } from './../../types/theming/';
 import type {ThemeType} from './../../types/theme_types';
 
-import {baseTheme} from '../themes/base_theme/';
+import {baseTheme} from './../themes/base_theme/theme';
 import {fontFaces as commonFontFaces} from './../common_styles/font_faces';
 
 import {

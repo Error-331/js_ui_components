@@ -18,7 +18,7 @@ import type {FormTextInputTypes} from './form_text_input_component';
 import type {ThemeType} from './../../types/theme_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
-import {MainThemeContext} from './../../theming';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 import {FormTextInputComponent} from './form_text_input_component';
 import {SimpleCalendarComponent} from './../date/simple_calender_component';

@@ -13,8 +13,8 @@ import {isNotNil} from '@webfuturistics/design_components';
 // local imports
 import type {CombinedEventType, ExtendedEventTargetType} from './../../types/dom_types';
 
-import {MainThemeContext} from './../../theming';
-import {HorizontalDivider} from './../utility';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+import {HorizontalDivider} from './../utility/horizontal_divider_component';
 
 // type definitions
 type OnMenuItemClickCallbackType = (itemIndex: number) => void;

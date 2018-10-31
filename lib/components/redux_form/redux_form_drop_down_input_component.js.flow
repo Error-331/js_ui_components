@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import {FormDropDownInputComponent} from '../form/form_drop_down_input_component';
+import {FormDropDownInputComponent} from './../form/form_drop_down_input_component';
 
 // type definitions
 type CSSStylesType = {

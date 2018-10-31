@@ -15,7 +15,7 @@ import {MainThemeContext} from './../../theming';
 import {
     commonHeaderCellStylesFunc,
     commonCellStylesFunc,
-} from './../../theming/common_styles';
+} from './../../theming/common_styles/table_styles';
 
 // type definitions
 type ColumnDataType = void | null | string | number | React.Element<any>;

@@ -18,7 +18,7 @@ import {generateRandomIdNumber} from '@webfuturistics/design_components';
 import type {ThemeType} from './../../../types/theme_types';
 
 import {DraggableCardComponent} from './draggable_card_component';
-import {MainThemeContext} from './../../../theming';
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
 
 // type definitions
 type CSSStylesType = {

@@ -15,7 +15,7 @@ import type {FieldProps} from 'redux-form';
 // local imports
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
-import {MainThemeContext} from './../../theming';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 type CSSStylesType = {

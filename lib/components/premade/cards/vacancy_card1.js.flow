@@ -10,7 +10,9 @@ import moment from  'moment';
 import {isNil} from 'ramda';
 
 // local imports
-import {RegularCardComponent, InlineTextBlock, InlineHeader} from './../../layout';
+import {RegularCardComponent} from './../../layout/structure/regular_card_component';
+import {InlineTextBlock} from './../../layout/text/inline_text_block';
+import {InlineHeader} from './../../layout/text/inline_header';
 
 // type definitions
 type PropsTypes = {

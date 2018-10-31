@@ -6,16 +6,15 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {defaultTo, map} from 'ramda';
+import {isNil, defaultTo, length, addIndex, range, map} from 'ramda';
 
 // local imports
 import type {CombinedEventType} from './../../types/dom_types';
 
-import {MainThemeContext} from './../../theming';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 import {
-    commonHeaderCellStylesFunc,
-} from './../../theming/common_styles';
-import {VerticalTableClass} from "./vertical_table_component";
+    commonCellStylesFunc,
+} from './../../theming/common_styles/table_styles';
 
 // type definitions
 type ColumnDataType = void | null | string | number | React.Element<any>;
@@ -38,6 +37,13 @@ export type UserPropsTypes = {
      */
 
     columnNames?: ColumnNamesType,
+
+    /**
+     * Number of visible columns
+     */
+
+
+    visibleColumnCount?: number,
 
     /**
      * Column index (inside data row) which will use data from this column as id and skip its rendering
@@ -75,31 +81,46 @@ type StateTypes = {};
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
-        display: 'flex',
+        display: 'grid',
 
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
+        width: '100%',
 
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
-        alignContent: 'flex-start',
+        gridTemplateColumns: 'max-content 1fr',
+        gridTemplateRows: 'max-content max-content',
 
         '& > $tableHeader': {
             boxSizing: 'border-box',
 
-            flexBasis: 'auto',
-            flexGrow: 0,
-            flexShrink: 1,
-
             '& > $tableHeaderCell': {
+                boxSizing: 'border-box',
+
                 whiteSpace: 'nowrap',
-                extend: commonHeaderCellStylesFunc(theme),
+                extend: commonCellStylesFunc (theme),
+            }
+        },
+
+        '& > $tableBody': {
+            boxSizing: 'border-box',
+            overflow: 'hidden',
+
+            '& > $contentTable': {
+                '& > tbody': {
+                    '& > tr': {
+                        '& > td': {
+                            boxSizing: 'border-box',
+                            extend: commonCellStylesFunc (theme),
+                        }
+                    }
+                }
             }
         }
     },
 
     tableHeader: {},
     tableHeaderCell: {},
+
+    tableBody: {},
+    contentTable: {},
 });
 
 // component implementation
@@ -123,9 +144,17 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region private props
+    $tableBody: any;
+
     // endregion
 
     // region constructor
+    constructor(props: PropsTypes) {
+        super(props);
+
+        this.$tableBody = React.createRef();
+    }
+
     // endregion
 
     // region business logic
@@ -135,6 +164,29 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region style accessors
+    _getContentTableCelWidth() {
+        const tableWidth: number = this._getContentTableWidth();
+        const columnCount: number = this._getVisibleColumnCount();
+
+        return tableWidth / columnCount;
+    }
+
+    _getContentTableWidth(): number {
+        if (isNil(this.$tableBody) || isNil(this.$tableBody.current)) {
+            return 0;
+        }
+
+        return this.$tableBody.current.clientWidth;
+    }
+
+    _getContentTableClassName(): string {
+        return this.props.classes.contentTable;
+    }
+
+    _getTableBodyClassName(): string {
+        return this.props.classes.tableBody;
+    }
+
     _gettableHeaderCellClassName(): string {
         return this.props.classes.tableHeaderCell;
     }
@@ -156,8 +208,34 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region prop accessors
+    _getDataColumnsCount(): number {
+        const columnsCount: number = this._getColumnsCount();
+
+        if (isNil(this._getIdColumnIndex())) {
+            return columnsCount;
+        }
+
+        return columnsCount - 1;
+    }
+
+    _getColumnsCount(): number {
+        return length(this._getColumnNames());
+    }
+
+    _getVisibleColumnCount(): number {
+        return defaultTo(4)(this.props.visibleColumnCount);
+    }
+
     _shouldShowTableHeader(): boolean {
         return defaultTo(HorizontalTableClass.defaultProps.showTableHeader)(this.props.showTableHeader)
+    }
+
+    _getData(): DataType {
+        return defaultTo(HorizontalTableClass.defaultProps.data)(this.props.data);
+    }
+
+    _getIdColumnIndex(): number | null {
+        return defaultTo(HorizontalTableClass.defaultProps.idColumnIndex)(this.props.idColumnIndex);
     }
 
     _getColumnNames(): ColumnNamesType {
@@ -170,6 +248,22 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region render methods
+    _renderContentTableCells(columnIndex: number): React.Node {
+        return addIndex(map)((row, rowIndex) => {
+            return <td key={`column_${rowIndex}_${columnIndex}`}>
+                {typeof row[columnIndex] === 'object' ? 'b' : 'c'}
+            </td>;
+        }, this._getData())
+    }
+
+    _renderContentTableRows(): React.Node {
+        return map(columnIndex => {
+            return <tr key={columnIndex}>
+                {this._renderContentTableCells(columnIndex)}
+            </tr>;
+        }, range(0,this._getDataColumnsCount() - 1))
+    }
+
     _renderTableHeaderCells(): React.Node {
         let columnIndex: number = -1;
 
@@ -181,6 +275,22 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
                 key={`headerColumn_${columnIndex}`}
             >{columnName}</div>;
         }, this._getColumnNames());
+    }
+
+    _renderTableBody(): React.Node {
+        const s = {
+          width: this._getContentTableCelWidth()
+        };
+
+
+        return <div className={this._getTableBodyClassName()} ref={this.$tableBody}>
+            <table className={this._getContentTableClassName()} style={{width: this._getContentTableCelWidth() * 7}}>
+                <tbody>
+                    {this._renderContentTableRows()}
+                </tbody>
+            </table>
+
+        </div>;
     }
 
     _renderTableHeader(): React.Node {
@@ -196,6 +306,7 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
     _renderComponentContainer(): React.Node {
         return <div className={this._getComponentContainerClassName()}>
             {this._renderTableHeader()}
+            {this._renderTableBody()}
         </div>;
     }
 

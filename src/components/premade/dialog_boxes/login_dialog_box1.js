@@ -9,12 +9,16 @@ import injectSheet from 'react-jss';
 import {defaultTo} from 'ramda';
 
 // local imports
-import {MainThemeContext} from './../../../theming';
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
 
-import {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer}from './../../layout';
-import {ReduxFormTextInputComponent, ReduxFormDropDownInputComponent} from './../../redux_form';
+import {RegularCardComponent} from './../../layout/structure/regular_card_component';
+import {RegularCardHeaderComponent} from './../../layout/structure/regular_card_header_component';
+import {DialogBoxActionsContainer} from './../../layout/alignment/dialog_box/dialog_box_actions_container';
 
-import {RegularButtonComponent} from './../../buttons';
+import {ReduxFormTextInputComponent} from './../../redux_form/redux_form_text_input_component';
+import {ReduxFormDropDownInputComponent} from './../../redux_form/redux_form_drop_down_input_component';
+
+import {RegularButtonComponent} from './../../buttons/regular_button_component';
 
 // type definitions
 type ClickCallbackType = (any) => any;

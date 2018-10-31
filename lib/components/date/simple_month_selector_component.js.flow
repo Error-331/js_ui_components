@@ -17,7 +17,7 @@ import {
     SimpleFlexGridColumn as Col,
 } from './../grid';
 
-import {InlineTextBlock} from './../layout';
+import {InlineTextBlock} from './../layout/text/inline_text_block';
 
 // type definitions
 type DateChangeCallbackType = (date: moment) => void;

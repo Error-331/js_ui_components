@@ -21,7 +21,7 @@ import {
 } from './../layout';
 
 import {SimpleMonthSelectorComponent} from './simple_month_selector_component';
-import {MainThemeContext} from './../../theming';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 type DateType = moment | Date | string;

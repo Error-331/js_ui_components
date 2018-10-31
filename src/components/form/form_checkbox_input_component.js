@@ -15,9 +15,10 @@ import type {FieldProps} from 'redux-form';
 // local imports
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
-import {FormCheckboxVariant1Component, FormCheckboxVariant2Component} from './form_checkbox_variants';
-import {MainThemeContext} from './../../theming';
+import {FormCheckboxVariant1Component} from './form_checkbox_variants/form_checkbox_variant1_component';
+import {FormCheckboxVariant2Component} from './form_checkbox_variants/form_checkbox_variant2_component';
 
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 type CSSStylesType = {

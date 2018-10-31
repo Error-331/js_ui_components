@@ -10,19 +10,18 @@ import {T, equals, is, isNil, ifElse, cond, always, clone, defaultTo, bind, omit
 import moment from 'moment';
 
 // local imports
-import {
-    commonCellContentStylesFunc,
-    longTextCellStylesFunc,
-} from './../../theming/common_styles';
+import {longTextCellStylesFunc, commonCellContentStylesFunc} from './../../theming/common_styles/table_styles';
 
 import type {UserPropsTypes as VerticalTablePropsTypes} from './vertical_table_component';
 import type {UserPropsTypes as HorizontalTablePropsTypes} from './horizontal_table_component';
 
-import {MainThemeContext} from './../../theming';
-import {TextBlock} from './../layout/';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+import {TextBlock} from './../layout/text/text_block';
 
 import {FormCheckboxVariant2Component} from './../form/form_checkbox_variants/form_checkbox_variant2_component';
-import {HorizontalTableComponent, VerticalTableComponent} from './';
+
+import {HorizontalTableComponent} from './horizontal_table_component';
+import {VerticalTableComponent} from './vertical_table_component';
 
 // type definitions
 type BasicColumnDataType = void | null | string | number | boolean | moment | React.Element<any>;
@@ -123,7 +122,7 @@ export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
         super(props);
 
         this.state = {
-            tableType: VERTICAL_TABLE_TYPE
+            tableType: HORIZONTAL_TABLE_TYPE
         };
     }
 

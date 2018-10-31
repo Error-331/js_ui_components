@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import {mergeDeepRight} from 'ramda';
 
 // local imports
-import {RegularTableComponent} from './';
+import {RegularTableComponent} from './regular_table_component';
 
 // type definitions
 type PropsTypes = {
