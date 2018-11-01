@@ -82,7 +82,7 @@ const styles = theme => ({
     }
 });
 
-// constants declaration
+// constants definition
 export const SPECIFIC_COLUMN_TYPE_LONG_TEXT: string = 'SPECIFIC_COLUMN_TYPE_LONG_TEXT';
 
 export const HORIZONTAL_TABLE_TYPE: string = 'horizontal';

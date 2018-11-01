@@ -176,7 +176,7 @@ const styles = theme => ({
     daySelectionBodyInnerContainer: {},
 });
 
-// constants declaration
+// constants definition
 const EMPTY_DATE_CELL_DATA = 'empty';
 
 /**

@@ -11,7 +11,7 @@ import type {CSSStylesType, SheetsRegistryOptionsType, StyleSheetRegisterType} f
 
 // type definitions
 
-// constants
+// constants definition
 const DEFAULT_CUSTOM_GLOBAL_STYLESHEET_META_NAME: string = 'Custom, Dynamic, Global';
 
 // implementation

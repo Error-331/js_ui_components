@@ -8,7 +8,7 @@ import {isNil, equals, max, inc, append, reject, reduce} from 'ramda';
 // local imports
 import type {ZIndexType, StyleValuesRegisterType} from './../../types/theming/style_values_register_types';
 
-// constants
+// constants definition
 const MINIMUM_Z_INDEX: number = 100;
 
 // exports

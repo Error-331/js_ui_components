@@ -493,6 +493,7 @@ const {
 } = require('./../../../src/components/layout');
 
 const {RegularButtonComponent} = require('./../../../src/components/buttons');
+const {TypewriterVisualEffect} = require('./../../../src/components/visual_effects');
 
 
 const componentContainerStyles = {
@@ -519,27 +520,11 @@ const titleStyle = {
 };
 
 const animationId = 'b';
-// https://css-tricks.com/snippets/css/typewriter-effect/
+
 const headerStyle = {
     boxSizing: 'border-box', 
                                         
-    gridArea: 'header', 
-    
-     overflow: 'hidden', 
-      borderRight: '.15em solid orange', 
-      whiteSpace: 'nowrap', 
-      margin: '0 auto',
-      letterSpacing: '.15em',
-      animation: `
-        ${animationId}-c 3.5s steps(40, end),
-        blink-caret .75s step-end infinite`,
-        
-          '@keyframes b-c': {
-          from: { width: 0 },
-            to: { width: '100%' }
-          },
-          
-             
+    gridArea: 'header',               
 };
 
 const employeeStyle = {
@@ -586,7 +571,10 @@ const selectionIconStyle = {
         <InlineHeader style={{color: 'inherit'}} level={5}>JobDealer</InlineHeader>
     </RegularCardHeaderComponent>
     
-    <InlineHeader  level={3}><h1 style={headerStyle}>Looking for a job?</h1></InlineHeader>
+    <div style={headerStyle}>
+        <TypewriterVisualEffect texts='Looking for a Job?'/>
+    </div>
+    
     <div style={employeeStyle}>
 
     <RegularCardComponent bodyStyles={selectionCardBodyStyle}>

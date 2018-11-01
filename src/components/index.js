@@ -12,4 +12,5 @@ export * from './redux_form';
 export * from './tables';
 export * from './utility';
 export * from './window';
+export * from './visual_effects';
 export * from './premade';

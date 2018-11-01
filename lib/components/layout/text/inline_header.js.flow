@@ -100,7 +100,7 @@ function InlineHeaderFunction(props: PropsTypes) {
 
     const componentClassNames: string = classNames(classes.componentContainer, levelClassName, className);
 
-    return <span className={componentClassNames} style={{...style}}>{children}</span>;
+    return <span className={componentClassNames} style={style}>{children}</span>;
 }
 
 InlineHeaderFunction.displayName = 'InlineHeader';

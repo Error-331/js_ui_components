@@ -512,7 +512,7 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
         );
     }
 
-    render() {
+    render(): React.Node {
         return this._renderCard();
     }
 
