@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
+import {MEDIUM_ICON_SIZE} from './../../../theming/constants/icon_constants';
 
 // type definitions
 export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
@@ -77,13 +78,6 @@ const styles = theme => ({
         },
     }
 });
-
-// constants definition
-export const TINY_ICON_SIZE = 'tiny';
-export const SMALL_ICON_SIZE = 'small';
-export const MEDIUM_ICON_SIZE = 'medium';
-export const LARGE_ICON_SIZE = 'large';
-export const EXTRA_LARGE_ICON_SIZE = 'extraLarge';
 
 /**
  * Font icon component.

@@ -10,38 +10,59 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
+import {MEDIUM_ICON_SIZE} from './../../../theming/constants/icon_constants';
 
 // type definitions
+export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
+
 type PropsTypes = {
+    /**
+     * Icon size
+     */
+
+    size?: FontIconSizeType,
+
     /**
      * SVG container width
      */
 
-    width?: number | string,
+    svgWidth?: number | string,
 
     /**
      * SVG container height
      */
 
-    height?: number | string,
+    svgHeight?: number | string,
 
     /**
      * SVG viewbox
      */
 
-    viewBox?: string,
+    svgViewBox?: string,
 
     /**
-     * React style object for in deep control of how icon is represented
+     * Outer container class name
      */
 
-    style?: {[string]: mixed},
+    containerClassName?: string,
 
     /**
-     * Icon class name (example)
+     * SVG container class name
      */
 
-    className?: string,
+    svgContainerClassName?: string,
+
+    /**
+     * Outer container style object
+     */
+
+    containerStyle?: {[string]: mixed},
+
+    /**
+     * SVG container class name
+     */
+
+    svgContainerStyle?: {[string]: mixed},
 
     /**
      * Content for SVG component
@@ -61,18 +82,42 @@ type PropsTypes = {
 // styles definition
 const styles = theme => ({
     componentContainer: {
-        '& path': {
-            fill: 'none',
+        '&.tiny': {
+            width: `${theme.layoutStyles.tinyIconSize}px`,
+        },
 
-            stroke: 'green',
-            strokeWidth: '2.5',
-            strokeLinecap: 'butt',
-            strokeLinejoin: 'miter',
-            strokeMiterlimit: 10,
-            strokeDasharray: 'none',
-            strokeOpacity: 1,
-        }
-    }
+        '&.small': {
+            width: `${theme.layoutStyles.smallIconSize}px`,
+        },
+
+        '&.medium': {
+            width: `${theme.layoutStyles.mediumIconSize}px`,
+        },
+
+        '&.large': {
+            width: `${theme.layoutStyles.largeIconSize}px`,
+        },
+
+        '&.extraLarge': {
+            width: `${theme.layoutStyles.extraLargeIconSize}px`,
+        },
+
+        '& > $svgContainer': {
+            '& path': {
+                fill: 'none',
+
+                stroke: theme.layoutStyles.iconColor,
+                strokeWidth: '2.5',
+                strokeLinecap: 'butt',
+                strokeLinejoin: 'miter',
+                strokeMiterlimit: 10,
+                strokeDasharray: 'none',
+                strokeOpacity: 1,
+            }
+        },
+    },
+
+    svgContainer: {}
 });
 
 /**
@@ -85,24 +130,38 @@ const styles = theme => ({
 
 // component implementation
 function InlineSVGIconFunction(props: PropsTypes) {
-    const {className, classes, style, children} = props;
+    const {containerClassName, classes, containerStyle} = props;
+    const size: string = defaultTo(MEDIUM_ICON_SIZE)(props.size);
 
-    const combinedClassName: string = classNames(
+    const combinedContainerClassName: string = classNames(
         classes.componentContainer,
-        className
+        size,
+        containerClassName
     );
 
-    return <svg
-        width={props.width}
-        height={props.height}
+    const {svgWidth, svgHeight, svgViewBox, svgContainerClassName, svgContainerStyle, children} = props;
 
-        viewBox={props.viewBox}
+    const combinedSvgContainerClassName: string = classNames(
+        classes.svgContainer,
+        svgContainerClassName,
+    );
 
-        className={combinedClassName}
-        style={style}
+    return <div
+        className={combinedContainerClassName}
+        style={containerStyle}
+    >
+        <svg
+        width={svgWidth}
+        height={svgHeight}
+
+        viewBox={svgViewBox}
+
+        className={combinedSvgContainerClassName}
+        style={svgContainerStyle}
     >
         {children}
-    </svg>;
+        </svg>
+    </div>;
 }
 
 InlineSVGIconFunction.displayName = 'InlineSVGIcon';
