@@ -159,6 +159,18 @@ module.exports = {
                 },
 
                 {
+                    name: 'Visual effects',
+                    content: path.join(__dirname, './docs/visual_effects/index.md'),
+                    components: path.join(__dirname, './../src/components/visual_effects/**/[A-Za-z_]*_visual_effect.js'),
+                },
+
+                {
+                    name: 'Window',
+                    content: path.join(__dirname, './docs/window/index.md'),
+                    components: path.join(__dirname, './../src/components/window/**/[A-Za-z_]*_component.js'),
+                },
+
+                {
                     name: 'Pre-made',
                     sections: [
                         {
@@ -167,12 +179,12 @@ module.exports = {
                         },
                     ]
                 },
-
-                {
-                    name: 'Demo',
-                    content: path.join(__dirname, './docs/demo/index.md'),
-                }
             ]
+        },
+
+        {
+            name: 'Demo',
+            content: path.join(__dirname, './docs/demo/index.md'),
         },
 
         {}
