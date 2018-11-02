@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
+const {RegularPanelComponent} = require('./regular_panel_component');
 
 // type definitions
 type StyleType = {
@@ -81,10 +82,8 @@ const styles = theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
-        borderTopLeftRadius: theme.layoutStyles.headerBorderRadius,
-        borderTopRightRadius: theme.layoutStyles.headerBorderRadius,
-
-        backgroundColor: theme.layoutStyles.headerBGColor,
+        borderBottomLeftRadius: '0px',
+        borderBottomRightRadius: '0px',
 
         '& > $titleContainer': {
             boxSizing: 'border-box',
@@ -92,8 +91,6 @@ const styles = theme => ({
             flexBasis: 'auto',
             flexGrow: 0,
             flexShrink: 1,
-
-            padding: '10px 0px 10px 10px',
 
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -150,7 +147,7 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
 
     // region style accessors
     _getComponentContainerStyle(): StyleType {
-        return Object.assign({}, this._getContainerStyle())
+        return Object.assign({}, this._getContainerStyle());
     }
 
     _getComponentClassName(): string {
@@ -200,13 +197,13 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     }
 
     _renderComponentContainer(): React.Node {
-        return <div
+        return <RegularPanelComponent
             style={this._getComponentContainerStyle()}
             className={this._getComponentClassName()}
         >
             {this._renderTitleContainer()}
             {this._renderIconContainer()}
-        </div>;
+        </RegularPanelComponent>;
     }
 
     render(): React.Node {
