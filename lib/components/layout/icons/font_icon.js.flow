@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
-import {MEDIUM_ICON_SIZE} from './../../../theming/constants/icon_constants';
+import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
 // type definitions
 export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
@@ -90,7 +90,7 @@ const styles = theme => ({
 // component implementation
 function FontIconFunction(props: PropsTypes) {
     let {size, style, iconClassName, className, classes} = props;
-    size = defaultTo(MEDIUM_ICON_SIZE)(size);
+    size = defaultTo(MEDIUM_SIZE)(size);
 
     const combinedClassName: string = classNames(
         classes.componentContainer,

@@ -12,7 +12,7 @@ import {defaultTo} from 'ramda';
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
 
-import {MEDIUM_ICON_SIZE} from './../../../theming/constants/icon_constants';
+import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
 // type definitions
 export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
@@ -76,7 +76,7 @@ const styles = theme => ({
 // component implementation
 function InlineImageIconFunction(props: PropsTypes) {
     const {src, className, classes, theme, style} = props;
-    const size: string = defaultTo(MEDIUM_ICON_SIZE)(props.size);
+    const size: string = defaultTo(MEDIUM_SIZE)(props.size);
 
     const height: number = theme.layoutStyles[`${size}IconSize`];
 

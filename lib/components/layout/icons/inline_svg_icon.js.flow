@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
-import {MEDIUM_ICON_SIZE} from './../../../theming/constants/icon_constants';
+import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
 // type definitions
 export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
@@ -131,7 +131,7 @@ const styles = theme => ({
 // component implementation
 function InlineSVGIconFunction(props: PropsTypes) {
     const {containerClassName, classes, containerStyle} = props;
-    const size: string = defaultTo(MEDIUM_ICON_SIZE)(props.size);
+    const size: string = defaultTo(MEDIUM_SIZE)(props.size);
 
     const combinedContainerClassName: string = classNames(
         classes.componentContainer,
