@@ -7,20 +7,30 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {is, isNil, equals, unless, always} from 'ramda';
+import {defaultTo, is, isNil, equals, unless, always} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components';
 
 // local imports
 import type {StateTypes as ThemeProps} from './../../theming/providers/main_theme_provider';
 
+import {SMALL_SIZE} from './../../theming/constants/general_constants';
+
+import {FontIcon} from './../layout/icons/font_icon';
 import {InlineTextBlock} from './../layout/text/inline_text_block';
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
-type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
-type StyleType = {[string]: mixed};
+export type ButtonIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
+export type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
+export type StyleType = {[string]: mixed};
 
 type PropsTypes = ThemeProps & {
+    /**
+     * Button size
+     */
+
+    size?: ButtonIconSizeType,
+
     /**
      * Flag that describes how the button will look like
      */
@@ -106,8 +116,6 @@ const styles = theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
-        minWidth: `${theme.buttonStyles.regularButtonMinimumWidth}px`,
-
         borderRadius: '2px',
 
         padding: `${verticalPadding}px ${horizontalPadding}px`,
@@ -116,6 +124,26 @@ const styles = theme => ({
         transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 
         cursor: 'pointer',
+
+        '&.tiny': {
+            minWidth: theme.buttonStyles.tinyRegularButtonMinimumWidth,
+        },
+
+        '&.small': {
+            minWidth: theme.buttonStyles.smallRegularButtonMinimumWidth,
+        },
+
+        '&.medium': {
+            minWidth: theme.buttonStyles.mediumRegularButtonMinimumWidth,
+        },
+
+        '&.large': {
+            minWidth: theme.buttonStyles.largeRegularButtonMinimumWidth,
+        },
+
+        '&.extraLarge': {
+            minWidth: theme.buttonStyles.extraLargeRegularButtonMinimumWidth,
+        },
 
         '&.text': {
             border: 'none',
@@ -192,7 +220,6 @@ const styles = theme => ({
             flexGrow: 0,
             flexShrink: 1,
 
-            fontSize: theme.buttonStyles.iconFontSize,
             color: theme.buttonStyles.fontColorDefault,
 
             '&.left': {
@@ -217,7 +244,6 @@ const styles = theme => ({
             flexGrow: 0,
             flexShrink: 1,
 
-            fontSize: theme.buttonStyles.captionFontSize,
 
             textTransform: 'uppercase',
             textAlign: 'center',
@@ -230,6 +256,26 @@ const styles = theme => ({
 
             '&.secondary': {
                 color: theme.buttonStyles.fontColorSecondary,
+            },
+
+            '&.tiny': {
+                fontSize: theme.buttonStyles.tinyCaptionFontSize,
+            },
+
+            '&.small': {
+                fontSize: theme.buttonStyles.smallCaptionFontSize,
+            },
+
+            '&.medium': {
+                fontSize: theme.buttonStyles.mediumCaptionFontSize,
+            },
+
+            '&.large': {
+                fontSize: theme.buttonStyles.largeCaptionFontSize,
+            },
+
+            '&.extraLarge': {
+                fontSize: theme.buttonStyles.extraLargeCaptionFontSize,
             },
         }
     },
@@ -299,15 +345,16 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
     _getComponentContainerClass(): string {
         const {classes: {componentContainer}, containerClassName} = this.props;
         const buttonVariant: string = this._getVariant();
+        const size: string = this._getSize();
 
-        return classNames(componentContainer, buttonVariant, containerClassName);
+        return classNames(componentContainer, size, buttonVariant, containerClassName);
     }
 
     _getCaptionContainerClass(): string {
         const {classes: {captionContainer}} = this.props;
         const textType: string = this._getTextType();
 
-        return classNames(captionContainer, textType);
+        return classNames(captionContainer, this._getSize(), textType);
     }
 
     // endregion
@@ -320,8 +367,7 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
 
     // region prop accessors
     _getDisabled(): boolean {
-        const {disabled = false} = this.props;
-        return disabled;
+        return defaultTo(false)(this.props.disabled);
     }
 
     _getVariant(): string {
@@ -342,13 +388,15 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _getLabel(): string {
-        const {label = ''} = this.props;
-        return label;
+        return defaultTo('')(this.props.label);
     }
 
     _getContainerStyles(): StyleType {
-        const {containerStyles = {}} = this.props;
-        return containerStyles;
+        return defaultTo({})(this.props.containerStyles);
+    }
+
+    _getSize(): ButtonIconSizeType {
+        return defaultTo(SMALL_SIZE)(this.props.size);
     }
 
     // endregion
@@ -374,7 +422,7 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _renderIconContainer(): React.Node {
-        return unless(isNil, className => <i className={className}/>)(this._getIconClassName());
+        return unless(isNil, className => <FontIcon size={this._getSize()} className={className}/>)(this._getIconClassName());
     }
 
     _renderComponentContainer(): React.Node {

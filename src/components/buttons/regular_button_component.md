@@ -256,3 +256,61 @@ const componentContainerStyles = {
 </div>
 
 ```
+
+Example of buttons of different sizes:
+
+```jsx
+
+const {RegularButtonComponent} = require('./regular_button_component');
+
+const buttonsStyle = {
+    boxSizing: 'border-box',
+    display: 'grid',
+   
+    gridTemplateAreas: `
+        "sButton1 sButton2 sButton3"
+        "mButton  mButton  mButton"
+        "lButton  lButton  lButton"
+    `,
+            
+    gridColumnGap: '20px', 
+    gridRowGap: '10px',
+                    
+    gridTemplateColumns: 'max-content  max-content  max-content',
+    gridTemplateRows: 'repeat(auto-fit, max-content)',
+    
+    justifyItems: 'start'
+};
+
+const sButtonStyle1 = {gridArea: 'sButton1'};
+const sButtonStyle2 = {gridArea: 'sButton2'};
+const sButtonStyle3 = {gridArea: 'sButton3'};
+
+const mButtonStyle = {gridArea: 'mButton'};
+const lButtonStyle = {gridArea: 'lButton'};
+
+<div style={buttonsStyle}>
+    <div style={sButtonStyle1}>
+        <RegularButtonComponent size='tiny' label='CONTAINED' iconClassName='fas fa-cookie' />
+    </div>
+    
+    <div style={sButtonStyle2}>
+        <RegularButtonComponent size='small' label='CONTAINED' iconClassName='fas fa-cookie' />
+    </div>    
+    
+    <div style={sButtonStyle3}>
+        <RegularButtonComponent size='medium' label='CONTAINED' iconClassName='fas fa-cookie' />
+    </div>        
+
+    <div style={mButtonStyle}>
+        <RegularButtonComponent size='large' label='CONTAINED' iconClassName='fas fa-cookie' />
+    </div>         
+        
+    <div style={lButtonStyle}>
+       <RegularButtonComponent size='extraLarge' label='CONTAINED' iconClassName='fas fa-cookie' /> 
+    </div>               
+            
+</div>
+
+
+```

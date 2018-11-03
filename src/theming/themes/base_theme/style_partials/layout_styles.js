@@ -23,11 +23,11 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         inlineHeaderLevel5FontSize: baseStyles.inlineHeaderLevel5FontSize,
         inlineHeaderLevel6FontSize: baseStyles.inlineHeaderLevel6FontSize,
 
-        tinyIconSize: 10, // px
-        smallIconSize: 15, // px
-        mediumIconSize: 30, // px
-        largeIconSize: 60, // px
-        extraLargeIconSize: 120, // px
+        tinyIconSize: 12, // px
+        smallIconSize: 17, // px
+        mediumIconSize: 34, // px
+        largeIconSize: 68, // px
+        extraLargeIconSize: 136, // px
 
         headerFontSize: baseStyles.inlineHeaderLevel6FontSize,
         bodyFontSize: baseStyles.secondaryFontSize,
