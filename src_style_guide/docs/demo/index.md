@@ -673,7 +673,12 @@ class TestComponent1 extends Component {
         return <div style={{width: '300px', height: '500px', backgroundColor: 'yellow', position: 'relative', overflow: 'hidden'}}>
             Test 1
             <BottomTopSlideVisualEffect show={showSlider} duration='0.7s'>
-                Test2
+                Test2<br/>
+                Test2<br/>
+                Test2<br/>
+                Test2<br/>
+                Test2<br/>
+                Test2<br/>                                
             </BottomTopSlideVisualEffect>
         </div>
     }

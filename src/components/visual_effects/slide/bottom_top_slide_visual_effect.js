@@ -7,27 +7,26 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import classNames from 'classnames';
-import {defaultTo} from 'ramda';
+import {isNil, defaultTo} from 'ramda';
 
 // local imports
+
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
 
 // type definitions
 type CSSStylesType = {
     [string]: mixed
 };
 
+type DirectionType = 'leftToRight' | 'RightToLeft' | 'TopToBottom' | 'BottomToTop';
+
 type PropsTypes = {
-    /**
-     * React style object for in deep control of how component is represented
-     */
-
-    style?: CSSStylesType,
 
     /**
-     * Name of the class which will be applied to component along with default one
+     * Direction of sliding
      */
 
-    className?: string,
+    direction: DirectionType,
 
     /**
      * Flag indicates whether sliding part should be shown (begin sliding effect)
@@ -40,6 +39,18 @@ type PropsTypes = {
      */
 
     duration?: string,
+
+    /**
+     * React style object for in deep control of how component is represented
+     */
+
+    style?: CSSStylesType,
+
+    /**
+     * Name of the class which will be applied to component along with default one
+     */
+
+    className?: string,
 
     /**
      * JSS inner classes
@@ -56,15 +67,12 @@ type PropsTypes = {
     children?: React.ChildrenArray<any>,
 }
 
+type StateTypes = {};
+
 // styles definition
 const styles = theme => ({
     componentContainer: {
         position: 'absolute',
-
-        left: '0px',
-
-        width: '100%',
-        height: '100%',
 
         backgroundColor: theme.baseStyles.mainSecondaryColor,
 
@@ -86,25 +94,144 @@ const styles = theme => ({
  */
 
 // component implementation
-function BottomTopSlideVisualEffectFunction(props: PropsTypes) {
-    let {show, duration, style, className, classes, children} = props;
-    const {componentContainer} = classes;
 
-    show = defaultTo(false)(show);
-    duration = defaultTo('2s')(duration);
+// $FlowFixMe decorators
+@injectSheet(styles)
+export class BottomTopSlideVisualEffectClass extends React.Component<PropsTypes, StateTypes> {
+    // region static props
+    static displayName = 'BottomTopSlideVisualEffect';
 
-    const composedClassName: string = classNames(componentContainer, className);
+    static defaultProps = {
+        direction: 'leftToRight',
+        show: false,
+        duration: '0.7s',
 
-    const topStyle: CSSStylesType = show ? {top: '0%'} : {top: '100%'};
-    const transitionStyle: CSSStylesType = {transitionDuration: duration};
-    const composedStyle: CSSStylesType = Object.assign({}, topStyle, transitionStyle, style);
+        style: {},
+    };
 
-    return <div className={composedClassName} style={composedStyle}>
-        {children}
-    </div>;
+    // endregion
+
+    // region private props
+    $componentContainer: any;
+
+    // endregion
+
+    // region constructor
+    constructor(props: PropsTypes) {
+        super(props);
+
+        this.$componentContainer = React.createRef();
+    }
+
+    // endregion
+
+    // region business logic
+    // endregion
+
+    // region lifecycle methods
+    // endregion
+
+    // region style accessors
+    _getComponentContainerStyle(): CSSStylesType {
+        const shouldShow: boolean = this._shouldShow();
+        const transitionStyle: CSSStylesType = {transitionDuration: duration};
+
+        switch(this._getDirection()) {
+            case 'BottomToTop': {
+                const componentHeight: number = this._getComponentContainerHeight();
+
+                const componentStyle: CSSStylesType = {
+                    top:  shouldShow ? `calc(100% - ${componentHeight}px)` : '100%',
+                    left: '0px',
+
+                    width: '100%',
+                    height: 'auto'
+                };
+
+
+
+                return Object.assign({}, componentStyle, style);
+            }
+        }
+    }
+
+    _getComponentContainerClassName(): string {
+        return classNames(this.props.classes.componentContainer, this.props.className);
+    }
+
+    // endregion
+
+    // region label accessors
+    // endregion
+
+    // region state accessors
+    // endregion
+
+    // region prop accessors
+    _shouldShow(): boolean {
+        return defaultTo(BottomTopSlideVisualEffectClass.defaultProps.show)(this.props.show);
+    }
+
+    _getDirection(): DirectionType {
+        return defaultTo(BottomTopSlideVisualEffectClass.defaultProps.direction)(this.props.direction);
+    }
+
+    _getComponentContainerHeight(): number {
+        if (isNil(this.$componentContainer) || isNil(this.$componentContainer.current)) {
+            return 0;
+        }
+
+        return this.$componentContainer.current.clientHeight;
+    }
+
+    _getComponentContainerWidth(): number {
+        if (isNil(this.$componentContainer) || isNil(this.$componentContainer.current)) {
+            return 0;
+        }
+
+        return this.$componentContainer.current.clientWidth;
+    }
+
+    // endregion
+
+    // region handlers
+    // endregion
+
+    // region render methods
+    _renderComponentContainer(): React.Node {
+        let {show, duration, style, children} = this.props;
+
+        show = defaultTo(false)(show);
+        duration = defaultTo('2s')(duration);
+
+        const componentHeight: number = this._getComponentContainerHeight();
+
+        const topStyle: CSSStylesType = show ? {top: `calc(100% - ${componentHeight}px)`} : {top: '100%'};
+        const transitionStyle: CSSStylesType = {transitionDuration: duration};
+        const composedStyle: CSSStylesType = Object.assign({}, topStyle, transitionStyle, style);
+
+        return <div
+            ref={this.$componentContainer}
+            className={this._getComponentContainerClassName()}
+            style={composedStyle}
+        >
+            {children}
+        </div>;
+    }
+
+    render(): React.Node {
+        return this._renderComponentContainer();
+    }
+    // endregion
 }
 
-BottomTopSlideVisualEffectFunction.displayName = 'BottomTopSlideVisualEffect';
-
 // exports
-export const BottomTopSlideVisualEffect = injectSheet(styles)(BottomTopSlideVisualEffectFunction);
+export function BottomTopSlideVisualEffect(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <BottomTopSlideVisualEffectClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+BottomTopSlideVisualEffect.displayName = 'BottomTopSlideVisualEffect';
