@@ -742,5 +742,58 @@ const TestContainer = injectSheet(styles)(TestContainerComponent);
 
 <TestContainer/>
 
+```
+
+tt
+
+```jsx
+
+const {Component} = require('react');
+
+const {
+    BottomTopSlideVisualEffect
+} = require('./../../../src/components/visual_effects');
+
+
+class TestComponent1 extends Component {
+    constructor(props) {
+        super(props);
+        
+        this._intervalId = null;
+        
+        this.state = {
+            showSlider: false
+        }
+    }
+    
+    componentDidMount() {
+        this._intervalId  = setInterval(() => this.setState({
+            showSlider: !this.state.showSlider
+        }), 3000);
+    }
+    
+    componentWillUnmount() {
+        clearInterval(this._intervalId );
+    }
+
+    render() {
+        const {showSlider} = this.state;
+    
+        return <div style={{width: '300px', height: '500px', backgroundColor: 'yellow', position: 'relative', overflow: 'hidden'}}>
+            Test 1
+            <BottomTopSlideVisualEffect show={showSlider} duration='0.7s'>
+                Test2<br/>
+                Test2<br/>
+                Test2<br/>
+                Test2<br/>
+                Test2<br/>
+                Test2<br/>                                
+            </BottomTopSlideVisualEffect>
+        </div>
+    }
+}
+
+<TestComponent1/>
+
 
 ```
