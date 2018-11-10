@@ -482,157 +482,265 @@ tt
 
 ```jsx
 
+const injectSheet = require('react-jss').default;
+
 const {
     RegularCardComponent, 
-    RegularCardHeaderComponent, 
+    RegularPanelComponent, 
     DialogBoxActionsContainer,
     
     InlineHeader,
     InlineTextBlock,
+    
+    InlineImageIcon,
     InlineSVGIcon,
 } = require('./../../../src/components/layout');
 
 const {RegularButtonComponent} = require('./../../../src/components/buttons');
 const {TypewriterVisualEffect} = require('./../../../src/components/visual_effects');
 
-
-const componentContainerStyles = {
-    boxSizing: 'border-box',
-    display: 'grid',
+const styles = theme => ({
+    componentContainer: {
+        boxSizing: 'border-box',
+        display: 'grid',
+        
+        height: '943px',
    
-    gridTemplateAreas: `
-        "title    title"
-        "header   header"
-        "employee employer"
-    `,
+        gridTemplateAreas: `
+            "title       title    title    title       "
+            "header      header   header   header      "
+            "paddingLeft employee employer paddingRight"
+        `,
             
-    gridColumnGap: '25px', 
-    gridRowGap: '15px',
+        gridColumnGap: '25px', 
+        gridRowGap: '15px',
                     
-    gridTemplateColumns: '1fr 1fr',
-    gridTemplateRows: 'repeat(auto-fit, max-content)',
-};
-
-const titleStyle = {
-    boxSizing: 'border-box', 
-                                        
-    gridArea: 'title', 
-};
-
-const animationId = 'b';
-
-const headerStyle = {
-    boxSizing: 'border-box', 
-                                        
-    gridArea: 'header',               
-};
-
-const employeeStyle = {
-    boxSizing: 'border-box', 
-                                        
-    gridArea: 'employee', 
-};
-
-
-const employerStyle = {
-    boxSizing: 'border-box', 
-                                        
-    gridArea: 'employer', 
-};
-
-const selectionCardBodyStyle = {
-    boxSizing: 'border-box',
+        gridTemplateColumns: '1fr minMax(200px, 400px) minMax(200px, 400px) 1fr',
+        gridTemplateRows: 'max-content 250px 1fr',
+        
+        '& > $titleContainer': {
+            boxSizing: 'border-box',                                       
+            gridArea: 'title', 
+            
+            display: 'flex',
+            
+            flexDirection: 'row',
+            flexWrap: 'nowrap',
+            
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            alignContent: 'flex-start',
+            
+            '& > $logoContainer': {
+                boxSizing: 'border-box', 
+            
+                flexBasis: 'auto',
+                flexGrow: 0,
+                flexShrink: 1,
+            },
+            
+            '& > $titleCaptionContainer': {
+                boxSizing: 'border-box', 
+            
+                flexBasis: 'auto',
+                flexGrow: 0,
+                flexShrink: 1,
+                
+                marginLeft: '10px',
+            
+                color: 'inherit',
+                
+                '& > $titleAccentContainer': {
+                    color: theme.baseStyles.accentColorPrimary,
+                }
+            }
+        },
+        
+        '& > $headerContainer': {
+            boxSizing: 'border-box',                                                
+            gridArea: 'header',   
+            
+            justifySelf: 'center',
+            alignSelf: 'center',
+        },
+        
+        '& > $paddingLeftContainer': {
+            boxSizing: 'border-box',   
+                                                  
+            gridArea: 'paddingLeft',
+        },
+        
+        '& > $paddingRightContainer': {
+            boxSizing: 'border-box',   
+                                                  
+            gridArea: 'paddingRight',
+        },       
+        
+        '& > $employeeContainer': {
+            boxSizing: 'border-box',   
+                                          
+            gridArea: 'employee',
+            alignSelf: 'start',
+        },
+        
+        '& > $employerContainer': {
+            boxSizing: 'border-box',   
+                                            
+            gridArea: 'employer', 
+            alignSelf: 'start',
+        },
+        
+        '& $employmentCardContainer': {
+        },
+        
+        '& $employmentCardBodyContainer': {
+            boxSizing: 'border-box',
+                
+            display: 'flex',
+                
+            flexBasis: 'auto',
+            flexShrink: '1',
+            flexGrow: '0',
+                
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+                
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            alignContent: 'flex-start',
+            
+            padding: '20px 20px 22px 22px',
+            
+            '& > $employmentCardHeaderContainer': {
+                marginTop: '40px',
+                color: theme.baseStyles.mainSecondaryColor,
+            }
+        }
+    },
     
-    display: 'flex',
+    titleContainer: {},
+    logoContainer: {},
+    titleCaptionContainer: {},
+    titleAccentContainer: {},
     
-    flexBasis: 'auto',
-    flexShrink: '1',
-    flexGrow: '0',
+    headerContainer: {},
+    paddingLeftContainer: {},
+    paddingRightContainer: {},
     
-    flexDirection: 'column',
-    flexWrap: 'nowrap',
+    employeeContainer: {},
+    employerContainer: {},
     
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    alignContent: 'flex-start',
-};
+    employmentCardContainer: {},
+    employmentCardBodyContainer: {}, 
+    employmentCardHeaderContainer: {},
+});
 
-const selectionIconStyle = {
-    boxSizing: 'border-box',
-    width: '150px',
+function TestContainerComponent(props) {
+    const {classes} = props;
+    const {
+        componentContainer, 
+        
+        logoContainer,
+        titleContainer,
+        titleCaptionContainer,
+        titleAccentContainer,
+        
+        headerContainer,
+        
+        paddingLeftContainer,
+        paddingRightContainer,
+        
+        employeeContainer,
+        employerContainer,
+        employmentCardContainer,
+        employmentCardBodyContainer,
+        employmentCardHeaderContainer
+    } = classes;
     
-    flexBasis: 'auto',
-    flexGrow: 0,
-    flexShrink: 1,
-};
+    const typewriterTexts = [
+        'Looking for a good Job?',
+        'Looking for best employees?',
+        'Looking for awesome vacancy?',
+        'Looking for skillful workers?',
+        'Looking for an amazing project?',      
+    ];
 
-<div style={componentContainerStyles}>
-    <RegularCardHeaderComponent containerStyle={titleStyle}>
-        <InlineHeader style={{color: 'inherit'}} level={5}>JobDealer</InlineHeader>
-    </RegularCardHeaderComponent>
-    
-    <div style={headerStyle}>
-        <TypewriterVisualEffect texts='Looking for a Job?'/>
-    </div>
-    
-    <div style={employeeStyle}>
-
-    <RegularCardComponent bodyStyles={selectionCardBodyStyle}>
-
-                <InlineSVGIcon viewBox="0 0 60 60" style={selectionIconStyle}>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-992.36216)">
-    <path d="m 40,1037.3622 0,-5 c 0,-4.1289 -6.52625,-6.25 -10,-6.25 -3.47375,0 -10,2.1211 -10,6.25 l 0,5" />
-    <path d="m 30,1022.3622 c 2.91375,0 5,-2.0412 5,-5 l 0,-2.5 c 0,-2.9587 -2.08625,-5 -5,-5 -2.91375,0 -5,2.0413 -5,5 l 0,2.5 c 0,2.9588 2.08625,5 5,5 z" />
-    <path d="m 52.5,1022.3622 c 0,12.4263 -10.07375,22.5 -22.5,22.5 -12.42625,0 -22.5,-10.0737 -22.5,-22.5 0,-12.4262 10.07375,-22.5 22.5,-22.5 12.42625,0 22.5,10.0738 22.5,22.5 z" />
-    <path d="m 0,1022.3622 12.5,0" />
-    <path d="m 47.5,1022.3622 12.5,0" />
-    <path d="m 30,992.3622 0,12.5" />
-    <path d="m 30,1039.8622 0,12.5" />
-  </g>
+    return <div className={componentContainer}>
+        <RegularPanelComponent className={titleContainer}>    
+            <InlineImageIcon size='large' src='/assets/images/logos/logo9.svg' className={logoContainer} />
+            <InlineHeader level={2} className={titleCaptionContainer}>
+                Job<span className={titleAccentContainer}>Dealer</span>
+            </InlineHeader>
+        </RegularPanelComponent>
+        
+        <div className={headerContainer}>
+            <TypewriterVisualEffect 
+                text={typewriterTexts} 
+                loopCount={Infinity} 
+                level={3}
+            />
+        </div>
+        
+        <div className={paddingLeftContainer}></div>
+        
+        <div className={employeeContainer}>
+            <RegularCardComponent 
+                popOnHover={true}
+                maxPopLevel={3}
+            
+                containerClassName={employmentCardContainer} 
+                bodyClassName={employmentCardBodyContainer}
+            >
+                <InlineSVGIcon svgViewBox="0 0 60 60" size='extraLarge'>
+                    <g transform="translate(0,-992.36216)">
+                        <path d="m 40,1037.3622 0,-5 c 0,-4.1289 -6.52625,-6.25 -10,-6.25 -3.47375,0 -10,2.1211 -10,6.25 l 0,5" />
+                        <path d="m 30,1022.3622 c 2.91375,0 5,-2.0412 5,-5 l 0,-2.5 c 0,-2.9587 -2.08625,-5 -5,-5 -2.91375,0 -5,2.0413 -5,5 l 0,2.5 c 0,2.9588 2.08625,5 5,5 z" />
+                        <path d="m 52.5,1022.3622 c 0,12.4263 -10.07375,22.5 -22.5,22.5 -12.42625,0 -22.5,-10.0737 -22.5,-22.5 0,-12.4262 10.07375,-22.5 22.5,-22.5 12.42625,0 22.5,10.0738 22.5,22.5 z" />
+                        <path d="m 0,1022.3622 12.5,0" />
+                        <path d="m 47.5,1022.3622 12.5,0" />
+                        <path d="m 30,992.3622 0,12.5" />
+                        <path d="m 30,1039.8622 0,12.5" />
+                    </g>
+                </InlineSVGIcon>     
+                
+                <InlineHeader className={employmentCardHeaderContainer} level={4}>Employers</InlineHeader>  
+            </RegularCardComponent>       
+        </div>
+        
+        <div className={employerContainer}>
+            <RegularCardComponent 
+                popOnHover={true}
+                maxPopLevel={3}
+            
+                containerClassName={employmentCardContainer} 
+                bodyClassName={employmentCardBodyContainer}
+            >
+                <InlineSVGIcon svgViewBox="0 0 59 58" size='extraLarge'>
+                    <g transform="translate(0,-993.61216)">
+                        <path d="m 51.232447,1003.6122 7.5,0 0,-3.75 c 0,-2.76125 -2.23875,-5 -5,-5" />
+                        <path d="m 48.732447,999.8622 c 0,-2.76125 2.23875,-5 5,-5 l -42.5,0 c -2.7612501,0 -5.0000001,2.23875 -5.0000001,5 l 0,46.25 c 0,2.7613 -2.23875,5 -5,5 l 42.5000001,0 c 2.76125,0 5,-2.2387 5,-5 l 0,-46.25 z" />
+                        <path d="m 31.232447,1012.3622 8.75,0" />
+                        <path d="m 31.232447,1006.1122 8.75,0" />
+                        <path d="m 13.732447,1022.3622 26.25,0" />
+                        <path d="m 13.732447,1028.6122 26.25,0" />
+                        <path d="m 13.732447,1034.8622 17.5,0" />
+                        <path d="m 27.482447,1017.3622 0,-2.5 c 0,-1.63 -3.44,-3.75 -6.25,-3.75 -2.81,0 -6.25,2.12 -6.25,3.75 l 0,2.5" />
+                        <path d="m 21.232447,1002.3622 c -1.93875,0 -3.75,1.4113 -3.75,3.15 l 0,2.4488 c 0,1.74 1.81125,3.1512 3.75,3.1512 1.93875,0 3.75,-1.4112 3.75,-3.1512 l 0,-2.4488 c 0,-1.7387 -1.81125,-3.15 -3.75,-3.15 z" />
+                    </g>
                 </InlineSVGIcon>
                 
-                <InlineHeader>Browse candidates</InlineHeader>
-                
-                
-                <RegularButtonComponent label='login'/>
-                <InlineTextBlock>Or</InlineTextBlock>
-                <RegularButtonComponent label='register'/>
+                <InlineHeader className={employmentCardHeaderContainer} level={4}>Candidates</InlineHeader>
+            </RegularCardComponent>
+        </div>  
         
-    </RegularCardComponent>
-    </div>
-    
-    <div style={employerStyle}>
-    <RegularCardComponent bodyStyles={selectionCardBodyStyle}>
-        <InlineSVGIcon viewBox="0 0 59 58" width='50px' style={selectionIconStyle}>
-              <g
-                 inkscape:label="Layer 1"
-                 inkscape:groupmode="layer"
-                 id="layer1"
-                 transform="translate(0,-993.61216)">
-                <path d="m 51.232447,1003.6122 7.5,0 0,-3.75 c 0,-2.76125 -2.23875,-5 -5,-5" />
-                <path d="m 48.732447,999.8622 c 0,-2.76125 2.23875,-5 5,-5 l -42.5,0 c -2.7612501,0 -5.0000001,2.23875 -5.0000001,5 l 0,46.25 c 0,2.7613 -2.23875,5 -5,5 l 42.5000001,0 c 2.76125,0 5,-2.2387 5,-5 l 0,-46.25 z" />
-                <path d="m 31.232447,1012.3622 8.75,0" />
-                <path d="m 31.232447,1006.1122 8.75,0" />
-                <path d="m 13.732447,1022.3622 26.25,0" />
-                <path d="m 13.732447,1028.6122 26.25,0" />
-                <path d="m 13.732447,1034.8622 17.5,0" />
-                <path d="m 27.482447,1017.3622 0,-2.5 c 0,-1.63 -3.44,-3.75 -6.25,-3.75 -2.81,0 -6.25,2.12 -6.25,3.75 l 0,2.5" />
-                <path d="m 21.232447,1002.3622 c -1.93875,0 -3.75,1.4113 -3.75,3.15 l 0,2.4488 c 0,1.74 1.81125,3.1512 3.75,3.1512 1.93875,0 3.75,-1.4112 3.75,-3.1512 l 0,-2.4488 c 0,-1.7387 -1.81125,-3.15 -3.75,-3.15 z" />
-              </g>
-        </InlineSVGIcon>
-        
-        <InlineHeader>Browse vacancies</InlineHeader>
-        
+        <div className={paddingRightContainer}></div>  
+     
+    </div>;
+}
 
+const TestContainer = injectSheet(styles)(TestContainerComponent);
 
-    </RegularCardComponent>
-    </div>
-</div>
-
+<TestContainer/>
 
 
 ```
