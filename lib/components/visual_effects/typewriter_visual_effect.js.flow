@@ -316,8 +316,7 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
             return null;
         }
 
-        const textLength: number = length(text);
-        const borderColor: string = this.props.theme.baseStyles.accentColorPrimary;
+        const textLength: number = text.length;
 
         return {
             width: this.state.animationStage === ANIMATION_STAGE_FORWARD_NAME ?

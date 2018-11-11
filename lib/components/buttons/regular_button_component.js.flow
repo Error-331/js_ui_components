@@ -80,7 +80,7 @@ type PropsTypes = ThemeProps & {
     iconClassName?: string,
 
     /**
-     * Callback function which will be called once user clicks on it
+     * Callback function which will be called once user clicks on a button
      */
 
     onClick?: ?ClickCallbackType,
@@ -405,7 +405,7 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
     _onClick(event: SyntheticEvent<HTMLButtonElement>): void {
         const {onClick}: {onClick?: ?ClickCallbackType} = this.props;
 
-        if (isNil(onClick) && is(Function, onClick)) {
+        if (isNil(onClick) && !is(Function, onClick)) {
             return;
         }
 

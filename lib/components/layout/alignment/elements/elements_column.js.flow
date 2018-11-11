@@ -73,11 +73,11 @@ const styles = theme => ({
             marginTop: `${theme.layoutStyles.verticalSpacing}px`,
         },
 
-        '&.left > div:irst-child': {
+        '&.left > div:first-child': {
             marginTop: '0px',
         },
 
-        '&.left > div:first-child': {
+        '&.left > button:first-child': {
             marginTop: '0px',
         },
 
@@ -113,11 +113,11 @@ const styles = theme => ({
             marginTop: `${theme.layoutStyles.verticalSpacing}px`,
         },
 
-        '&.center > div:irst-child': {
+        '&.center > div:first-child': {
             marginTop: '0px',
         },
 
-        '&.center > button:irst-child': {
+        '&.center > button:first-child': {
             marginTop: '0px',
         },
     }

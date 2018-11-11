@@ -10,6 +10,8 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
+import type {ThemeType} from './../../../types/theme_types';
+
 import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
 // type definitions
@@ -71,6 +73,14 @@ type PropsTypes = {
     children?: React.Node,
 
     /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -83,23 +93,43 @@ type PropsTypes = {
 const styles = theme => ({
     componentContainer: {
         '&.tiny': {
-            width: `${theme.layoutStyles.tinyIconSize}px`,
+            minHeight: `${theme.layoutStyles.tinyIconSize}px`,
+
+            '& > $svgContainer': {
+                height: `${theme.layoutStyles.tinyIconSize}px`,
+            }
         },
 
         '&.small': {
-            width: `${theme.layoutStyles.smallIconSize}px`,
+            minHeight: `${theme.layoutStyles.smallIconSize}px`,
+
+            '& > $svgContainer': {
+                height: `${theme.layoutStyles.smallIconSize}px`,
+            }
         },
 
         '&.medium': {
-            width: `${theme.layoutStyles.mediumIconSize}px`,
+            minHeight: `${theme.layoutStyles.mediumIconSize}px`,
+
+            '& > $svgContainer': {
+                height: `${theme.layoutStyles.mediumIconSize}px`,
+            }
         },
 
         '&.large': {
-            width: `${theme.layoutStyles.largeIconSize}px`,
+            minHeight: `${theme.layoutStyles.largeIconSize}px`,
+
+            '& > $svgContainer': {
+                height: `${theme.layoutStyles.largeIconSize}px`,
+            }
         },
 
         '&.extraLarge': {
-            width: `${theme.layoutStyles.extraLargeIconSize}px`,
+            minHeight: `${theme.layoutStyles.extraLargeIconSize}px`,
+
+            '& > $svgContainer': {
+                height: `${theme.layoutStyles.extraLargeIconSize}px`,
+            }
         },
 
         '& > $svgContainer': {

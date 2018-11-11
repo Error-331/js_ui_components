@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {always, complement, gt, lt, isEmpty, ifElse, unless} from 'ramda';
+import {always, complement, gt, lt, is, isNil, isEmpty, ifElse, unless} from 'ramda';
 
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
@@ -16,6 +16,10 @@ import type {ThemeType} from './../../../types/theme_types';
 type StyleType = {
     [string]: mixed
 };
+
+export type MouseOverCallbackType = (event: SyntheticMouseEvent<HTMLDivElement>) => void;
+export type MouseLeaveCallbackType = (event: SyntheticMouseEvent<HTMLDivElement>) => void;
+
 
 type PropsTypes = {
     /**
@@ -73,6 +77,18 @@ type PropsTypes = {
      */
 
     children?: React.Node,
+
+    /**
+     * Callback function which will be called once user hovers over components container (header and body)
+     */
+
+    onMouseOverContainer?: MouseOverCallbackType,
+
+    /**
+     * Callback function which will be called once user mouse pointer leaves components container (header and body)
+     */
+
+    onMouseLeaveContainer?: MouseLeaveCallbackType,
 
     /**
      * JSS theme object
@@ -219,6 +235,15 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region constructor
+    constructor(props: PropsTypes) {
+        super(props);
+
+        const self: any = this;
+
+        self._onMouseOverContainer = self._onMouseOverContainer.bind(this);
+        self._onMouseLeaveContainer = self._onMouseLeaveContainer.bind(this);
+    }
+
     // endregion
 
     // region business logic
@@ -289,6 +314,26 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region handlers
+    _onMouseLeaveContainer(event: SyntheticEvent<HTMLDivElement>): void {
+        const {onMouseLeaveContainer}: {onMouseLeaveContainer?: MouseLeaveCallbackType} = this.props;
+
+        if (isNil(onMouseLeaveContainer) && !is(Function, onMouseLeaveContainer)) {
+            return;
+        }
+
+        onMouseLeaveContainer(event);
+    }
+
+    _onMouseOverContainer(event: SyntheticEvent<HTMLDivElement>): void {
+        const {onMouseOverContainer}: {onMouseOverContainer?: MouseOverCallbackType} = this.props;
+
+        if (isNil(onMouseOverContainer) && !is(Function, onMouseOverContainer)) {
+            return;
+        }
+
+        onMouseOverContainer(event);
+    }
+
     // endregion
 
     // region render methods
@@ -317,6 +362,9 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
             <div
                 className={this._getOuterContainerClasses()}
                 style={this._getOuterContainerStyles()}
+
+                onMouseOver={this._onMouseOverContainer}
+                onMouseLeave={this._onMouseLeaveContainer}
             >
                 {this._renderHeader()}
                 {this._renderBody()}
