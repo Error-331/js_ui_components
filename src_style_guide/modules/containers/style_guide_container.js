@@ -12,7 +12,8 @@ import {
     purpleIndigoTheme,
     blueGreyRed,
     greenAmber,
-    brownLime
+    brownLime,
+    cyanGreenTheme
 } from './../../../src';
 
 import StyleGuideThemeValueSelector from './../selectors/style_guide_theme_value_selector';
@@ -38,6 +39,8 @@ class StyleGuideContainer extends Component {
                 return greenAmber;
             case 'brownLime':
                 return brownLime;
+            case 'cyanGreen':
+                return cyanGreenTheme;
         }
     }
 

@@ -111,7 +111,8 @@ class ComponentsWrapper extends Component {
                                                 'Purple indigo': 'purpleIndigo',
                                                 'Blue grey red': 'blueGreyRed',
                                                 'Green amber': 'greenAmber',
-                                                'Brown lime': 'brownLime'
+                                                'Brown lime': 'brownLime',
+                                                'Cyan green': 'cyanGreen',
                                             }}/>
                                         </SimpleFlexGridColumn>
                                     </SimpleFlexGridRow>

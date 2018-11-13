@@ -488,12 +488,10 @@ const injectSheet = require('react-jss').default;
 const {
     RegularCardComponent,
     RegularPanelComponent,
-    DialogBoxActionsContainer,
 
     ElementsColumn,
 
     InlineHeader,
-    InlineTextBlock,
 
     InlineImageIcon,
     InlineSVGIcon,
@@ -662,7 +660,7 @@ class TestContainerComponent extends Component {
         this.state = {
             showEmployerControls: false,
             showEmployeeControls: false,
-        }
+        };
     }
 
     _onEmployeeCardMouseLeave() {
