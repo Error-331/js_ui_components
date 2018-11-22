@@ -178,6 +178,7 @@ const styles = theme => ({
         '& > $componentBody': {
             boxSizing: 'border-box',
             display: 'flex',
+            position: 'relative',
 
             flexBasis: 'auto',
             flexGrow: 0,
