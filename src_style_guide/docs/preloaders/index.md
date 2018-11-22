@@ -1,0 +1,1 @@
+Section describes UI components used for displaying different preloader components.

@@ -29,7 +29,7 @@ type PropsTypes = {
     style?: {[string]: mixed},
 
     /**
-     * Icon class name (example)
+     * Icon class name (example 'fas fa-coffee')
      */
 
     iconClassName: string,

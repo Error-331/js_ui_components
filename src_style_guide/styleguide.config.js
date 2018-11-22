@@ -165,6 +165,12 @@ module.exports = {
                 },
 
                 {
+                    name: 'Preloaders',
+                    content: path.join(__dirname, './docs/preloaders/index.md'),
+                    components: path.join(__dirname, './../src/components/preloaders/**/[A-Za-z_]*_preloader.js'),
+                },
+
+                {
                     name: 'Window',
                     content: path.join(__dirname, './docs/window/index.md'),
                     components: path.join(__dirname, './../src/components/window/**/[A-Za-z_]*_component.js'),

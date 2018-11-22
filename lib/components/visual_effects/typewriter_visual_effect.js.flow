@@ -130,14 +130,14 @@ const styles = theme => ({
     textContainer: {},
 });
 
-// constants definition
-export const ANIMATION_STEP_RATIO: number = 0.0875;
-export const TYPING_FORWARD_KEYFRAMES_STYLE_NAME: string = 'typewriter_visual_effect_typing_forward_keyframes';
-export const TYPING_BACKWARD_KEYFRAMES_STYLE_NAME: string = 'typewriter_visual_effect_typing_backward_keyframes';
-export const CARET_BLINK_KEYFRAMES_STYLE_NAME: string = 'typewriter_visual_effect_caret_bling_keyframes';
+// constants definition TYPEWRITER_VISUAL_EFFECT_
+export const TYPEWRITER_VISUAL_EFFECT_ANIMATION_STEP_RATIO: number = 0.0875;
+export const TYPEWRITER_VISUAL_EFFECT_TYPING_FORWARD_KEYFRAMES_STYLE_NAME: string = 'typewriter_visual_effect_typing_forward_keyframes';
+export const TYPEWRITER_VISUAL_EFFECT_TYPING_BACKWARD_KEYFRAMES_STYLE_NAME: string = 'typewriter_visual_effect_typing_backward_keyframes';
+export const TYPEWRITER_VISUAL_EFFECT_CARET_BLINK_KEYFRAMES_STYLE_NAME: string = 'typewriter_visual_effect_caret_bling_keyframes';
 
-export const ANIMATION_STAGE_FORWARD_NAME: AnimationStageType = 'forward';
-export const ANIMATION_STATE_BACKWARD_NAME: AnimationStageType = 'backward';
+export const TYPEWRITER_VISUAL_EFFECT_ANIMATION_STAGE_FORWARD_NAME: AnimationStageType = 'forward';
+export const TYPEWRITER_VISUAL_EFFECT_ANIMATION_STATE_BACKWARD_NAME: AnimationStageType = 'backward';
 
 /**
  * Typewriter visual effect.
@@ -169,7 +169,7 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
     static defaultState = {
         currentTextIndex: 0,
         currentLoopIndex: 0,
-        animationStage: ANIMATION_STAGE_FORWARD_NAME,
+        animationStage: TYPEWRITER_VISUAL_EFFECT_ANIMATION_STAGE_FORWARD_NAME,
     };
 
     // endregion
@@ -233,7 +233,7 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
         }
 
         this.props.theme.styleSheetRegister.addGlobalStyles({
-            [`@keyframes ${TYPING_FORWARD_KEYFRAMES_STYLE_NAME}`]: {
+            [`@keyframes ${TYPEWRITER_VISUAL_EFFECT_TYPING_FORWARD_KEYFRAMES_STYLE_NAME}`]: {
                 'from': {
                     width: '0%'
                 },
@@ -241,10 +241,10 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
                     width: '100%'
                 }
             }
-        }, `@keyframes ${TYPING_FORWARD_KEYFRAMES_STYLE_NAME}`);
+        }, `@keyframes ${TYPEWRITER_VISUAL_EFFECT_TYPING_FORWARD_KEYFRAMES_STYLE_NAME}`);
 
         this.props.theme.styleSheetRegister.addGlobalStyles({
-            [`@keyframes ${TYPING_BACKWARD_KEYFRAMES_STYLE_NAME}`]: {
+            [`@keyframes ${TYPEWRITER_VISUAL_EFFECT_TYPING_BACKWARD_KEYFRAMES_STYLE_NAME}`]: {
                 'from': {
                     width: '100%'
                 },
@@ -252,12 +252,12 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
                     width: '0%'
                 }
             }
-        }, `@keyframes ${TYPING_BACKWARD_KEYFRAMES_STYLE_NAME}`);
+        }, `@keyframes ${TYPEWRITER_VISUAL_EFFECT_TYPING_BACKWARD_KEYFRAMES_STYLE_NAME}`);
 
         const borderColor: string = this._getBorderColor();
 
         this.props.theme.styleSheetRegister.addGlobalStyles({
-            [`@keyframes ${CARET_BLINK_KEYFRAMES_STYLE_NAME}`]: {
+            [`@keyframes ${TYPEWRITER_VISUAL_EFFECT_CARET_BLINK_KEYFRAMES_STYLE_NAME}`]: {
                 'from, to': {
                     borderColor: 'transparent'
                 },
@@ -265,7 +265,7 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
                     borderColor
                 }
             }
-        }, `@keyframes ${CARET_BLINK_KEYFRAMES_STYLE_NAME}_${this._getPreparedBorderColor()}`);
+        }, `@keyframes ${TYPEWRITER_VISUAL_EFFECT_CARET_BLINK_KEYFRAMES_STYLE_NAME}_${this._getPreparedBorderColor()}`);
     }
 
     // endregion
@@ -319,13 +319,13 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
         const textLength: number = text.length;
 
         return {
-            width: this.state.animationStage === ANIMATION_STAGE_FORWARD_NAME ?
+            width: this.state.animationStage === TYPEWRITER_VISUAL_EFFECT_ANIMATION_STAGE_FORWARD_NAME ?
                 'auto' :
                 '0%',
 
             animation:`
-            ${this._getTypingKeyframesName()} ${ANIMATION_STEP_RATIO * textLength}s steps(${textLength * 2}, end),
-            ${CARET_BLINK_KEYFRAMES_STYLE_NAME}_${this._getPreparedBorderColor()} .75s step-end infinite`
+            ${this._getTypingKeyframesName()} ${TYPEWRITER_VISUAL_EFFECT_ANIMATION_STEP_RATIO * textLength}s steps(${textLength * 2}, end),
+            ${TYPEWRITER_VISUAL_EFFECT_CARET_BLINK_KEYFRAMES_STYLE_NAME}_${this._getPreparedBorderColor()} .75s step-end infinite`
         };
     }
 
@@ -384,9 +384,9 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
     }
 
     _getTypingKeyframesName(): string {
-        return this.state.animationStage === ANIMATION_STAGE_FORWARD_NAME ?
-            TYPING_FORWARD_KEYFRAMES_STYLE_NAME :
-            TYPING_BACKWARD_KEYFRAMES_STYLE_NAME;
+        return this.state.animationStage === TYPEWRITER_VISUAL_EFFECT_ANIMATION_STAGE_FORWARD_NAME ?
+            TYPEWRITER_VISUAL_EFFECT_TYPING_FORWARD_KEYFRAMES_STYLE_NAME :
+            TYPEWRITER_VISUAL_EFFECT_TYPING_BACKWARD_KEYFRAMES_STYLE_NAME;
     }
 
     // endregion
@@ -440,12 +440,12 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
     _onAnimationEnd(): void {
         const {animationStage, currentLoopIndex} = this.state;
 
-        if (animationStage === ANIMATION_STAGE_FORWARD_NAME) {
+        if (animationStage === TYPEWRITER_VISUAL_EFFECT_ANIMATION_STAGE_FORWARD_NAME) {
             if (this._shouldStopOnStartNow()) {
                 return;
             }
 
-            return this._updateAnimationState(ANIMATION_STATE_BACKWARD_NAME);
+            return this._updateAnimationState(TYPEWRITER_VISUAL_EFFECT_ANIMATION_STATE_BACKWARD_NAME);
         } else {
             if (this._shouldStopOnEndNow()) {
                 return;
@@ -463,17 +463,17 @@ export class TypewriterVisualEffectClass extends React.Component<PropsTypes, Sta
 
             if (gte(nextTextIndex, textsLength)) {
                 if(equals(loopCount, Infinity)) {
-                    return this._updateAnimationState(ANIMATION_STAGE_FORWARD_NAME, 0, Infinity);
+                    return this._updateAnimationState(TYPEWRITER_VISUAL_EFFECT_ANIMATION_STAGE_FORWARD_NAME, 0, Infinity);
                 }
 
                 if (gte(nextLoopIndex, loopCount)) {
                     return;
                 } else {
-                    return this._updateAnimationState(ANIMATION_STAGE_FORWARD_NAME, 0, nextLoopIndex);
+                    return this._updateAnimationState(TYPEWRITER_VISUAL_EFFECT_ANIMATION_STAGE_FORWARD_NAME, 0, nextLoopIndex);
                 }
             }
 
-            return this._updateAnimationState(ANIMATION_STAGE_FORWARD_NAME, nextTextIndex);
+            return this._updateAnimationState(TYPEWRITER_VISUAL_EFFECT_ANIMATION_STAGE_FORWARD_NAME, nextTextIndex);
         }
     }
 
