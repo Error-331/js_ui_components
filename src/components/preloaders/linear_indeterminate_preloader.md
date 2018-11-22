@@ -1,0 +1,7 @@
+Usage example:
+
+```jsx 
+
+<LinearIndeterminatePreloader/>
+
+```
