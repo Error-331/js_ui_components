@@ -6,7 +6,7 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {defaultTo} from 'ramda';
+import {isNil, defaultTo} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
@@ -19,9 +19,11 @@ import {ReduxFormTextInputComponent} from './../../redux_form/redux_form_text_in
 import {ReduxFormDropDownInputComponent} from './../../redux_form/redux_form_drop_down_input_component';
 
 import {RegularButtonComponent} from './../../buttons/regular_button_component';
+import {RegularAlertComponent} from './../../layout/alerts/regular_alert_component';
 
 // type definitions
 type ClickCallbackType = (any) => any;
+type OptionValueType = string | number;
 type OptionType = { [string]: OptionValueType };
 
 type PropsTypes = {
@@ -30,6 +32,12 @@ type PropsTypes = {
      */
 
     headerText?: string,
+
+    /**
+     * Alert text
+     */
+
+    alertText?: string,
 
     /**
      * Login input form name
@@ -95,7 +103,7 @@ type PropsTypes = {
      * Dropdown input options
      */
 
-    dropDownInputOptions?: dropDownInputPlaceholder,
+    dropDownInputOptions?: OptionType,
 
     /**
      * Login button label
@@ -174,6 +182,7 @@ const styles = theme => ({
         display: 'grid',
 
         gridTemplateAreas: `
+            "alert    "
             "email    "
             "password "
             "selection"
@@ -185,6 +194,12 @@ const styles = theme => ({
 
         gridTemplateColumns: '1fr',
         gridTemplateRows: 'repeat(auto-fit, max-content)',
+
+        '& > $alertContainer': {
+            boxSizing: 'border-box',
+
+            gridArea: 'alert',
+        },
 
         '& > $emailControl': {
             boxSizing: 'border-box',
@@ -231,6 +246,7 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
 
     static defaultProps = {
         headerText: 'Login',
+        alertText: null,
 
         loginInputLabel: 'Email',
         loginInputPlaceholder: 'user email...',
@@ -285,6 +301,10 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
 
     _getLoginInputIconClassName(): string {
         return defaultTo(LoginDialogBox1Class.defaultProps.loginInputIconClassName)(this.props.loginInputIconClassName);
+    }
+
+    _getAlertContainerClassName(): string {
+        return this.props.classes.alertContainer;
     }
 
     _getLoginInputClassName(): string {
@@ -393,6 +413,10 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
         return defaultTo('')(this.props.dropDownInputName);
     }
 
+    _getAlertText(): string | null {
+        return defaultTo(LoginDialogBox1Class.defaultProps.alertText)(this.props.alertText)
+    }
+
     _getHeaderText(): string {
         return defaultTo(LoginDialogBox1Class.defaultProps.headerText)(this.props.headerCaption);
     }
@@ -485,8 +509,23 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
         />;
     }
 
+    _renderAlert(): React.Node {
+        const alertText: string | null = this._getAlertText();
+
+        return <div className={this._getAlertContainerClassName()}>
+            {
+                isNil(alertText) ?
+                    null :
+                    <RegularAlertComponent accent={true}>
+                        {alertText}
+                    </RegularAlertComponent>
+            }
+        </div>;
+    }
+
     _renderControlsContainer(): React.Node {
         return <div className={this._getControlsContainerClassName()}>
+            {this._renderAlert()}
             {this._renderLoginInput()}
             {this._renderPasswordInput()}
             {this._renderSelectionContainer()}

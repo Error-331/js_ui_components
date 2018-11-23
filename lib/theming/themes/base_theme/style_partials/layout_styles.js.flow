@@ -33,6 +33,7 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         bodyFontSize: baseStyles.secondaryFontSize,
 
         headerBorderRadius: 2, // px
+        alertBorderRadius: 4, // px
 
         horizontalSpacing: 5, // px
         verticalSpacing: 5, // px

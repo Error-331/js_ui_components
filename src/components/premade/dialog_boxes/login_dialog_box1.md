@@ -1,10 +1,11 @@
-Simple login dialog box (variant 1):
+Simple login dialog box (variant 1) with alert box:
 
 ```jsx
 
 const {LoginDialogBox1Component} = require('./');
 
 <LoginDialogBox1Component
+    alertText='Test alert...'
     loginInputName='login.email'
     passwordInputName='login.password'
 />

@@ -20,7 +20,6 @@ type StyleType = {
 export type MouseOverCallbackType = (event: SyntheticMouseEvent<HTMLDivElement>) => void;
 export type MouseLeaveCallbackType = (event: SyntheticMouseEvent<HTMLDivElement>) => void;
 
-
 type PropsTypes = {
     /**
      * Card header
@@ -350,11 +349,17 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     }
 
     _renderBody(): React.Node {
+        const {children} = this.props;
+
+        if (isNil(children)) {
+            return null;
+        }
+
         return <div
             className={this._getBodyClasses()}
             style={this.props.bodyStyles}
         >
-            {this.props.children}
+            {children}
         </div>;
     }
 

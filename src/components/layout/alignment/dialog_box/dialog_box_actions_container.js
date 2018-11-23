@@ -188,10 +188,6 @@ export class DialogBoxActionsContainerClass extends React.Component<PropsTypes, 
 
     // region render methods
     _renderRightGroup(children: Array<React.Node>, style: CSSStylesType): React.Node {
-        if (this._getMainGroupCount() === 0) {
-            return null;
-        }
-
         return <div className={this._getRightContainerClassName()} style={style}>
             {children}
         </div>;
@@ -207,7 +203,9 @@ export class DialogBoxActionsContainerClass extends React.Component<PropsTypes, 
         const children: Array<React.Node> = React.Children.toArray(this.props.children);
         const childrenCount: number = length(children);
 
-        const leftChildrenCount: number = this._getMainGroupCount();
+        const mainGroupCount: number = this._getMainGroupCount();
+
+        const leftChildrenCount: number = mainGroupCount > 0 ? mainGroupCount : childrenCount;
 
         const leftChildrenStartIndex: number = 0;
         const leftChildrenEndIndex: number = leftChildrenCount;

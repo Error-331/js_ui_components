@@ -1,0 +1,1 @@
+Section describes components used for representing different kinds of alerts.

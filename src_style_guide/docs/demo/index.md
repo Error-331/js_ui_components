@@ -2,7 +2,7 @@ Mock-up of 'user edit' dialog body:
 
 ```jsx
 
-const {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer} = require('./../../../src/components/layout');
+const {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer, RegularAlertComponent} = require('./../../../src/components/layout');
 const {ReduxFormTextInputComponent, ReduxFormCheckboxInputComponent} = require('./../../../src/components/redux_form');
 
 const {RegularButtonComponent} = require('./../../../src/components/buttons/regular_button_component');
@@ -17,6 +17,7 @@ const controlsContainerStyles = {
     display: 'grid',
    
     gridTemplateAreas: `
+        "alert     alert   "
         "name      password"
         "email     .       "
         "is-active .       "
@@ -54,6 +55,12 @@ const isActiveControlStyles = {
     gridArea: 'is-active',
 };
 
+const alertStyles = {
+    boxSizing: 'border-box',
+    
+    gridArea: 'alert'
+}
+
 const buttonsContainerStyles = {                                                                                                    
     gridArea: 'buttons',
 };
@@ -66,6 +73,10 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-id-ca
     containerStyles={cardContainerStyles} 
     bodyStyles={controlsContainerStyles}
 >
+
+    <RegularAlertComponent accent={true} containerStyle={alertStyles}>
+        Example alert...
+    </RegularAlertComponent>
 
     <ReduxFormTextInputComponent
         name='edit.user.name'
@@ -131,9 +142,9 @@ const controlsContainerStyles = {
     display: 'grid',
    
     gridTemplateAreas: `
-        "name      is-active"
+        "name      is-active  "
         "directory is-archived"
-        "buttons   buttons "
+        "buttons   buttons    "
     `,
             
     gridColumnGap: '25px', 
@@ -169,7 +180,7 @@ const isArchivedControlStyles = {
     alignSelf: 'end'
 }
 
-const buttonsContainerStyles = {                                                                                                    
+const buttonsContainerStyles = {                                                                                               
     gridArea: 'buttons',
 };
 
