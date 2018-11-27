@@ -222,6 +222,7 @@ const styles = theme => ({
         },
     },
 
+    alertContainer: {},
     emailControl: {},
     passwordControl: {},
     selectionContainer: {},
