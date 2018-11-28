@@ -419,7 +419,7 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
     }
 
     _getHeaderText(): string {
-        return defaultTo(LoginDialogBox1Class.defaultProps.headerText)(this.props.headerCaption);
+        return defaultTo(LoginDialogBox1Class.defaultProps.headerText)(this.props.headerText);
     }
 
     // endregion
