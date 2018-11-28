@@ -112,7 +112,7 @@ const styles = theme => ({
 
         '& > $childrenContainer': {
             boxSizing: 'border-box',
-            display: 'flex',
+            display: 'grid',
 
             position: 'absolute',
 
@@ -122,12 +122,14 @@ const styles = theme => ({
             width: '100%',
             height: '100%',
 
-            flexDirection: 'column',
-            flexWrap: 'wrap',
+            gridColumnGap: '25px',
+            gridRowGap: '15px',
 
-            justifyContent: 'center',
+            gridTemplateColumns: '1fr',
+            gridTemplateRows: '1fr',
+
+            justifyItems: 'center',
             alignItems: 'center',
-            alignContent: 'flex-start',
         }
     },
 
