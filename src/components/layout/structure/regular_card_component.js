@@ -193,7 +193,7 @@ const styles = theme => ({
             padding: `${theme.layoutStyles.topSpacing}px 
                       ${theme.layoutStyles.rightSpacing}px 
                       ${theme.layoutStyles.bottomSpacing}px 
-                      ${theme.layoutStyles.bottomSpacing}px
+                      ${theme.layoutStyles.leftSpacing}px
             `,
 
             borderRadius: theme.layoutStyles.headerBorderRadius,

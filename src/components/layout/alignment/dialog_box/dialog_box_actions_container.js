@@ -88,7 +88,7 @@ const styles = theme => ({
 
             gridTemplateColumns: `repeat(auto-fill, minmax(max-content, ${theme.buttonStyles.regularButtonMinimumWidth}px))`,
             gridAutoRows: 'max-content',
-            gridColumnGap: `${theme.layoutStyles.componentHorizontalSpacing}px`,
+            gridColumnGap: `${theme.layoutStyles.sectionHorizontalSpacing}px`,
 
             '&.fullWidth': {
                 flexBasis: '100%',

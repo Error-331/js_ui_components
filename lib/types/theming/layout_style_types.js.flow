@@ -31,9 +31,6 @@ export type LayoutStylesType = {
     headerBorderRadius: number,
     alertBorderRadius: number,
 
-    horizontalSpacing: number,
-    verticalSpacing: number,
-
     topSpacing: number,
     bottomSpacing: number,
 
@@ -43,8 +40,8 @@ export type LayoutStylesType = {
     sectionHorizontalSpacing: number,
     sectionVerticalSpacing: number,
 
-    componentHorizontalSpacing: number,
-    componentVerticalSpacing: number,
+    formHorizontalSpacing: number,
+    formVerticalSpacing: number,
 
     headerFontColor: string,
     bodyFontColor: string,

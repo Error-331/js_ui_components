@@ -66,11 +66,11 @@ const styles = theme => ({
         },
 
         '&.left > div': {
-            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.sectionVerticalSpacing}px`,
         },
 
         '&.left > button': {
-            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.sectionVerticalSpacing}px`,
         },
 
         '&.left > div:first-child': {
@@ -86,11 +86,11 @@ const styles = theme => ({
         },
 
         '&.right > div': {
-            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.sectionVerticalSpacing}px`,
         },
 
         '&.right > button': {
-            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.sectionVerticalSpacing}px`,
         },
 
         '&.right > div:first-child': {
@@ -106,11 +106,11 @@ const styles = theme => ({
         },
 
         '&.center > div': {
-            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.sectionVerticalSpacing}px`,
         },
 
         '&.center > button': {
-            marginTop: `${theme.layoutStyles.verticalSpacing}px`,
+            marginTop: `${theme.layoutStyles.sectionVerticalSpacing}px`,
         },
 
         '&.center > div:first-child': {

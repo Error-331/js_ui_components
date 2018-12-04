@@ -35,20 +35,17 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         headerBorderRadius: 2, // px
         alertBorderRadius: 4, // px
 
-        horizontalSpacing: 5, // px
-        verticalSpacing: 5, // px
+        topSpacing: 8, // px (inside component)
+        bottomSpacing: 10, // px (inside component)
 
-        topSpacing: 8, // px
-        bottomSpacing: 10, // px
+        rightSpacing: 8, // px (inside component)
+        leftSpacing: 10, // px (inside component)
 
-        rightSpacing: 8, // px
-        leftSpacing: 10, // px
+        sectionHorizontalSpacing: 12, // px (between components)
+        sectionVerticalSpacing: 12, // px (between components)
 
-        sectionHorizontalSpacing: 12, // px
-        sectionVerticalSpacing: 12, // px
-
-        componentHorizontalSpacing: 25, // px
-        componentVerticalSpacing: 15, // px
+        formHorizontalSpacing: 25, // px (between form elements inside the component)
+        formVerticalSpacing: 15, // px (between form elements inside the component)
 
         headerFontColor: baseStyles.noneTransparentBGColor,
         bodyFontColor: baseStyles.subPrimaryColor,

@@ -268,7 +268,7 @@ const controlsContainerStyles = {
         "buttons                buttons                     buttons"
     `,
             
-    gridColumnGap: '25px', 
+    gridColumnGap: '15px', 
     gridRowGap: '15px',
                     
     gridTemplateColumns: '1fr 1fr 1fr',

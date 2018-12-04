@@ -189,8 +189,8 @@ const styles = theme => ({
             "actions  "
         `,
 
-        gridColumnGap: `${theme.layoutStyles.componentHorizontalSpacing}px`,
-        gridRowGap: `${theme.layoutStyles.componentVerticalSpacing}px`,
+        gridColumnGap: `${theme.layoutStyles.formHorizontalSpacing}px`,
+        gridRowGap: `${theme.layoutStyles.formVerticalSpacing}px`,
 
         gridTemplateColumns: '1fr',
         gridTemplateRows: 'repeat(auto-fit, max-content)',

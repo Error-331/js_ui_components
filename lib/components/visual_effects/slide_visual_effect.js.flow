@@ -76,9 +76,9 @@ const styles = theme => ({
         position: 'absolute',
 
         padding: `${theme.layoutStyles.topSpacing}px 
-                      ${theme.layoutStyles.rightSpacing}px 
-                      ${theme.layoutStyles.bottomSpacing}px 
-                      ${theme.layoutStyles.bottomSpacing}px
+                  ${theme.layoutStyles.rightSpacing}px 
+                  ${theme.layoutStyles.bottomSpacing}px 
+                  ${theme.layoutStyles.bottomSpacing}px
         `,
 
         transitionDelay: '0s',
