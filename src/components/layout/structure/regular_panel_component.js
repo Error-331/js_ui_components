@@ -50,8 +50,6 @@ const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
 
-        padding: '10px 0px 10px 10px',
-
         borderRadius: theme.layoutStyles.headerBorderRadius,
         backgroundColor: theme.layoutStyles.headerBGColor,
 

@@ -50,3 +50,4 @@
 - layoutStyles.headerBorderRadius -> something;  
 - const styles = theme =>  - type for theme;  
 - update webpack and stylegist;
+- make mechanism that always returns top`est z-Index;
