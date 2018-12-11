@@ -55,7 +55,7 @@ type PropsTypes = {
      * Styles for card container outer div
      */
 
-    containerStyles?: StyleType,
+    containerStyle?: StyleType,
 
     /**
      * Class name for card body container div
@@ -67,7 +67,7 @@ type PropsTypes = {
      * Styles for card container body div
      */
 
-    bodyStyles?: {
+    bodyStyle?: {
         [string]: mixed
     },
 
@@ -260,8 +260,8 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region style accessors
-    _getOuterContainerStyles(): StyleType {
-        return Object.assign({}, this.props.containerStyles);
+    _getOuterContainerStyle(): StyleType {
+        return Object.assign({}, this.props.containerStyle);
     }
 
     _getOuterContainerClasses(): string {
@@ -357,7 +357,7 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
 
         return <div
             className={this._getBodyClasses()}
-            style={this.props.bodyStyles}
+            style={this.props.bodyStyle}
         >
             {children}
         </div>;
@@ -367,7 +367,7 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
         return (
             <div
                 className={this._getOuterContainerClasses()}
-                style={this._getOuterContainerStyles()}
+                style={this._getOuterContainerStyle()}
 
                 onMouseOver={this._onMouseOverContainer}
                 onMouseLeave={this._onMouseLeaveContainer}

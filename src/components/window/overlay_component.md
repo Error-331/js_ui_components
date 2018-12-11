@@ -25,7 +25,7 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-aster
 
 <RegularCardComponent
     header={headerComponent}
-    bodyStyles={{height: '200px'}}
+    bodyStyle={{height: '200px'}}
 >
 
     <OverlayComponent containerStyle={{position: 'absolute'}} show={true}>

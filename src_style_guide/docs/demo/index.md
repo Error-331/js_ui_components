@@ -70,8 +70,8 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-id-ca
 <RegularCardComponent
     header={headerComponent}
  
-    containerStyles={cardContainerStyles} 
-    bodyStyles={controlsContainerStyles}
+    containerStyle={cardContainerStyles} 
+    bodyStyle={controlsContainerStyles}
 >
 
     <RegularAlertComponent accent={true} containerStyle={alertStyles}>
@@ -189,8 +189,8 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-windo
 <RegularCardComponent
     header={headerComponent}
  
-    containerStyles={cardContainerStyles} 
-    bodyStyles={controlsContainerStyles}
+    containerStyle={cardContainerStyles} 
+    bodyStyle={controlsContainerStyles}
 >
 
     <ReduxFormTextInputComponent
@@ -309,8 +309,8 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-globe
 <RegularCardComponent
     header={headerComponent}
  
-    containerStyles={cardContainerStyles} 
-    bodyStyles={controlsContainerStyles}
+    containerStyle={cardContainerStyles} 
+    bodyStyle={controlsContainerStyles}
 >
     <ReduxFormTextInputComponent
         name='edit.domain.fullname'
@@ -479,7 +479,7 @@ class NavigationDemoComponent1 extends Component {
             <RegularCardComponent 
                 header={headerComponent}
                 
-                containerStyles={this._getCardContainerStyles()}
+                containerStyle={this._getCardContainerStyles()}
             >
             </RegularCardComponent>
         </div>;

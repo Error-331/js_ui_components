@@ -137,7 +137,7 @@ function RegularAlertFunction(props: PropsTypes) {
         header={cardHeader}
 
         containerClassName={regularCardComposedClassName}
-        containerStyles={containerStyle}
+        containerStyle={containerStyle}
     />;
 }
 

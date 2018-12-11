@@ -127,7 +127,7 @@ export class ModalClass extends React.Component<PropsTypes, StateTypes> {
         return merge(defaultBodyOuterStyles, userStyles);
     }
 
-    _getBodyInnerStyles(): CSSStylesType {
+    _getBodyInnerStyle(): CSSStylesType {
         const userStyles: CSSStylesType = defaultTo({})(this.props.bodyInnerStyles);
         return merge(defaultBodyInnerStyles, userStyles);
     }
@@ -166,8 +166,8 @@ export class ModalClass extends React.Component<PropsTypes, StateTypes> {
 
         return <RegularCardComponent
             header={header}
-            containerStyles={this._getBodyOuterStyles()}
-            bodyStyles={this._getBodyInnerStyles()}
+            containerStyle={this._getBodyOuterStyles()}
+            bodyStyle={this._getBodyInnerStyle()}
         >
             {children}
             {this._renderFooter()}

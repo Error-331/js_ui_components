@@ -433,7 +433,7 @@ export class LoginDialogBox1Class extends React.Component<PropsTypes, StateTypes
             <RegularButtonComponent
                 variant='text'
                 textType='secondary'
-                containerStyles={{}}
+                containerStyle={{}}
                 label={this._getForgotPasswordButtonLabel()}
                 onClick={this._getClickRegisterButtonCallback()}
             />

@@ -486,12 +486,12 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
 
     _renderOptionsContainer(): React.Node {
         const containerStyles: {[string]: mixed} = {zIndex: this.state.optionsContainerZIndex};
-        const bodyStyles: {[string]: mixed}  = {padding: '0px'};
+        const bodyStyle: {[string]: mixed}  = {padding: '0px'};
 
         return this.state.optionsShown ? <RegularCardComponent
             containerClassName={this.props.classes.optionsContainer}
             containerStyles={containerStyles}
-            bodyStyles={bodyStyles}
+            bodyStyle={bodyStyle}
         >
             {this._renderOptionsContainers()}
         </RegularCardComponent> : null;
