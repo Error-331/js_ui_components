@@ -50,6 +50,12 @@ const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
 
+        padding: `${theme.layoutStyles.topSpacing}px 
+                  ${theme.layoutStyles.rightSpacing}px 
+                  ${theme.layoutStyles.bottomSpacing}px 
+                  ${theme.layoutStyles.leftSpacing}px
+        `,
+
         borderRadius: theme.layoutStyles.headerBorderRadius,
         backgroundColor: theme.layoutStyles.headerBGColor,
 

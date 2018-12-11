@@ -70,7 +70,12 @@ type PropsTypes = {
 // styles definition
 const styles = theme => ({
     cardComponentContainer: {
-        borderRadius: `${theme.layoutStyles.alertBorderRadius}px`
+        borderRadius: `${theme.layoutStyles.alertBorderRadius}px`,
+        backgroundColor: theme.layoutStyles.headerBGColor,
+
+        '&.accent': {
+            backgroundColor: theme.baseStyles.accentColorPrimary
+        }
     },
 
     panelComponentContainer: {
@@ -125,7 +130,7 @@ function RegularAlertFunction(props: PropsTypes) {
         <InlineTextBlock className={textContainer}>{children}</InlineTextBlock>
     </RegularPanelComponent>;
 
-    const regularCardComposedClassName: string = classNames(cardComponentContainer, containerClassName);
+    const regularCardComposedClassName: string = classNames(cardComponentContainer, {accent: accent}, containerClassName);
 
     return <RegularCardComponent
         heightLevel={heightLevel}

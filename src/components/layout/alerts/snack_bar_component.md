@@ -3,15 +3,36 @@ Test
 ```jsx
 
 const {Component} = require('react');
+const {generateRandomIdNumber} = require('@webfuturistics/design_components');
 
 const {RegularButtonComponent} = require('./../../buttons/regular_button_component');
 const {SnackBarComponent} = require('./snack_bar_component');
 
 class DemoSnackBarComponent1 extends Component {
     _onAddAlert() {
-        const demoItems = this.state.demoItems.slice();
+        const icons = [
+            'fas fa-battery-slash',
+            'fas fa-battery-full',
+            'fas fa-battery-three-quarters',
+            'fas fa-battery-quarter',
+            'fas fa-battery-empty'
+        ];
+        
+        const iconId = Math.floor((Math.random() * 5));
+        const iconClassName = icons[iconId];
     
-        demoItems.push({caption: 'Test alert 1 caption...', iconClassName: 'fas fa-battery-slash', type: 'regular'});
+        const captions = [
+            'Test alert caption...',
+            'Test alert text... long text...',
+            'Very long alert text with many words...',
+        ];
+    
+        const captionId = Math.floor((Math.random() * 3));
+        const caption = captions[captionId];
+        
+        const demoItems = this.state.demoItems.slice();
+        demoItems.push({id: `alert_${generateRandomIdNumber()}`, caption, iconClassName, type: iconId === 4 ? 'error' : 'regular'});
+        
         this.setState({demoItems});
     }
 
@@ -28,9 +49,7 @@ class DemoSnackBarComponent1 extends Component {
         this._onAddAlert = this._onAddAlert.bind(this);
         
         this.state = {
-            demoItems: [
-                {caption: 'Test alert 1 caption...', iconClassName: 'fas fa-battery-slash', type: 'regular'}
-            ]
+            demoItems: []
         }
     }
 }

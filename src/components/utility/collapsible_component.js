@@ -13,7 +13,9 @@ import {isNotNil} from '@webfuturistics/design_components';
 // local imports
 
 // type definitions
-type OuterContainerStylesType = {
+export type StyleType = {[string]: mixed};
+
+export type OuterContainerStylesType = {
     display?: ?string,
     visibility?: ?string,
 
@@ -35,6 +37,12 @@ type PropsTypes = {
      */
 
     innerContainerClassNames?: string,
+
+    /**
+     * Style which will be added to the outer container (div) of the 'collapsable' component
+     */
+
+    outerContainerStyle?: StyleType,
 
     /**
      * Flag that dictates whether 'collapsible' component should be open or closed at the moment
@@ -210,6 +218,11 @@ export class CollapsibleComponentClass extends React.Component<PropsTypes, State
         return classNames(componentOuterContainer, outerContainerClassNames);
     }
 
+    _getOuterContainerStyle(): StyleType {
+        const userStyle: StyleType = defaultTo({})(this.props.outerContainerStyle);
+        return Object.assign({}, this.state.outerContainerStyles, userStyle);
+    }
+
     componentWillReceiveProps(nextProps): void {
         cond([
             [equals(this.props.open), always(true)],
@@ -248,7 +261,7 @@ export class CollapsibleComponentClass extends React.Component<PropsTypes, State
         const isHideChildren: boolean = isContainerNotVisible && removeContentOnClose;
 
         return (
-            <div ref={outerContainer => (this._outerContainer = outerContainer)} className={this._getComponentOuterContainerClassNames()} style={this.state.outerContainerStyles}>
+            <div ref={outerContainer => (this._outerContainer = outerContainer)} className={this._getComponentOuterContainerClassNames()} style={this._getOuterContainerStyle()}>
                 <div ref={innerContainer => (this._innerContainer = innerContainer)} className={this._getComponentInnerContainerClassNames()}>
                     {isHideChildren ? null : this.props.children}
                 </div>
