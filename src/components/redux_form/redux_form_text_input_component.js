@@ -16,7 +16,7 @@ type CSSStylesType = {
 
 type InputTypes = 'text' | 'password';
 
-type PropsTypes = {
+export type PropsTypes = {
     /**
      * Input name
      */
