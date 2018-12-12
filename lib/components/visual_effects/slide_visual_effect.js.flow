@@ -10,8 +10,7 @@ import classNames from 'classnames';
 import {isNil, defaultTo} from 'ramda';
 
 // local imports
-
-import {MainThemeContext} from '../../theming/providers/main_theme_provider';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 type CSSStylesType = {
@@ -21,7 +20,6 @@ type CSSStylesType = {
 type DirectionType = 'LeftToRight' | 'RightToLeft' | 'TopToBottom' | 'BottomToTop';
 
 type PropsTypes = {
-
     /**
      * Direction of sliding
      */

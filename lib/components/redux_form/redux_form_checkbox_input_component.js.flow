@@ -14,7 +14,7 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-type PropsTypes = {
+export type PropsTypes = {
     /**
      * Number that indicates which visual variant will be used to represent the checkbox
      */
