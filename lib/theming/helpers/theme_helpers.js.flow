@@ -26,6 +26,7 @@ import type {
     WindowStylesType,
     DateStylesType,
     NavigationStylesType,
+    ScrollBarStylesType,
 
     BaseThemePartialsType,
     AdditionalThemePartialsType,
@@ -49,6 +50,7 @@ import {
     layoutStylesFunc,
     dateStylesFunc,
     navigationStylesFunc,
+    scrollBarStylesFunc
 } from './../themes/base_theme';
 
 export const extendTheme = (
@@ -81,6 +83,7 @@ export const extendTheme = (
     const windowStyles: WindowStylesType = windowStylesFunc(newBaseThemePartials);
     const dateStyles: DateStylesType = dateStylesFunc(newBaseThemePartials);
     const navigationStyles: NavigationStylesType = navigationStylesFunc(newBaseThemePartials);
+    const scrollBarStyles: ScrollBarStylesType = scrollBarStylesFunc(newBaseThemePartials);
 
     const newAdditionalThemePartials: AdditionalThemePartialsType = Object.freeze({
         layoutStyles,
@@ -90,6 +93,7 @@ export const extendTheme = (
         windowStyles,
         dateStyles,
         navigationStyles,
+        scrollBarStyles
     });
 
     const newTheme: ThemeType = mergeAll([

@@ -490,7 +490,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
 
         return this.state.optionsShown ? <RegularCardComponent
             containerClassName={this.props.classes.optionsContainer}
-            containerStyles={containerStyles}
+            containerStyle={containerStyles}
             bodyStyle={bodyStyle}
         >
             {this._renderOptionsContainers()}

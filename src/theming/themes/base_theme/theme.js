@@ -20,6 +20,7 @@ import type {
     WindowStylesType,
     DateStylesType,
     NavigationStylesType,
+    ScrollBarStylesType,
 
     BaseThemePartialsType,
     AdditionalThemePartialsType,
@@ -43,6 +44,7 @@ import {
     windowStylesFunc,
     dateStylesFunc,
     navigationStylesFunc,
+    scrollBarStylesFunc,
 } from './';
 
 import {colorUtilities} from './../../business_logic/color_utilities';
@@ -76,6 +78,7 @@ const tableStyles: TableStyleType = tableStylesFunc(baseThemePartials);
 const windowStyles: WindowStylesType = windowStylesFunc(baseThemePartials);
 const dateStyles: DateStylesType = dateStylesFunc(baseThemePartials);
 const navigationStyles: NavigationStylesType = navigationStylesFunc(baseThemePartials);
+const scrollBarStyles: ScrollBarStylesType = scrollBarStylesFunc(baseThemePartials);
 
 export const additionalThemePartials: AdditionalThemePartialsType = Object.freeze({
     layoutStyles,
@@ -85,6 +88,7 @@ export const additionalThemePartials: AdditionalThemePartialsType = Object.freez
     windowStyles,
     dateStyles,
     navigationStyles,
+    scrollBarStyles,
 });
 
 // exports

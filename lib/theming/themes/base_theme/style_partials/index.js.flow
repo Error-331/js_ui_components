@@ -16,3 +16,4 @@ export * from './table_styles';
 export * from './layout_styles';
 export * from './date_styles';
 export * from './navigation_styles';
+export * from './scrollbar_styles';
