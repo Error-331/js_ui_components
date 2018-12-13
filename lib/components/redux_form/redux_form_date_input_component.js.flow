@@ -14,7 +14,7 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-type PropsTypes = {
+export type PropsTypes = {
     /**
      * Input name
      */

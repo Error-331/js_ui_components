@@ -112,8 +112,6 @@ const styles = theme => ({
             flexGrow: 0,
             flexShrink: 1,
 
-            paddingRight: '10px',
-
             fontSize: `${theme.layoutStyles.headerFontSize}px`,
             cursor: 'pointer',
             color: theme.layoutStyles.headerFontColor,
