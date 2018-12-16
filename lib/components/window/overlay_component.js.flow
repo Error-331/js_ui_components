@@ -231,6 +231,8 @@ export class OverlayClass extends React.Component<PropsTypes, StateTypes> {
 
     // region handlers
     _onOverlayClick(event: SyntheticMouseEvent<any>): void {
+        event.stopPropagation()
+
         const targetDOMElement:EventTarget = event.target;
         const {classes, onOverlayClick} = this.props;
         const {childrenContainer} = classes;

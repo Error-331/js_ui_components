@@ -13,6 +13,8 @@ import {defaultTo} from 'ramda';
 const {RegularPanelComponent} = require('./regular_panel_component');
 
 // type definitions
+export type ClickCallbackType = (event: SyntheticEvent<HTMLElement>) => void;
+
 type StyleType = {
     [string]: mixed
 };
@@ -46,7 +48,7 @@ type PropsTypes = {
      * Callback function which will be called when icon is clicked
      */
 
-    onIconClick?: (event: SyntheticMouseEvent<any>) => void,
+    onIconClick?: ClickCallbackType,
 
     /**
      * Content for card header
@@ -113,7 +115,6 @@ const styles = theme => ({
             flexShrink: 1,
 
             fontSize: `${theme.layoutStyles.headerFontSize}px`,
-            cursor: 'pointer',
             color: theme.layoutStyles.headerFontColor,
         }
     },
@@ -134,6 +135,10 @@ const styles = theme => ({
 export class RegularCardHeaderComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'RegularCardHeaderComponent';
+
+    static defaultProps = {
+        onIconClick:  () => {},
+    };
 
     // endregion
 
@@ -173,6 +178,10 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region prop accessors
+    _getIconClickHandler(): ClickCallbackType {
+        return defaultTo(RegularCardHeaderComponentClass.defaultProps.onIconClick)(this.props.onIconClick);
+    }
+
     _getContainerStyle(): StyleType {
         return defaultTo({})(this.props.containerStyle);
     }
@@ -185,7 +194,10 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     // region render methods
     _renderIconContainer(): React.Node {
         const {iconClassNames} = this.props;
-        return iconClassNames ? <i className={this._getIconClasses()}/> : null;
+        return iconClassNames ? <i
+            onClick={this._getIconClickHandler()}
+            className={this._getIconClasses()}
+        /> : null;
     }
 
     _renderTitleContainer(): React.Node {

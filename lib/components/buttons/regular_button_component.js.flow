@@ -20,16 +20,16 @@ import {InlineTextBlock} from './../layout/text/inline_text_block';
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
-export type ButtonIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
+export type ButtonSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
 export type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
 export type StyleType = {[string]: mixed};
 
-type PropsTypes = ThemeProps & {
+export type PropsTypes = ThemeProps & {
     /**
      * Button size
      */
 
-    size?: ButtonIconSizeType,
+    size?: ButtonSizeType,
 
     /**
      * Flag that describes how the button will look like
@@ -395,7 +395,7 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
         return defaultTo({})(this.props.containerStyles);
     }
 
-    _getSize(): ButtonIconSizeType {
+    _getSize(): ButtonSizeType {
         return defaultTo(SMALL_SIZE)(this.props.size);
     }
 

@@ -128,7 +128,7 @@ Mock-up of 'template edit' dialog body:
 ```jsx
 
 const {RegularCardComponent, RegularCardHeaderComponent, DialogBoxActionsContainer} = require('./../../../src/components/layout');
-const {ReduxFormTextInputComponent, ReduxFormCheckboxInputComponent} = require('./../../../src/components/redux_form');
+const {ReduxFormGeneratorComponent} = require('./../../../src/components/redux_form');
 
 const {RegularButtonComponent} = require('./../../../src/components/buttons/regular_button_component');
 
@@ -137,96 +137,31 @@ const cardContainerStyles = {
     maxWidth: '400px',
 };
 
-const controlsContainerStyles = {
-    boxSizing: 'border-box',
-    display: 'grid',
-   
-    gridTemplateAreas: `
-        "name      is-active  "
-        "directory is-archived"
-        "buttons   buttons    "
-    `,
-            
-    gridColumnGap: '25px', 
-    gridRowGap: '15px',
-                    
-    gridTemplateColumns: '1fr max-content',
-    gridTemplateRows: 'repeat(auto-fit, max-content)',
-};
-
-const nameControlStyles = {
-    boxSizing: 'border-box', 
-                                        
-    gridArea: 'name', 
-}
-
-const isActiveControlStyles = {
-    boxSizing: 'border-box', 
-                                        
-    gridArea: 'is-active', 
-    alignSelf: 'end'
-}
-
-const directoryControlStyles = {
-    boxSizing: 'border-box', 
-                                        
-    gridArea: 'directory', 
-}
-
-const isArchivedControlStyles = {
-    boxSizing: 'border-box', 
-                                        
-    gridArea: 'is-archived', 
-    alignSelf: 'end'
-}
-
 const buttonsContainerStyles = {                                                                                               
     gridArea: 'buttons',
 };
 
 const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-window-alt">Edit template data</RegularCardHeaderComponent>;
 
+const formItems = [
+    [
+        {type: 'text', name: 'edit.template.name', options: {placeholder: 'template name...', label: 'Name', iconClassNames: 'fas fa-window-alt'}},
+        {type: 'checkbox', name: 'edit.template.isActive', options: {labelPosition: 'right', label: 'active'}}
+    ],
+    
+    [
+        {type: 'text', name: 'edit.template.directory.name', options: {placeholder: 'template directory name...', label: 'Directory name', iconClassNames: 'fas fa-folder'}},
+        {type: 'checkbox', name: 'edit.template.isArchived', options: {labelPosition: 'right', label: 'archived'}}
+    ],
+];
+
 <RegularCardComponent
     header={headerComponent}
  
     containerStyle={cardContainerStyles} 
-    bodyStyle={controlsContainerStyles}
 >
+    <ReduxFormGeneratorComponent rightmostColSize='max-content' items={formItems}/>
 
-    <ReduxFormTextInputComponent
-        name='edit.template.name'
-        placeholder='template name...'
-        label='Name'
-    
-        componentContainerStyles={nameControlStyles}
-        iconClassNames='fas fa-window-alt'
-    />
-    
-    <ReduxFormCheckboxInputComponent
-        name='edit.template.isActive'
-        labelPosition='right'
-        label='active'
-            
-        componentContainerStyles={isActiveControlStyles}
-    />   
-         
-    <ReduxFormTextInputComponent
-        name='edit.template.directory.name'
-        placeholder='template directory name...'
-        label='Directory name'
-        
-        componentContainerStyles={directoryControlStyles}
-        iconClassNames='fas fa-folder'
-    />
-    
-    <ReduxFormCheckboxInputComponent
-        name='edit.template.isArchived'
-        labelPosition='right'
-        label='archived'
-                
-        componentContainerStyles={isArchivedControlStyles}
-    />  
-    
     <DialogBoxActionsContainer containerStyle={buttonsContainerStyles}>
         <RegularButtonComponent label='Save'/>
         <RegularButtonComponent label='Cancel' variant='outlined'/>

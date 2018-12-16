@@ -3,6 +3,8 @@
 // @flow
 
 // external imports
+import type {NestedArray} from 'ramda';
+
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
@@ -26,8 +28,6 @@ import {
 } from 'ramda';
 
 // local imports
-import type {NestedArray} from 'ramda';
-
 import type {PropsTypes as ReduxFormTextInputPropsType} from './redux_form_text_input_component';
 import type {PropsTypes as ReduxCheckboxInputPropsType} from './redux_form_checkbox_input_component';
 import type {PropsTypes as ReduxFormDropDownInputPropsType} from './redux_form_drop_down_input_component';
@@ -68,6 +68,18 @@ type PropsTypes = {
     items?: ItemsType,
 
     /**
+     * Size of the leftmost column ('1f', 'max-content', etc)
+     */
+
+    leftmostColSize?: string,
+
+    /**
+     * Size of the rightmost column ('1f', 'max-content', etc)
+     */
+
+    rightmostColSize?: string,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -87,10 +99,10 @@ const styles = theme => ({
         boxSizing: 'border-box',
         display: 'grid',
 
+        alignItems: 'end',
+
         gridColumnGap: `${theme.layoutStyles.sectionVerticalSpacing}px`,
         gridRowGap: `${theme.layoutStyles.sectionHorizontalSpacing}px`,
-
-        gridTemplateRows: 'repeat(auto-fit, max-content)',
     }
 });
 
@@ -113,6 +125,9 @@ export class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTy
 
     static defaultProps = {
         items: null,
+
+        leftmostColSize: '1fr',
+        rightmostColSize: '1fr',
     };
 
     // endregion
@@ -183,11 +198,17 @@ export class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTy
             return concat(templateAreas, `"${columnString}" `);
         }, '', items);
 
-        const gridTemplateColumns: string = repeat('1fr', columnsCount).join(' ');
+        let gridTemplateColumns: Array<string> = repeat('1fr', columnsCount);
+
+        gridTemplateColumns[0] = this._getLeftmostColSize();
+        gridTemplateColumns[gridTemplateColumns.length - 1] = this._getRightmostColSize();
+
+        const rowsCount: number = items.length;
 
         return {
             gridTemplateAreas,
-            gridTemplateColumns,
+            gridTemplateColumns: gridTemplateColumns.join(' '),
+            gridTemplateRows: `repeat(${rowsCount}, max-content)`,
         };
     }
 
@@ -207,6 +228,14 @@ export class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTy
     // endregion
 
     // region prop accessors
+    _getRightmostColSize(): string {
+        return defaultTo(ReduxFormGeneratorClass.defaultProps.rightmostColSize)(this.props.rightmostColSize);
+    }
+
+    _getLeftmostColSize(): string {
+        return defaultTo(ReduxFormGeneratorClass.defaultProps.leftmostColSize)(this.props.leftmostColSize);
+    }
+
     _getItems(): ItemsType | null {
         return defaultTo(ReduxFormGeneratorClass.defaultProps.items)(this.props.items);
     }

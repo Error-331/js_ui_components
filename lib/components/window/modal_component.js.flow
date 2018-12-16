@@ -17,13 +17,15 @@ import {GlobalOverlayComponent} from './global_overlay_component';
 import {RegularCardComponent} from './../layout/structure/regular_card_component';
 
 // type definitions
+export type OnOverlayClickCallbackType = (event: SyntheticEvent<HTMLElement>) => void;;
+
 type CSSStylesType = {
     [string]: mixed
 };
 
 type PropsTypes = {
     /**
-     * Flag that indicates whether to show or not to show modal dialog box component
+     * Flag that indicates whether to show or not to show modal component
      */
 
     show?: boolean,
@@ -32,14 +34,19 @@ type PropsTypes = {
      * Header of the modal component (any valid react component)
      */
 
-    header: React.Element<any>,
-
+    header: React.Node,
 
     /**
      * Footer of the modal component (any valid react component)
      */
 
-    footer: React.Element<any>,
+    footer: React.Node,
+
+    /**
+     * Callback function which will be called when overlay is clicked
+     */
+
+    onOverlayClick?: OnOverlayClickCallbackType,
 
     /**
      * Content for modal component (body)
@@ -110,7 +117,8 @@ export class ModalClass extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'ModalClass';
 
     static defaultProps = {
-        show: false
+        show: false,
+        onOverlayClick: () => {},
     };
 
     // endregion
@@ -151,6 +159,10 @@ export class ModalClass extends React.Component<PropsTypes, StateTypes> {
         return defaultTo(ModalClass.defaultProps.show)(show);
     }
 
+    _getOverlayClickHandler(): OnOverlayClickCallbackType {
+        return defaultTo(ModalClass.defaultProps.onOverlayClick)(this.props.onOverlayClick);
+    }
+
     // endregion
 
     // region handlers
@@ -175,7 +187,11 @@ export class ModalClass extends React.Component<PropsTypes, StateTypes> {
     }
 
     _renderOverlayComponent(): React.Node {
-        return <GlobalOverlayComponent show={this._shouldShow()} opacity={this._getOverlayOpacity()}>
+        return <GlobalOverlayComponent
+            show={this._shouldShow()}
+            opacity={this._getOverlayOpacity()}
+            onOverlayClick={this._getOverlayClickHandler()}
+        >
             {this._renderBody()}
         </GlobalOverlayComponent>;
     }
