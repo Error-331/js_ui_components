@@ -139,6 +139,8 @@ const cardContainerStyles = {
 
 const buttonsContainerStyles = {                                                                                               
     gridArea: 'buttons',
+    
+    marginTop: '12px',
 };
 
 const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-window-alt">Edit template data</RegularCardHeaderComponent>;
