@@ -29,7 +29,7 @@ type PropsTypes = {
      * Callback function which will be called when overlay is clicked
      */
 
-    onOverlayClick?: (event: SyntheticMouseEvent<any>) => void,
+    onOverlayClick?: (event: SyntheticEvent<HTMLElement>) => void,
 
     /**
      * Child node (with optional sub-nodes)

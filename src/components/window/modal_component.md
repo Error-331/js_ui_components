@@ -6,8 +6,7 @@ const {Component} = require('react');
 
 const {ModalComponent} = require('./modal_component');
 const {RegularButtonComponent} = require('./../buttons/regular_button_component');
-const {RegularCardHeaderComponent} = require('./../layout/structure/regular_card_header_component');
-
+const {RegularCardHeaderComponent, InlineTextBlock, InlineHeader} = require('./../layout');
 const {ElementsRow} = require('./../layout/alignment/elements/elements_row');
 
 class DemoGlobalModalComponent1 extends Component {
@@ -39,18 +38,18 @@ class DemoGlobalModalComponent1 extends Component {
                 footer={modalFooter}
             >
             
-                <h3>
+                <InlineHeader level={5}>
                     Test header 1
-                </h3>
-            
-                <div>
+                </InlineHeader>
+               
+                <InlineTextBlock>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin vitae nisl eget bibendum. Nunc tristique est a dolor interdum, eu faucibus
                     nunc mollis. Morbi gravida libero ac aliquam rhoncus. Donec diam magna, interdum a urna a, rutrum auctor dui. Mauris id molestie dolor, eu
                     consectetur elit. Donec id nisl vitae ex scelerisque suscipit.
-                </div>
+                </InlineTextBlock>
             </ModalComponent>
            
-        </div>
+        </div>;
     }
     
     constructor(props) {
