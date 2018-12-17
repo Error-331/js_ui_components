@@ -2,7 +2,6 @@
 
 // external imports
 import React, {Component} from 'react';
-import {Form} from 'redux-form';
 import {reduxForm} from 'redux-form/immutable';
 import injectSheet from 'react-jss';
 
@@ -19,9 +18,9 @@ const styles = () => ({});
 class ComponentFormContainer extends Component {
     render() {
         return (
-            <Form onSubmit={() => {}}>
+            <form onSubmit={() => {}}>
                 {this.props.children}
-            </Form>
+            </form>
         );
     }
 }

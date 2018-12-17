@@ -83,12 +83,14 @@ function SimpleFlexGridRowFunction(props: PropsTypes) {
 
     const flexGrow: number = full === true ? 1 : 0;
     const justifyContent: string = defaultTo('flex-start')(xAlign);
-    const alignItems: string = defaultTo('align-items')(yAlign);
+    const alignItems: string = defaultTo('stretch')(yAlign);
+    const alignContent: string = defaultTo('stretch')(yAlign);
 
     return <div className={componentClassNames} style={{
         flexGrow,
-        alignItems,
         justifyContent,
+        alignItems,
+        alignContent,
         ...style
     }}>
         {children}
