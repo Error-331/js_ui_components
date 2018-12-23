@@ -9,7 +9,8 @@ import classNames from 'classnames';
 
 import type {FieldProps} from 'redux-form';
 import {isNil, equals, clone, defaultTo, mergeDeepRight, toPairs, addIndex, map, find} from 'ramda';
-import {isNotNil, generateRandomIdNumber} from '@webfuturistics/design_components';
+import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
+import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 // local imports
 import type {FormTextInputTypes} from './form_text_input_component';

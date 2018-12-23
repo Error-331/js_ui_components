@@ -19,7 +19,7 @@ const testContainerStyle = {
 
 <div style={testContainerStyle}>
     <VerticalIconNavigationMenuComponent bottomItemsCount={3}>
-        <i className='fas fa-home'/>
+        <a href='#'><i className='fas fa-home'/></a>
         <i className='fas fa-analytics'/>
         <i className='fas fa-table'/>
       

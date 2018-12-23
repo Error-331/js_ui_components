@@ -11,7 +11,7 @@ import type {FieldProps} from 'redux-form';
 import moment from 'moment';
 
 import {is, isNil, defaultTo, clone, mergeDeepRight} from 'ramda';
-import {isNotNil, generateRandomIdNumber} from '@webfuturistics/design_components';
+import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 // local imports
 import type {FormTextInputTypes} from './form_text_input_component';

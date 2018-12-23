@@ -8,7 +8,7 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import {isNil, complement, equals, always, defaultTo, pathSatisfies, cond} from 'ramda';
-import {isNotNil} from '@webfuturistics/design_components';
+import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
 

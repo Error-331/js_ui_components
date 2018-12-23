@@ -8,7 +8,7 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import {T, isNil, isEmpty, equals, unless, or, cond, always, defaultTo, addIndex, bind, map, reduce, clone} from 'ramda';
-import {isNotNil} from '@webfuturistics/design_components';
+import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
 import type {CombinedEventType, ExtendedEventTargetType} from './../../types/dom_types';

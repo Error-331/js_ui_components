@@ -12,7 +12,7 @@ import classNames from 'classnames';
 
 import {is, equals, gt, and, defaultTo, inc, map} from 'ramda'
 
-import {generateRandomIdNumber} from '@webfuturistics/design_components';
+import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 // local imports
 import type {ThemeType} from './../../../types/theme_types';

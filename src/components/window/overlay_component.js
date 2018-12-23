@@ -8,7 +8,7 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import {is, isNil, defaultTo} from 'ramda';
-import {isNotNil} from '@webfuturistics/design_components';
+import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';

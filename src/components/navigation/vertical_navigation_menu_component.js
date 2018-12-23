@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import injectSheet from 'react-jss';
 
 import {__, T, isNil, isEmpty, equals, unless, and, complement, cond, always, addIndex, indexOf, contains, append, remove, map, curry} from 'ramda';
-import {isNotNil} from '@webfuturistics/design_components';
+import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
 import {RegularCardComponent} from './../layout/structure/regular_card_component';

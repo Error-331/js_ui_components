@@ -98,8 +98,10 @@ const styles = theme => ({
 
                 cursor: 'pointer',
 
-                '& > i': {
+                '& > i,a': {
                     fontSize: `${theme.navigationStyles.iconFontSize}px`,
+
+                    textDecoration: 'none',
                     color: theme.navigationStyles.fontColor1,
                 },
 

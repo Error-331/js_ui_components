@@ -8,7 +8,7 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import {isNil, clone} from 'ramda';
-import {generateRandomIdNumber} from '@webfuturistics/design_components';
+import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 import type {FieldProps} from 'redux-form';
 
