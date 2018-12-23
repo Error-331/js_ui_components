@@ -61,7 +61,7 @@ const styles = theme => ({
 
         justifyContent: 'flex-start',
         alignItems: 'stretch',
-        alignContent: 'flex-start',
+        alignContent: 'stretch',
 
         '&.verticalStretch': {
             height: '100%'

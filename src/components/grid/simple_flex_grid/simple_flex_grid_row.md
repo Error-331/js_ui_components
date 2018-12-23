@@ -47,7 +47,7 @@ const TestContainer = injectSheet(styles)(TestContainerComponent);
 
 ```
 
-Example usage of simple flex grid row that occupies the whole container height with two columns inside it and:
+Example usage of simple flex grid row that occupies the whole container height with two columns inside it:
 
 ```jsx
 

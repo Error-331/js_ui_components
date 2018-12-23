@@ -45,12 +45,12 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-type OptionsType = ReduxFormTextInputPropsType |
+export type OptionsType = ReduxFormTextInputPropsType |
                    ReduxCheckboxInputPropsType |
                    ReduxFormDropDownInputPropsType |
                    ReduxFormDateInputPropsType;
 
-type ItemType = {
+export type ItemType = {
     type: 'text' | 'checkbox',
     span?: number,
     name: string,
@@ -58,9 +58,9 @@ type ItemType = {
     options: OptionsType
 };
 
-type ItemsType = NestedArray<ItemType>;
+export type ItemsType = NestedArray<ItemType>;
 
-type PropsTypes = {
+export type PropsTypes = {
     /**
      * Form items specifications
      */
@@ -88,7 +88,7 @@ type PropsTypes = {
     classes: any,
 }
 
-type StateTypes = {};
+export type StateTypes = {};
 
 // constants definition
 const ITEM_NAME_POSTFIX: string = '_item';

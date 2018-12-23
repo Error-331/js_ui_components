@@ -83,7 +83,7 @@ function TestContainerComponent(props) {
 
     return <div className={classes.testContainer}>
         <SimpleFlexGridContainer stretch={true} className={classes.stretchedContainer}>
-            <SimpleFlexGridRow>
+            <SimpleFlexGridRow full={true}>
                 <SimpleFlexGridColumn full={true} style={{border: '1px solid black', padding: '5px'}}>
                     <InlineTextBlock className={classes.testInlineBlock}>Column 1</InlineTextBlock>
                 </SimpleFlexGridColumn>

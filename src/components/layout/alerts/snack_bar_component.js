@@ -79,7 +79,7 @@ const styles = theme => ({
 
         justifyContent: 'flex-start',
         alignItems: 'center',
-        alignContent: 'flex-start',
+        alignContent: 'center',
 
         padding: `${theme.layoutStyles.topSpacing}px 
                   ${theme.layoutStyles.rightSpacing}px 
