@@ -10,9 +10,12 @@ import moment from  'moment';
 import {isNil} from 'ramda';
 
 // local imports
+import {SMALL_SIZE, MEDIUM_SIZE} from './../../../theming/constants/general_constants';
+
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 import {InlineTextBlock} from './../../layout/text/inline_text_block';
 import {InlineHeader} from './../../layout/text/inline_header';
+import {FontIcon} from './../../layout/icons/font_icon';
 
 // type definitions
 type PropsTypes = {
@@ -21,6 +24,12 @@ type PropsTypes = {
      */
 
     logoSrc?: string,
+
+    /**
+     * Icon class name that is used when path to logo image is not specified
+     */
+
+    noIconClassName?: string,
 
     /**
      * Date when vacancy was posted
@@ -102,6 +111,7 @@ const styles = theme => ({
 
                 gridArea: 'company-logo',
                 alignSelf: 'start',
+                justifySelf: 'center',
 
                 width: '100%'
             },
@@ -177,7 +187,7 @@ const styles = theme => ({
 
 // component implementation
 export function VacancyCard1Function(props: PropsTypes): React.Node {
-    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
+    const {logoSrc, noIconClassName, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
 
     const parsedDate: moment = moment(date);
     const formattedDate: string = parsedDate.format('LL');
@@ -196,7 +206,11 @@ export function VacancyCard1Function(props: PropsTypes): React.Node {
         containerClassName={classes.componentContainer}
         bodyClassName={classes.regularCardContainer}
     >
-        {logoSrc ? <img src={logoSrc} className={classes.companyLogoContainer}/> : <div/>}
+        {
+            logoSrc ?
+                <img src={logoSrc} className={classes.companyLogoContainer}/> :
+                <FontIcon size={MEDIUM_SIZE} iconClassName={noIconClassName} className={classes.companyLogoContainer}/>
+        }
 
         <InlineTextBlock className={classes.companyNameContainer}>{company}</InlineTextBlock>
         <InlineTextBlock className={classes.publishDateContainer}>{formattedDate}</InlineTextBlock>
