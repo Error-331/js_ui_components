@@ -20,6 +20,6 @@ export const scrollBarStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}):
 
         scrollBarThumbBorderColor: baseStyles.noneTransparentBGColor,
         scrollBarThumbBackgroundColor: baseStyles.mainPrimaryColor,
-        scrollBarTrackBackgroundColor: baseStyles.noneTransparentBGColor,
+        scrollBarTrackBackgroundColor: 'transparent',
     });
 };

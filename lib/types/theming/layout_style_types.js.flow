@@ -29,7 +29,7 @@ export type LayoutStylesType = {
     bodyFontSize: number,
 
     headerBorderRadius: number,
-    alertBorderRadius: number,
+    commonBorderRadius: number,
 
     topSpacing: number,
     bottomSpacing: number,
