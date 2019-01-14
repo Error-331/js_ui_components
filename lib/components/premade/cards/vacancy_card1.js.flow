@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import moment from  'moment';
-import {isNil} from 'ramda';
+import {isNil, defaultTo} from 'ramda';
 
 // local imports
 import {SMALL_SIZE, MEDIUM_SIZE} from './../../../theming/constants/general_constants';
@@ -18,6 +18,8 @@ import {InlineHeader} from './../../layout/text/inline_header';
 import {FontIcon} from './../../layout/icons/font_icon';
 
 // type definitions
+export type ClickCallbackType = (event: SyntheticEvent<HTMLDivElement>) => void;
+
 type PropsTypes = {
     /**
      * Path to image with logo
@@ -78,6 +80,12 @@ type PropsTypes = {
      */
 
     currency?: string,
+
+    /**
+     * Callback function which will be called once user clicks on a card
+     */
+
+    onClick?: ?ClickCallbackType,
 };
 
 type StateTypes = {};
@@ -200,7 +208,11 @@ export function VacancyCard1Function(props: PropsTypes): React.Node {
         salary = `${currency}${salaryMin ? salaryMin : ''}${salaryMax ? `${salaryMin ? '-' : ''}${salaryMax}` : ''}`;
     }
 
+    let {onClick} = props;
+    onClick = defaultTo(() => {})(onClick);
+
     return <RegularCardComponent
+        onClickBody={onClick}
         popOnHover={true}
         maxPopLevel={3}
         containerClassName={classes.componentContainer}

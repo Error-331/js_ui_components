@@ -30,7 +30,7 @@ class DemoGlobalModalDialogBoxComponent1 extends Component {
     }
    
     render() {    
-        const buttons = [{label: 'load', onClick: this._onSwitchLoading}, {variant: 'outlined', label: 'cancel', onClick: this._onHideModalDialogBox}]
+        const buttons = [{label: 'load', onClick: this._onSwitchLoading}, {variant: 'outlined', label: 'cancel', onClick: this._onHideModalDialogBox}];
     
         return <div>
             <RegularButtonComponent onClick={this._onShowModalDialogBox} label='show modal dialog box'/>

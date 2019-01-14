@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {always, complement, gt, lt, is, isNil, isEmpty, ifElse, unless} from 'ramda';
+import {always, defaultTo, complement, gt, lt, is, isNil, isEmpty, ifElse, unless} from 'ramda';
 
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
@@ -19,6 +19,7 @@ type StyleType = {
 
 export type MouseOverCallbackType = (event: SyntheticMouseEvent<HTMLDivElement>) => void;
 export type MouseLeaveCallbackType = (event: SyntheticMouseEvent<HTMLDivElement>) => void;
+export type ClickCallbackType = (event: SyntheticEvent<HTMLDivElement>) => void;
 
 type PropsTypes = {
     /**
@@ -88,6 +89,12 @@ type PropsTypes = {
      */
 
     onMouseLeaveContainer?: MouseLeaveCallbackType,
+
+    /**
+     * Callback function which will be called once user clicks on a card body
+     */
+
+    onClickBody?: ?ClickCallbackType,
 
     /**
      * JSS theme object
@@ -228,6 +235,8 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     static defaultProps = {
         containerClassName: '',
 
+        onClickBody: () => {},
+
         theme: {},
         classes: {}
     };
@@ -311,6 +320,11 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
         return popOnHover;
     }
 
+    _getClickBodyHandler(): ClickCallbackType {
+        return defaultTo(RegularCardComponent.defaultProps.onClickBody)
+        (this.props.onClickBody);
+    }
+
     // endregion
 
     // region handlers
@@ -358,6 +372,7 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
         return <div
             className={this._getBodyClasses()}
             style={this.props.bodyStyle}
+            onClick={this._getClickBodyHandler()}
         >
             {children}
         </div>;
