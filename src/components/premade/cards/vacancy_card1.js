@@ -7,20 +7,31 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import moment from  'moment';
-import {isNil} from 'ramda';
+import {isNil, defaultTo} from 'ramda';
 
 // local imports
+import {SMALL_SIZE, MEDIUM_SIZE} from './../../../theming/constants/general_constants';
+
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 import {InlineTextBlock} from './../../layout/text/inline_text_block';
 import {InlineHeader} from './../../layout/text/inline_header';
+import {FontIcon} from './../../layout/icons/font_icon';
 
 // type definitions
+export type ClickCallbackType = (event: SyntheticEvent<HTMLDivElement>) => void;
+
 type PropsTypes = {
     /**
      * Path to image with logo
      */
 
     logoSrc?: string,
+
+    /**
+     * Icon class name that is used when path to logo image is not specified
+     */
+
+    noIconClassName?: string,
 
     /**
      * Date when vacancy was posted
@@ -71,6 +82,12 @@ type PropsTypes = {
     currency?: string,
 
     /**
+     * Callback function which will be called once user clicks on a card
+     */
+
+    onClick?: ?ClickCallbackType,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -96,7 +113,7 @@ const styles = theme => ({
             gridTemplateAreas: `
                 "company-logo company-name publish-date"
                 "title        title        title"
-                "location     location       salary"
+                "location     location     salary"
             `,
 
             gridTemplateColumns: '35px 1fr max-content',
@@ -109,6 +126,7 @@ const styles = theme => ({
 
                 gridArea: 'company-logo',
                 alignSelf: 'start',
+                justifySelf: 'center',
 
                 width: '100%'
             },
@@ -184,7 +202,7 @@ const styles = theme => ({
 
 // component implementation
 export function VacancyCard1Function(props: PropsTypes): React.Node {
-    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
+    const {logoSrc, noIconClassName, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
 
     const parsedDate: moment = moment(date);
     const formattedDate: string = parsedDate.format('LL');
@@ -197,13 +215,21 @@ export function VacancyCard1Function(props: PropsTypes): React.Node {
         salary = `${currency}${salaryMin ? salaryMin : ''}${salaryMax ? `${salaryMin ? '-' : ''}${salaryMax}` : ''}`;
     }
 
+    let {onClick} = props;
+    onClick = defaultTo(() => {})(onClick);
+
     return <RegularCardComponent
+        onClickBody={onClick}
         popOnHover={true}
         maxPopLevel={3}
         containerClassName={classes.componentContainer}
         bodyClassName={classes.regularCardContainer}
     >
-        {logoSrc ? <img src={logoSrc} className={classes.companyLogoContainer}/> : <div/>}
+        {
+            logoSrc ?
+                <img src={logoSrc} className={classes.companyLogoContainer}/> :
+                <FontIcon size={MEDIUM_SIZE} iconClassName={noIconClassName} className={classes.companyLogoContainer}/>
+        }
 
         <InlineTextBlock className={classes.companyNameContainer}>{company}</InlineTextBlock>
         <InlineTextBlock className={classes.publishDateContainer}>{formattedDate}</InlineTextBlock>

@@ -46,7 +46,6 @@ const cardsData = [
     {id: 17, card: javaCard17},
 ];
 
-
 <RegularCardComponent header={cardDrawerHeader}>
     <CardDrawerComponent data={cardsData}/>
 </RegularCardComponent>

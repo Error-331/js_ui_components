@@ -70,7 +70,7 @@ type PropsTypes = {
 // styles definition
 const styles = theme => ({
     cardComponentContainer: {
-        borderRadius: `${theme.layoutStyles.alertBorderRadius}px`,
+        borderRadius: `${theme.layoutStyles.commonBorderRadius}px`,
         backgroundColor: theme.layoutStyles.headerBGColor,
 
         '&.accent': {
@@ -93,7 +93,7 @@ const styles = theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
-        borderRadius: `${theme.layoutStyles.alertBorderRadius}px`,
+        borderRadius: `${theme.layoutStyles.commonBorderRadius}px`,
 
         '&.accent': {
             backgroundColor: theme.baseStyles.accentColorPrimary

@@ -305,7 +305,6 @@ export class CardDrawerClass extends React.Component<PropsTypes, StateTypes> {
     }
 
     _renderInnerComponentContainer(): React.Node {
-        console.log(this._getInnerComponentContainerStyle());
         return <div
             className={this._getInnerComponentContainerClass()}
             style={this._getInnerComponentContainerStyle()}
