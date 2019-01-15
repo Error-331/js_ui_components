@@ -69,6 +69,14 @@ type PropsTypes = {
      */
 
     currency?: string,
+
+    /**
+     * JSS inner classes
+     *
+     * @ignore
+     */
+
+    classes: any,
 };
 
 type StateTypes = {};
@@ -86,11 +94,10 @@ const styles = theme => ({
             height: '100%',
 
             gridTemplateAreas: `
-                    "company-logo company-name publish-date"
-                    "title        title        title"
-                    "location     location       salary"
-                `,
-
+                "company-logo company-name publish-date"
+                "title        title        title"
+                "location     location       salary"
+            `,
 
             gridTemplateColumns: '35px 1fr max-content',
             gridTemplateRows: 'minMax(35px, max-content) 1fr max-content',
