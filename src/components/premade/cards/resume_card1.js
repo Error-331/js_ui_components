@@ -10,12 +10,23 @@ import moment from  'moment';
 import {isNil} from 'ramda';
 
 // local imports
+import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
+
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 import {InlineTextBlock} from './../../layout/text/inline_text_block';
 import {InlineHeader} from './../../layout/text/inline_header';
+import {FontIcon} from './../../layout/icons/font_icon';
 
 // type definitions
 type PropsTypes = {
+    personLogoSrc?: string,
+
+    /**
+     * Icon class name that is used when path to person logo image is not specified
+     */
+
+    noIconClassName?: string,
+
     name: string,
     lastName: string,
 
@@ -77,56 +88,101 @@ const styles = theme => ({
             height: '100%',
 
             gridTemplateAreas: `
-                "name     last-name update-date"
-                "position position  position",
-                "location location  salary"
+                "person-logo name     last-name update-date"
+                "position    position position  position"
+                "location    location location  salary"
             `,
 
-            gridTemplateColumns: '35px 1fr max-content',
+            gridTemplateColumns: '35px max-content 1fr max-content',
             gridTemplateRows: 'minMax(35px, max-content) 1fr max-content',
 
             cursor: 'pointer',
+
+            '& > $personLogoContainer': {
+                boxSizing: 'border-box',
+
+                gridArea: 'person-logo',
+                alignSelf: 'start',
+                justifySelf: 'center',
+
+                width: '100%',
+            },
 
             '& > $nameContainer': {
                 boxSizing: 'border-box',
 
                 gridArea: 'name',
+                alignSelf: 'left',
+
+                paddingLeft: '8px',
+                fontFamily: theme.fontStacks.boldFontFamilyStack,
+                fontSize: '16px',
+
+                color: theme.baseStyles.mainPrimaryColor
             },
 
             '& > $lastNameContainer': {
                 boxSizing: 'border-box',
 
                 gridArea: 'last-name',
+                alignSelf: 'left',
+
+                paddingLeft: '8px',
+                fontFamily: theme.fontStacks.boldFontFamilyStack,
+                fontSize: '16px',
+
+                color: theme.baseStyles.mainPrimaryColor
             },
 
             '& > $updateDateContainer': {
                 boxSizing: 'border-box',
 
                 gridArea: 'update-date',
+                textAlign: 'right',
+
+                paddingLeft: '8px',
+                fontSize: '10px',
+                color: theme.baseStyles.utilityBGColor
             },
 
             '& > $positionContainer': {
                 boxSizing: 'border-box',
 
                 gridArea: 'position',
+                paddingTop: '8px',
+
+                fontFamily: theme.fontStacks.boldFontFamilyStack,
+                fontSize: '18px',
+
+                color: theme.baseStyles.mainPrimaryColor
             },
 
             '& > $locationContainer': {
                 boxSizing: 'border-box',
-
                 gridArea: 'location',
+
+                textAlign: 'left',
+                fontSize: '14px',
+
+                color: theme.baseStyles.utilityBGColor
             },
 
             '& > $salaryContainer': {
                 boxSizing: 'border-box',
-
                 gridArea: 'salary',
+
+                fontFamily: theme.fontStacks.boldFontFamilyStack,
+                fontSize: '15px',
+
+                textAlign: 'right',
+                color: theme.baseStyles.accentColorPrimary,
             },
         }
     },
 
     regularCardContainer: {},
 
+    personLogoContainer: {},
     nameContainer: {},
     lastNameContainer: {},
     updateDateContainer: {},
@@ -146,7 +202,7 @@ const styles = theme => ({
 
 // component implementation
 export function ResumeCard1Function(props: PropsTypes): React.Node {
-    const {name, lastName, updateDate, position, location, desiredSalary, classes} = props;
+    const {personLogoSrc, noIconClassName, name, lastName, updateDate, position, location, desiredSalary, classes} = props;
 
     const parsedUpdateDate: moment = moment(updateDate);
     const formattedUpdateDate: string = parsedUpdateDate.format('LL');
@@ -157,6 +213,13 @@ export function ResumeCard1Function(props: PropsTypes): React.Node {
         containerClassName={classes.componentContainer}
         bodyClassName={classes.regularCardContainer}
     >
+
+        {
+            personLogoSrc ?
+                <img src={personLogoSrc} className={classes.personLogoContainer}/> :
+                <FontIcon size={MEDIUM_SIZE} iconClassName={noIconClassName} className={classes.companyLogoContainer}/>
+        }
+
         <InlineTextBlock className={classes.nameContainer}>{name}</InlineTextBlock>
         <InlineTextBlock className={classes.lastNameContainer}>{lastName}</InlineTextBlock>
         <InlineTextBlock className={classes.updateDateContainer}>{formattedUpdateDate}</InlineTextBlock>

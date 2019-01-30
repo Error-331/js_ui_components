@@ -10,7 +10,7 @@ import moment from  'moment';
 import {isNil, defaultTo} from 'ramda';
 
 // local imports
-import {SMALL_SIZE, MEDIUM_SIZE} from './../../../theming/constants/general_constants';
+import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 import {InlineTextBlock} from './../../layout/text/inline_text_block';
@@ -156,26 +156,36 @@ const styles = theme => ({
             },
 
             '& > $titleContainer': {
+                boxSizing: 'border-box',
+
                 gridArea: 'title',
                 paddingTop: '8px',
+
                 fontFamily: theme.fontStacks.boldFontFamilyStack,
                 fontSize: '18px',
+
                 color: theme.baseStyles.mainPrimaryColor
             },
 
             '& > $locationContainer': {
+                boxSizing: 'border-box',
                 gridArea: 'location',
+
                 textAlign: 'left',
                 fontSize: '14px',
+
                 color: theme.baseStyles.utilityBGColor
             },
 
             '& > $salaryContainer': {
+                boxSizing: 'border-box',
                 gridArea: 'salary',
+
                 fontFamily: theme.fontStacks.boldFontFamilyStack,
                 fontSize: '15px',
+
+                textAlign: 'right',
                 color: theme.baseStyles.accentColorPrimary,
-                textAlign: 'right'
             },
         }
     },
