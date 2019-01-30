@@ -189,6 +189,11 @@ module.exports = {
                             name: 'Dialog boxes',
                             components: path.join(__dirname, './../src/components/premade/dialog_boxes/**/[A-Za-z_]*_dialog_box[0-1]*.js'),
                         },
+
+                        {
+                            name: 'Cards',
+                            components: path.join(__dirname, './../src/components/premade/cards/**/[A-Za-z_]*_card[0-1]*.js'),
+                        },
                     ]
                 },
             ]
