@@ -10,7 +10,7 @@ import moment from  'moment';
 import {isNil, defaultTo} from 'ramda';
 
 // local imports
-import {SMALL_SIZE, MEDIUM_SIZE} from './../../../theming/constants/general_constants';
+import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 import {InlineTextBlock} from './../../layout/text/inline_text_block';
@@ -86,6 +86,14 @@ type PropsTypes = {
      */
 
     onClick?: ?ClickCallbackType,
+
+    /**
+     * JSS inner classes
+     *
+     * @ignore
+     */
+
+    classes: any,
 };
 
 type StateTypes = {};
@@ -103,11 +111,10 @@ const styles = theme => ({
             height: '100%',
 
             gridTemplateAreas: `
-                    "company-logo company-name publish-date"
-                    "title        title        title"
-                    "location     location       salary"
-                `,
-
+                "company-logo company-name publish-date"
+                "title        title        title"
+                "location     location     salary"
+            `,
 
             gridTemplateColumns: '35px 1fr max-content',
             gridTemplateRows: 'minMax(35px, max-content) 1fr max-content',
@@ -130,7 +137,7 @@ const styles = theme => ({
                 gridArea: 'company-name',
                 alignSelf: 'center',
 
-                paddingLeft: '8px',
+                paddingLeft: '10px',
                 fontFamily: theme.fontStacks.boldFontFamilyStack,
                 fontSize: '16px',
 
@@ -149,26 +156,36 @@ const styles = theme => ({
             },
 
             '& > $titleContainer': {
+                boxSizing: 'border-box',
+
                 gridArea: 'title',
                 paddingTop: '8px',
+
                 fontFamily: theme.fontStacks.boldFontFamilyStack,
                 fontSize: '18px',
+
                 color: theme.baseStyles.mainPrimaryColor
             },
 
             '& > $locationContainer': {
+                boxSizing: 'border-box',
                 gridArea: 'location',
+
                 textAlign: 'left',
                 fontSize: '14px',
+
                 color: theme.baseStyles.utilityBGColor
             },
 
             '& > $salaryContainer': {
+                boxSizing: 'border-box',
                 gridArea: 'salary',
+
                 fontFamily: theme.fontStacks.boldFontFamilyStack,
                 fontSize: '15px',
+
+                textAlign: 'right',
                 color: theme.baseStyles.accentColorPrimary,
-                textAlign: 'right'
             },
         }
     },
@@ -195,7 +212,7 @@ const styles = theme => ({
 
 // component implementation
 export function VacancyCard1Function(props: PropsTypes): React.Node {
-    const {logoSrc, noIconClassName, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
+    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
 
     const parsedDate: moment = moment(date);
     const formattedDate: string = parsedDate.format('LL');
@@ -210,6 +227,9 @@ export function VacancyCard1Function(props: PropsTypes): React.Node {
 
     let {onClick} = props;
     onClick = defaultTo(() => {})(onClick);
+
+    let {noIconClassName} = props;
+    noIconClassName = isNil(noIconClassName) ? 'fas fa-search-dollar' : noIconClassName;
 
     return <RegularCardComponent
         onClickBody={onClick}

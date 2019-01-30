@@ -1,4 +1,4 @@
-Test:
+Usage example 1:
 
 ```jsx
 
@@ -11,6 +11,21 @@ Test:
     salaryMin={3000}
     salaryMax={3500} 
     currency='$'
+/>
+
+```
+
+Usage example 2:
+
+```jsx
+
+<VacancyCard1 
+    date="2018-01-12T10:00:00" 
+    company='Logoless' 
+    title='Junior Java Developrer' 
+    remote={true} 
+    salaryMax={1500} 
+    currency='hr'
 />
 
 ```

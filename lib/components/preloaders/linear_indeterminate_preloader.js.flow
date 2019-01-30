@@ -49,14 +49,23 @@ export const LINEAR_INDETERMINATE_PRELOADER_SUB_BAR_KEYFRAMES_STYLE_NAME: string
 // styles definition
 const barStylesFunc = (theme: ThemeType) => ({
     position: 'absolute',
+
+    width: 'auto',
     height: '100%',
 
-    top: 0,
     left: 0,
 
-    willChange: 'left, right',
+    bottom: 0,
+    top: 0,
 
-    animationName: LINEAR_INDETERMINATE_PRELOADER_MAIN_BAR_KEYFRAMES_STYLE_NAME,
+    willChange: 'left, right',
+    transformOrigin: 'left',
+
+    transitionProperty: 'transform',
+    transitionDuration: '0.2s',
+    transitionTimingFunction: 'linear',
+    transitionDelay: '0s',
+
     animationDuration: '2.1s',
     animationIterationCount: 'infinite',
 
@@ -75,13 +84,17 @@ const styles = theme => ({
 
         '& > $mainBar': {
             extend: barStylesFunc(theme),
+
+            animationName: LINEAR_INDETERMINATE_PRELOADER_MAIN_BAR_KEYFRAMES_STYLE_NAME,
             animationTimingFunction: 'cubic-bezier(0.65, 0.815, 0.735, 0.395)',
         },
 
         '& > $subBar': {
             extend: barStylesFunc(theme),
-            animationDelay: '1.15s',
+
+            animationName: LINEAR_INDETERMINATE_PRELOADER_SUB_BAR_KEYFRAMES_STYLE_NAME,
             animationTimingFunction: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+            animationDelay: '1.15s',
         },
     },
 

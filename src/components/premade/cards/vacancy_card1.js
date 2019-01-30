@@ -137,7 +137,7 @@ const styles = theme => ({
                 gridArea: 'company-name',
                 alignSelf: 'center',
 
-                paddingLeft: '8px',
+                paddingLeft: '10px',
                 fontFamily: theme.fontStacks.boldFontFamilyStack,
                 fontSize: '16px',
 
@@ -212,7 +212,7 @@ const styles = theme => ({
 
 // component implementation
 export function VacancyCard1Function(props: PropsTypes): React.Node {
-    const {logoSrc, noIconClassName, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
+    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
 
     const parsedDate: moment = moment(date);
     const formattedDate: string = parsedDate.format('LL');
@@ -227,6 +227,9 @@ export function VacancyCard1Function(props: PropsTypes): React.Node {
 
     let {onClick} = props;
     onClick = defaultTo(() => {})(onClick);
+
+    let {noIconClassName} = props;
+    noIconClassName = isNil(noIconClassName) ? 'fas fa-search-dollar' : noIconClassName;
 
     return <RegularCardComponent
         onClickBody={onClick}
