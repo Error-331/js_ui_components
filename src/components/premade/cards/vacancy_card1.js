@@ -212,10 +212,15 @@ const styles = theme => ({
 
 // component implementation
 export function VacancyCard1Function(props: PropsTypes): React.Node {
-    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, currency, classes} = props;
+    const {logoSrc, date, company, title, location, remote, salaryMin, salaryMax, classes} = props;
 
     const parsedDate: moment = moment(date);
     const formattedDate: string = parsedDate.format('LL');
+
+    let {currency, onClick} = props;
+
+    currency = defaultTo('')(currency);
+    onClick = defaultTo(() => {})(onClick);
 
     let salary: string = '';
 
@@ -224,9 +229,6 @@ export function VacancyCard1Function(props: PropsTypes): React.Node {
     } else {
         salary = `${currency}${salaryMin ? salaryMin : ''}${salaryMax ? `${salaryMin ? '-' : ''}${salaryMax}` : ''}`;
     }
-
-    let {onClick} = props;
-    onClick = defaultTo(() => {})(onClick);
 
     let {noIconClassName} = props;
     noIconClassName = isNil(noIconClassName) ? 'fas fa-search-dollar' : noIconClassName;

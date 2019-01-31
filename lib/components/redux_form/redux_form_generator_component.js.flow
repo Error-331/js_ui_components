@@ -101,8 +101,8 @@ const styles = theme => ({
 
         alignItems: 'end',
 
-        gridColumnGap: `${theme.layoutStyles.sectionVerticalSpacing}px`,
-        gridRowGap: `${theme.layoutStyles.sectionHorizontalSpacing}px`,
+        gridColumnGap: `${theme.layoutStyles.formHorizontalSpacing}px`,
+        gridRowGap: `${theme.layoutStyles.formVerticalSpacing}px`,
     }
 });
 

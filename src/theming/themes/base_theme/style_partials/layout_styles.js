@@ -44,7 +44,7 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         sectionHorizontalSpacing: 12, // px (between components)
         sectionVerticalSpacing: 12, // px (between components)
 
-        formHorizontalSpacing: 25, // px (between form elements inside the component)
+        formHorizontalSpacing: 22, // px (between form elements inside the component)
         formVerticalSpacing: 15, // px (between form elements inside the component)
 
         headerFontColor: baseStyles.noneTransparentBGColor,

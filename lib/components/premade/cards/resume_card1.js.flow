@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import moment from  'moment';
-import {isNil} from 'ramda';
+import {defaultTo, isNil} from 'ramda';
 
 // local imports
 import {SMALL_SIZE, MEDIUM_SIZE} from './../../../theming/constants/general_constants';
@@ -54,6 +54,12 @@ type PropsTypes = {
      */
 
     position: string,
+
+    /**
+     * Specialization in which current person is proficient
+     */
+
+    specialization?: string,
 
     /**
      * Location where current person is living
@@ -253,7 +259,7 @@ export function ResumeCard1Function(props: PropsTypes): React.Node {
     let {position, specialization, currency, remote, desiredSalary, noIconClassName} = props;
 
     position = `${position}${isNil(specialization) ? '' : ` (${specialization.toLowerCase()})`}`;
-    currency = isNil(currency) ? '' : currency;
+    currency = defaultTo('')(currency);
 
     if (isNil(desiredSalary)) {
         desiredSalary = 'Negotiable';
@@ -261,9 +267,9 @@ export function ResumeCard1Function(props: PropsTypes): React.Node {
         desiredSalary = `${currency}${desiredSalary}`;
     }
 
-    noIconClassName = isNil(noIconClassName) ? 'fas fa-address-card' : noIconClassName;
+    noIconClassName = defaultTo('fas fa-address-card')(noIconClassName);
 
-    remote = isNil(remote) ? false : remote;
+    remote = defaultTo(false)(remote);
     const locationIcon: string = remote ? 'fas fa-map-marker' : 'fas fa-map-marker-slash';
 
     return <RegularCardComponent

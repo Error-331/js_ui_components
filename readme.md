@@ -51,3 +51,4 @@
 - const styles = theme =>  - type for theme;  
 - update webpack and stylegist;
 - make mechanism that always returns top`est z-Index;
+- form generator - options -> props
