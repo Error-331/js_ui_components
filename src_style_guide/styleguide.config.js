@@ -46,6 +46,7 @@ module.exports = {
                 {
                     name: 'Grid',
                     content: path.join(__dirname, './docs/grid/index.md'),
+                    components: path.join(__dirname, './../src/components/grid/**/[A-Za-z_]*_component.js'),
                     sections: [
                         {
                             name: 'Simple flex grid',

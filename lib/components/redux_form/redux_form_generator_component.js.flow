@@ -108,7 +108,7 @@ const styles = theme => ({
 
 /**
  * Form generator.
- * Component accepts form specification and returns a container with nested Redux elements aligned using CSS Grid.
+ * Component accepts form specification and returns a container with nested Redux-form elements aligned using CSS Grid.
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)

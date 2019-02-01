@@ -70,8 +70,14 @@ export type PropsTypes = ThemeProps & {
     /**
      * Styles which will be added to outer container of the component
      */
-
+    // TODO: deprecated
     containerStyles?: StyleType,
+
+    /**
+     * Styles which will be added to outer container of the component
+     */
+
+    style?: StyleType,
 
     /**
      * Icon class name
@@ -392,7 +398,10 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _getContainerStyles(): StyleType {
-        return defaultTo({})(this.props.containerStyles);
+        const containerStyles: StyleType = defaultTo({})(this.props.containerStyles);
+        const style: styleType = defaultTo({})(this.props.style);
+
+        return Object.assign({}, containerStyles, style);
     }
 
     _getSize(): ButtonSizeType {
