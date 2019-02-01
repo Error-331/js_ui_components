@@ -49,7 +49,13 @@ export type PropsTypes = {
      * Styles for component container (main outer container) of the form text input component
      */
 
-    componentContainerStyles?: CSSStylesType
+    componentContainerStyles?: CSSStylesType,
+
+    /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
 };
 
 type StateTypes = {};
@@ -78,6 +84,7 @@ export class ReduxFormCheckboxInputComponentClass extends React.Component<PropsT
             labelPosition={this.props.labelPosition}
 
             componentContainerStyles={this.props.componentContainerStyles}
+            style={this.props.style}
 
             component={FormCheckboxInputComponent}
         />;

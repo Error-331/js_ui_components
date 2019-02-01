@@ -68,6 +68,12 @@ export type PropsTypes = {
      */
 
     componentContainerStyles?: CSSStylesType,
+
+    /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
 };
 
 type StateTypes = {};

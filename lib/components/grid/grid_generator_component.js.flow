@@ -58,7 +58,7 @@ type PropsTypes = {
      * Grid items specifications
      */
 
-    items?: ItemsType,
+    items?: ItemsType | null,
 
     /**
      * Size of the leftmost column ('1f', 'max-content', etc)
@@ -166,7 +166,7 @@ class GridGeneratorClass extends React.Component<PropsTypes, StateTypes> {
 
         const columnStrings = reduce((gridColumnStrings: Array<string>, item: ItemType) => {
             let {elm, name, span} = item;
-            name = isNil(elm) ? '*' : defaultTo(`${ITEM_DEFAULT_NAME}${itemIndex}`)(name);
+            name = isNil(elm) ? '.' : defaultTo(`${ITEM_DEFAULT_NAME}${itemIndex}`)(name);
 
             if (isNil(elm)) {
                 name = '.';

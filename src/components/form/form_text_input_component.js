@@ -87,6 +87,12 @@ export type FormTextInputTypes = {
     componentContainerStyles?: CSSStylesType,
 
     /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
+
+    /**
      * 'Redux-form' field-component metadata
      *
      * @ignore
@@ -471,7 +477,10 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _getComponentContainerStyles(): CSSStylesType {
-        return defaultTo({})(this.props.componentContainerStyles);
+        const componentContainerStyles: CSSStylesType = defaultTo({})(this.props.componentContainerStyles);
+        const style: CSSStylesType = defaultTo({})(this.props.style);
+
+        return Object.assign({}, componentContainerStyles, style);
     }
 
     _getErrorsContainerClassName(): string {

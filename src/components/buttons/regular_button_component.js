@@ -70,11 +70,11 @@ export type PropsTypes = ThemeProps & {
     /**
      * Styles which will be added to outer container of the component
      */
-    // TODO: deprecated
+
     containerStyles?: StyleType,
 
     /**
-     * Styles which will be added to outer container of the component
+     * Alias of 'containerStyles'
      */
 
     style?: StyleType,

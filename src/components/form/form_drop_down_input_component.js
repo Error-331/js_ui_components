@@ -75,6 +75,12 @@ type PropsTypes = FieldProps & {
     componentContainerStyles?: CSSStylesType,
 
     /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
+
+    /**
      * 'Redux-form' field-component metadata
      *
      * @ignore
@@ -234,8 +240,6 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         },
 
         classes: {},
-
-        componentContainerStyles: {},
     };
 
     _id: string;
@@ -380,7 +384,10 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     }
 
     _getComponentContainerStyles(): CSSStylesType {
-        return defaultTo(FormDropDownInputComponentClass.defaultProps.componentContainerStyles)(this.props.componentContainerStyles);
+        const componentContainerStyles: CSSStylesType = defaultTo({})(this.props.componentContainerStyles);
+        const style: CSSStylesType = defaultTo({})(this.props.style);
+
+        return Object.assign({}, componentContainerStyles, style);
     }
 
     // endregion

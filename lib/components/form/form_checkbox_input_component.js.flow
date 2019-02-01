@@ -57,6 +57,12 @@ type PropsTypes = FieldProps & {
     componentContainerStyles?: CSSStylesType,
 
     /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
+
+    /**
      * 'Redux-form' field-component metadata
      *
      * @ignore
@@ -214,7 +220,10 @@ export class FormCheckboxInputClass extends React.Component<PropsTypes, StateTyp
     }
 
     _getComponentContainerStyles(): CSSStylesType {
-        return defaultTo({})(this.props.componentContainerStyles);
+        const componentContainerStyles: CSSStylesType = defaultTo({})(this.props.componentContainerStyles);
+        const style: CSSStylesType = defaultTo({})(this.props.style);
+
+        return Object.assign({}, componentContainerStyles, style);
     }
 
     // endregion

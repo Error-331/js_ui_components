@@ -8,6 +8,7 @@ import {Field} from 'redux-form/immutable';
 
 // local imports
 import {FormTextInputComponent} from './../form/form_text_input_component';
+import {StyleType} from "../buttons/regular_button_component";
 
 // type definitions
 type CSSStylesType = {
@@ -82,6 +83,12 @@ export type PropsTypes = {
      */
 
     componentContainerStyles?: CSSStylesType,
+
+    /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: StyleType,
 };
 
 type StateTypes = {};

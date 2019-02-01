@@ -81,6 +81,12 @@ type PropsTypes = FieldProps & {
     componentContainerStyles?: CSSStylesType,
 
     /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
+
+    /**
      * 'Redux-form' field-component metadata
      *
      * @ignore
@@ -199,8 +205,6 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
         },
 
         classes: {},
-
-        componentContainerStyles: {},
     };
 
     _id: string;
@@ -323,7 +327,10 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _getComponentContainerStyles(): CSSStylesType {
-        return defaultTo(FormDateInputClass.defaultProps.componentContainerStyles)(this.props.componentContainerStyles);
+        const componentContainerStyles: CSSStylesType = defaultTo({})(this.props.componentContainerStyles);
+        const style: CSSStylesType = defaultTo({})(this.props.style);
+
+        return Object.assign({}, componentContainerStyles, style);
     }
 
     // endregion
