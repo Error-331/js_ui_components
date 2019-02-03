@@ -154,7 +154,7 @@ class SnackBarClass extends React.Component<PropsTypes, StateTypes> {
 
     // region lifecycle methods
     static getDerivedStateFromProps(props: PropsTypes, state: StateTypes): StateTypes | null {
-        if (props.theme.styleValuesRegister.isTop(state.zIndex)) {
+        if (!props.theme.styleValuesRegister.isTop(state.zIndex)) {
             props.theme.styleValuesRegister.releaseZIndex(state.zIndex);
 
             return {
