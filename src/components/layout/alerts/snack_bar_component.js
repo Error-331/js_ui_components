@@ -17,9 +17,9 @@ import {RegularAlertComponent} from './regular_alert_component';
 import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
 
 // type definitions
-export type StyleType = {[string]: mixed};
+type StyleType = {[string]: mixed};
 
-export type SnackBarItemType = {
+type SnackBarItemType = {
     id: string | number,
     caption: string,
     iconClassName?: string,
@@ -121,7 +121,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class SnackBarClass extends React.Component<PropsTypes, StateTypes> {
+class SnackBarClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'SnackBar';
 
@@ -153,6 +153,18 @@ export class SnackBarClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region lifecycle methods
+    static getDerivedStateFromProps(props: PropsTypes, state: StateTypes): StateTypes | null {
+        if (props.theme.styleValuesRegister.isTop(state.zIndex)) {
+            props.theme.styleValuesRegister.releaseZIndex(state.zIndex);
+
+            return {
+                zIndex: props.theme.styleValuesRegister.zIndex
+            };
+        }
+
+        return null;
+    }
+
     // endregion
 
     // region style accessors
@@ -228,8 +240,7 @@ export class SnackBarClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 }
 
-// exports
-export function SnackBarComponent(props: PropsTypes) {
+function SnackBarComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <SnackBarClass {...props} {...windowDimensions} />}
@@ -238,3 +249,7 @@ export function SnackBarComponent(props: PropsTypes) {
 }
 
 SnackBarComponent.displayName = 'SnackBarComponent';
+
+// exports
+export type {SnackBarItemType, PropsTypes, StateTypes};
+export {SnackBarClass, SnackBarComponent};

@@ -3,7 +3,7 @@
 // @flow
 
 // external imports
-import {isNil, equals, max, inc, append, reject, reduce} from 'ramda';
+import {isNil, equals, gte, max, inc, append, reject, reduce} from 'ramda';
 
 // local imports
 import type {ZIndexType, StyleValuesRegisterType} from './../../types/theming/style_values_register_types';
@@ -14,6 +14,10 @@ const MINIMUM_Z_INDEX: number = 100;
 // exports
 export const styleValuesRegister: StyleValuesRegisterType = Object.seal({
     lastUsedZIndexes: [MINIMUM_Z_INDEX - 1],
+
+    isTop(oldZIndex?: ZIndexType): boolean {
+        return gte(oldZIndex, this.lastUsedZIndexes);
+    },
 
     releaseZIndex(oldZIndex?: ZIndexType): void {
         if (isNil(oldZIndex)) {
