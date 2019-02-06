@@ -3,11 +3,13 @@
 // @flow
 
 // external imports
+import type {ElementType} from 'react';
 import type {NestedArray} from 'ramda';
 
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
+import {isNotNil} from '@webfuturistics/design_components';
 import {isNil, defaultTo, unless, map, bind} from 'ramda';
 
 // local imports
@@ -37,11 +39,12 @@ export type PropsType = ReduxFormTextInputPropsType |
                    ReduxFormDateInputPropsType;
 
 export type ItemType = {
-    type: 'text' | 'checkbox',
-    span?: number,
+    elm?: ElementType,
+    props: PropsType,
+    type?: 'text' | 'checkbox',
     name: string,
-
-    props: PropsType
+    span?: number,
+    children?: React.Node
 };
 
 export type ItemsType = NestedArray<ItemType>;
@@ -104,7 +107,7 @@ const styles = theme => ({});
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
+class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'ReduxFormGeneratorClass';
 
@@ -136,7 +139,7 @@ export class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTy
 
     // region style accessors
     _getComponentClassName(): string {
-        return this.props.className;
+        return defaultTo('')(this.props.className);
     }
 
     _getComponentStyle(): CSSStylesType {
@@ -236,7 +239,11 @@ export class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTy
     }
 
     _prepareItem(item: ItemType): GridItemType | null {
-        const {type} = item;
+        const {elm, type} = item;
+
+        if (isNotNil(elm)) {
+            return item;
+        }
 
         switch(type) {
             case 'text':
@@ -272,8 +279,7 @@ export class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTy
     // endregion
 }
 
-// exports
-export function ReduxFormGeneratorComponent(props: PropsTypes) {
+function ReduxFormGeneratorComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <ReduxFormGeneratorClass {...props} {...windowDimensions} />}
@@ -282,3 +288,6 @@ export function ReduxFormGeneratorComponent(props: PropsTypes) {
 }
 
 ReduxFormGeneratorComponent.displayName = 'ReduxFormGeneratorComponent';
+
+// exports
+export {ReduxFormGeneratorClass, ReduxFormGeneratorComponent};
