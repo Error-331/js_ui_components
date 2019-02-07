@@ -8,7 +8,7 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import type {FieldProps} from 'redux-form';
-import {isNil, equals, clone, defaultTo, mergeDeepRight, toPairs, addIndex, map, find} from 'ramda';
+import {isNil, equals, and, clone, defaultTo, mergeDeepRight, toPairs, keys, addIndex, map, find} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
@@ -114,6 +114,12 @@ type PropsTypes = FieldProps & {
 };
 
 type StateTypes = {
+    /**
+     * Internal representation of selected option
+     */
+
+    selectedOption: OptionType | null,
+
     /**
      * Flag that indicates whether options container should be shown
      */
@@ -242,6 +248,11 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         classes: {},
     };
 
+    static defaultState = {
+        optionsShown: false,
+        selectedOption: null
+    };
+
     _id: string;
 
     // endregion
@@ -256,7 +267,8 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         self._onOptionClick = self._onOptionClick.bind(this);
 
         this.state = {
-            optionsShown: false
+            optionsShown: FormDropDownInputComponentClass.defaultState.optionsShown,
+            selectedOption: FormDropDownInputComponentClass.defaultState.selectedOption,
         };
 
         this._id = this._createInputId();
@@ -265,6 +277,17 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region lifecycle methods
+    _createInputId(): string {
+        const {name}: {name: string} = this._getInputData();
+        const randomIdNumber: number = generateRandomIdNumber();
+
+        if (isNil(name)) {
+            throw new Error('Name cannot be null, cannot create input ID');
+        }
+
+        return `drop_down_input_${name}_${randomIdNumber}`;
+    }
+
     _closeOptionsContainer(): void {
         this.props.theme.styleValuesRegister.releaseZIndex(this.state.optionsContainerZIndex);
 
@@ -281,10 +304,10 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region style accessors
-    _getOptionContainerClasses(optionValue: OptionValueType): string {
+    _getOptionContainerClasses(optionValue: OptionValueType, optionLabel: string): string {
         return classNames(
             this.props.classes.optionContainer,
-            {'selected': this._isOptionValueSelected(optionValue)}
+            {'selected': this._isOptionValueSelected(optionValue, optionLabel)}
         );
     }
 
@@ -305,15 +328,9 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region state accessors
-    _createInputId(): string {
-        const {name}: {name: string} = this._getInputData();
-        const randomIdNumber: number = generateRandomIdNumber();
-
-        if (isNil(name)) {
-            throw new Error('Name cannot be null, cannot create input ID');
-        }
-
-        return `drop_down_input_${name}_${randomIdNumber}`;
+    _getInternalSelectedOption(): OptionType | null {
+        return defaultTo(FormDropDownInputComponentClass.defaultState.selectedOption)
+        (this.state.selectedOption);
     }
 
     // endregion
@@ -352,19 +369,26 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     }
 
     _getSelectedValueLabel(): ?OptionType {
-        const {value} = this._getInputData();
+        const selectedOption: OptionType | null = this._getInternalSelectedOption();
         const {options} = this.props;
 
-        if (isNil(value)) {
+        if (isNil(selectedOption)) {
             return;
         }
 
-        const labelValue: ?[string, OptionValueType] = find(labelValue => value === labelValue[1])(toPairs(options));
+        const selectedOptionLabel: string = keys(selectedOption)[0];
+        const selectedOptionValue: OptionValueType = selectedOption[selectedOptionLabel];
+
+        const labelValue: ?[string, OptionValueType] = find(([optionLabel, optionValue]) => {
+            console.log(selectedOptionLabel, optionLabel);
+            return and(
+                equals(selectedOptionLabel, optionLabel),
+                equals(selectedOptionValue, optionValue),
+            );
+        })(toPairs(options));
 
         if (isNotNil(labelValue)) {
-            return {
-                [labelValue[0]]: labelValue[1]
-            };
+            return selectedOption;
         }
     }
 
@@ -373,14 +397,20 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         return isNotNil(selectedValueLabel) ? toPairs(selectedValueLabel)[0][0] : selectedValueLabel;
     }
 
-    _isOptionValueSelected(optionValue: OptionValueType): boolean {
-        const selectedOption: ?OptionType = this._getSelectedValueLabel();
+    _isOptionValueSelected(optionValue: OptionValueType, optionLabel: string): boolean {
+        const selectedOption: ?OptionType = this._getInternalSelectedOption();
 
         if (isNil(selectedOption)) {
             return false;
         }
 
-        return equals(optionValue, toPairs(selectedOption)[0][1]);
+        const selectedOptionLabel: string = keys(selectedOption)[0];
+        const selectedOptionValue: OptionValueType = selectedOption[selectedOptionLabel];
+
+        return and(
+            equals(selectedOptionLabel, optionLabel),
+            equals(optionValue, selectedOptionValue)
+        );
     }
 
     _getComponentContainerStyles(): CSSStylesType {
@@ -393,10 +423,11 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // endregion
 
     // region handlers
-    _onOptionClick(event: SyntheticMouseEvent<any>, optionValue: OptionValueType): void {
+    _onOptionClick(event: SyntheticMouseEvent<any>, optionValue: OptionValueType, optionLabel: string): void {
         this._closeOptionsContainer();
         const {onChange}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
 
+        this.setState({selectedOption: {[optionLabel]: optionValue}});
         onChange(optionValue);
     }
 
@@ -485,8 +516,8 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
             return this._renderOptionContainer(
                 index,
                 currentOptionLabel,
-                this._getOptionContainerClasses(currentOptionValue),
-                this._isOptionValueSelected(currentOptionValue) ? undefined : (event) => this._onOptionClick(event, currentOptionValue)
+                this._getOptionContainerClasses(currentOptionValue, currentOptionLabel),
+                this._isOptionValueSelected(currentOptionValue, currentOptionLabel) ? undefined : (event) => this._onOptionClick(event, currentOptionValue, currentOptionLabel)
             );
 
         }, toPairs(this.props.options));
