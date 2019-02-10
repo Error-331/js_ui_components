@@ -81,32 +81,116 @@ const tempText =  <Fragment>
 
 const testItems1 = [
     [
-        {elm: InlineHeader, span: 3, props: {level: 4, style: {whiteSpace: 'nowrap', justifySelf: 'start', alignSelf: 'start'}}, children: 'Test header...'}, 
-        {elm: null, span: 2},
+        {elm: InlineHeader, hspan: 3, props: {level: 4, style: {whiteSpace: 'nowrap', justifySelf: 'start', alignSelf: 'start'}}, children: 'Test header...'}, 
+        {elm: null, hspan: 2},
     ],    
 
     [
         {elm: InlineHeader, props: {level: 6, style: {whiteSpace: 'nowrap', justifySelf: 'end', alignSelf: 'center'}}, children: 'Control 1:'}, 
-        {elm: ScrollableAreaComponent, span: 4, props: {rowsCount: '4'}, children: tempText}, 
+        {elm: ScrollableAreaComponent, hspan: 4, props: {rowsCount: '4'}, children: tempText}, 
     ],
     
     [
         {elm: InlineHeader, props: {level: 6, style: {whiteSpace: 'nowrap',justifySelf: 'end', alignSelf: 'center'}}, children: 'Control 2:'}, 
-        {elm: ScrollableAreaComponent, span: 4, props: {rowsCount: '5'}, children: tempText}, 
+        {elm: ScrollableAreaComponent, hspan: 4, props: {rowsCount: '5'}, children: tempText}, 
     ],    
     
     [
         {elm: InlineHeader, props: {level: 6, style: {whiteSpace: 'nowrap', justifySelf: 'end', alignSelf: 'center'}}, children: 'Control 3:'}, 
-        {elm: ScrollableAreaComponent, span: 4, children: tempText}, 
+        {elm: ScrollableAreaComponent, hspan: 4, children: tempText}, 
     ],
     
     [
-        {elm: null, span: 3},
+        {elm: null, hspan: 3},
         {elm: RegularButtonComponent, props: {label: 'ok'}},
         {elm: RegularButtonComponent, props: {label: 'cancel', variant: 'outlined'}}
     ],        
 ];
 
 <GridGeneratorComponent style={{gridTemplateColumns: 'min-content 1fr 1fr 110px 110px'}} items={testItems1}/>
+
+```
+
+Example of generated grid which contains elements which spans vertically (example 1):
+
+```jsx
+
+const {GridGeneratorComponent} = require('./grid_generator_component');
+const {InlineHeader} = require('./../layout/');
+
+const testItems1 = [
+    [
+        {elm: 'div', hspan: 2, vspan: 3, props: {style: {height: '100%', backgroundColor: 'green'}}, children: 'green span'},
+        {elm: InlineHeader, hspan: 3, props: {level: 6}, children: 'Test col 1'},
+        {elm: 'div', hspan: 2, vspan: 3, props: {style: {height: '100%', backgroundColor: 'green'}}, children: 'green span'},
+    ],    
+    [
+        {elm: 'div', hspan: 3, vspan: 2, props: {style: {height: '100%', backgroundColor: 'yellow'}}, children: 'yellow span'},
+    ],     
+];
+
+<GridGeneratorComponent style={{gridTemplateRows: 'repeat(3, 50px)'}} items={testItems1}/>
+
+```
+
+Example of generated grid which contains elements which spans vertically (example 2):
+
+```jsx
+
+const {GridGeneratorComponent} = require('./grid_generator_component');
+const {InlineHeader} = require('./../layout/');
+
+const testItems1 = [
+    [
+        {elm: 'div', hspan: 2, vspan: 4, props: {style: {height: '100%', backgroundColor: 'green'}}, children: 'green span'},
+        {elm: 'div', hspan: 3, props: {style: {height: '100%', backgroundColor: 'yellow'}}, children: 'yellow span'},
+        
+    ],    
+    
+    [
+        {elm: 'div', hspan: 3, props: {style: {height: '100%', backgroundColor: 'yellow'}}, children: 'yellow span'},
+    ],    
+    
+    [
+        {elm: 'div', hspan: 3, props: {style: {height: '100%', backgroundColor: 'yellow '}}, children: 'yellow span'},
+    ],   
+    
+    [
+        {elm: 'div', hspan: 3, props: {style: {height: '100%', backgroundColor: 'yellow'}}, children: 'yellow span'},
+    ],        
+];
+
+<GridGeneratorComponent items={testItems1}/>
+
+```
+
+Example of generated grid which contains elements which spans vertically (example 3):
+
+```jsx
+
+const {GridGeneratorComponent} = require('./grid_generator_component');
+const {InlineHeader} = require('./../layout/');
+
+const testItems1 = [
+    [
+        {elm: 'div', hspan: 2, vspan: 4, props: {style: {height: '100%', backgroundColor: 'green'}}, children: 'green span'},
+        {elm: 'div', hspan: 2, vspan: 2, props: {style: {height: '100%', backgroundColor: 'yellow'}}, children: 'yellow span'},
+        {elm: 'div', hspan: 2, vspan: 3, props: {style: {height: '100%', backgroundColor: 'cyan'}}, children: 'cyan span'},
+        
+    ],    
+    
+    [],    
+    
+    [
+        {elm: 'div', hspan: 2, vspan: 2, props: {style: {height: '100%', backgroundColor: 'pink'}}, children: 'pink span'},
+    ],   
+    
+    [
+        {elm: 'div', hspan: 2, props: {style: {height: '100%', backgroundColor: 'blue'}}, children: 'blue span'},
+    ],       
+        
+];
+
+<GridGeneratorComponent style={{gridTemplateRows: 'repeat(4, 50px)'}} items={testItems1}/>
 
 ```

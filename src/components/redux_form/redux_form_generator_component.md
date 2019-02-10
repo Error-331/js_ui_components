@@ -13,17 +13,17 @@ const dropDownOptions = {
 const testItems1 = [
     [
         {type: 'text', name: 'input1', props: {label: 'First name'}}, 
-        {type: 'text', span: 2, name: 'input2', props: {label: 'Last name'}}
+        {type: 'text', hspan: 2, name: 'input2', props: {label: 'Last name'}}
     ],
     [
-        {type: 'text', span: 3, name: 'input3', props: {label: 'Note'}}
+        {type: 'text', hspan: 3, name: 'input3', props: {label: 'Note'}}
     ],
     [
-        {type: 'checkbox', span: 1, name: 'input4', props: {label: 'Employed', labelPosition: 'right'}}, 
-        {type: 'dropdown', span: 2, name: 'input5', props: {label: 'Role', options: dropDownOptions}}
+        {type: 'checkbox', hspan: 1, name: 'input4', props: {label: 'Employed', labelPosition: 'right'}}, 
+        {type: 'dropdown', hspan: 2, name: 'input5', props: {label: 'Role', options: dropDownOptions}}
     ],
     [
-        {type: 'date', span: 3, name: 'input6', props: {label: 'Date of birth'}}
+        {type: 'date', hspan: 3, name: 'input6', props: {label: 'Date of birth'}}
     ]
 ];
 
