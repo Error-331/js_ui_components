@@ -35,6 +35,7 @@
     // region render methods
     // endregion
 
+https://codepen.io/TrevorWelch/pen/NwERXE
 # TODO
 
 - Types for themes system;
@@ -52,3 +53,4 @@
 - update webpack and stylegist;
 - make mechanism that always returns top`est z-Index;
 - form generator - options -> props
+- replace calssnames with clsx;
