@@ -278,7 +278,7 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
 
             leftmostColSize={this._getLeftmostColSize()}
             rightmostColSize={this._getRightmostColSize()}
-        />
+        />;
     }
 
     // endregion

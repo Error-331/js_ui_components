@@ -65,6 +65,7 @@ export const inputStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStack
         labelColor: baseStyles.mainTertiaryColor,
         readOnlyColor: baseStyles.mainTertiaryColor,
         disabledColor: baseStyles.disabledColor,
+        alternateInputColor: baseStyles.noneTransparentBGColor,
 
         switchSliderInactiveBodyBGColor: baseStyles.utilityBGColor,
         switchSliderActiveBodyBGColor: baseStyles.mainTertiaryColor,

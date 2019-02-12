@@ -19,6 +19,12 @@ type InputTypes = 'text' | 'password';
 
 export type PropsTypes = {
     /**
+     * Number that indicates which visual variant will be used to represent the text input
+     */
+
+    variant?: number,
+
+    /**
      * Input name
      */
 

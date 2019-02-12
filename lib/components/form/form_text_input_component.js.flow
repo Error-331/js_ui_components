@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {isNil, isEmpty, is, and, not, defaultTo, complement, addIndex, clone, toString, map} from 'ramda';
+import {T, always, isNil, isEmpty, cond, is, equals, and, not, defaultTo, complement, addIndex, clone, toString, map} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 import type {FieldProps} from 'redux-form';
@@ -25,6 +25,11 @@ type CSSStylesType = {
 type InputTypes = 'text' | 'password';
 
 export type FormTextInputTypes = {
+    /**
+     * Number that indicates which visual variant will be used to represent the text input
+     */
+
+    variant?: number,
 
     /**
      * Input type (text or password)
@@ -172,7 +177,8 @@ const styles = theme => ({
                 margin: '0 0 0 0',
 
                 border: 'none',
-                borderBottom: `1px solid ${theme.inputStyles.inactiveColor}`,
+                borderBottomWidth: '1px',
+                borderBottomStyle: 'solid',
                 borderRadius: '0',
 
                 padding: '0',
@@ -181,17 +187,19 @@ const styles = theme => ({
                 fontSize: `${theme.inputStyles.fontSize}px`,
 
                 boxShadow: 'none',
-
                 transition: 'all .3s',
 
                 lineHeight: 'normal',
-
                 backgroundColor: theme.inputStyles.bgColor,
-                color: theme.inputStyles.inactiveColor,
 
                 '&:-webkit-autofill': {
                     '-webkit-box-shadow': '0 0 0 1000px transparent inset !important'
                 },
+            },
+
+            '& > $inputControlVariant1': {
+                borderBottomColor: theme.inputStyles.inactiveColor,
+                color: theme.inputStyles.inactiveColor,
 
                 '&::-webkit-input-placeholder': {
                     color: theme.inputStyles.disabledColor
@@ -206,23 +214,66 @@ const styles = theme => ({
                 },
 
                 '&.focus': {
-                    borderColor: theme.inputStyles.activeColor,
+                    borderBottomColor: theme.inputStyles.activeColor,
                     color: theme.inputStyles.activeColor
                 },
 
                 '&.error': {
                     color: theme.inputStyles.attentionColor,
-                    borderBottom: `1px solid ${theme.inputStyles.attentionColor}`
+                    borderBottomColor: theme.inputStyles.attentionColor,
                 },
 
                 '&.readOnly': {
                     color: theme.inputStyles.readOnlyColor,
-                    borderBottom: `1px solid ${theme.inputStyles.readOnlyColor}`
+                    borderBottomColor: theme.inputStyles.readOnlyColor,
                 },
 
                 '&.disabled': {
+                    borderBottomStyle: 'dotted',
+                    borderBottomColor: theme.inputStyles.disabledColor,
+
+
                     color: theme.inputStyles.disabledColor,
-                    borderBottom: `1px dotted ${theme.inputStyles.disabledColor}`
+                },
+            },
+
+            '& > $inputControlVariant2': {
+                borderBottomColor: theme.inputStyles.alternateInputColor,
+                color: theme.inputStyles.alternateInputColor,
+
+                '&::-webkit-input-placeholder': {
+                    color: theme.inputStyles.alternateInputColor,
+                },
+
+                '&::-moz-placeholder': {
+                    color: theme.inputStyles.alternateInputColor,
+                },
+
+                '&::-ms-input-placeholder': {
+                    color: theme.inputStyles.alternateInputColor,
+                },
+
+                '&:focus': {
+                    outline: 'none',
+
+                    borderBottomColor: theme.inputStyles.alternateInputColor,
+                    color: theme.inputStyles.alternateInputColor,
+                },
+
+                '&.error': {
+                    color: theme.inputStyles.attentionColor,
+                    borderBottomColor: theme.inputStyles.attentionColor,
+                },
+
+                '&.readOnly': {
+                    color: theme.inputStyles.alternateInputColor,
+                    borderBottomColor: theme.inputStyles.alternateInputColor,
+                },
+
+                '&.disabled': {
+                    borderBottomStyle: 'dotted',
+                    borderBottomColor: theme.inputStyles.alternateInputColor,
+                    color: theme.inputStyles.alternateInputColor,
                 },
             },
 
@@ -236,9 +287,24 @@ const styles = theme => ({
                 fontSize: `${theme.inputStyles.labelActiveFontSize}px`,
 
                 cursor: 'text',
-                color: theme.inputStyles.labelColor,
 
                 transition: '.2s ease-out',
+
+                '&.active': {
+                    fontSize: `${theme.inputStyles.labelActiveFontSize}px`,
+                    '-webkit-transform': 'translateY(-145%)',
+                    transform: 'translateY(-145%)'
+                },
+
+                '&.passive': {
+                    fontSize: `${theme.inputStyles.labelInactiveFontSize}px`,
+                    '-webkit-transform': 'translateY(0%)',
+                    transform: 'translateY(0%)'
+                }
+            },
+
+            '& > $inputControlLabelVariant1': {
+                color: theme.inputStyles.labelColor,
 
                 '&.active': {
                     fontSize: `${theme.inputStyles.labelActiveFontSize}px`,
@@ -269,11 +335,31 @@ const styles = theme => ({
                 },
             },
 
+            '& > $inputControlLabelVariant2': {
+                color: theme.inputStyles.alternateInputColor,
+
+                '&.focus': {
+                    color: theme.inputStyles.alternateInputColor,
+                },
+
+                '&.error': {
+                    color: theme.inputStyles.attentionColor,
+                },
+
+                '&.readOnly': {
+                    color: theme.inputStyles.alternateInputColor,
+                },
+
+                '&.disabled': {
+                    color: theme.inputStyles.alternateInputColor,
+                },
+            },
+
             '& > $inputControlLabel:first-letter': {
                 textTransform: 'capitalize',
             },
 
-            '& > i': {
+            '& > $inputControlIcon': {
                 position: 'absolute',
 
                 left: `calc(100%  - ${theme.inputStyles.iconFontSize + iconAdditionalPadding}px)`,
@@ -282,6 +368,9 @@ const styles = theme => ({
                 transition: 'all .3s',
 
                 fontSize: `${theme.inputStyles.iconFontSize}px`,
+            },
+
+            '& > $inputControlIconVariant1': {
                 color: theme.inputStyles.inactiveColor,
 
                 '&.focus': {
@@ -298,6 +387,26 @@ const styles = theme => ({
 
                 '&.disabled': {
                     color: theme.inputStyles.disabledColor
+                },
+            },
+
+            '& > $inputControlIconVariant2': {
+                color: theme.inputStyles.alternateInputColor,
+
+                '&.focus': {
+                    color: theme.inputStyles.alternateInputColor,
+                },
+
+                '&.error': {
+                    color: theme.inputStyles.attentionColor
+                },
+
+                '&.readOnly': {
+                    color: theme.inputStyles.alternateInputColor,
+                },
+
+                '&.disabled': {
+                    color: theme.inputStyles.alternateInputColor,
                 },
             }
         },
@@ -319,13 +428,13 @@ const styles = theme => ({
         },
 
         '& > $errorsContainer': {
+            color: theme.inputStyles.attentionColor,
+
             '& > $errorContainer': {
                 marginTop: '2px',
 
                 fontFamily: theme.inputStyles.fontStack,
                 fontSize: theme.inputStyles.errorFontSize,
-
-                color: theme.inputStyles.attentionColor,
             }
         },
 
@@ -335,15 +444,31 @@ const styles = theme => ({
 
                 fontFamily: theme.inputStyles.fontStack,
                 fontSize: theme.inputStyles.errorFontSize,
-
-                color: theme.inputStyles.activeColor,
             }
+        },
+
+        '& > $warningsContainerVariant1': {
+            color: theme.inputStyles.activeColor,
+        },
+
+        '& > $warningsContainerVariant2': {
+            color: theme.inputStyles.alternateInputColor,
         },
     },
 
     inputContainer: {},
+
     inputControl: {},
+    inputControlVariant1: {},
+    inputControlVariant2: {},
+
     inputControlLabel: {},
+    inputControlLabelVariant1: {},
+    inputControlLabelVariant2: {},
+
+    inputControlIcon: {},
+    inputControlIconVariant1: {},
+    inputControlIconVariant2: {},
 
     subMessagesContainer: {},
 
@@ -352,6 +477,8 @@ const styles = theme => ({
 
     warningsContainer: {},
     warningContainer: {},
+    warningsContainerVariant1: {},
+    warningsContainerVariant2: {},
 });
 
 /**
@@ -372,6 +499,7 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
     static displayName = 'FormTextInputClass';
 
     static defaultProps = {
+        variant: 1,
         type: 'text',
 
         readOnly: false,
@@ -436,8 +564,15 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         const hasFocus: boolean = this._isInputHasFocus();
         const {readOnly, disabled}: {readOnly: ?boolean, disabled: ?boolean} = this.props;
 
+        const variantClassName: string = cond([
+            [equals(1), always(this.props.classes.inputControlVariant1)],
+            [equals(2), always(this.props.classes.inputControlVariant2)],
+            [T, always(this.props.classes.inputControlVariant1)]
+        ])(this._getVariant());
+
         return classNames(
             this.props.classes.inputControl,
+            variantClassName,
             {'focus': hasFocus},
             {'error': this._hasErrors()},
             {'readOnly': readOnly},
@@ -451,8 +586,15 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         const hasErrors: boolean = this._hasErrors();
         const {readOnly, disabled}: {readOnly: ?boolean, disabled: ?boolean} = this.props;
 
+        const variantClassName: string = cond([
+            [equals(1), always(this.props.classes.inputControlLabelVariant1)],
+            [equals(2), always(this.props.classes.inputControlLabelVariant2)],
+            [T, always(this.props.classes.inputControlVariant1)]
+        ])(this._getVariant());
+
         return classNames(
             this.props.classes.inputControlLabel,
+            variantClassName,
             {'active': isActive},
             {'passive': !isActive},
             {'focus': hasFocus},
@@ -467,8 +609,16 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         const hasErrors: boolean = this._hasErrors();
         const {readOnly, disabled}: {readOnly: ?boolean, disabled: ?boolean} = this.props;
 
+        const variantClassName: string = cond([
+            [equals(1), always(this.props.classes.inputControlIconVariant1)],
+            [equals(2), always(this.props.classes.inputControlIconVariant2)],
+            [T, always(this.props.classes.inputControlVariant1)]
+        ])(this._getVariant());
+
         return classNames(
             this.props.iconClassNames,
+            this.props.classes.inputControlIcon,
+            variantClassName,
             {'focus': hasFocus},
             {'error': hasErrors},
             {'readOnly': readOnly},
@@ -495,9 +645,16 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _getWarningsContainerClassName(): string {
+        const variantClassName: string = cond([
+            [equals(1), always(this.props.classes.warningsContainerVariant1)],
+            [equals(2), always(this.props.classes.warningsContainerVariant2)],
+            [T, always(this.props.classes.inputControlVariant1)]
+        ])(this._getVariant());
+
         return classNames(
             this.props.classes.subMessagesContainer,
-            this.props.classes.warningsContainer
+            this.props.classes.warningsContainer,
+            variantClassName,
         );
     }
 
@@ -529,6 +686,10 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
     // endregion
 
     // region prop accessors
+    _getVariant(): number {
+        return defaultTo(FormTextInputClass.defaultProps.variant)(this.props.variant);
+    }
+
     _isInputHasFocus(): boolean {
         const {active} = this._getMetaData();
         return active && this._isInputEditable();
