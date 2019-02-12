@@ -39,6 +39,7 @@ import {
 
 // local imports
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+import {HORIZONTAL_TABLE_TYPE} from "../tables/regular_table_component";
 
 // type definitions
 type CSSStylesType = {
@@ -168,6 +169,14 @@ class GridGeneratorClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region constructor
+    constructor(props: PropsTypes) {
+        super(props);
+
+        this.state = {
+            items: GridGeneratorClass.defaultState.items,
+        };
+    }
+
     // endregion
 
     // region business logic
