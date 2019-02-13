@@ -11,11 +11,13 @@ const {RegularButtonComponent} = require('./../buttons');
 
 const styles = theme => ({
     componentContainer: {
+        boxSizing: 'border-box',
+    
         overflow: 'hidden',
         position: 'relative', 
-    
-        width: '150px', 
-        height: '300px', 
+       
+        width: 'auto',
+        height: '300px',      
         
         backgroundColor: theme.baseStyles.mainQuaternaryColor,
     }
@@ -26,10 +28,16 @@ class TestContainerComponent extends Component {
         super(props);
         
         this._intervalId = null;
+        this.onComponentContainerWidthChange = this.onComponentContainerWidthChange.bind(this);
         
         this.state = {
-            showSlider: false
+            showSlider: false,
+            slideContainerWidth: 'auto',
         }
+    }
+    
+    onComponentContainerWidthChange(slideContainerWidth) {
+        this.setState({slideContainerWidth: slideContainerWidth});
     }
     
     componentDidMount() {
@@ -41,12 +49,18 @@ class TestContainerComponent extends Component {
     componentWillUnmount() {
         clearInterval(this._intervalId );
     }
+    
+    getContainerStyle() {
+        return {
+            width: `${this.state.slideContainerWidth}px`
+        }
+    }
 
     render() {
         const {showSlider} = this.state;
     
-        return <div className={this.props.classes.componentContainer}>
-            <SlideVisualEffect direction={this.props.direction} show={showSlider}>
+        return <div className={this.props.classes.componentContainer} style={this.getContainerStyle()}>
+            <SlideVisualEffect onComponentContainerWidthChange={this.onComponentContainerWidthChange} direction={this.props.direction} show={showSlider}>
                 <ElementsColumn alignment='center'>
                     <RegularButtonComponent label='login'/>
                     <RegularButtonComponent label='register'/>

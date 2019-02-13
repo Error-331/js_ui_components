@@ -137,7 +137,7 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     static displayName = 'RegularCardHeaderComponent';
 
     static defaultProps = {
-        onIconClick:  () => {},
+        onIconClick: () => {},
     };
 
     // endregion

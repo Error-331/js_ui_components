@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import classNames from 'classnames';
-import {isNil, defaultTo} from 'ramda';
+import {isNil, equals, defaultTo, unless} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
@@ -18,6 +18,7 @@ type CSSStylesType = {
 };
 
 type DirectionType = 'LeftToRight' | 'RightToLeft' | 'TopToBottom' | 'BottomToTop';
+type ComponentContainerWidthChangeHandler = (width: number) => void;
 
 type PropsTypes = {
     /**
@@ -37,6 +38,12 @@ type PropsTypes = {
      */
 
     duration?: string,
+
+    /**
+     * Callback function that will be called if width of the components top container width changes
+     */
+
+    onComponentContainerWidthChange?: ComponentContainerWidthChangeHandler,
 
     /**
      * React style object for in deep control of how component is represented
@@ -111,6 +118,8 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         show: false,
         duration: '0.7s',
 
+        onComponentContainerWidthChange: () => {},
+
         style: {},
     };
 
@@ -119,12 +128,16 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
     // region private props
     $componentContainer: any;
 
+    componentContainerWidth: number = 0; // px
+
     // endregion
 
     // region constructor
     constructor(props: PropsTypes) {
         super(props);
+        const self: any = this;
 
+        self._onComponentContainerWidthRead = self._onComponentContainerWidthRead.bind(this);
         this.$componentContainer = React.createRef();
     }
 
@@ -145,6 +158,8 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
 
         // +1 - accounting  fault
         const componentWidth: number = this._getComponentContainerWidth() + 1;
+        this._onComponentContainerWidthRead(componentWidth);
+
         const transitionStyle: CSSStylesType = {
             transitionProperty: 'left',
             transitionDuration: duration
@@ -168,6 +183,8 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         const style: CSSStylesType = this._getStyle();
 
         const componentWidth: number = this._getComponentContainerWidth();
+        this._onComponentContainerWidthRead(componentWidth);
+
         const transitionStyle: CSSStylesType = {
             transitionProperty: 'left',
             transitionDuration: duration
@@ -191,6 +208,7 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         const style: CSSStylesType = this._getStyle();
 
         const componentHeight: number = this._getComponentContainerHeight();
+
         const transitionStyle: CSSStylesType = {
             transitionProperty: 'top',
             transitionDuration: duration
@@ -200,9 +218,12 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
             top:  shouldShow ? `calc(100% - ${componentHeight}px)` : '100%',
             left: '0px',
 
-            width: '100%',
+            width: 'auto',
             height: 'auto'
         };
+
+        const componentWidth: number = this._getComponentContainerWidth();
+        this._onComponentContainerWidthRead(componentWidth);
 
         return Object.assign({}, componentStyle, transitionStyle, style);
     }
@@ -214,6 +235,7 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         const style: CSSStylesType = this._getStyle();
 
         const componentHeight: number = this._getComponentContainerHeight();
+
         const transitionStyle: CSSStylesType = {
             transitionProperty: 'top',
             transitionDuration: duration
@@ -223,9 +245,12 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
             top:  shouldShow ? '0%' : `calc(0% - ${componentHeight}px)`,
             left: '0px',
 
-            width: '100%',
+            width: 'auto',
             height: 'auto'
         };
+
+        const componentWidth: number = this._getComponentContainerWidth();
+        this._onComponentContainerWidthRead(componentWidth);
 
         return Object.assign({}, componentStyle, transitionStyle, style);
     }
@@ -262,6 +287,11 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
     // endregion
 
     // region prop accessors
+    _getComponentContainerWidthChangeHandler(): ComponentContainerWidthChangeHandler {
+        return defaultTo(SlideVisualEffectClass.defaultProps.onComponentContainerWidthChange)
+        (this.props.onComponentContainerWidthChange);
+    }
+
     _shouldShow(): boolean {
         return defaultTo(SlideVisualEffectClass.defaultProps.show)(this.props.show);
     }
@@ -297,6 +327,13 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
     // endregion
 
     // region handlers
+    _onComponentContainerWidthRead(width: number) {
+        unless(equals(this.componentContainerWidth), (width: number) => {
+            this.componentContainerWidth = width;
+            this._getComponentContainerWidthChangeHandler()(width);
+        })(width);
+    }
+
     // endregion
 
     // region render methods
