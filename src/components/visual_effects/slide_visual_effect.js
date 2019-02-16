@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import classNames from 'classnames';
-import {isNil, equals, defaultTo, unless} from 'ramda';
+import {T, isNil, always, equals, defaultTo, unless, cond} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
@@ -93,6 +93,16 @@ const styles = theme => ({
         zIndex: '2',
 
         backgroundColor: theme.baseStyles.mainSecondaryColor,
+
+        '&.horizontalSlider': {
+            width: 'auto',
+            height: '100%'
+        },
+
+        '&.verticalSlider': {
+            width: 'auto',
+            height: 'auto'
+        },
     }
 });
 
@@ -138,6 +148,12 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         const self: any = this;
 
         self._onComponentContainerWidthRead = self._onComponentContainerWidthRead.bind(this);
+
+        self._getComponentContainerLeftToRightStyle = self._getComponentContainerLeftToRightStyle.bind(this);
+        self._getComponentContainerRightToLeftStyle = self._getComponentContainerRightToLeftStyle.bind(this);
+        self._getComponentContainerBottomToTopStyle = self._getComponentContainerBottomToTopStyle.bind(this);
+        self._getComponentContainerTopToBottomStyle = self._getComponentContainerTopToBottomStyle.bind(this);
+
         this.$componentContainer = React.createRef();
     }
 
@@ -168,9 +184,6 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         const componentStyle: CSSStylesType = {
             top:  '0px',
             left: shouldShow ? `0%` : `calc(0% - ${componentWidth}px)`,
-
-            width: 'auto',
-            height: '100%'
         };
 
         return Object.assign({}, componentStyle, transitionStyle, style);
@@ -193,9 +206,6 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         const componentStyle: CSSStylesType = {
             top:  '0px',
             left: shouldShow ? `calc(100% - ${componentWidth}px)` : '100%',
-
-            width: 'auto',
-            height: '100%'
         };
 
         return Object.assign({}, componentStyle, transitionStyle, style);
@@ -217,9 +227,6 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         const componentStyle: CSSStylesType = {
             top:  shouldShow ? `calc(100% - ${componentHeight}px)` : '100%',
             left: '0px',
-
-            width: 'auto',
-            height: 'auto'
         };
 
         const componentWidth: number = this._getComponentContainerWidth();
@@ -244,9 +251,6 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         const componentStyle: CSSStylesType = {
             top:  shouldShow ? '0%' : `calc(0% - ${componentHeight}px)`,
             left: '0px',
-
-            width: 'auto',
-            height: 'auto'
         };
 
         const componentWidth: number = this._getComponentContainerWidth();
@@ -256,26 +260,25 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
     }
 
     _getComponentContainerStyle(): CSSStylesType {
-        switch(this._getDirection()) {
-            case 'LeftToRight':
-                return this._getComponentContainerLeftToRightStyle();
-
-            case 'RightToLeft':
-                return this._getComponentContainerRightToLeftStyle();
-
-            case 'BottomToTop':
-                return this._getComponentContainerBottomToTopStyle();
-
-            case 'TopToBottom':
-                return this._getComponentContainerTopToBottomStyle();
-
-            default:
-                return this._getComponentContainerBottomToTopStyle();
-        }
+        return cond([
+            [equals('LeftToRight'), this._getComponentContainerLeftToRightStyle],
+            [equals('RightToLeft'), this._getComponentContainerRightToLeftStyle],
+            [equals('BottomToTop'), this._getComponentContainerBottomToTopStyle],
+            [equals('TopToBottom'), this._getComponentContainerTopToBottomStyle],
+            [T, this._getComponentContainerBottomToTopStyle]
+        ])(this._getDirection());
     }
 
     _getComponentContainerClassName(): string {
-        return classNames(this.props.classes.componentContainer, this.props.className);
+        const sliderClassName: string = cond([
+            [equals('LeftToRight'), always('horizontalSlider')],
+            [equals('RightToLeft'), always('horizontalSlider')],
+            [equals('BottomToTop'), always('verticalSlider')],
+            [equals('TopToBottom'), always('verticalSlider')],
+            [T, always('horizontalSlider')]
+        ])(this._getDirection());
+
+        return classNames(this.props.classes.componentContainer, sliderClassName, this.props.className);
     }
 
     // endregion
