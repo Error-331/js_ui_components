@@ -16,6 +16,12 @@ type CSSStylesType = {
 
 export type PropsTypes = {
     /**
+     * Number that indicates which visual variant will be used to represent the date input
+     */
+
+    variant?: number,
+
+    /**
      * Input name
      */
 

@@ -33,6 +33,12 @@ type CSSStylesType = {
 
 type PropsTypes = FieldProps & {
     /**
+     * Number that indicates which visual variant will be used to represent the date input
+     */
+
+    variant?: number,
+
+    /**
      * Formatting that will be used when displaying date
      */
 
@@ -299,7 +305,7 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
 
     _getFormTextInputComponentProps(): FormTextInputTypes {
         const input = this._getInputData();
-        const {readOnly, disabled, placeholder, label, meta} = this.props;
+        const {variant, readOnly, disabled, placeholder, label, meta} = this.props;
 
         const currentName: string = defaultTo(this._id)(input.name);
         const currentValue: OptionValueType = defaultTo('')(input.value);
@@ -315,6 +321,7 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
         });
 
         return {
+            variant,
             type: 'text',
             readOnly,
             disabled,
