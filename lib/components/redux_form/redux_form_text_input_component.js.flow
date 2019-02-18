@@ -15,7 +15,7 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-type InputTypes = 'text' | 'password';
+type InputTypes = 'text' | 'password' | 'textarea';
 
 export type PropsTypes = {
     /**

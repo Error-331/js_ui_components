@@ -31,15 +31,25 @@ const ComponentFormContainerConnected = reduxForm({
 
     initialValues: clone({
         reduxFormTextInputComponents: {
-            testFormTextInputComponentWithDefaultValue1: 'Test default value 1...',
-            testFormTextInputComponentWithDefaultValue2: 'Test default value 2...',
-            testFormTextInputComponentWithDefaultValue3: 'Test default value 3...',
-            testFormTextInputComponentWithDefaultValue4: 'Test default value 4...',
-            testFormTextInputComponentWithDefaultValue5: 'Test default value 5...',
-            testFormTextInputComponentWithDefaultValue6: 'Test default value 6...',
-            testFormTextInputComponentWithDefaultValue7: 'Test default value 7...',
-            testFormTextInputComponentWithDefaultValue8: 'Test default value 8...',
-            testFormTextInputComponentWithDefaultValue9: 'Test default value 9...',
+            testFormTextInputComponentWithDefaultValue1: 'Test (text) default value 1...',
+            testFormTextInputComponentWithDefaultValue2: 'Test (text) default value 2...',
+            testFormTextInputComponentWithDefaultValue3: 'Test (text) default value 3...',
+            testFormTextInputComponentWithDefaultValue4: 'Test (text) default value 4...',
+            testFormTextInputComponentWithDefaultValue5: 'Test (text) default value 5...',
+            testFormTextInputComponentWithDefaultValue6: 'Test (text) default value 6...',
+            testFormTextInputComponentWithDefaultValue7: 'Test (text) default value 7...',
+            testFormTextInputComponentWithDefaultValue8: 'Test (text) default value 8...',
+            testFormTextInputComponentWithDefaultValue9: 'Test (text) default value 9...',
+
+            testFormTextAreaInputComponentWithDefaultValue1: 'Test (text area) default value 1...',
+            testFormTextAreaInputComponentWithDefaultValue2: 'Test (text area) default value 2...',
+            testFormTextAreaInputComponentWithDefaultValue3: 'Test (text area) default value 3...',
+            testFormTextAreaInputComponentWithDefaultValue4: 'Test (text area) default value 4...',
+            testFormTextAreaInputComponentWithDefaultValue5: 'Test (text area) default value 5...',
+            testFormTextAreaInputComponentWithDefaultValue6: 'Test (text area) default value 6...',
+            testFormTextAreaInputComponentWithDefaultValue7: 'Test (text area) default value 7...',
+            testFormTextAreaInputComponentWithDefaultValue8: 'Test (text area) default value 8...',
+            testFormTextAreaInputComponentWithDefaultValue9: 'Test (text area) default value 9...',
         },
 
         reduxFormSwitchInputComponents: {

@@ -31,6 +31,8 @@ export type InputStylesType = {
     labelInactiveFontSize: number,
     iconFontSize: number,
 
+    lineHeight: number,
+
     bgColor: string,
     selectedBGColor: string,
 

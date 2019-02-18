@@ -7,12 +7,13 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {T, always, isNil, isEmpty, cond, is, equals, and, not, defaultTo, complement, addIndex, clone, toString, map} from 'ramda';
+import {T, always, isNil, isEmpty, ifElse, cond, is, equals, and, not, defaultTo, complement, addIndex, clone, toString, map} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 import type {FieldProps} from 'redux-form';
 
 // local imports
+import type {ThemeType} from './../../types/theme_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
@@ -22,7 +23,7 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-type InputTypes = 'text' | 'password';
+type InputTypes = 'text' | 'password' | 'textarea';
 
 export type FormTextInputTypes = {
     /**
@@ -116,6 +117,14 @@ export type FormTextInputTypes = {
 
 type PropsTypes = FieldProps & FormTextInputTypes & {
     /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -169,8 +178,9 @@ const styles = theme => ({
 
             '& > $inputControl': {
                 boxSizing: 'border-box',
+                overflow: 'hidden',
 
-                flexBasis: `${theme.inputStyles.fontSize}px`,
+                flexBasis: `${theme.inputStyles.lineHeight}px`,
                 flexShrink: '0',
                 flexGrow: '0',
 
@@ -189,8 +199,10 @@ const styles = theme => ({
                 boxShadow: 'none',
                 transition: 'all .3s',
 
-                lineHeight: 'normal',
+                lineHeight: `${theme.inputStyles.lineHeight}px`,
                 backgroundColor: theme.inputStyles.bgColor,
+
+                resize: 'none',
 
                 '&:-webkit-autofill': {
                     '-webkit-box-shadow': '0 0 0 1000px transparent inset !important'
@@ -363,7 +375,7 @@ const styles = theme => ({
                 position: 'absolute',
 
                 left: `calc(100%  - ${theme.inputStyles.iconFontSize + iconAdditionalPadding}px)`,
-                top: `${theme.inputStyles.fontSize - theme.inputStyles.iconFontSize}px`,
+                bottom: `${theme.inputStyles.lineHeight - theme.inputStyles.iconFontSize}px`,
 
                 transition: 'all .3s',
 
@@ -538,6 +550,10 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         classes: {}
     };
 
+
+    // endregion
+
+    // region private props
     _id: string;
 
     // endregion
@@ -545,8 +561,12 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
     // region constructor
     constructor(props: PropsTypes): void {
         super(props);
+        const self: any = this;
 
         this._id = this._createInputId();
+
+        self._renderTextAreaInput = self._renderTextAreaInput.bind(this);
+        self._renderTextInput = self._renderTextInput.bind(this);
     }
 
     // endregion
@@ -805,7 +825,7 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
         </label>;
     }
 
-    _renderInput(): React.Node {
+    _renderTextInput(): React.Node {
         const {type, readOnly, disabled, placeholder}: {type?: InputTypes, readOnly: ?boolean, disabled: ?boolean, placeholder: ?string} = this.props;
         const {value, name, onChange, onFocus, onBlur}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
 
@@ -828,6 +848,47 @@ export class FormTextInputClass extends React.Component<PropsTypes, StateTypes> 
             readOnly={readOnlyParam}
             disabled={disabledParam}
         />;
+    }
+
+    _renderTextAreaInput(): React.Node {
+        const {readOnly, disabled, placeholder}: {type?: InputTypes, readOnly: ?boolean, disabled: ?boolean, placeholder: ?string} = this.props;
+        const {value, name, onChange, onFocus, onBlur}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
+
+        const readOnlyParam: ?string = readOnly ? 'readonly' : undefined;
+        const disabledParam: ?string = disabled ? 'disabled' : undefined;
+
+        const numberOfLines: number = value.replace(/^\s*[\r\n]/gm, '').split(/\r|\r\n|\n/).length;
+        const flexBasis: number = numberOfLines * this.props.theme.inputStyles.lineHeight;
+
+        return <textarea
+            className={this._getInputClasses()}
+
+            value={value}
+            placeholder={placeholder}
+            name={name}
+            id={this._id}
+
+            onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
+
+            style={{
+                flexBasis: `${flexBasis}px`
+            }}
+
+            readOnly={readOnlyParam}
+            disabled={disabledParam}
+        />;
+    }
+
+    _renderInput(): React.Node {
+        const {type}: {type?: InputTypes, readOnly: ?boolean, disabled: ?boolean, placeholder: ?string} = this.props;
+
+        return ifElse(
+            equals('textarea'),
+            this._renderTextAreaInput,
+            this._renderTextInput
+        )(type);
     }
 
     _renderInputContainer(): React.Node {

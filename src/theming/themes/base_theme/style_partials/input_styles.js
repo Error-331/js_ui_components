@@ -55,6 +55,8 @@ export const inputStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStack
         errorFontSize: baseStyles.tertiaryFontSize, // px
         iconFontSize: baseStyles.iconPrimaryFontSize, // px
 
+        lineHeight: baseStyles.secondaryFontSize + 4, // px
+
         bgColor: baseStyles.transparentBGColor,
         selectedBGColor: baseStyles.disabledColor,
 
