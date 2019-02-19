@@ -155,7 +155,7 @@ export function ElementsRowFunction(props: PropsTypes): React.Node {
 
     return <div className={containerClasses} style={{flexWrap, ...style}}>
         {props.children}
-    </div>
+    </div>;
 }
 
 ElementsRowFunction.displayName = 'ElementsRow';

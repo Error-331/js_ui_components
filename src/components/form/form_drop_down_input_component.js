@@ -380,7 +380,6 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         const selectedOptionValue: OptionValueType = selectedOption[selectedOptionLabel];
 
         const labelValue: ?[string, OptionValueType] = find(([optionLabel, optionValue]) => {
-            console.log(selectedOptionLabel, optionLabel);
             return and(
                 equals(selectedOptionLabel, optionLabel),
                 equals(selectedOptionValue, optionValue),

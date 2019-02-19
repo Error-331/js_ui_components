@@ -62,6 +62,12 @@ export type PropsTypes = ThemeProps & {
     disabled?: boolean,
 
     /**
+     * Alias of 'containerClassName'
+     */
+
+    className?: string,
+
+    /**
      * Class name which will be added to outer container of the component
      */
 
@@ -349,11 +355,11 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _getComponentContainerClass(): string {
-        const {classes: {componentContainer}, containerClassName} = this.props;
+        const {classes: {componentContainer}, containerClassName, className} = this.props;
         const buttonVariant: string = this._getVariant();
         const size: string = this._getSize();
 
-        return classNames(componentContainer, size, buttonVariant, containerClassName);
+        return classNames(componentContainer, size, buttonVariant, containerClassName, className);
     }
 
     _getCaptionContainerClass(): string {
@@ -399,7 +405,7 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
 
     _getContainerStyles(): StyleType {
         const containerStyles: StyleType = defaultTo({})(this.props.containerStyles);
-        const style: styleType = defaultTo({})(this.props.style);
+        const style: StyleType = defaultTo({})(this.props.style);
 
         return Object.assign({}, containerStyles, style);
     }
