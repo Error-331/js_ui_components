@@ -6,6 +6,7 @@
 import type {ElementType} from 'react';
 
 import * as React from 'react';
+import {isElement} from 'react-dom/test-utils';
 
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
@@ -35,7 +36,6 @@ import {
     reduce,
     map,
 } from 'ramda';
-
 
 // local imports
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
@@ -430,7 +430,23 @@ class GridGeneratorClass extends React.Component<PropsTypes, StateTypes> {
         let composedComponentContainerStyles: CSSStylesType = defaultTo({})(style);
 
         composedComponentContainerStyles = Object.assign({}, this._getItemStyle(name), composedComponentContainerStyles);
-        return React.createElement(elm, {...props, style: composedComponentContainerStyles, key: name}, children);
+
+        return ifElse(
+            isElement,
+            (elm) => {
+                return React.cloneElement(
+                    elm,
+                    {
+                        ...elm.props,
+                        style: Object.assign({}, elm.props.style, composedComponentContainerStyles),
+                        key: name
+                    }
+                );
+            },
+            (elm) => {
+                return React.createElement(elm, {...props, style: composedComponentContainerStyles, key: name}, children);
+            }
+        )(elm);
     }
 
     _renderItems(): React.Node {

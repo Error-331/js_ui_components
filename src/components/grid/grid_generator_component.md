@@ -194,3 +194,46 @@ const testItems1 = [
 <GridGeneratorComponent style={{gridTemplateRows: 'repeat(4, 50px)'}} items={testItems1}/>
 
 ```
+
+Example of generated grid which contains created elements:
+
+```jsx
+
+const {GridGeneratorComponent} = require('./grid_generator_component');
+const {InlineHeader} = require('./../layout/');
+
+const testItems1 = [
+    [
+        {elm: <div>Header...</div>, hspan: 2, props: {style: {backgroundColor: 'orange'}}},
+        {elm: <div>Column...</div>, vspan: 2, props: {style: {alignSelf: 'stretch', backgroundColor: 'pink'}}},
+    ],    
+        
+    [
+        {
+            elm: <div style={{overflow: 'scroll', alignSelf: 'stretch', backgroundColor: 'yellow'}}>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>
+                Test...<br/>                       
+            </div>, 
+            hspan: 2,       
+        },
+    ]   
+];
+
+<div style={{height: '200px'}}>
+    <GridGeneratorComponent style={{height: '100%', gridTemplateRows: 'max-content 1fr'}} items={testItems1}/>
+</div>
+
+```
