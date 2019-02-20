@@ -12,6 +12,8 @@ import {always, defaultTo, complement, gt, lt, is, isNil, isEmpty, ifElse, unles
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
 
+import {RegularCardBodyComponent} from './regular_card_body_component';
+
 // type definitions
 type StyleType = {
     [string]: mixed
@@ -59,13 +61,13 @@ type PropsTypes = {
     containerStyle?: StyleType,
 
     /**
-     * Class name for card body container div
+     * Class name for card body container
      */
 
     bodyClassName?: string,
 
     /**
-     * Styles for card container body div
+     * Styles for card container body
      */
 
     bodyStyle?: {
@@ -180,40 +182,9 @@ const styles = theme => ({
             flexGrow: 0,
             flexShrink: 1,
         },
-
-        '& > $componentBody': {
-            boxSizing: 'border-box',
-            display: 'flex',
-            position: 'relative',
-
-            flexBasis: 'auto',
-            flexGrow: 0,
-            flexShrink: 1,
-
-            flexDirection: 'column',
-            flexWrap: 'nowrap',
-
-            justifyContent: 'flex-start',
-            alignItems: 'stretch',
-            alignContent: 'flex-start',
-
-            padding: `${theme.layoutStyles.topSpacing}px 
-                      ${theme.layoutStyles.rightSpacing}px 
-                      ${theme.layoutStyles.bottomSpacing}px 
-                      ${theme.layoutStyles.leftSpacing}px
-            `,
-
-            borderRadius: theme.layoutStyles.headerBorderRadius,
-
-            fontFamily: theme.layoutStyles.bodyFontStack,
-            fontSize: theme.layoutStyles.bodyFontSize,
-
-            color: theme.layoutStyles.bodyFontColor,
-        }
     },
 
     componentHeader: {},
-    componentBody: {}
 });
 
 /**
@@ -234,6 +205,9 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
 
     static defaultProps = {
         containerClassName: '',
+        bodyClassName: '',
+
+        bodyStyle: {},
 
         onClickBody: () => {},
 
@@ -269,6 +243,11 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     // endregion
 
     // region style accessors
+    _getBodyStyle(): StyleType {
+        return defaultTo(RegularCardComponent.defaultProps.bodyStyle)
+        (this.props.bodyStyle);
+    }
+
     _getOuterContainerStyle(): StyleType {
         return Object.assign({}, this.props.containerStyle);
     }
@@ -290,10 +269,8 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     }
 
     _getBodyClasses(): string {
-        return classNames(
-            this.props.classes.componentBody,
-            this.props.bodyClassName
-        );
+        return defaultTo(RegularCardComponent.defaultProps.bodyClassName)
+        (this.props.bodyClassName);
     }
 
     // endregion
@@ -369,13 +346,13 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
             return null;
         }
 
-        return <div
+        return <RegularCardBodyComponent
             className={this._getBodyClasses()}
-            style={this.props.bodyStyle}
+            style={this._getBodyStyle()}
             onClick={this._getClickBodyHandler()}
         >
             {children}
-        </div>;
+        </RegularCardBodyComponent>;
     }
 
     _renderOuterContainer(): React.Node {

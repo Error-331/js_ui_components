@@ -124,7 +124,7 @@ const styles = theme => ({
 });
 
 /**
- * Regular card component styled according to material-UI guidelines.
+ * Regular card header component styled according to material-UI guidelines.
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)
