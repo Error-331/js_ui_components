@@ -227,6 +227,64 @@ const styles = theme => ({
             },
         },
 
+        '&.text.disabled': {
+            '&:hover': {
+                backgroundColor: theme.baseStyles.transparentBGColor,
+            },
+
+            '& > $iconContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorSecondary,
+                }
+            },
+
+            '& > $captionContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorSecondary,
+                }
+            },
+        },
+
+        '&.outlined.disabled': {
+            borderColor: theme.buttonStyles.disabledBgColor,
+
+            '&:hover': {
+                backgroundColor: theme.baseStyles.transparentBGColor,
+            },
+
+            '& > $iconContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorSecondary,
+                }
+            },
+
+            '& > $captionContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorSecondary,
+                }
+            },
+        },
+
+        '&.contained.disabled': {
+            backgroundColor: theme.buttonStyles.disabledBgColor,
+
+            '&:hover': {
+                backgroundColor: theme.buttonStyles.disabledBgColor,
+            },
+
+            '& > $iconContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorSecondary,
+                }
+            },
+
+            '& > $captionContainer': {
+                '&.default': {
+                    color: theme.buttonStyles.fontColorSecondary,
+                }
+            },
+        },
+
         '& > $iconContainer': {
             flexBasis: 'auto',
             flexGrow: 0,
@@ -359,7 +417,13 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
         const buttonVariant: string = this._getVariant();
         const size: string = this._getSize();
 
-        return classNames(componentContainer, size, buttonVariant, containerClassName, className);
+        return classNames(
+            componentContainer,
+            size,
+            buttonVariant,
+            {'disabled': this._getDisabled()},
+            containerClassName,
+            className);
     }
 
     _getCaptionContainerClass(): string {

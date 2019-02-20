@@ -83,6 +83,7 @@ const componentContainerStyles = {
     <RegularButtonComponent textType='primary' variant='text' label='Text'/>
 </div>
 ```
+
 Enabled button variants with default text color and icon located to the left of caption:
 
 ```jsx
@@ -108,6 +109,35 @@ const componentContainerStyles = {
     <RegularButtonComponent containerStyles={componentContainerStyles} iconClassName='fas fa-chess-rook-alt' labelPosition='left' label='Contained'/>
     <RegularButtonComponent containerStyles={componentContainerStyles} iconClassName='fas fa-chess-rook-alt' labelPosition='left' variant='outlined' label='Outlined'/>
     <RegularButtonComponent variant='text' iconClassName='fas fa-chess-rook-alt' labelPosition='left' label='Text'/>
+</div>
+
+```
+
+Disabled button variants with default text color and icon located to the left of caption:
+
+```jsx
+
+const {RegularButtonComponent} = require('./regular_button_component');
+
+const demoContainerStyles = {
+    display: 'flex', 
+    
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+                            
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    alignContent: 'flex-start',
+};
+
+const componentContainerStyles = {
+    marginRight: '10px'
+};
+
+<div style={demoContainerStyles}>
+    <RegularButtonComponent disabled={true} containerStyles={componentContainerStyles} iconClassName='fas fa-chess-rook-alt' labelPosition='left' label='Contained'/>
+    <RegularButtonComponent disabled={true} containerStyles={componentContainerStyles} iconClassName='fas fa-chess-rook-alt' labelPosition='left' variant='outlined' label='Outlined'/>
+    <RegularButtonComponent disabled={true} variant='text' iconClassName='fas fa-chess-rook-alt' labelPosition='left' label='Text'/>
 </div>
 
 ```

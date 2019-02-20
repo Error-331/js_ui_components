@@ -44,5 +44,6 @@ export const buttonStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
 
         borderColor: baseStyles.mainSecondaryColor,
         bgColor: baseStyles.mainSecondaryColor,
+        disabledBgColor: baseStyles.disabledColor,
     });
 };

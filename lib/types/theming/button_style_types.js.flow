@@ -37,4 +37,5 @@ export type ButtonStyleType = {
 
     borderColor: string,
     bgColor: string,
+    disabledBgColor: string,
 };
