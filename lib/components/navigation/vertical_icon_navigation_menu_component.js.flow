@@ -89,7 +89,7 @@ const styles = theme => ({
 
                 justifyContent: 'center',
                 alignItems: 'center',
-                alignContent: 'flex-start',
+                alignContent: 'center',
 
                 width: '36px',
                 height: '36px',
@@ -98,7 +98,30 @@ const styles = theme => ({
 
                 cursor: 'pointer',
 
-                '& > i,a': {
+                '& > a': {
+                    boxSizing: 'border-box',
+                    display: 'flex',
+
+                    width: '100%',
+
+                    flexBasis: '100%',
+                    flexGrow: 0,
+                    flexShrink: 1,
+
+                    flexDirection: 'column',
+                    flexWrap: 'nowrap',
+
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+
+                    textDecoration: 'none',
+                    color: theme.navigationStyles.fontColor1,
+                },
+
+                '& > i': {
+                    boxSizing: 'border-box',
+
                     fontSize: `${theme.navigationStyles.iconFontSize}px`,
 
                     textDecoration: 'none',
@@ -106,7 +129,7 @@ const styles = theme => ({
                 },
 
                 '&:hover': {
-                    backgroundColor: theme.navigationStyles.bodyHoverColor1
+                    backgroundColor: theme.navigationStyles.bodyHoverColor1,
                 }
             },
         },
