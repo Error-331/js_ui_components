@@ -13,12 +13,22 @@ import {defaultTo, addIndex, length, slice, map} from 'ramda';
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
     /**
      * Number of icons that will be placed at the bottom part of the component
      */
 
     bottomItemsCount?: number,
+
+    /**
+     * Container style object
+     */
+
+    style?: CSSStylesType,
 
     /**
      * Icon components (or any other components) which will be used to build navigation
@@ -167,6 +177,7 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
 
     static defaultProps = {
         bottomItemsCount: 0,
+        style: {},
     };
 
     // endregion
@@ -184,6 +195,11 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
     // endregion
 
     // region style accessors
+    _getComponentContainerStyle(): CSSStylesType {
+        return defaultTo(VerticalIconNavigationMenuClass.defaultProps.style)
+        (this.props.style);
+    }
+
     _getComponentContainerClassName(): string {
         return this.props.classes.componentContainer;
     }
@@ -265,7 +281,10 @@ export class VerticalIconNavigationMenuClass extends React.Component<PropsTypes,
         const topChildren: Array<React.Node> = slice(topChildrenStartIndex, topChildrenEndIndex, children);
         const bottomChildren: Array<React.Node> = slice(bottomChildrenStartIndex, bottomChildrenEndIndex, children);
 
-        return (<div className={this._getComponentContainerClassName()}>
+        return (<div
+            className={this._getComponentContainerClassName()}
+            style={this._getComponentContainerStyle()}
+        >
             {this._renderTopIconsContainer(topChildren)}
             {this._renderBottomIconsContainer(bottomChildren)}
         </div>);
