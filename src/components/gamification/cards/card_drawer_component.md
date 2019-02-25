@@ -63,7 +63,7 @@ const {VacancyCard1} = require('./../../premade');
 const cardDrawerHeader = <RegularCardHeaderComponent>Java</RegularCardHeaderComponent>
 
 const javaCard1 = <VacancyCard1 logoSrc="/assets/images/logos/logo1.svg" date="2018-02-27T10:00:45" company='WeAreBrainless' title='Hybris Engineer' location='Kiev' remote={true} salaryMin={2000} salaryMax={3000} currency='$'/>;
-const javaCard2 = <VacancyCard1 logoSrc="/assets/images/logos/logo2.svg" date="2017-05-02T12:00:23" company='Solve.DontCare' title='Software Architect (Java)' location='Kiev'/>;
+const javaCard2 = <VacancyCard1 logoSrc="/assets/images/logos/logo2.svg" date="2017-05-02T12:00:23" company='WeAreBrainless' title='Software Architect (Java)' location='Kiev'/>;
 const javaCard3 = <VacancyCard1 logoSrc="/assets/images/logos/logo3.svg" date="2017-02-12T14:45:12" company='Oldage Solutions Ukraine' title='Senior Java Developer (TG)' location='Kiev' salaryMin={2000} currency='$'/>;
 const javaCard4 = <VacancyCard1 logoSrc="/assets/images/logos/logo4.svg" date="2018-05-03T10:33:13" company='Indiceus' title='Senior Java Developer (project for Amazon)' location='Kiev' salaryMin={3000} currency='$'/>;
 const javaCard5 = <VacancyCard1 logoSrc="/assets/images/logos/logo5.svg" date="2017-10-03T22:42:10" company='Zaeblab' title='Middle Java Developer (UA)' location='Kiev' remote={true} salaryMin={1500} salaryMax={2500} currency='$'/>;

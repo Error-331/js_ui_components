@@ -59,7 +59,7 @@ type ItemBaseType = {
 };
 
 type ItemType = ItemBaseType & {
-    elm: ElementType,
+    elm: ElementType | React.Node,
 };
 
 type ServiceItemType = ItemBaseType & {

@@ -7,6 +7,8 @@ import * as React from 'react';
 import injectSheet, {jss, SheetsRegistry} from 'react-jss';
 import classNames from 'classnames';
 
+import {defaultTo} from 'ramda';
+
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
 
@@ -16,6 +18,8 @@ type CSSStylesType = {
 };
 
 type PropsTypes = {
+    styleSheetName?: string,
+
     /**
      * Flag that dictates whether component should be disabled
      */
@@ -27,6 +31,30 @@ type PropsTypes = {
      */
 
     htmlFor?: string,
+
+    /**
+     * Style object for check mark background container
+     */
+
+    checkMarkBackgroundContainerStyle?: CSSStylesType,
+
+    /**
+     * Style object for checked check mark background container
+     */
+
+    checkedCheckMarkBackgroundContainerStyle?: CSSStylesType,
+
+    /**
+     * Style object for checked and disabled check mark background container
+     */
+
+    checkedCheckMarkBackgroundContainerDisabledStyle?: CSSStylesType,
+
+    /**
+     * Style object for check mark container
+     */
+
+    checkMarkContainerStyle?: CSSStylesType,
 
     /**
      * JSS theme object
@@ -67,7 +95,6 @@ const styles = theme => ({
             border: `${theme.inputStyles.checkMarkLineWidth}px solid ${theme.inputStyles.switchSliderInactiveBodyBGColor}`,
             borderRadius: '2px',
 
-            backGroundColor: 'white',
             transition: 'borderColor 0.3s, background 0.3s'
         },
 
@@ -88,9 +115,7 @@ const styles = theme => ({
 
             transform: 'rotate(-45deg)',
 
-            '&.disabled': {
-                borderColor: theme.inputStyles.switchSliderHandleInactive
-            }
+
         },
     },
 
@@ -113,7 +138,12 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
 
     static defaultProps = {
         disabled: false,
-        classes: {}
+        classes: {},
+
+        checkMarkBackgroundContainerStyle: {},
+        checkMarkContainerStyle: {},
+        checkedCheckMarkBackgroundContainerStyle: {},
+        checkedCheckMarkBackgroundContainerDisabledStyle: {},
     };
 
     // endregion
@@ -142,7 +172,10 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
             [checkMarkBackgroundContainerDisabledStylesName]: this._getCheckedCheckMarkBackgroundContainerDisabledStyles(),
         };
 
-        styleSheetRegister.addGlobalStyles(newGlobalStyles, FormCheckboxVariant1ComponentClass.displayName);
+        let {styleSheetName} = this.props;
+        styleSheetName = defaultTo(FormCheckboxVariant1ComponentClass.displayName)(styleSheetName);
+
+        styleSheetRegister.addGlobalStyles(newGlobalStyles, styleSheetName);
     }
 
     // endregion
@@ -151,13 +184,33 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
     // endregion
 
     // region style accessors
+    _getCheckedCheckMarkBackgroundContainerDisabledStyle(): CSSStylesType {
+        return defaultTo(FormCheckboxVariant1ComponentClass.defaultProps.checkedCheckMarkBackgroundContainerDisabledStyle)
+        (this.props.checkedCheckMarkBackgroundContainerDisabledStyle);
+    }
+
+    _getCheckedCheckMarkBackgroundContainerStyle(): CSSStylesType {
+        return defaultTo(FormCheckboxVariant1ComponentClass.defaultProps.checkedCheckMarkBackgroundContainerStyle)
+        (this.props.checkedCheckMarkBackgroundContainerStyle);
+    }
+
+    _getCheckMarkContainerStyle(): CSSStylesType {
+        return defaultTo(FormCheckboxVariant1ComponentClass.defaultProps.checkMarkContainerStyle)
+        (this.props.checkMarkContainerStyle);
+    }
+
+    _getCheckMarkBackgroundContainerStyle(): CSSStylesType {
+        return defaultTo(FormCheckboxVariant1ComponentClass.defaultProps.checkMarkBackgroundContainerStyle)
+        (this.props.checkMarkBackgroundContainerStyle);
+    }
+
     _getCheckedCheckMarkBackgroundContainerStyles(): CSSStylesType {
         const {theme} = this.props;
 
-        return {
+        return Object.assign({}, {
             borderColor: theme.inputStyles.switchSliderActiveBodyBGColor,
-            background: theme.inputStyles.switchSliderActiveBodyBGColor
-        };
+            backgroundColor: theme.inputStyles.switchSliderActiveBodyBGColor
+        }, this._getCheckedCheckMarkBackgroundContainerStyle());
     }
 
     _getCheckedCheckMarkContainerStyles(): CSSStylesType {
@@ -169,10 +222,10 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
     _getCheckedCheckMarkBackgroundContainerDisabledStyles(): CSSStylesType {
         const {theme} = this.props;
 
-        return {
+        return Object.assign({}, {
             borderColor: theme.inputStyles.disabledColor,
-            background: theme.inputStyles.disabledColor
-        };
+            backgroundColor: theme.inputStyles.disabledColor
+        }, this._getCheckedCheckMarkBackgroundContainerDisabledStyle());
     }
 
     _getCheckMarkBackgroundContainerClasses(): string {
@@ -189,7 +242,7 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
 
         return classNames(
             this.props.classes.checkMarkContainer,
-            {'disabled': disabled}
+            {'disabled': disabled},
         );
     }
 
@@ -209,12 +262,16 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
 
     // region render methods
     _renderCheckMarkContainer(): React.Node {
-        return <div className={this._getCheckMarkContainerClasses()}>
+        return <div
+            className={this._getCheckMarkContainerClasses()}
+            style={this._getCheckMarkContainerStyle()}
+        >
         </div>;
     }
 
     _renderCheckMarkBackgroundContainer(): React.Node {
-        return <div className={this._getCheckMarkBackgroundContainerClasses()}>
+        return <div className={this._getCheckMarkBackgroundContainerClasses()}
+                    style={this._getCheckMarkBackgroundContainerStyle()}>
         </div>;
     }
 

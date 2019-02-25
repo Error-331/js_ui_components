@@ -18,7 +18,7 @@ import type {UserPropsTypes as HorizontalTablePropsTypes} from './horizontal_tab
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 import {TextBlock} from './../layout/text/text_block';
 
-import {FormCheckboxVariant2Component} from './../form/form_checkbox_variants/form_checkbox_variant2_component';
+import {FormCheckboxVariant3Component} from './../form/form_checkbox_variants/form_checkbox_variant3_component';
 
 import {HorizontalTableComponent} from './horizontal_table_component';
 import {VerticalTableComponent} from './vertical_table_component';
@@ -172,7 +172,7 @@ export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
             [isNil, bind(this._prepareNilColumnData, this)],
             [(columnData: ColumnDataType) => moment.isMoment(columnData), (columnData: moment) => columnData.format('YYYY-M-d H:mm:ss')],
             [is(Date), (columnData: moment) => moment(columnData).format('YYYY-M-d H:mm:ss')],
-            [is(Boolean), (columnData: ColumnDataType) => <FormCheckboxVariant2Component forceCheck={columnData}/>],
+            [is(Boolean), (columnData: ColumnDataType) => <FormCheckboxVariant3Component forceCheck={columnData}/>],
             [is(String), bind(this._prepareStringColumn, this)],
             [is(Object), bind(this._prepareSpecificColumnData, this)],
             [T, bind(this._prepareNilColumnData, this)]

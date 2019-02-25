@@ -31,6 +31,11 @@ type CSSStylesType = {
 
 
 type PropsTypes = FieldProps & {
+    /**
+     * Number that indicates which visual variant will be used to represent the dropdown input
+     */
+
+    variant?: number,
 
     /**
      * List of possible options
@@ -343,7 +348,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
 
     _getFormTextInputComponentProps(): FormTextInputTypes {
         const input = this._getInputData();
-        const {readOnly, disabled, placeholder, label, meta} = this.props;
+        const {variant, readOnly, disabled, placeholder, label, meta} = this.props;
 
         const currentName: string = defaultTo(this._id)(input.name);
         const currentValue: OptionValueType = defaultTo('')(this._getSelectedLabel());
@@ -357,6 +362,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         });
 
         return {
+            variant,
             type: 'text',
             readOnly,
             disabled,

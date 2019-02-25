@@ -5,12 +5,12 @@
 // external imports
 import * as React from 'react';
 import injectSheet, {jss, SheetsRegistry} from 'react-jss';
-import classNames from 'classnames';
 
 import {defaultTo} from 'ramda';
 
 // local imports
-import type {ThemeType} from './../../../types/theme_types';
+import {FormCheckboxVariant1Component} from './form_checkbox_variant1_component';
+import type {ThemeType} from "../../../types/theme_types";
 
 // type definitions
 type CSSStylesType = {
@@ -23,12 +23,6 @@ type PropsTypes = {
      */
 
     disabled?: ?boolean,
-
-    /**
-     * Flag that dictates whether checkbox should be forcibly checked
-     */
-
-    forceCheck?: boolean,
 
     /**
      * Specifies which form element a label is bound to
@@ -56,95 +50,7 @@ type PropsTypes = {
 type StateTypes = {};
 
 // styles definition
-const styles = theme => ({
-    'componentContainer': {
-        position: 'relative',
-        boxSizing: 'border-box',
-        display: 'flex',
-
-        width: `${theme.inputStyles.checkboxControlLabelWidth}px`,
-        height: `${theme.inputStyles.checkboxControlLabelHeight}px`,
-
-        '& > $checkMarkContainer': {
-            position: 'absolute',
-            boxSizing: 'border-box',
-
-            top: `0%`,
-            left: `0%`,
-
-            width: `100%`,
-            height: `50%`,
-
-            border: `${theme.inputStyles.checkMarkLineWidth}px solid ${theme.inputStyles.switchSliderHandleActive}`,
-            borderTopStyle: 'none',
-            borderRightStyle: 'none',
-
-            opacity: 0,
-            transform: 'rotate(-90deg)',
-
-            transition: 'transform 0.3s, opacity 0.3s',
-
-            '&.disabled': {
-                borderColor: theme.inputStyles.disabledColor
-            }
-        },
-
-        '& > $crossMarkContainer': {
-            position: 'relative',
-            boxSizing: 'border-box',
-            
-            width: '100%',
-            height: '100%',
-
-            opacity: 1,
-            transform: 'rotate(-45deg)',
-
-            transition: 'transform 0.3s, opacity 0.3s',
-
-            '& > $crossLineVertical': {
-                position: 'absolute',
-                boxSizing: 'border-box',
-
-                top: '0%',
-                left: `calc(50% - ${theme.inputStyles.checkMarkLineWidth / 2}px)`,
-
-                width: `${theme.inputStyles.checkMarkLineWidth}px`,
-                height: '100%',
-
-                backgroundColor: theme.inputStyles.attentionColor,
-            },
-
-            '& > $crossLineHorizontal': {
-                position: 'relative',
-                boxSizing: 'border-box',
-
-                top: `calc(50% - ${theme.inputStyles.checkMarkLineWidth / 2}px)`,
-                left: '0%',
-
-                width: '100%',
-                height: `${theme.inputStyles.checkMarkLineWidth}px`,
-
-                backgroundColor: theme.inputStyles.attentionColor,
-            },
-
-            '&.disabled': {
-                '& > $crossLineVertical': {
-                    backgroundColor: theme.inputStyles.disabledColor,
-                },
-
-                '& > $crossLineHorizontal': {
-                    backgroundColor: theme.inputStyles.disabledColor,
-                },
-            }
-        },
-    },
-
-    checkMarkContainer: {},
-
-    crossMarkContainer: {},
-    crossLineVertical: {},
-    crossLineHorizontal: {}
-});
+const styles = theme => ({});
 
 /**
  * Checkbox (variant 2) component styled according to material-UI guidelines.
@@ -161,72 +67,38 @@ export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTyp
 
     static defaultProps = {
         disabled: false,
-        classes: {}
     };
 
     // endregion
 
     // region constructor
-    constructor(props: PropsTypes) {
-        super(props);
-        this.attachSheet();
-    }
-
     // endregion
 
     // region business logic
-    attachSheet(): void {
-        const {classes, theme} = this.props;
-        const {componentContainer, checkMarkContainer, crossMarkContainer} = classes;
-        const {styleSheetRegister} = theme;
-
-        const checkMarkContainerStylesName: string = `input:checked + .${componentContainer} > .${checkMarkContainer}`;
-        const checkCrossContainerStylesName: string = `input:checked + .${componentContainer} > .${crossMarkContainer}`;
-
-        const newGlobalStyles: CSSStylesType = {
-            [checkMarkContainerStylesName]: this._getCheckedCheckMarkContainerStyles(),
-            [checkCrossContainerStylesName]: this._getCheckedCrossMarkContainerClasses(),
-        };
-
-        styleSheetRegister.addGlobalStyles(newGlobalStyles, FormCheckboxVariant2ComponentClass.displayName);
-    }
-
     // endregion
 
     // region lifecycle methods
     // endregion
 
     // region style accessors
-    _getCheckedCrossMarkContainerClasses(): CSSStylesType {
+    _getCheckMarkContainerStyle(): CSSStylesType {
         return {
-            opacity: 0,
-            transform: 'rotate(0deg)',
+            borderColor: this.props.theme.inputStyles.alternateInputColor
         };
     }
 
-    _getCheckedCheckMarkContainerStyles(): CSSStylesType {
+    _getCheckedCheckMarkBackgroundContainerStyle(): CSSStylesType {
         return {
-            opacity: 1,
-            transform: 'rotate(-45deg)',
+            backgroundColor: this.props.theme.inputStyles.bgColor
         };
     }
 
-    _getCrossMarkContainerClasses(): string {
-        const {disabled}: {disabled: ?boolean} = this.props;
-
-        return classNames(
-            this.props.classes.crossMarkContainer,
-            {'disabled': disabled}
-        );
-    }
-
-    _getCheckMarkContainerClasses(): string {
-        const {disabled}: {disabled: ?boolean} = this.props;
-
-        return classNames(
-            this.props.classes.checkMarkContainer,
-            {'disabled': disabled}
-        );
+    _getCheckMarkBackgroundContainerStyle(): CSSStylesType {
+        return {
+            borderColor: this._isDisabled() ?
+                this.props.theme.inputStyles.disabledColor :
+                this.props.theme.inputStyles.alternateInputColor
+        };
     }
 
     // endregion
@@ -238,8 +110,9 @@ export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTyp
     // endregion
 
     // region prop accessors
-    _getForceCheckProp(): boolean {
-        return defaultTo(false)(this.props.forceCheck);
+    _isDisabled(): boolean {
+        return defaultTo(FormCheckboxVariant2ComponentClass.defaultProps.disabled)
+        (this.props.disabled);
     }
 
     // endregion
@@ -248,32 +121,16 @@ export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTyp
     // endregion
 
     // region render methods
-    _renderCrossMarkContainer(): React.Node {
-        return <div className={this._getCrossMarkContainerClasses()}>
-            <div className={this.props.classes.crossLineVertical}/>
-            <div className={this.props.classes.crossLineHorizontal}/>
-        </div>;
-    }
-
-    _renderCheckMarkContainer(): React.Node {
-        const forceCheck: boolean = this._getForceCheckProp();
-        const customStyles: CSSStylesType = forceCheck ? this._getCheckedCheckMarkContainerStyles() : {};
-
-        return <div className={this._getCheckMarkContainerClasses()} style={customStyles}>
-        </div>;
-    }
-
-    _renderComponentContainer(): React.Node {
-        const forceCheck: boolean = this._getForceCheckProp();
-
-        return <label htmlFor={this.props.htmlFor} className={this.props.classes.componentContainer}>
-            {this._renderCheckMarkContainer()}
-            {forceCheck ? null : this._renderCrossMarkContainer()}
-        </label>;
-    }
-
     render(): React.Node {
-        return this._renderComponentContainer();
+        return <FormCheckboxVariant1Component
+            styleSheetName={FormCheckboxVariant2ComponentClass.displayName}
+            disabled={this.props.disabled}
+            htmlFor={this.props.htmlFor}
+
+            checkMarkBackgroundContainerStyle={this._getCheckMarkBackgroundContainerStyle()}
+            checkedCheckMarkBackgroundContainerStyle={this._getCheckedCheckMarkBackgroundContainerStyle()}
+            checkMarkContainerStyle={this._getCheckMarkContainerStyle()}
+        />;
     }
 
     // endregion

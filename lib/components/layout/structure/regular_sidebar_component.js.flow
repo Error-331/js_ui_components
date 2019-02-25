@@ -16,19 +16,19 @@ type StyleType = {
 
 type PropsTypes = {
     /**
-     * Class name for panel container outer div
+     * Class name for sidebar container outer div
      */
 
     className?: string,
 
     /**
-     * Styles for panel container outer div
+     * Styles for sidebar container outer div
      */
 
     style?: StyleType,
 
     /**
-     * Content for panel
+     * Content for sidebar
      */
 
     children?: React.ChildrenArray<any>,
@@ -54,18 +54,17 @@ const styles = theme => ({
                   ${theme.layoutStyles.leftSpacing}px
         `,
 
-        borderRadius: theme.layoutStyles.headerBorderRadius,
         backgroundColor: theme.layoutStyles.headerBGColor,
 
-        fontFamily: theme.layoutStyles.headerFontStack,
-        fontSize: `${theme.layoutStyles.headerFontSize}px`,
+        fontFamily: theme.layoutStyles.bodyFontStack,
+        fontSize: theme.layoutStyles.bodyFontSize,
 
         color: theme.layoutStyles.headerFontColor,
     },
 });
 
 /**
- * Regular panel component styled according to material-UI guidelines.
+ * Regular sidebar component styled according to material-UI guidelines.
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)
@@ -73,7 +72,7 @@ const styles = theme => ({
  */
 
 // component implementation
-function RegularPanelFunction(props: PropsTypes) {
+function RegularSidebarFunction(props: PropsTypes) {
     const {className, style, children, classes} = props;
 
     const combinedClassName: string = classNames(
@@ -86,7 +85,7 @@ function RegularPanelFunction(props: PropsTypes) {
     </div>;
 }
 
-RegularPanelFunction.displayName = 'RegularPanelComponent';
+RegularSidebarFunction.displayName = 'RegularSidebarComponent';
 
 // exports
-export const RegularPanelComponent = injectSheet(styles)(RegularPanelFunction);
+export const RegularSidebarComponent = injectSheet(styles)(RegularSidebarFunction);

@@ -244,7 +244,6 @@ const styles = theme => ({
                     borderBottomStyle: 'dotted',
                     borderBottomColor: theme.inputStyles.disabledColor,
 
-
                     color: theme.inputStyles.disabledColor,
                 },
             },
@@ -285,6 +284,7 @@ const styles = theme => ({
                 '&.disabled': {
                     borderBottomStyle: 'dotted',
                     borderBottomColor: theme.inputStyles.alternateInputColor,
+                    
                     color: theme.inputStyles.alternateInputColor,
                 },
             },

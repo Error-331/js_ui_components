@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {always, defaultTo, equals, isNil, ifElse, cond, clone} from 'ramda';
+import {always, defaultTo, equals, isNil, ifElse, cond, clone, T} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 import type {FieldProps} from 'redux-form';
@@ -17,6 +17,7 @@ import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentI
 
 import {FormCheckboxVariant1Component} from './form_checkbox_variants/form_checkbox_variant1_component';
 import {FormCheckboxVariant2Component} from './form_checkbox_variants/form_checkbox_variant2_component';
+import {FormCheckboxVariant3Component} from './form_checkbox_variants/form_checkbox_variant3_component';
 
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
@@ -116,11 +117,18 @@ const styles = theme => ({
             fontFamily: theme.inputStyles.fontStack,
             fontSize: theme.inputStyles.fontSize,
 
-            color: theme.inputStyles.labelColor,
 
             '&.disabled': {
                 color: theme.inputStyles.disabledColor
             }
+        },
+
+        '& > $checkboxLabelVariant1': {
+            color: theme.inputStyles.labelColor,
+        },
+
+        '& > $checkboxLabelVariant2': {
+            color: theme.inputStyles.alternateInputColor,
         },
 
         '& > $checkboxLeftLabel': {
@@ -138,6 +146,9 @@ const styles = theme => ({
     },
 
     checkboxLabel: {},
+    checkboxLabelVariant1: {},
+    checkboxLabelVariant2: {},
+
     checkboxLeftLabel: {},
     checkboxRightLabel: {},
 
@@ -203,8 +214,16 @@ export class FormCheckboxInputClass extends React.Component<PropsTypes, StateTyp
     _getLabelClasses(): string {
         const {disabled, labelPosition, classes: {checkboxLeftLabel, checkboxRightLabel}} = this.props;
 
+        const variantClassName: string = cond([
+            [equals(1), always(this.props.classes.checkboxLabelVariant1)],
+            [equals(2), always(this.props.classes.checkboxLabelVariant2)],
+            [T, always(this.props.classes.checkboxLabelVariant1)]
+        ])(this._getVariant());
+
+
         return classNames(
             this.props.classes.checkboxLabel,
+            variantClassName,
             ifElse(equals('left'), always(checkboxLeftLabel), always(checkboxRightLabel))(labelPosition),
             {'disabled': disabled}
         );
@@ -282,6 +301,7 @@ export class FormCheckboxInputClass extends React.Component<PropsTypes, StateTyp
         return cond([
             [equals(1), () =>  <FormCheckboxVariant1Component disabled={this.props.disabled} htmlFor={this._id}/>],
             [equals(2), () =>  <FormCheckboxVariant2Component disabled={this.props.disabled} htmlFor={this._id}/>],
+            [equals(3), () =>  <FormCheckboxVariant3Component disabled={this.props.disabled} htmlFor={this._id}/>],
         ])(this._getVariant());
     }
 
