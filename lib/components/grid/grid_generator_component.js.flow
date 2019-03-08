@@ -438,6 +438,7 @@ class GridGeneratorClass extends React.Component<PropsTypes, StateTypes> {
                     elm,
                     {
                         ...elm.props,
+                        ...props,
                         style: Object.assign({}, elm.props.style, composedComponentContainerStyles),
                         key: name
                     }

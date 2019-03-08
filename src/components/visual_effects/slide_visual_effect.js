@@ -10,7 +10,10 @@ import classNames from 'classnames';
 import {T, isNil, always, equals, defaultTo, unless, cond} from 'ramda';
 
 // local imports
+import type {ThemeType} from './../../types/theme_types';
+
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+import {OverlayComponent} from './../window/overlay_component';
 
 // type definitions
 type CSSStylesType = {
@@ -40,6 +43,12 @@ type PropsTypes = {
     duration?: string,
 
     /**
+     * Opacity of overlay
+     */
+
+    overlayOpacity?: number,
+
+    /**
      * Callback function that will be called if width of the components top container width changes
      */
 
@@ -56,6 +65,14 @@ type PropsTypes = {
      */
 
     className?: string,
+
+    /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
 
     /**
      * JSS inner classes
@@ -80,19 +97,13 @@ const styles = theme => ({
         boxSizing: 'border-box',
         position: 'absolute',
 
-        padding: `${theme.layoutStyles.topSpacing}px 
-                  ${theme.layoutStyles.rightSpacing}px 
-                  ${theme.layoutStyles.bottomSpacing}px 
-                  ${theme.layoutStyles.bottomSpacing}px
-        `,
-
         transitionDelay: '0s',
         transitionProperty: 'top',
         transitionTimingFunction: 'ease-in-out',
 
         zIndex: '2',
 
-        backgroundColor: theme.baseStyles.mainSecondaryColor,
+        backgroundColor: 'transparent',
 
         '&.horizontalSlider': {
             width: 'auto',
@@ -103,7 +114,22 @@ const styles = theme => ({
             width: 'auto',
             height: 'auto'
         },
-    }
+
+        '& $contentContainer': {
+            boxSizing: 'border-box',
+
+            width: '100%',
+            height: '100%',
+
+            padding: `${theme.layoutStyles.topSpacing}px 
+                      ${theme.layoutStyles.rightSpacing}px 
+                      ${theme.layoutStyles.bottomSpacing}px 
+                      ${theme.layoutStyles.bottomSpacing}px
+            `,
+        }
+    },
+
+    contentContainer: {},
 });
 
 /**
@@ -281,6 +307,10 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
         return classNames(this.props.classes.componentContainer, sliderClassName, this.props.className);
     }
 
+    _getContentContainerClassName(): string {
+        return defaultTo('')(this.props.classes.contentContainer);
+    }
+
     // endregion
 
     // region label accessors
@@ -293,6 +323,11 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
     _getComponentContainerWidthChangeHandler(): ComponentContainerWidthChangeHandler {
         return defaultTo(SlideVisualEffectClass.defaultProps.onComponentContainerWidthChange)
         (this.props.onComponentContainerWidthChange);
+    }
+
+    _getOverlayOpacity(): number {
+        const {overlayOpacity, theme} = this.props;
+        return defaultTo(theme.windowStyles.overlayOpacity)(overlayOpacity);
     }
 
     _shouldShow(): boolean {
@@ -340,13 +375,25 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
     // endregion
 
     // region render methods
+    _renderContentContainer(): React.Node {
+        return <div className={this._getContentContainerClassName()}>
+            {this.props.children}
+        </div>;
+    }
+
+    _renderOverlayComponent(): React.Node {
+        return <OverlayComponent opacity={this._getOverlayOpacity()} show={true}>
+            {this._renderContentContainer()}
+        </OverlayComponent>;
+    }
+
     _renderComponentContainer(): React.Node {
         return <div
             ref={this.$componentContainer}
             className={this._getComponentContainerClassName()}
             style={this._getComponentContainerStyle()}
         >
-            {this.props.children}
+            {this._renderOverlayComponent()}
         </div>;
     }
 

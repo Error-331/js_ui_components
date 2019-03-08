@@ -32,7 +32,7 @@ type PropsTypes = {
      * Opacity of overlay
      */
 
-    opacity: ?number,
+    opacity?: number,
 
     /**
      * Callback function which will be called when overlay is clicked

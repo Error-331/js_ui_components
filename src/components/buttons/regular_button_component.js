@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {defaultTo, is, isNil, equals, unless, always} from 'ramda';
+import {defaultTo, or, is, isEmpty, isNil, equals, unless, always} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
@@ -30,6 +30,12 @@ export type PropsTypes = ThemeProps & {
      */
 
     size?: ButtonSizeType,
+
+    /**
+     * Flag that describes how the button shape will look like
+     */
+
+    shape: 'rectangular' | 'round',
 
     /**
      * Flag that describes how the button will look like
@@ -137,24 +143,53 @@ const styles = theme => ({
 
         cursor: 'pointer',
 
-        '&.tiny': {
-            minWidth: theme.buttonStyles.tinyRegularButtonMinimumWidth,
+        '&.rectangular': {
+            '&.tiny': {
+                minWidth: theme.buttonStyles.tinyRegularButtonMinimumWidth,
+            },
+
+            '&.small': {
+                minWidth: theme.buttonStyles.smallRegularButtonMinimumWidth,
+            },
+
+            '&.medium': {
+                minWidth: theme.buttonStyles.mediumRegularButtonMinimumWidth,
+            },
+
+            '&.large': {
+                minWidth: theme.buttonStyles.largeRegularButtonMinimumWidth,
+            },
+
+            '&.extraLarge': {
+                minWidth: theme.buttonStyles.extraLargeRegularButtonMinimumWidth,
+            },
         },
 
-        '&.small': {
-            minWidth: theme.buttonStyles.smallRegularButtonMinimumWidth,
-        },
+        '&.round': {
+            borderRadius: '50%',
 
-        '&.medium': {
-            minWidth: theme.buttonStyles.mediumRegularButtonMinimumWidth,
-        },
+            '&.tiny': {
+                minWidth: theme.layoutStyles.tinyIconSize,
+                minHeight: theme.layoutStyles.tinyIconSize,
+            },
 
-        '&.large': {
-            minWidth: theme.buttonStyles.largeRegularButtonMinimumWidth,
-        },
+            '&.small': {
+                minWidth: theme.layoutStyles.smallIconSize,
+                minHeight: theme.layoutStyles.smallIconSize,
+            },
 
-        '&.extraLarge': {
-            minWidth: theme.buttonStyles.extraLargeRegularButtonMinimumWidth,
+            '&.medium': {
+                minWidth: theme.layoutStyles.mediumIconSize,
+                minHeight: theme.layoutStyles.mediumIconSize,
+            },
+
+            '&.large': {
+                minWidth: theme.buttonStyles.largeRegularButtonMinimumWidth,
+            },
+
+            '&.extraLarge': {
+                minWidth: theme.buttonStyles.extraLargeRegularButtonMinimumWidth,
+            },
         },
 
         '&.text': {
@@ -414,11 +449,13 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
 
     _getComponentContainerClass(): string {
         const {classes: {componentContainer}, containerClassName, className} = this.props;
+        const buttonShape: string = this._getShape();
         const buttonVariant: string = this._getVariant();
         const size: string = this._getSize();
 
         return classNames(
             componentContainer,
+            buttonShape,
             size,
             buttonVariant,
             {'disabled': this._getDisabled()},
@@ -451,6 +488,11 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
         return variant.toLowerCase();
     }
 
+    _getShape(): string {
+        const {shape = 'rectangular'} = this.props;
+        return shape.toLowerCase();
+    }
+
     _getTextType(): string {
         const {textType = 'default'} = this.props;
         return textType.toLowerCase();
@@ -459,6 +501,10 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
     _getLabelPosition(): string {
         let {labelPosition} = this.props;
         labelPosition = is(String, labelPosition) ? labelPosition.toLowerCase() : labelPosition;
+
+        if (this._isLabelEmpty()) {
+            return '';
+        }
 
         return unless(isNotNil, always('left'))(labelPosition);
     }
@@ -476,6 +522,10 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
 
     _getSize(): ButtonSizeType {
         return defaultTo(SMALL_SIZE)(this.props.size);
+    }
+
+    _isLabelEmpty(): boolean {
+        return isEmpty(this._getLabel());
     }
 
     // endregion
@@ -516,7 +566,7 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
         >
             {equals('right', labelPosition) ? this._renderIconContainer() : null}
             {this._renderCaptionContainer()}
-            {equals('left', labelPosition) ? this._renderIconContainer() : null}
+            {or(equals('left', labelPosition), this._isLabelEmpty()) ? this._renderIconContainer() : null}
         </div>;
     }
 
