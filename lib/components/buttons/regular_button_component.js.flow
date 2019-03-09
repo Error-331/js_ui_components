@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {defaultTo, or, is, isEmpty, isNil, equals, unless, always} from 'ramda';
+import {defaultTo, or, is, isEmpty, isNil, equals, unless, always, max} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
@@ -118,6 +118,11 @@ type StateTypes = {};
 const verticalPadding: number = 11; // px
 const horizontalPadding: number = 16; // px
 
+const doubleVerticalPadding: number = verticalPadding * 2;
+const doubleHorizontalPadding: number = horizontalPadding * 2;
+
+const roundButtonSpacing: number =  max(doubleHorizontalPadding, doubleVerticalPadding);
+
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
@@ -169,26 +174,28 @@ const styles = theme => ({
             borderRadius: '50%',
 
             '&.tiny': {
-                minWidth: theme.layoutStyles.tinyIconSize,
-                minHeight: theme.layoutStyles.tinyIconSize,
+                minWidth: `${theme.layoutStyles.tinyIconSize + roundButtonSpacing}px`,
+                minHeight: `${theme.layoutStyles.tinyIconSize + roundButtonSpacing}px`,
             },
 
             '&.small': {
-                minWidth: theme.layoutStyles.smallIconSize,
-                minHeight: theme.layoutStyles.smallIconSize,
+                minWidth: `${theme.layoutStyles.smallIconSize + roundButtonSpacing}px`,
+                minHeight: `${theme.layoutStyles.smallIconSize + roundButtonSpacing}px`,
             },
 
             '&.medium': {
-                minWidth: theme.layoutStyles.mediumIconSize,
-                minHeight: theme.layoutStyles.mediumIconSize,
+                minWidth: `${theme.layoutStyles.mediumIconSize + roundButtonSpacing}px`,
+                minHeight: `${theme.layoutStyles.mediumIconSize + roundButtonSpacing}px`,
             },
 
             '&.large': {
-                minWidth: theme.buttonStyles.largeRegularButtonMinimumWidth,
+                minWidth: `${theme.layoutStyles.largeIconSize + roundButtonSpacing}px`,
+                minHeight: `${theme.layoutStyles.largeIconSize + roundButtonSpacing}px`,
             },
 
             '&.extraLarge': {
-                minWidth: theme.buttonStyles.extraLargeRegularButtonMinimumWidth,
+                minWidth: `${theme.layoutStyles.extraLargeIconSize + roundButtonSpacing}px`,
+                minHeight: `${theme.layoutStyles.extraLargeIconSize + roundButtonSpacing}px`,
             },
         },
 

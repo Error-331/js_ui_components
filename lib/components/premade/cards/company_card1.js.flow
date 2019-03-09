@@ -17,7 +17,6 @@ import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 import {SlideVisualEffect} from './../../visual_effects/slide_visual_effect';
 import {GridGeneratorComponent} from './../../grid/grid_generator_component';
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
-import {RegularButtonComponent} from './../../buttons/regular_button_component';
 import {InlineTextBlock} from './../../layout/text/inline_text_block';
 import {InlineHeader} from './../../layout/text/inline_header';
 import {FontIcon} from './../../layout/icons/font_icon';
@@ -53,6 +52,18 @@ type PropsTypes = {
      */
 
     creationDate?: string | Date | moment,
+
+    /**
+     * Flag that indicates whether to show or not to show overlay with buttons
+     */
+
+    showButtonsOverlay?: boolean,
+
+    /**
+     * Buttons which will be shown in button overlay (grid generator items)
+     */
+
+    overlayButtonItems?: ItemsType,
 
     /**
      * JSS inner classes
@@ -149,7 +160,7 @@ const styles = theme => ({
  */
 
 // component implementation
-export function CompanyCard1Function(props: PropsTypes): React.Node {
+function renderElementsGrid(props: PropsTypes): React.Node {
     const {companyLogoSrc, name, phone, creationDate, classes} = props;
 
     const parsedCreationDate: moment = moment(creationDate);
@@ -165,7 +176,7 @@ export function CompanyCard1Function(props: PropsTypes): React.Node {
     const bodyItems: ItemsType = [
         [
             {elm: companyLogoComponent, props: {className: classes.companyLogoContainer}},
-            {elm: InlineTextBlock, props: {className: classes.creationDateContainer},  children: formattedCreationDate},
+            {elm: InlineTextBlock, props: {className: classes.creationDateContainer}, children: formattedCreationDate},
         ],
         [
             {elm: InlineHeader, hspan: 2, props: {level: 6, className: classes.nameContainer}, children: name}
@@ -175,44 +186,53 @@ export function CompanyCard1Function(props: PropsTypes): React.Node {
         ]
     ];
 
-    const buttonItems: ItemsType = [
-        [
-            {elm: RegularButtonComponent, props: {shape: 'round', size: 'medium', iconClassName: 'fas fa-search'}},
-            {elm: RegularButtonComponent, props: {shape: 'round', size: 'medium', iconClassName: 'fas fa-pencil'}},
-            {elm: RegularButtonComponent, props: {shape: 'round', size: 'medium', iconClassName: 'fas fa-trash'}},
-        ]
-    ];
+    return <GridGeneratorComponent
+        className={classes.contentGridContainer}
+        style={
+            {
+                gridTemplateColumns: '35px 1fr',
+                gridTemplateRows: 'minMax(35px, max-content) max-content',
 
+                gridColumnGap: '0px',
+                gridRowGap: '0px',
+            }
+        }
+        items={bodyItems}/>;
+}
+
+function renderButtonsSlider(props: PropsTypes, shouldShowOverlay: boolean): React.Node {
+    const {overlayButtonItems, classes} = props;
+
+    return <SlideVisualEffect
+        direction='TopToBottom'
+        show={shouldShowOverlay}
+        className={classes.overlayContainer}
+    >
+        <GridGeneratorComponent
+            className={classes.buttonsGridContainer}
+            style={{gridTemplateColumns: 'max-content max-content',}}
+            items={defaultTo([])(overlayButtonItems)}
+        />
+    </SlideVisualEffect>;
+}
+
+export function CompanyCard1Function(props: PropsTypes): React.Node {
+    const {classes} = props;
     const [shouldShowOverlay, setShouldShowOverlay] = React.useState(false);
+
+    let {showButtonsOverlay} = props;
+    showButtonsOverlay = defaultTo(false)(showButtonsOverlay);
 
     return <RegularCardComponent
         popOnHover={true}
         maxPopLevel={3}
         containerClassName={classes.componentContainer}
         bodyClassName={classes.cardBodyContainer}
-        onMouseOverContainer={() => unless(equals(true), () => setShouldShowOverlay(true))(shouldShowOverlay)}
-        onMouseLeaveContainer={() => unless(equals(false), () => setShouldShowOverlay(false))(shouldShowOverlay)}
+        onMouseOverContainer={() => unless(equals(true), () => showButtonsOverlay && setShouldShowOverlay(true))(shouldShowOverlay)}
+        onMouseLeaveContainer={() => unless(equals(false), () => showButtonsOverlay && setShouldShowOverlay(false))(shouldShowOverlay)}
     >
-        <SlideVisualEffect
-            direction='TopToBottom'
-            show={shouldShowOverlay}
-            className={classes.overlayContainer}
-        >
-            <GridGeneratorComponent className={classes.buttonsGridContainer} style={{gridTemplateColumns: 'max-content max-content',}} items={buttonItems}/>
-        </SlideVisualEffect>
-
-        <GridGeneratorComponent
-            className={classes.contentGridContainer}
-            style={
-                {
-                    gridTemplateColumns: '35px 1fr',
-                    gridTemplateRows: 'minMax(35px, max-content) max-content',
-
-                    gridColumnGap: '0px',
-                    gridRowGap: '0px',
-                }
-            }
-            items={bodyItems}/>
+        {showButtonsOverlay ? renderButtonsSlider(props, shouldShowOverlay) : null}
+        {renderElementsGrid(props)}
     </RegularCardComponent>;
 }
 
