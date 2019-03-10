@@ -14,6 +14,7 @@ import type {ItemsType} from './../../grid/grid_generator_component';
 
 import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
+import {ElementsRow} from './../../layout/alignment/elements/elements_row';
 import {SlideVisualEffect} from './../../visual_effects/slide_visual_effect';
 import {GridGeneratorComponent} from './../../grid/grid_generator_component';
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
@@ -60,10 +61,10 @@ type PropsTypes = {
     showButtonsOverlay?: boolean,
 
     /**
-     * Buttons which will be shown in button overlay (grid generator items)
+     * Buttons which will be shown in button overlay
      */
 
-    overlayButtonItems?: ItemsType,
+    children?: React.Node,
 
     /**
      * JSS inner classes
@@ -95,11 +96,10 @@ const styles = theme => ({
                 width: '100%',
                 height: '100%',
 
-                '& $buttonsGridContainer': {
+                '& $buttonsContainer': {
                     height: '100%',
 
-                    justifyContent: 'center',
-                    alignContent: 'center',
+                    alignItems: 'center',
                 }
             },
 
@@ -141,7 +141,7 @@ const styles = theme => ({
 
     cardBodyContainer: {},
     overlayContainer: {},
-    buttonsGridContainer: {},
+    buttonsContainer: {},
     contentGridContainer: {},
 
     companyLogoContainer: {},
@@ -201,18 +201,16 @@ function renderElementsGrid(props: PropsTypes): React.Node {
 }
 
 function renderButtonsSlider(props: PropsTypes, shouldShowOverlay: boolean): React.Node {
-    const {overlayButtonItems, classes} = props;
+    const {children, classes} = props;
 
     return <SlideVisualEffect
         direction='TopToBottom'
         show={shouldShowOverlay}
         className={classes.overlayContainer}
     >
-        <GridGeneratorComponent
-            className={classes.buttonsGridContainer}
-            style={{gridTemplateColumns: 'max-content max-content',}}
-            items={defaultTo([])(overlayButtonItems)}
-        />
+        <ElementsRow alignment='center' className={classes.buttonsContainer}>
+            {children}
+        </ElementsRow>
     </SlideVisualEffect>;
 }
 

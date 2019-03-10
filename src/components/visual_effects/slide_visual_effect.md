@@ -19,7 +19,7 @@ const styles = theme => ({
         width: 'auto',
         height: '300px',      
         
-        backgroundColor: theme.baseStyles.mainQuaternaryColor,
+        backgroundColor: theme.baseStyles.mainSecondaryColor,
     }
 });
 

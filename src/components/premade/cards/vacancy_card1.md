@@ -29,3 +29,29 @@ Usage example 2:
 />
 
 ```
+
+Usage example (with overlay buttons):
+
+```jsx
+
+const {RegularButtonComponent} = require('./../../buttons/regular_button_component');
+
+<VacancyCard1 
+    logoSrc='/assets/images/logos/logo8.svg' 
+    date="2012-10-03T02:24:38" 
+    company='Xatrix' 
+    title='Senior QA' 
+    location='Kiev, Odessa, Lviv' 
+    remote={true} 
+    salaryMax={2000} 
+    currency='$'
+    
+    showButtonsOverlay={true}
+>
+
+    <RegularButtonComponent shape='round' size='medium' iconClassName='fas fa-search'/>
+    <RegularButtonComponent shape='round' size='medium' iconClassName='fas fa-pencil'/>
+    <RegularButtonComponent shape='round' size='medium' iconClassName='fas fa-trash'/>
+</VacancyCard1>
+
+```

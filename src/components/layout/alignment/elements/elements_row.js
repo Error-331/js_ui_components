@@ -28,6 +28,12 @@ type PropsTypes = {
     wrap?: boolean,
 
     /**
+     * Class name for in deep control of how elements row is represented
+     */
+
+    className?: string,
+
+    /**
      * React style object for in deep control of how elements row is represented
      */
 
@@ -77,10 +83,6 @@ const styles = theme => ({
 
         '&.left > button': {
             marginRight: `${theme.layoutStyles.sectionHorizontalSpacing}px`,
-        },
-
-        '&.left > div:last-child': {
-            marginRight: '0px',
         },
 
         '&.left > div:last-child': {
@@ -141,14 +143,15 @@ const styles = theme => ({
 
 // component implementation
 export function ElementsRowFunction(props: PropsTypes): React.Node {
-    let {alignment, wrap, classes, style} = props;
+    let {alignment, wrap, className, classes, style} = props;
 
     alignment = defaultTo('left')(alignment);
     wrap = defaultTo(false)(wrap);
 
     const containerClasses: string = classNames(
         classes.componentContainer,
-        alignment
+        alignment,
+        className
     );
 
     const flexWrap: string = wrap ? 'wrap': 'nowrap';

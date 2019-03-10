@@ -7,11 +7,16 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import moment from  'moment';
-import {defaultTo, isNil} from 'ramda';
+import {defaultTo, isNil, equals, unless} from 'ramda';
 
 // local imports
+import type {ItemsType} from './../../grid/grid_generator_component';
+
 import {SMALL_SIZE, MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
+import {ElementsRow} from './../../layout/alignment/elements/elements_row';
+import {SlideVisualEffect} from './../../visual_effects/slide_visual_effect';
+import {GridGeneratorComponent} from './../../grid/grid_generator_component';
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
 import {InlineTextBlock} from './../../layout/text/inline_text_block';
 import {InlineHeader} from './../../layout/text/inline_header';
@@ -86,6 +91,18 @@ type PropsTypes = {
     currency?: string,
 
     /**
+     * Flag that indicates whether to show or not to show overlay with buttons
+     */
+
+    showButtonsOverlay?: boolean,
+
+    /**
+     * Buttons which will be shown in button overlay
+     */
+
+    children?: React.Node,
+
+    /**
      * JSS inner classes
      *
      * @ignore
@@ -101,131 +118,124 @@ const styles = theme => ({
     componentContainer: {
         height: '100%',
 
-        '& > $regularCardContainer': {
+        '& > $cardBodyContainer': {
             boxSizing: 'border-box',
-            display: 'grid',
+            position: 'relative',
+            overflow: 'hidden',
 
             width: '100%',
             height: '100%',
 
-            gridTemplateAreas: `
-                "person-logo name     last-name update-date"
-                "position    position position  position"
-                "location    location location  salary"
-            `,
-
-            gridTemplateColumns: '35px max-content 1fr max-content',
-            gridTemplateRows: 'minMax(35px, max-content) 1fr max-content',
-
             cursor: 'pointer',
 
-            '& > $personLogoContainer': {
-                boxSizing: 'border-box',
+            '& > $overlayContainer': {
+                width: '100%',
+                height: '100%',
 
-                gridArea: 'person-logo',
-                alignSelf: 'start',
-                justifySelf: 'center',
-            },
+                '& $buttonsContainer': {
+                    height: '100%',
 
-            '& > $nameContainer': {
-                boxSizing: 'border-box',
-
-                gridArea: 'name',
-                alignSelf: 'center',
-
-                paddingLeft: '10px',
-                paddingRight: '8px',
-
-                fontFamily: theme.fontStacks.boldFontFamilyStack,
-                fontSize: '16px',
-
-                color: theme.baseStyles.mainPrimaryColor
-            },
-
-            '& > $lastNameContainer': {
-                boxSizing: 'border-box',
-
-                gridArea: 'last-name',
-                alignSelf: 'center',
-
-                fontFamily: theme.fontStacks.boldFontFamilyStack,
-                fontSize: '16px',
-
-                color: theme.baseStyles.mainPrimaryColor
-            },
-
-            '& > $updateDateContainer': {
-                boxSizing: 'border-box',
-
-                gridArea: 'update-date',
-                textAlign: 'right',
-
-                paddingLeft: '8px',
-                fontSize: '10px',
-                color: theme.baseStyles.utilityBGColor
-            },
-
-            '& > $positionContainer': {
-                boxSizing: 'border-box',
-
-                gridArea: 'position',
-                paddingTop: '8px',
-
-                fontFamily: theme.fontStacks.boldFontFamilyStack,
-                fontSize: '18px',
-
-                color: theme.baseStyles.mainPrimaryColor
-            },
-
-            '& > $locationContainer': {
-                boxSizing: 'border-box',
-                display: 'flex',
-                gridArea: 'location',
-
-                flexDirection: 'row',
-                justifyСontent: 'flex-start',
-
-                alignItems: 'center',
-                alignContent: 'flex-start',
-
-                '& > $currentLocationContainer': {
-                    boxSizing: 'border-box',
-
-                    flexBasis: 'auto',
-                    flexShrink: '1',
-                    flexGrow: '0',
-
-                    textAlign: 'left',
-                    fontSize: '14px',
-
-                    color: theme.baseStyles.utilityBGColor
-                },
-
-                '& > $desiredLocationLogoContainer': {
-                    boxSizing: 'border-box',
-
-                    flexBasis: 'auto',
-                    flexShrink: '1',
-                    flexGrow: '0',
-
-                    paddingLeft: '8px',
+                    alignItems: 'center',
                 }
             },
 
-            '& > $salaryContainer': {
-                boxSizing: 'border-box',
-                gridArea: 'salary',
+            '& > $contentGridContainer': {
+                '& $personLogoContainer': {
+                    alignSelf: 'start',
+                    justifySelf: 'center',
+                },
 
-                fontFamily: theme.fontStacks.boldFontFamilyStack,
-                fontSize: '15px',
+                '& > $nameContainer': {
+                    alignSelf: 'center',
 
-                textAlign: 'right',
-                color: theme.baseStyles.accentColorPrimary,
+                    paddingLeft: '10px',
+                    paddingRight: '8px',
+
+                    fontFamily: theme.fontStacks.boldFontFamilyStack,
+                    fontSize: '16px',
+
+                    color: theme.baseStyles.mainPrimaryColor
+                },
+
+                '& > $lastNameContainer': {
+                    alignSelf: 'center',
+
+                    fontFamily: theme.fontStacks.boldFontFamilyStack,
+                    fontSize: '16px',
+
+                    color: theme.baseStyles.mainPrimaryColor
+                },
+
+                '& > $updateDateContainer': {
+                    alignSelf: 'start',
+                    textAlign: 'right',
+
+                    paddingLeft: '8px',
+                    fontSize: '10px',
+                    color: theme.baseStyles.utilityBGColor
+                },
+
+                '& > $positionContainer': {
+                    paddingTop: '8px',
+
+                    fontFamily: theme.fontStacks.boldFontFamilyStack,
+                    fontSize: '18px',
+
+                    color: theme.baseStyles.mainPrimaryColor
+                },
+
+                '& > $locationContainer': {
+                    boxSizing: 'border-box',
+                    display: 'flex',
+
+                    flexDirection: 'row',
+                    justifyСontent: 'flex-start',
+
+                    alignItems: 'center',
+                    alignContent: 'flex-start',
+
+                    '& > $currentLocationContainer': {
+                        boxSizing: 'border-box',
+
+                        flexBasis: 'auto',
+                        flexShrink: '1',
+                        flexGrow: '0',
+
+                        textAlign: 'left',
+                        fontSize: '14px',
+
+                        color: theme.baseStyles.utilityBGColor
+                    },
+
+                    '& > $desiredLocationLogoContainer': {
+                        boxSizing: 'border-box',
+
+                        flexBasis: 'auto',
+                        flexShrink: '1',
+                        flexGrow: '0',
+
+                        paddingLeft: '8px',
+                    }
+                },
+
+                '& > $salaryContainer': {
+                    boxSizing: 'border-box',
+                    gridArea: 'salary',
+
+                    fontFamily: theme.fontStacks.boldFontFamilyStack,
+                    fontSize: '15px',
+
+                    textAlign: 'right',
+                    color: theme.baseStyles.accentColorPrimary,
+                },
             },
         }
     },
 
-    regularCardContainer: {},
+    cardBodyContainer: {},
+    overlayContainer: {},
+    buttonsContainer: {},
+    contentGridContainer: {},
 
     personLogoContainer: {},
     nameContainer: {},
@@ -250,7 +260,7 @@ const styles = theme => ({
  */
 
 // component implementation
-export function ResumeCard1Function(props: PropsTypes): React.Node {
+function renderElementsGrid(props: PropsTypes): React.Node {
     const {personLogoSrc, name, lastName, updateDate, currentLocation, classes} = props;
 
     const parsedUpdateDate: moment = moment(updateDate);
@@ -272,30 +282,76 @@ export function ResumeCard1Function(props: PropsTypes): React.Node {
     remote = defaultTo(false)(remote);
     const locationIcon: string = remote ? 'fas fa-map-marker' : 'fas fa-map-marker-slash';
 
+    const personLogoComponent: React.Node =  personLogoSrc ?
+        <img src={personLogoSrc} /> :
+        <FontIcon size={MEDIUM_SIZE} iconClassName={noIconClassName} />;
+
+     const personLocation: React.Node = <div>
+         <InlineTextBlock className={classes.currentLocationContainer}>{currentLocation}</InlineTextBlock>
+         <FontIcon size={SMALL_SIZE} className={classes.desiredLocationLogoContainer} iconClassName={locationIcon}/>
+     </div>;
+
+    const bodyItems: ItemsType = [
+        [
+            {elm: personLogoComponent, props: {className: classes.personLogoContainer}},
+            {elm: InlineTextBlock, props: {className: classes.nameContainer}, children: name},
+            {elm: InlineTextBlock, props: {className: classes.lastNameContainer}, children: lastName},
+            {elm: InlineTextBlock, props: {className: classes.updateDateContainer}, children: formattedUpdateDate},
+        ],
+        [
+            {elm: InlineHeader, hspan: 4, props: {level: 6, className: classes.positionContainer}, children: position},
+        ],
+        [
+            {elm: personLocation, hspan: 3, props: {className: classes.locationContainer}},
+            {elm: InlineTextBlock, props: {className: classes.salaryContainer}, children: desiredSalary}
+        ]
+    ];
+
+    return <GridGeneratorComponent
+        className={classes.contentGridContainer}
+        style={
+            {
+                gridTemplateColumns: '35px max-content 1fr max-content',
+                gridTemplateRows: 'minMax(35px, max-content) 1fr max-content',
+
+                gridColumnGap: '0px',
+                gridRowGap: '0px',
+            }
+        }
+        items={bodyItems}/>;
+}
+
+function renderButtonsSlider(props: PropsTypes, shouldShowOverlay: boolean): React.Node {
+    const {children, classes} = props;
+
+    return <SlideVisualEffect
+        direction='TopToBottom'
+        show={shouldShowOverlay}
+        className={classes.overlayContainer}
+    >
+        <ElementsRow alignment='center' className={classes.buttonsContainer}>
+            {children}
+        </ElementsRow>
+    </SlideVisualEffect>;
+}
+
+export function ResumeCard1Function(props: PropsTypes): React.Node {
+    const {classes} = props;
+    const [shouldShowOverlay, setShouldShowOverlay] = React.useState(false);
+
+    let {showButtonsOverlay} = props;
+    showButtonsOverlay = defaultTo(false)(showButtonsOverlay);
+
     return <RegularCardComponent
         popOnHover={true}
         maxPopLevel={3}
         containerClassName={classes.componentContainer}
-        bodyClassName={classes.regularCardContainer}
+        bodyClassName={classes.cardBodyContainer}
+        onMouseOverContainer={() => unless(equals(true), () => showButtonsOverlay && setShouldShowOverlay(true))(shouldShowOverlay)}
+        onMouseLeaveContainer={() => unless(equals(false), () => showButtonsOverlay && setShouldShowOverlay(false))(shouldShowOverlay)}
     >
-        {
-            personLogoSrc ?
-                <img src={personLogoSrc} className={classes.personLogoContainer}/> :
-                <FontIcon size={MEDIUM_SIZE} iconClassName={noIconClassName} className={classes.personLogoContainer}/>
-        }
-
-        <InlineTextBlock className={classes.nameContainer}>{name}</InlineTextBlock>
-        <InlineTextBlock className={classes.lastNameContainer}>{lastName}</InlineTextBlock>
-        <InlineTextBlock className={classes.updateDateContainer}>{formattedUpdateDate}</InlineTextBlock>
-
-        <InlineHeader level={6} className={classes.positionContainer}>{position}</InlineHeader>
-
-        <div className={classes.locationContainer}>
-            <InlineTextBlock className={classes.currentLocationContainer}>{currentLocation}</InlineTextBlock>
-            <FontIcon size={SMALL_SIZE} className={classes.desiredLocationLogoContainer} iconClassName={locationIcon}/>
-        </div>
-
-        <InlineTextBlock className={classes.salaryContainer}>{desiredSalary}</InlineTextBlock>
+        {showButtonsOverlay ? renderButtonsSlider(props, shouldShowOverlay) : null}
+        {renderElementsGrid(props)}
     </RegularCardComponent>;
 }
 

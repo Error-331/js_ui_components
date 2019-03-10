@@ -114,7 +114,7 @@ const styles = theme => ({
             boxSizing: 'border-box',
             display: 'grid',
 
-            position: 'absolute',
+            position: 'relative',
 
             top: '0px',
             left: '0px',

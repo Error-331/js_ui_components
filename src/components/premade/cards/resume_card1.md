@@ -43,3 +43,33 @@ const {ResumeCard1} = require('./resume_card1');
 />
 
 ```
+
+Usage example (remote with overlay buttons):
+
+```jsx
+
+const {ResumeCard1} = require('./resume_card1');
+const {RegularButtonComponent} = require('./../../buttons/regular_button_component');
+
+<ResumeCard1
+    name='Nicusor'
+    lastName='Mihaili'
+    
+    updateDate='2014-05-02T06:02:43'
+    position='Senior QA'
+    specialization='QA'
+    
+    currentLocation='Timișoara'
+    remote={true}
+    
+    desiredSalary={500}
+    currency='$'
+    
+    showButtonsOverlay={true}
+>
+    <RegularButtonComponent shape='round' size='medium' iconClassName='fas fa-search'/>
+    <RegularButtonComponent shape='round' size='medium' iconClassName='fas fa-pencil'/>
+    <RegularButtonComponent shape='round' size='medium' iconClassName='fas fa-trash'/>
+</ResumeCard1>
+
+```
