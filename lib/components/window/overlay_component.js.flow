@@ -4,7 +4,7 @@
 
 // external imports
 import * as React from 'react';
-import injectSheet from 'react-jss';
+import withStyles from 'react-jss';
 import classNames from 'classnames';
 
 import {is, isNil, defaultTo} from 'ramda';
@@ -148,7 +148,7 @@ const styles = theme => ({
 // component implementation
 
 // $FlowFixMe decorators
-@injectSheet(styles)
+@withStyles(styles)
 export class OverlayClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'OverlayClass';

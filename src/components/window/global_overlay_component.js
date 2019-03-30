@@ -4,7 +4,7 @@
 
 // external imports
 import * as React from 'react';
-import injectSheet from 'react-jss';
+import withStyles from 'react-jss';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
@@ -87,4 +87,4 @@ function GlobalOverlayFunction(props: PropsTypes) {
 GlobalOverlayFunction.displayName = 'GlobalOverlayComponent';
 
 // exports
-export const GlobalOverlayComponent = injectSheet(styles)(GlobalOverlayFunction);
+export const GlobalOverlayComponent = withStyles(styles)(GlobalOverlayFunction);
