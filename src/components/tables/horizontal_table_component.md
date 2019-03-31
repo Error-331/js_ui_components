@@ -1,4 +1,4 @@
-Example table with enabled header:
+Example horizontal table with enabled header:
 
 ```jsx
 
@@ -18,7 +18,7 @@ const tableData = [
 
 ```
 
-Example table with enabled header and auto-width:
+Example horizontal table index column and preset number of visible columns:
 
 ```jsx
 
@@ -34,11 +34,11 @@ const tableData = [
     [5, 'Data51', 'Data52', 'Data53', 'Data54', 'Data55', 'Data56', 'Data57', 'Data58']
 ];
 
-<HorizontalTableComponent showTableHeader={true} columnNames={columnNames} data={tableData} idColumnIndex={0}/>
+<HorizontalTableComponent showTableHeader={true} columnNames={columnNames} data={tableData} visibleColumnCount={2} idColumnIndex={0}/>
 
 ```
 
-Example table with disabled header and auto-width:
+Example horizontal table with disabled header and preset number of visible columns:
 
 ```jsx
 
@@ -54,6 +54,6 @@ const tableData = [
     [5, 'Data51', 'Data52', 'Data53', 'Data54', 'Data55', 'Data56', 'Data57', 'Data58']
 ];
 
-<HorizontalTableComponent showTableHeader={false} columnNames={columnNames} data={tableData} idColumnIndex={0}/>
+<HorizontalTableComponent showTableHeader={false} columnNames={columnNames} data={tableData} visibleColumnCount={3} idColumnIndex={0}/>
 
 ```

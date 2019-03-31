@@ -48,7 +48,6 @@ export type UserPropsTypes = {
      * Number of visible columns
      */
 
-
     visibleColumnCount?: number,
 
     /**
@@ -144,7 +143,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes> {
+class HorizontalTableClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'HorizontalTableClass';
 
@@ -294,7 +293,7 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
             return <td key={`column_${rowIndex}_${columnIndex}`} style={cellStyle}>
                 {row[columnIndex]}
             </td>;
-        }, this._getData())
+        }, this._getData());
     }
 
     _renderContentTableRows(): React.Node {
@@ -306,7 +305,7 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
             return <tr key={columnIndex}>
                 {this._renderContentTableCells(columnIndex)}
             </tr>;
-        }, range(0, this._getDataColumnsCount()))
+        }, range(0, this._getDataColumnsCount()));
     }
 
     _renderTableHeaderCells(): React.Node {
@@ -361,8 +360,7 @@ export class HorizontalTableClass extends React.Component<PropsTypes, StateTypes
     // endregion
 }
 
-// exports
-export function HorizontalTableComponent(props: PropsTypes) {
+function HorizontalTableComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <HorizontalTableClass {...props} {...windowDimensions} />}
@@ -371,3 +369,6 @@ export function HorizontalTableComponent(props: PropsTypes) {
 }
 
 HorizontalTableComponent.displayName = 'HorizontalTableComponent';
+
+// exports
+export {HorizontalTableClass, HorizontalTableComponent};
