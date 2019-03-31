@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {always, isNil, is, unless, or, ifElse, defaultTo, length, bind, lte, gt, gte, equals} from 'ramda';
+import {always, isNil, is, unless, or, ifElse, defaultTo, length, bind, lte, gte, equals} from 'ramda';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
