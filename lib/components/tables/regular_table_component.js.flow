@@ -73,12 +73,16 @@ const styles = theme => ({
 
     regularTextContainer: {
         extend: [commonCellContentStylesFunc(theme), longTextCellStylesFunc()],
-        height: `${theme.tableStyles.cellLineHeight}px`,
+        maxHeight: `${theme.tableStyles.cellLineHeight}px`,
     },
 
     longTextContainer: {
         extend: [commonCellContentStylesFunc(theme), longTextCellStylesFunc()],
-        height: `${theme.tableStyles.cellLineHeight * 2}px`,
+        maxHeight: `${theme.tableStyles.cellLineHeight * 2}px`,
+
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
     }
 });
 
@@ -231,7 +235,7 @@ export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
 
         return ifElse(
             equals(HORIZONTAL_TABLE_TYPE),
-            always(<HorizontalTableComponent {...omit(['data', 'classes'], this.props)} data={data}/>),
+            always(<HorizontalTableComponent {...omit(['data', 'classes'], this.props)} data={preparedData}/>),
             always(<VerticalTableComponent {...omit(['data', 'classes'], this.props)} data={preparedData} />)
         )(this.state.tableType);
     }

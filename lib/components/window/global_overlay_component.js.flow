@@ -55,7 +55,11 @@ type PropsTypes = {
 }
 
 // styles definition
-const styles = theme => ({});
+const styles = theme => ({
+    componentContainer: {
+        position: 'fixed',
+    }
+});
 
 /**
  * Global overlay component.
@@ -75,7 +79,6 @@ function GlobalOverlayFunction(props: PropsTypes) {
         opacity={opacity}
         onOverlayClick={onOverlayClick}
         containerClassName={classes.componentContainer}
-        containerStyle={{position: 'fixed'}}
     >
         {children}
     </OverlayComponent>;

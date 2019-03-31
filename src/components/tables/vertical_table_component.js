@@ -14,7 +14,7 @@ import type {ExtendedEventTargetType, CombinedEventType} from './../../types/dom
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 import {
     commonHeaderCellStylesFunc,
-    commonCellStylesFunc,
+    commonVerticalTableCellStylesFunc,
 } from './../../theming/common_styles/table_styles';
 
 // type definitions
@@ -127,7 +127,7 @@ const styles = theme => ({
             '& > tbody': {
                 '& tr': {
                     '& td': {
-                        extend: commonCellStylesFunc(theme),
+                        extend: commonVerticalTableCellStylesFunc(theme),
                     }
                 },
 

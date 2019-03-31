@@ -10,15 +10,13 @@ import type {BaseStylesType} from './../../../../types/theming/base_style_types'
 import type {TableStyleType} from './../../../../types/theming/table_style_types';
 
 // exports
-const cellLineHeight: number = 18; // px
-
 export const tableStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): TableStyleType => {
     return Object.freeze({
         bodyFontStack: fontStacks.regularFontFamilyStack,
         headerFontStack: fontStacks.boldFontFamilyStack,
 
         cellFontSize: baseStyles.secondaryFontSize, // px
-        cellLineHeight: cellLineHeight, // px
+        cellLineHeight: baseStyles.primaryFontSize, // px
 
         headerCellFontColor: baseStyles.mainQuaternaryColor,
         cellFontColor: baseStyles.mainPrimaryColor,

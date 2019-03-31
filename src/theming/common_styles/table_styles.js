@@ -10,7 +10,7 @@ import type {ThemeType} from './../../types/theme_types';
 
 // styles definition
 export const commonCellContentStylesFunc = (theme: ThemeType) => ({
-    lineHeight: '18px',
+    lineHeight: `${theme.tableStyles.cellLineHeight}px`,
 
     fontFamily: theme.tableStyles.bodyFontStack,
     fontSize: `${theme.tableStyles.cellFontSize}px`,
@@ -24,13 +24,23 @@ export const commonCellContentStylesFunc = (theme: ThemeType) => ({
 export const commonCellStylesFunc = (theme: ThemeType) => ({
     borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
 
-    paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
-    paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
-
     paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
     paddingRight: `${theme.tableStyles.cellPaddingRight}px`,
 
     extend: commonCellContentStylesFunc(theme)
+});
+
+export const commonVerticalTableCellStylesFunc = (theme: ThemeType) => ({
+    paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
+    paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
+
+    extend: commonCellStylesFunc(theme)
+});
+
+export const commonHorizontalTableCellStylesFunc = (theme: ThemeType) => ({
+    height: `${theme.tableStyles.cellLineHeight + theme.tableStyles.cellPaddingTop + theme.tableStyles.cellPaddingBottom}px`,
+
+    extend: commonCellStylesFunc(theme)
 });
 
 export const commonHeaderCellStylesFunc = (theme: ThemeType) => {
