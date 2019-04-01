@@ -126,7 +126,7 @@ export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
         super(props);
 
         this.state = {
-            tableType: HORIZONTAL_TABLE_TYPE
+            tableType: VERTICAL_TABLE_TYPE
         };
     }
 
@@ -157,7 +157,7 @@ export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
             return this._prepareNilColumnData();
         }
 
-        if (columnData instanceof React.Component) {
+        if (React.isValidElement(columnData)) {
             return columnData;
         }
 
@@ -177,6 +177,7 @@ export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
             [(columnData: ColumnDataType) => moment.isMoment(columnData), (columnData: moment) => columnData.format('YYYY-M-d H:mm:ss')],
             [is(Date), (columnData: moment) => moment(columnData).format('YYYY-M-d H:mm:ss')],
             [is(Boolean), (columnData: ColumnDataType) => <FormCheckboxVariant3Component forceCheck={columnData}/>],
+            [is(Number), bind(this._prepareStringColumn, this)],
             [is(String), bind(this._prepareStringColumn, this)],
             [is(Object), bind(this._prepareSpecificColumnData, this)],
             [T, bind(this._prepareNilColumnData, this)]

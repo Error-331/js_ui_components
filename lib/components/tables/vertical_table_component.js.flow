@@ -14,6 +14,7 @@ import type {ExtendedEventTargetType, CombinedEventType} from './../../types/dom
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 import {
     commonHeaderCellStylesFunc,
+    commonFooterCellStylesFunc,
     commonVerticalTableCellStylesFunc,
 } from './../../theming/common_styles/table_styles';
 
@@ -25,7 +26,7 @@ type DataType = Array<RowDataType>;
 type ColumnWidthType = string | number;
 type ColumnWidthsType = Array<ColumnWidthType>;
 
-type ColumnNamesType = Array<string>;
+type ColumnNamesType = Array<string | React.Element<any>>;
 
 type OnCellClickCallbackType = (event: CombinedEventType, rowIndex: number) => void;
 
@@ -119,7 +120,7 @@ const styles = theme => ({
             '& > tfoot': {
                 '& > tr': {
                     '& th': {
-                        extend: commonHeaderCellStylesFunc(theme)
+                        extend: commonFooterCellStylesFunc(theme)
                     }
                 }
             },
@@ -148,6 +149,14 @@ const styles = theme => ({
 });
 
 // component implementation
+
+/**
+ * Vertical table component to material-UI guidelines.
+ *
+ * @version 1.0.0
+ * @author [Sergei Selihov](https://github.com/Error-331)
+ *
+ */
 
 // $FlowFixMe decorators
 @injectSheet(styles)
@@ -236,6 +245,10 @@ export class VerticalTableClass extends React.Component<PropsTypes, StateTypes> 
 
     _getDataColumn(dataColumn: ColumnDataType): ColumnDataType {
         return defaultTo(null)(dataColumn);
+    }
+
+    _getIdColumnIndex(): number | null {
+        return defaultTo(VerticalTableClass.defaultProps.idColumnIndex)(this.props.idColumnIndex)
     }
 
     _isIdColumn(columnIndex: number): boolean {

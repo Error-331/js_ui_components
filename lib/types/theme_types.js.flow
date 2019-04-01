@@ -15,6 +15,10 @@ import type {
 } from './theming';
 
 // exports
+export type CSSStylesType = {
+    [string]: mixed
+};
+
 export type ThemeType = BaseThemePartialsType & AdditionalThemePartialsType & {
     colorUtilities: ColorUtilitiesTypes,
     styleValuesRegister: StyleValuesRegisterType,

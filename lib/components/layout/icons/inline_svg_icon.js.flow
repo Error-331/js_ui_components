@@ -136,7 +136,7 @@ const styles = theme => ({
             '& path': {
                 fill: 'none',
 
-                stroke: theme.layoutStyles.iconColor,
+                stroke: theme.layoutStyles.baseIconColor,
                 strokeWidth: '2.5',
                 strokeLinecap: 'butt',
                 strokeLinejoin: 'miter',

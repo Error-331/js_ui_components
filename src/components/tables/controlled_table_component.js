@@ -3,16 +3,43 @@
 // @flow
 
 // external imports
+import type moment from 'moment';
+
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import classNames from 'classnames';
 
-import {mergeDeepRight} from 'ramda';
+import {__, is, isNil, defaultTo, unless, clone, bind, map, curry, append, prepend} from 'ramda';
 
 // local imports
+import type {CombinedEventType} from './../../types/dom_types';
+
 import {RegularTableComponent} from './regular_table_component';
+import {ElementsRow} from './../layout/alignment/elements/elements_row';
+
+import {FormCheckboxInputComponent} from './../form/form_checkbox_input_component';
+import {FontIcon} from './../layout/icons/font_icon';
 
 // type definitions
+type BasicColumnDataType = void | null | string | number | boolean | moment | React.Element<any>;
+type SpecificColumnDataType = {
+    type: string,
+    data: BasicColumnDataType
+};
+
+type ColumnDataType = BasicColumnDataType | SpecificColumnDataType;
+type RowDataType = Array<ColumnDataType>;
+
+type DataType = Array<RowDataType>;
+
+type RowControlClickHandlerType = (event: CombinedEventType, rowIndex: mixed) => void;
+type RowControlType = {
+  iconClassName: string,
+  onClickHandler?: RowControlClickHandlerType
+};
+
+type RowControlsType = Array<RowControlType>;
+type ColumnNamesType = Array<string | React.Element<any>>;
+
 type PropsTypes = {
     /**
      * Flag that indicates whether table header should be shown
@@ -30,7 +57,7 @@ type PropsTypes = {
      * Array of column names
      */
 
-    columnNames?: Array<string>,
+    columnNames?: ColumnNamesType,
 
     /**
      * Array of column widths
@@ -44,11 +71,19 @@ type PropsTypes = {
 
     idColumnIndex?: number,
 
+    selectableRows?: boolean,
+
+    /**
+     * Array of control icons and handler functions which will be used to create row controls
+     */
+
+    rowControls?: RowControlsType,
+
     /**
      * Array of data for each cell of the table
      */
 
-    data?: Array<Array<React.ChildrenArray<any>>>,
+    data?: DataType,
 
     /**
      * JSS inner classes
@@ -63,7 +98,9 @@ type StateTypes = {};
 
 // styles definition
 const styles = theme => ({
-
+    controlIcon: {
+        cursor: 'pointer',
+    }
 });
 
 /**
@@ -80,18 +117,102 @@ export class ControlledTableComponentClass extends React.Component<PropsTypes, S
     static displayName = 'ControlledTableComponent';
 
     static defaultProps = {
+        idColumnIndex: null,
+        selectableRows: false,
+        rowControls: null,
 
+        columnNames: [],
+        data: null,
     };
 
     // endregion
 
     // region constructor
+    constructor(props: PropsTypes) {
+        super(props);
+        const self: any = this;
+
+        self._prepareData = bind(self._prepareData, this);
+        self._prepareColumnNames = bind(self._prepareColumnNames, this);
+        self._prepareIdColumnIndex = bind(self._prepareIdColumnIndex, this);
+    }
+
+    // endregion
+
+    // region business logic
+    _prepareIdColumnIndex(idColumnIndex: number) {
+        return this._shouldShowRowSelector() ? idColumnIndex + 1 : idColumnIndex;
+    }
+
+    _prepareRowControls(rowControls: RowControlsType, rowIndex: mixed): React.Node {
+        let index: number = -1;
+        const controls: React.Node = map((rowControl: RowControlType) => {
+            index++;
+
+            let {iconClassName, onClickHandler} = rowControl;
+            onClickHandler = is(Object, onClickHandler) ? curry(onClickHandler)(__, rowIndex) : null;
+
+            return <FontIcon
+                key={`control_${index}`}
+                size='small'
+                accent
+                className={this._getControlIconClassName()}
+                iconClassName={iconClassName}
+                onClick={onClickHandler}
+            />;
+        }, rowControls);
+
+        return <ElementsRow alignment='right'>
+            {controls}
+        </ElementsRow>;
+    }
+
+    _prepareColumnNames(columnNames: ColumnNamesType): ColumnNamesType {
+        if (!this._shouldShowRowControls()) {
+            return columnNames;
+        }
+
+        columnNames = this._shouldShowRowControls() ? append('', columnNames) : columnNames;
+        columnNames = this._shouldShowRowSelector() ? prepend(<FormCheckboxInputComponent variant={1}/>, columnNames) : columnNames;
+
+        return columnNames;
+    }
+
+    _addRowControls(dataRow: RowDataType): RowDataType {
+        const indexColumn: number | null = this._getIdColumnIndex();
+        const rowControls: RowControlsType | null = this._getRowControls();
+
+        const preparedControls: React.Node = this._prepareRowControls(rowControls, dataRow[indexColumn]);
+        return append(preparedControls, dataRow);
+    }
+
+    _addRowSelector(dataRow) {
+        return prepend(<FormCheckboxInputComponent variant={1}/>, dataRow);
+    }
+
+    _prepareData(data: DataType): DataType | null {
+        if (!this._shouldShowRowControls() && !this._shouldShowRowSelector()) {
+            return data;
+        }
+
+        return map((dataRow: RowDataType) => {
+            dataRow = this._shouldShowRowControls() ? this._addRowControls(dataRow) : dataRow;
+            dataRow = this._shouldShowRowSelector() ? this._addRowSelector(dataRow) : dataRow;
+
+            return dataRow;
+        }, data);
+    }
+
     // endregion
 
     // region lifecycle methods
     // endregion
 
     // region style accessors
+    _getControlIconClassName(): string {
+        return this.props.classes.controlIcon;
+    }
+
     // endregion
 
     // region label accessors
@@ -101,6 +222,34 @@ export class ControlledTableComponentClass extends React.Component<PropsTypes, S
     // endregion
 
     // region prop accessors
+    _shouldShowRowSelector(): boolean {
+        return !isNil(this._getIdColumnIndex()) && !isNil(this._areRowsSelectable());
+    }
+
+    _shouldShowRowControls(): boolean {
+        return !isNil(this._getIdColumnIndex()) && !isNil(this._getRowControls());
+    }
+
+    _areRowsSelectable(): boolean {
+        return defaultTo(ControlledTableComponentClass.defaultProps.selectableRows)(this.props.selectableRows);
+    }
+
+    _getRowControls(): boolean {
+        return defaultTo(ControlledTableComponentClass.defaultProps.rowControls)(this.props.rowControls);
+    }
+
+    _getColumnNames(): ColumnNamesType {
+        return defaultTo(ControlledTableComponentClass.defaultProps.columnNames)(this.props.columnNames);
+    }
+
+    _getData(): DataType | null {
+        return defaultTo(clone(ControlledTableComponentClass.defaultProps.data))(this.props.data);
+    }
+
+    _getIdColumnIndex(): number | null {
+        return defaultTo(ControlledTableComponentClass.defaultProps.idColumnIndex)(this.props.idColumnIndex);
+    }
+
     // endregion
 
     // region handlers
@@ -108,7 +257,12 @@ export class ControlledTableComponentClass extends React.Component<PropsTypes, S
 
     // region render methods
     render(): React.Node {
-        return <RegularTableComponent {...this.props}/>;
+        return <RegularTableComponent
+            {...this.props}
+            idColumnIndex={unless(isNil, this._prepareIdColumnIndex)(this._getIdColumnIndex())}
+            data={unless(isNil, this._prepareData)(this._getData())}
+            columnNames={unless(isNil, this._prepareColumnNames)(this._getColumnNames())}
+        />;
     }
 
     // endregion

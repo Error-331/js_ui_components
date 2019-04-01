@@ -4,6 +4,10 @@ Example table with enabled header and footer:
 
 const {VerticalTableComponent} = require('./');
 
+const {FontIcon} = require('./../layout/icons/font_icon');
+const {ElementsRow} = require('./../layout/alignment/elements/elements_row');
+const {FormCheckboxInputComponent} = require('./../form/form_checkbox_input_component');
+
 const columnNames = ['Column 1', 'Test Column 2', 'Col 3', 'Long Test Column 4', 'Some additional Column 5', 'Test_column_6', 'Test_column_long_7', 'Some_add_col_8'];
 const columnWidths = ['10%', '10%', '10%', '10%', '10%', '10%', '10%'];
 

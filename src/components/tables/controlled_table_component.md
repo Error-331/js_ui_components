@@ -1,4 +1,4 @@
-Test: 
+Example controlled table with rows selectors and rows controls shown (example 1): 
 
 ```jsx
 
@@ -24,19 +24,32 @@ const columnNames = [
     'Deletion date (UTC offset)'
 ];
     
-const columnWidths = ['10%', '10%', '10%', '10%', '10%', '10%', '10%'];
-
 const tableData = [
-    ['hapitestdomain1.com', true, currentDate, currentOffset, currentDate, currentOffset, currentDate, currentOffset, null, null],
-    ['hapitestdomain2.com.ua', false, moment(currentDate).month(currentDate.month() - 1), currentOffset, currentDate, currentOffset, currentDate, currentOffset, null, null],
-    ['hapitestdomain3.ru', true, moment(currentDate).month(currentDate.month() - 2), currentOffset, currentDate, currentOffset, currentDate, currentOffset, null, null],
-    ['hapitestdomain4.su', false, moment(currentDate).month(currentDate.month() - 3), currentOffset, currentDate, currentOffset, currentDate, currentOffset, null, null],
+    [1, 'hapitestdomain1.com', true, currentDate, currentOffset, currentDate, currentOffset, currentDate, currentOffset, null, null],
+    [2, 'hapitestdomain2.com.ua', false, moment(currentDate).month(currentDate.month() - 1), currentOffset, currentDate, currentOffset, currentDate, currentOffset, null, null],
+    [3, 'hapitestdomain3.ru', true, moment(currentDate).month(currentDate.month() - 2), currentOffset, currentDate, currentOffset, currentDate, currentOffset, null, null],
+    [4, 'hapitestdomain4.su', false, moment(currentDate).month(currentDate.month() - 3), currentOffset, currentDate, currentOffset, currentDate, currentOffset, null, null],
 ];
 
-<ControlledTableComponent showTableHeader={true} showTableFooter={true} columnNames={columnNames} columnWidths={columnWidths} data={tableData}/>
+const rowControls = [
+    {iconClassName: 'fas fa-eye'},
+    {iconClassName: 'fas fa-edit'},
+    {iconClassName: 'fas fa-trash-alt'}
+];
+
+<ControlledTableComponent 
+    idColumnIndex={0} 
+    rowControls={rowControls} 
+    selectableRows={true} 
+    showTableHeader={true} 
+    showTableFooter={true} 
+    columnNames={columnNames} 
+    data={tableData}
+/>
+
 ```
 
-Test: 
+Example controlled table with rows selectors and rows controls shown (example 2): 
 
 ```jsx
 
@@ -59,21 +72,34 @@ const columnNames = [
     'Deletion date',
     'Deletion date (UTC offset)'
 ];
-    
-const columnWidths = ['10%', '10%', '10%', '10%', '10%', '10%', '10%'];
 
+const rowControls = [
+    {iconClassName: 'fas fa-eye'},
+    {iconClassName: 'fas fa-edit'},
+    {iconClassName: 'fas fa-trash-alt'}
+];
+   
 const tableData = [
-    ['Jennifer Dunstan', 'test1@email.com', true, currentDate, currentOffset, null, null, null, null],
-    ['Baxter Sheelagh', 'test2@email.ca', true, currentDate, currentOffset, currentDate, currentOffset, null, null],
-    ['Sammi Taegan', 'test3@email.com', false,  currentDate, currentOffset, null, null,  currentDate, currentOffset],
-    ['Isaiah Meriel', 'test4@email.com', true, currentDate, currentOffset, null, null, null, null],
-    ['Larrie Melicent', 'test5@email.ca', false, currentDate, currentOffset, currentDate, currentOffset, currentDate, currentOffset],
+    [1, 'Jennifer Dunstan', 'test1@email.com', true, currentDate, currentOffset, null, null, null, null],
+    [2, 'Baxter Sheelagh', 'test2@email.ca', true, currentDate, currentOffset, currentDate, currentOffset, null, null],
+    [3, 'Sammi Taegan', 'test3@email.com', false,  currentDate, currentOffset, null, null,  currentDate, currentOffset],
+    [4, 'Isaiah Meriel', 'test4@email.com', true, currentDate, currentOffset, null, null, null, null],
+    [5, 'Larrie Melicent', 'test5@email.ca', false, currentDate, currentOffset, currentDate, currentOffset, currentDate, currentOffset],
 ];
 
-<ControlledTableComponent showTableHeader={true} showTableFooter={true} columnNames={columnNames} columnWidths={columnWidths} data={tableData}/>
+<ControlledTableComponent 
+    idColumnIndex={0} 
+    rowControls={rowControls} 
+    selectableRows={true} 
+    showTableHeader={true} 
+    showTableFooter={true} 
+    columnNames={columnNames} 
+    data={tableData}
+/>
+
 ```
 
-Test: 
+Example controlled table with rows selectors and rows controls shown (example 3): 
 
 ```jsx
 
@@ -95,18 +121,31 @@ const columnNames = [
     'Modified date (UTC offset)'    
 ];
     
-const columnWidths = ['10%', '10%', '10%', '10%', '10%', '10%', '10%'];
-
 const paddingText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur egestas ante ante, nec pretium magna tempor id.
  Nullam euismod tristique mauris in aliquam. Ut nec facilisis nulla, quis suscipit libero. Curabitur fermentum, sapien quis dignissim vulputate, 
  turpis ex fringilla tellus, at consectetur tellus justo sit amet enim.`;
  
+const rowControls = [
+    {iconClassName: 'fas fa-eye'},
+    {iconClassName: 'fas fa-edit'},
+    {iconClassName: 'fas fa-trash-alt'}
+]; 
+ 
 const tableData = [
-    ['landing', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `landing type...${paddingText}`}, true, currentDate, currentOffset, currentDate, currentOffset],
-    ['shop', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `shop type...${paddingText}`}, false, currentDate, currentOffset, null, null],
-    ['social', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `social type...${paddingText}`}, false, currentDate, currentOffset, null, null],
-    ['video', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `video type......${paddingText}`}, true, currentDate, currentOffset, currentDate, currentOffset],
+    [1, 'landing', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `landing type...${paddingText}`}, true, currentDate, currentOffset, currentDate, currentOffset],
+    [2, 'shop', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `shop type...${paddingText}`}, false, currentDate, currentOffset, null, null],
+    [3, 'social', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `social type...${paddingText}`}, false, currentDate, currentOffset, null, null],
+    [4, 'video', {type:SPECIFIC_COLUMN_TYPE_LONG_TEXT, data: `video type......${paddingText}`}, true, currentDate, currentOffset, currentDate, currentOffset],
 ];
 
-<ControlledTableComponent showTableHeader={true} showTableFooter={true} columnNames={columnNames} columnWidths={columnWidths} data={tableData}/>
+<ControlledTableComponent 
+    idColumnIndex={0} 
+    rowControls={rowControls} 
+    selectableRows={true} 
+    showTableHeader={true} 
+    showTableFooter={true} 
+    columnNames={columnNames} 
+    data={tableData}
+/>
+
 ```

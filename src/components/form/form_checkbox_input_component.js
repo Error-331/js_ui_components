@@ -359,5 +359,4 @@ export function FormCheckboxInputComponent(props: PropsTypes) {
     );
 }
 
-
 FormCheckboxInputComponent.displayName = 'FormCheckboxInputComponent';

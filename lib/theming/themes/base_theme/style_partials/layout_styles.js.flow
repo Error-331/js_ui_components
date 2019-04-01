@@ -53,6 +53,7 @@ export const layoutStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStac
         headerBGColor: baseStyles.primaryBGColor,
         bodyBGColor: baseStyles.noneTransparentBGColor,
 
-        iconColor: baseStyles.mainSecondaryColor,
+        baseIconColor: baseStyles.mainSecondaryColor,
+        accentIconColor: baseStyles.accentColorPrimary,
     });
 };

@@ -49,5 +49,6 @@ export type LayoutStylesType = {
     headerBGColor: string,
     bodyBGColor: string,
 
-    iconColor: string,
+    baseIconColor: string,
+    accentIconColor: string,
 };

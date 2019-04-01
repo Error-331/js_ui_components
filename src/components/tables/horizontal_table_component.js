@@ -23,7 +23,7 @@ type ColumnDataType = void | null | string | number | React.Element<any>;
 type RowDataType = Array<ColumnDataType>;
 type DataType = Array<RowDataType>;
 
-type ColumnNamesType = Array<string>;
+type ColumnNamesType = Array<string | React.Element<any>>;
 
 type OnCellClickCallbackType = (event: CombinedEventType, rowIndex: number) => void;
 
@@ -140,6 +140,14 @@ const styles = theme => ({
 });
 
 // component implementation
+
+/**
+ * Horizontal table component to material-UI guidelines.
+ *
+ * @version 1.0.0
+ * @author [Sergei Selihov](https://github.com/Error-331)
+ *
+ */
 
 // $FlowFixMe decorators
 @injectSheet(styles)
@@ -265,7 +273,7 @@ class HorizontalTableClass extends React.Component<PropsTypes, StateTypes> {
     }
 
     _shouldShowTableHeader(): boolean {
-        return defaultTo(HorizontalTableClass.defaultProps.showTableHeader)(this.props.showTableHeader)
+        return defaultTo(HorizontalTableClass.defaultProps.showTableHeader)(this.props.showTableHeader);
     }
 
     _getData(): DataType {

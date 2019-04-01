@@ -10,10 +10,13 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
+import type {CombinedEventType} from './../../../types/dom_types';
+
 import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
 
 // type definitions
 export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
+export type ClickCallbackType = (event: CombinedEventType, rowIndex: mixed) => void;
 
 type PropsTypes = {
     /**
@@ -21,6 +24,18 @@ type PropsTypes = {
      */
 
     size?: FontIconSizeType,
+
+    /**
+     * Flag that indicates whether to show icon using accent color
+     */
+
+    accent?: boolean,
+
+    /**
+     * Callback function which will be called once user clicks on icon
+     */
+
+    onClick?: ClickCallbackType,
 
     /**
      * React style object for in deep control of how icon is represented
@@ -55,7 +70,7 @@ const styles = theme => ({
         boxSizing: 'border-box',
         display: 'block',
 
-        color: theme.layoutStyles.iconColor,
+        color: theme.layoutStyles.baseIconColor,
 
         '&.tiny': {
             fontSize: theme.layoutStyles.tinyIconSize,
@@ -76,6 +91,10 @@ const styles = theme => ({
         '&.extraLarge': {
             fontSize: theme.layoutStyles.extraLargeIconSize,
         },
+
+        '&.accent': {
+            color: theme.layoutStyles.accentIconColor,
+        }
     }
 });
 
@@ -89,17 +108,23 @@ const styles = theme => ({
 
 // component implementation
 function FontIconFunction(props: PropsTypes) {
-    let {size, style, iconClassName, className, classes} = props;
+    let {size, accent, onClick, style, iconClassName, className, classes} = props;
     size = defaultTo(MEDIUM_SIZE)(size);
+    accent = defaultTo(false)(accent);
 
     const combinedClassName: string = classNames(
         classes.componentContainer,
         iconClassName,
         size,
+        {'accent': accent},
         className
     );
 
-    return <i className={combinedClassName} style={style}/>;
+    return <i
+        onClick={onClick}
+        className={combinedClassName}
+        style={style}
+    />;
 }
 
 FontIconFunction.displayName = 'FontIcon';
