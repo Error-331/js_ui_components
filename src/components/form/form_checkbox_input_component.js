@@ -168,7 +168,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class FormCheckboxInputClass extends React.Component<PropsTypes, StateTypes> {
+class FormCheckboxInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormCheckboxInputClass';
 
@@ -350,8 +350,7 @@ export class FormCheckboxInputClass extends React.Component<PropsTypes, StateTyp
     // endregion
 }
 
-// exports
-export function FormCheckboxInputComponent(props: PropsTypes) {
+function FormCheckboxInputComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <FormCheckboxInputClass {...props} {...windowDimensions} />}
@@ -360,3 +359,7 @@ export function FormCheckboxInputComponent(props: PropsTypes) {
 }
 
 FormCheckboxInputComponent.displayName = 'FormCheckboxInputComponent';
+
+// exports
+export {FormCheckboxInputClass, FormCheckboxInputComponent};
+export default FormCheckboxInputComponent;

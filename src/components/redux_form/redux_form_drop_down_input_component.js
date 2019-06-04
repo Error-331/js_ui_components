@@ -90,13 +90,16 @@ type StateTypes = {};
  */
 
 // component implementation
-export class ReduxFormDropDownInputComponentClass extends React.Component<PropsTypes, StateTypes> {
-    static displayName = 'ReduxFormDropDownInputComponent';
+class ReduxFormDropDownInputClass extends React.Component<PropsTypes, StateTypes> {
+    static displayName = 'ReduxFormDropDownInputClass';
 
     render(): React.Node {
         return <Field type='select' component={FormDropDownInputComponent} {...this.props}/>;
     }
 }
 
+const ReduxFormDropDownInputComponent = ReduxFormDropDownInputClass;
+
 // exports
-export const ReduxFormDropDownInputComponent = ReduxFormDropDownInputComponentClass;
+export {ReduxFormDropDownInputClass, ReduxFormDropDownInputComponent};
+export default ReduxFormDropDownInputComponent;

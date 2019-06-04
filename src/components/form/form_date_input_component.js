@@ -177,7 +177,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> {
+class FormDateInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormDateInputClass';
 
@@ -402,8 +402,7 @@ export class FormDateInputClass extends React.Component<PropsTypes, StateTypes> 
     // endregion
 }
 
-// exports
-export function FormDateInputComponent(props: PropsTypes) {
+function FormDateInputComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <FormDateInputClass {...props} {...windowDimensions} />}
@@ -411,5 +410,8 @@ export function FormDateInputComponent(props: PropsTypes) {
     );
 }
 
-
 FormDateInputComponent.displayName = 'FormDateInputComponent';
+
+// exports
+export {FormDateInputClass, FormDateInputComponent};
+export default FormDateInputComponent;

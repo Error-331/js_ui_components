@@ -191,7 +191,7 @@ const EMPTY_DATE_CELL_DATA = 'empty';
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class SimpleCalendarClass extends React.Component<PropsTypes, StateTypes> {
+class SimpleCalendarClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'SimpleCalendarClass';
 
@@ -492,8 +492,7 @@ export class SimpleCalendarClass extends React.Component<PropsTypes, StateTypes>
     // endregion
 }
 
-// exports
-export function SimpleCalendarComponent(props: PropsTypes) {
+function SimpleCalendarComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <SimpleCalendarClass {...props} {...windowDimensions} />}
@@ -502,3 +501,7 @@ export function SimpleCalendarComponent(props: PropsTypes) {
 }
 
 SimpleCalendarComponent.displayName = 'SimpleCalendarComponent';
+
+// exports
+export {SimpleCalendarClass, SimpleCalendarComponent};
+export default SimpleCalendarComponent;

@@ -12,6 +12,8 @@ import {defaultTo} from 'ramda';
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
 
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
+
 // type definitions
 type CSSStylesType = {
     [string]: mixed
@@ -132,9 +134,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class FormCheckboxVariant1Class extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormCheckboxVariant1Component';
+    static displayName = 'FormCheckboxVariant1Class';
 
     static defaultProps = {
         disabled: false,
@@ -173,7 +178,7 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
         };
 
         let {styleSheetName} = this.props;
-        styleSheetName = defaultTo(FormCheckboxVariant1ComponentClass.displayName)(styleSheetName);
+        styleSheetName = defaultTo(FormCheckboxVariant1Class.displayName)(styleSheetName);
 
         styleSheetRegister.addGlobalStyles(newGlobalStyles, styleSheetName);
     }
@@ -185,22 +190,22 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
 
     // region style accessors
     _getCheckedCheckMarkBackgroundContainerDisabledStyle(): CSSStylesType {
-        return defaultTo(FormCheckboxVariant1ComponentClass.defaultProps.checkedCheckMarkBackgroundContainerDisabledStyle)
+        return defaultTo(FormCheckboxVariant1Class.defaultProps.checkedCheckMarkBackgroundContainerDisabledStyle)
         (this.props.checkedCheckMarkBackgroundContainerDisabledStyle);
     }
 
     _getCheckedCheckMarkBackgroundContainerStyle(): CSSStylesType {
-        return defaultTo(FormCheckboxVariant1ComponentClass.defaultProps.checkedCheckMarkBackgroundContainerStyle)
+        return defaultTo(FormCheckboxVariant1Class.defaultProps.checkedCheckMarkBackgroundContainerStyle)
         (this.props.checkedCheckMarkBackgroundContainerStyle);
     }
 
     _getCheckMarkContainerStyle(): CSSStylesType {
-        return defaultTo(FormCheckboxVariant1ComponentClass.defaultProps.checkMarkContainerStyle)
+        return defaultTo(FormCheckboxVariant1Class.defaultProps.checkMarkContainerStyle)
         (this.props.checkMarkContainerStyle);
     }
 
     _getCheckMarkBackgroundContainerStyle(): CSSStylesType {
-        return defaultTo(FormCheckboxVariant1ComponentClass.defaultProps.checkMarkBackgroundContainerStyle)
+        return defaultTo(FormCheckboxVariant1Class.defaultProps.checkMarkBackgroundContainerStyle)
         (this.props.checkMarkBackgroundContainerStyle);
     }
 
@@ -289,5 +294,16 @@ export class FormCheckboxVariant1ComponentClass extends React.Component<PropsTyp
     // endregion
 }
 
+function FormCheckboxVariant1Component(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormCheckboxVariant1Class {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+FormCheckboxVariant1Component.displayName = 'FormCheckboxVariant1Component';
+
 // exports
-export const FormCheckboxVariant1Component = injectSheet(styles)(FormCheckboxVariant1ComponentClass);
+export {FormCheckboxVariant1Class, FormCheckboxVariant1Component};
+export default FormCheckboxVariant1Component;

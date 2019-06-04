@@ -18,6 +18,8 @@ import type {
     ReduxFormFieldComponentInputDataPropsTypes
 } from './../../types/redux_form_types';
 
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+
 // type definitions
 type PropsTypes = FieldProps & {
     /**
@@ -207,9 +209,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class FormSwitchInputComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class FormSwitchInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormSwitchInputComponent';
+    static displayName = 'FormSwitchInputClass';
 
     static defaultProps = {
         disabled: false,
@@ -324,7 +329,7 @@ export class FormSwitchInputComponentClass extends React.Component<PropsTypes, S
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormSwitchInputComponentClass.defaultProps.input) : input;
+        return isNil(input) ? clone(FormSwitchInputClass.defaultProps.input) : input;
     }
 
     // endregion
@@ -395,5 +400,16 @@ export class FormSwitchInputComponentClass extends React.Component<PropsTypes, S
     // endregion
 }
 
+function FormSwitchInputComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormSwitchInputClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+FormSwitchInputComponent.displayName = 'FormSwitchInputComponent';
+
 // exports
-export const FormSwitchInputComponent = injectSheet(styles)(FormSwitchInputComponentClass);
+export {FormSwitchInputClass, FormSwitchInputComponent};
+export default FormSwitchInputComponent;

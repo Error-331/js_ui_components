@@ -973,5 +973,5 @@ export function FormTextInputComponent(props: PropsTypes) {
     );
 }
 
-
 FormTextInputComponent.displayName = 'FormTextInputComponent';
+export default FormTextInputComponent;

@@ -48,8 +48,8 @@ type StateTypes = {};
  */
 
 // component implementation
-export class ReduxFormSwitchInputComponentClass extends React.Component<PropsTypes, StateTypes> {
-    static displayName = 'ReduxFormSwitchInputComponent';
+class ReduxFormSwitchInputClass extends React.Component<PropsTypes, StateTypes> {
+    static displayName = 'ReduxFormSwitchInputClass';
 
     render(): React.Node {
         return <Field
@@ -65,5 +65,8 @@ export class ReduxFormSwitchInputComponentClass extends React.Component<PropsTyp
     }
 }
 
+const ReduxFormSwitchInputComponent = ReduxFormSwitchInputClass;
+
 // exports
-export const ReduxFormSwitchInputComponent = ReduxFormSwitchInputComponentClass;
+export {ReduxFormSwitchInputClass, ReduxFormSwitchInputComponent};
+export default ReduxFormSwitchInputComponent;

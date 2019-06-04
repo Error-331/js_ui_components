@@ -223,9 +223,9 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class FormDropDownInputComponentClass extends React.Component<PropsTypes, StateTypes> {
+class FormDropDownInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormDropDownInputComponent';
+    static displayName = 'FormDropDownInputClass';
 
     static defaultProps = {
         readOnly: false,
@@ -276,8 +276,8 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         self._onOptionClick = self._onOptionClick.bind(this);
 
         this.state = {
-            optionsShown: FormDropDownInputComponentClass.defaultState.optionsShown,
-            selectedOption: FormDropDownInputComponentClass.defaultState.selectedOption,
+            optionsShown: FormDropDownInputClass.defaultState.optionsShown,
+            selectedOption: FormDropDownInputClass.defaultState.selectedOption,
         };
 
         this._id = this._createInputId();
@@ -338,7 +338,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
 
     // region state accessors
     _getInternalSelectedOption(): OptionType | null {
-        return defaultTo(FormDropDownInputComponentClass.defaultState.selectedOption)
+        return defaultTo(FormDropDownInputClass.defaultState.selectedOption)
         (this.state.selectedOption);
     }
 
@@ -347,7 +347,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // region prop accessors
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormDropDownInputComponentClass.defaultProps.input) : input;
+        return isNil(input) ? clone(FormDropDownInputClass.defaultProps.input) : input;
     }
 
     _getFormTextInputComponentProps(): FormTextInputTypes {
@@ -566,13 +566,16 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // endregion
 }
 
-// exports
-export function FormDropDownInputComponent(props: PropsTypes) {
+function FormDropDownInputComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
-            {windowDimensions => <FormDropDownInputComponentClass {...props} {...windowDimensions} />}
+            {windowDimensions => <FormDropDownInputClass {...props} {...windowDimensions} />}
         </MainThemeContext.Consumer>
     );
 }
 
 FormDropDownInputComponent.displayName = 'FormDropDownInputComponent';
+
+// exports
+export {FormDropDownInputClass, FormDropDownInputComponent};
+export default FormDropDownInputComponent;

@@ -18,6 +18,7 @@ import {
 } from './../grid';
 
 import {InlineTextBlock} from './../layout/text/inline_text_block';
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 type DateChangeCallbackType = (date: moment) => void;
@@ -81,9 +82,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class SimpleMonthSelectorComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class SimpleMonthSelectorClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'SimpleMonthSelectorComponent';
+    static displayName = 'SimpleMonthSelectorClass';
 
     static defaultProps = {
         initialDate: moment(),
@@ -187,7 +191,7 @@ export class SimpleMonthSelectorComponentClass extends React.Component<PropsType
 
     // region prop accessors
     _getDateChangeHander(): DateChangeCallbackType {
-        return defaultTo(SimpleMonthSelectorComponentClass.defaultProps.onDateChange)(this.props.onDateChange);
+        return defaultTo(SimpleMonthSelectorClass.defaultProps.onDateChange)(this.props.onDateChange);
     }
 
     // endregion
@@ -231,5 +235,16 @@ export class SimpleMonthSelectorComponentClass extends React.Component<PropsType
     // endregion
 }
 
+function SimpleMonthSelectorComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <SimpleMonthSelectorClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+SimpleMonthSelectorComponent.displayName = 'SimpleMonthSelectorComponent';
+
 // exports
-export const SimpleMonthSelectorComponent = injectSheet(styles)(SimpleMonthSelectorComponentClass);
+export {SimpleMonthSelectorClass, SimpleMonthSelectorComponent};
+export default SimpleMonthSelectorComponent;

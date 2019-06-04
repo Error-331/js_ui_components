@@ -60,8 +60,8 @@ type StateTypes = {};
  */
 
 // component implementation
-export class ReduxFormRadioButtonInputComponentClass extends React.Component<PropsTypes, StateTypes> {
-    static displayName = 'ReduxFormRadioButtonInputComponent';
+class ReduxFormRadioButtonInputClass extends React.Component<PropsTypes, StateTypes> {
+    static displayName = 'ReduxFormRadioButtonInputClass';
 
     render(): React.Node {
         return <Field
@@ -78,5 +78,8 @@ export class ReduxFormRadioButtonInputComponentClass extends React.Component<Pro
     }
 }
 
+const ReduxFormRadioButtonInputComponent = ReduxFormRadioButtonInputClass;
+
 // exports
-export const ReduxFormRadioButtonInputComponent = ReduxFormRadioButtonInputComponentClass;
+export {ReduxFormRadioButtonInputClass, ReduxFormRadioButtonInputComponent};
+export default ReduxFormRadioButtonInputComponent;

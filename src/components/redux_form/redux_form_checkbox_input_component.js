@@ -70,8 +70,8 @@ type StateTypes = {};
  */
 
 // component implementation
-export class ReduxFormCheckboxInputComponentClass extends React.Component<PropsTypes, StateTypes> {
-    static displayName = 'ReduxFormCheckboxInputComponent';
+class ReduxFormCheckboxInputClass extends React.Component<PropsTypes, StateTypes> {
+    static displayName = 'ReduxFormCheckboxInputClass';
 
     render(): React.Node {
         return <Field
@@ -91,5 +91,8 @@ export class ReduxFormCheckboxInputComponentClass extends React.Component<PropsT
     }
 }
 
+const ReduxFormCheckboxInputComponent = ReduxFormCheckboxInputClass;
+
 // exports
-export const ReduxFormCheckboxInputComponent = ReduxFormCheckboxInputComponentClass;
+export {ReduxFormCheckboxInputClass, ReduxFormCheckboxInputComponent};
+export default ReduxFormCheckboxInputComponent;

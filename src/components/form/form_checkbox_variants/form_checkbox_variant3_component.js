@@ -12,6 +12,8 @@ import {defaultTo} from 'ramda';
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
 
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
+
 // type definitions
 type CSSStylesType = {
     [string]: mixed
@@ -155,9 +157,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class FormCheckboxVariant3ComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class FormCheckboxVariant3Class extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormCheckboxVariant3Component';
+    static displayName = 'FormCheckboxVariant3Class';
 
     static defaultProps = {
         disabled: false,
@@ -188,7 +193,7 @@ export class FormCheckboxVariant3ComponentClass extends React.Component<PropsTyp
             [checkCrossContainerStylesName]: this._getCheckedCrossMarkContainerClasses(),
         };
 
-        styleSheetRegister.addGlobalStyles(newGlobalStyles, FormCheckboxVariant3ComponentClass.displayName);
+        styleSheetRegister.addGlobalStyles(newGlobalStyles, FormCheckboxVariant3Class.displayName);
     }
 
     // endregion
@@ -279,5 +284,16 @@ export class FormCheckboxVariant3ComponentClass extends React.Component<PropsTyp
     // endregion
 }
 
+function FormCheckboxVariant3Component(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormCheckboxVariant3Class {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+FormCheckboxVariant3Component.displayName = 'FormCheckboxVariant3Component';
+
 // exports
-export const FormCheckboxVariant3Component = injectSheet(styles)(FormCheckboxVariant3ComponentClass);
+export {FormCheckboxVariant3Class, FormCheckboxVariant3Component};
+export default FormCheckboxVariant3Component;
