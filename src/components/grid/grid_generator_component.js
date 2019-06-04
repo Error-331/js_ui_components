@@ -39,7 +39,6 @@ import {
 
 // local imports
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
-import {HORIZONTAL_TABLE_TYPE} from "../tables/regular_table_component";
 
 // type definitions
 type CSSStylesType = {

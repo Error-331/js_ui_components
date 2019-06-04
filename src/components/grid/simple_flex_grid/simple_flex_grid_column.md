@@ -6,7 +6,6 @@ const injectSheet = require('react-jss').default;
 
 const {SimpleFlexGridContainer} = require('./simple_flex_grid_container');
 const {SimpleFlexGridRow} = require('./simple_flex_grid_row');
-const {SimpleFlexGridColumn} = require('./simple_flex_grid_column');
 const {InlineTextBlock} = require('./../../layout/text/inline_text_block');
 
 const styles = theme => ({

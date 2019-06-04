@@ -81,3 +81,4 @@ SimpleFlexGridColumnFunction.displayName = 'SimpleFlexGridColumn';
 
 // exports
 export const SimpleFlexGridColumn = injectSheet(styles)(SimpleFlexGridColumnFunction);
+export default SimpleFlexGridColumn;

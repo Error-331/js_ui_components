@@ -2,9 +2,7 @@
 
 // external imports
 import React, {Component} from 'react';
-import {ThemeProvider} from 'react-jss';
-
-import Wrapper from 'react-styleguidist/lib/rsg-components/Wrapper/Wrapper';
+import Wrapper from 'react-styleguidist/lib/client/rsg-components/Wrapper/Wrapper';
 
 // local imports
 import MainContainer from './main_container';

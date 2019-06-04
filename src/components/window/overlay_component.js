@@ -4,7 +4,7 @@
 
 // external imports
 import * as React from 'react';
-import withStyles from 'react-jss';
+import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import {is, isNil, defaultTo} from 'ramda';
@@ -148,7 +148,7 @@ const styles = theme => ({
 // component implementation
 
 // $FlowFixMe decorators
-@withStyles(styles)
+@injectSheet(styles)
 export class OverlayClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'OverlayClass';
@@ -161,9 +161,8 @@ export class OverlayClass extends React.Component<PropsTypes, StateTypes> {
         const self: any = this;
 
         self._onOverlayClick = self._onOverlayClick.bind(this);
-
         this.state = {
-            zIndex: this.props.theme.styleValuesRegister.zIndex
+            zIndex: props.theme.styleValuesRegister.zIndex
         };
     }
 

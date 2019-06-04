@@ -5,18 +5,25 @@
 // external imports
 import React, {Component} from 'react';
 
-import Logo from 'react-styleguidist/lib/rsg-components/Logo';
-import Markdown from 'react-styleguidist/lib/rsg-components/Markdown';
-import Styled from 'react-styleguidist/lib/rsg-components/Styled';
+import Logo from 'react-styleguidist/lib/client/rsg-components/Logo';
+import Markdown from 'react-styleguidist/lib/client/rsg-components/Markdown';
+import Styled from 'react-styleguidist/lib/client/rsg-components/Styled';
 import cx from 'classnames';
-import Ribbon from 'react-styleguidist/lib/rsg-components/Ribbon';
+import Ribbon from 'react-styleguidist/lib/client/rsg-components/Ribbon';
 
 // local imports
 import MainContainer from './modules/containers/main_container';
 import CoreLayoutWrapperComponent from './modules/components/core_layout_wrapper_component';
 import ComponentFormContainer from './modules/containers/component_form_container';
 
-import {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn, ReduxFormDropDownInputComponent} from './../src';
+import {
+    SimpleFlexGridContainer,
+    SimpleFlexGridRow,
+    SimpleFlexGridColumn,
+    ReduxFormDropDownInputComponent,
+    FormDropDownInputComponent
+} from './../src';
+
 
 //
 const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space}) => ({

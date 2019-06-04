@@ -21,6 +21,8 @@ import {FormTextInputComponent} from './form_text_input_component';
 import {GlobalOverlayComponent} from './../window/global_overlay_component';
 import {RegularCardComponent} from './../layout/structure/regular_card_component';
 
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+
 // type definitions
 type OptionValueType = string | number;
 type OptionType = { [string]: OptionValueType };
@@ -28,7 +30,6 @@ type OptionType = { [string]: OptionValueType };
 type CSSStylesType = {
     [string]: mixed
 };
-
 
 type PropsTypes = FieldProps & {
     /**
@@ -219,6 +220,9 @@ const styles = theme => ({
  */
 
 // component implementation
+
+// $FlowFixMe decorators
+@injectSheet(styles)
 export class FormDropDownInputComponentClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormDropDownInputComponent';
@@ -563,4 +567,12 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
 }
 
 // exports
-export const FormDropDownInputComponent = injectSheet(styles)(FormDropDownInputComponentClass);
+export function FormDropDownInputComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormDropDownInputComponentClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+FormDropDownInputComponent.displayName = 'FormDropDownInputComponent';
