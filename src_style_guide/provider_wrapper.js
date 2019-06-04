@@ -85,7 +85,7 @@ const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space}) => ({
         paddingRight: '16px',
     }
 });
-
+// <img src='/assets/images/phone.png' width='257.796px' height='550.368px' />  3.78
 // wrapper implementation
 class ComponentsWrapper extends Component {
     render() {
