@@ -112,7 +112,7 @@ const styles = theme => ({});
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class ModalClass extends React.Component<PropsTypes, StateTypes> {
+class ModalClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'ModalClass';
 
@@ -203,8 +203,7 @@ export class ModalClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 }
 
-// exports
-export function ModalComponent(props: PropsTypes) {
+function ModalComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <ModalClass {...props} {...windowDimensions} />}
@@ -213,3 +212,7 @@ export function ModalComponent(props: PropsTypes) {
 }
 
 ModalComponent.displayName = 'ModalComponent';
+
+// exports
+export {ModalClass, ModalComponent};
+export default ModalComponent;

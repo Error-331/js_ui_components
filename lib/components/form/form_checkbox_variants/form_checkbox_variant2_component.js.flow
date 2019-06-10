@@ -9,8 +9,10 @@ import injectSheet, {jss, SheetsRegistry} from 'react-jss';
 import {defaultTo} from 'ramda';
 
 // local imports
+import type {ThemeType} from './../../../types/theme_types';
+
 import {FormCheckboxVariant1Component} from './form_checkbox_variant1_component';
-import type {ThemeType} from "../../../types/theme_types";
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
 
 // type definitions
 type CSSStylesType = {
@@ -61,9 +63,12 @@ const styles = theme => ({});
  */
 
 // component implementation
-export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class FormCheckboxVariant2Class extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormCheckboxVariant2Component';
+    static displayName = 'FormCheckboxVariant2Class';
 
     static defaultProps = {
         disabled: false,
@@ -111,7 +116,7 @@ export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTyp
 
     // region prop accessors
     _isDisabled(): boolean {
-        return defaultTo(FormCheckboxVariant2ComponentClass.defaultProps.disabled)
+        return defaultTo(FormCheckboxVariant2Class.defaultProps.disabled)
         (this.props.disabled);
     }
 
@@ -123,7 +128,7 @@ export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTyp
     // region render methods
     render(): React.Node {
         return <FormCheckboxVariant1Component
-            styleSheetName={FormCheckboxVariant2ComponentClass.displayName}
+            styleSheetName={FormCheckboxVariant2Class.displayName}
             disabled={this.props.disabled}
             htmlFor={this.props.htmlFor}
 
@@ -136,5 +141,16 @@ export class FormCheckboxVariant2ComponentClass extends React.Component<PropsTyp
     // endregion
 }
 
+function FormCheckboxVariant2Component(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormCheckboxVariant2Class {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+FormCheckboxVariant2Component.displayName = 'FormCheckboxVariant2Component';
+
 // exports
-export const FormCheckboxVariant2Component = injectSheet(styles)(FormCheckboxVariant2ComponentClass);
+export {FormCheckboxVariant2Class, FormCheckboxVariant2Component};
+export default FormCheckboxVariant2Component;

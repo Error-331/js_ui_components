@@ -89,3 +89,4 @@ RegularSidebarFunction.displayName = 'RegularSidebarComponent';
 
 // exports
 export const RegularSidebarComponent = injectSheet(styles)(RegularSidebarFunction);
+export default RegularSidebarComponent;

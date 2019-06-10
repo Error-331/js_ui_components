@@ -2,11 +2,10 @@ Example table with enabled header and footer:
 
 ```jsx
 
-const {VerticalTableComponent} = require('./');
-
 const {FontIcon} = require('./../layout/icons/font_icon');
 const {ElementsRow} = require('./../layout/alignment/elements/elements_row');
 const {FormCheckboxInputComponent} = require('./../form/form_checkbox_input_component');
+const {VerticalTableComponent} = require('./vertical_table_component');
 
 const columnNames = ['Column 1', 'Test Column 2', 'Col 3', 'Long Test Column 4', 'Some additional Column 5', 'Test_column_6', 'Test_column_long_7', 'Some_add_col_8'];
 const columnWidths = ['10%', '10%', '10%', '10%', '10%', '10%', '10%'];
@@ -27,7 +26,7 @@ Example table with enabled header/footer and auto-width:
 
 ```jsx
 
-const {VerticalTableComponent} = require('./');
+const {VerticalTableComponent} = require('./vertical_table_component');
 
 const columnNames = ['Col 1', 'Col 2', 'Col 3', 'Col 4', 'Col 5', 'Col 6', 'Col 7', 'Col 8'];
 
@@ -47,7 +46,7 @@ Example table with disabled header/footer and auto-width:
 
 ```jsx
 
-const {VerticalTableComponent} = require('./');
+const {VerticalTableComponent} = require('./vertical_table_component');
 
 const columnNames = ['Col 1', 'Col 2', 'Col 3', 'Col 4', 'Col 5', 'Col 6', 'Col 7', 'Col 8'];
 

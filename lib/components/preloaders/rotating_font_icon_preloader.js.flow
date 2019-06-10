@@ -114,3 +114,4 @@ RotatingFontIconPreloaderFunction.displayName = 'RotatingFontIconPreloader';
 
 // exports
 export const RotatingFontIconPreloader = injectSheet(styles)(RotatingFontIconPreloaderFunction);
+export default RotatingFontIconPreloader;

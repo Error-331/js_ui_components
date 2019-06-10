@@ -2,8 +2,6 @@ Usage example (none remote):
 
 ```jsx
 
-const {ResumeCard1} = require('./resume_card1');
-
 <ResumeCard1
     name='Charlotte'
     lastName='Massingberd'
@@ -24,8 +22,6 @@ const {ResumeCard1} = require('./resume_card1');
 Usage example (remote):
 
 ```jsx
-
-const {ResumeCard1} = require('./resume_card1');
 
 <ResumeCard1
     name='Maksim'
@@ -48,7 +44,6 @@ Usage example (remote with overlay buttons):
 
 ```jsx
 
-const {ResumeCard1} = require('./resume_card1');
 const {RegularButtonComponent} = require('./../../buttons/regular_button_component');
 
 <ResumeCard1

@@ -165,3 +165,4 @@ LinearIndeterminatePreloaderFunction.displayName = 'LinearIndeterminatePreloader
 
 // exports
 export const LinearIndeterminatePreloader = injectSheet(styles)(LinearIndeterminatePreloaderFunction);
+export default LinearIndeterminatePreloader;

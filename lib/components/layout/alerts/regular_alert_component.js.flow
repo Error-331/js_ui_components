@@ -145,3 +145,4 @@ RegularAlertFunction.displayName = 'RegularAlert';
 
 // exports
 export const RegularAlertComponent = injectSheet(styles)(RegularAlertFunction);
+export default RegularAlertComponent;

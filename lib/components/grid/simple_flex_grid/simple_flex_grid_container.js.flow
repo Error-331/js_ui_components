@@ -83,3 +83,4 @@ SimpleFlexGridContainerFunction.displayName = 'SimpleFlexGridContainer';
 
 // exports
 export const SimpleFlexGridContainer = injectSheet(styles)(SimpleFlexGridContainerFunction);
+export default SimpleFlexGridContainer;

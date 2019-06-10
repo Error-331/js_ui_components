@@ -2,7 +2,6 @@ Test:
 
 ```jsx
 
-const {RegularSidebarComponent} = require('./regular_sidebar_component');
 const {ReduxFormGeneratorComponent} = require('./../../redux_form/redux_form_generator_component');
 
 const specializationOptions = {

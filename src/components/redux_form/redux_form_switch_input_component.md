@@ -2,6 +2,8 @@ Editable switch with no labels set:
 
 ```jsx
 
+const {ReduxFormSwitchInputComponent} = require('./redux_form_switch_input_component');
+
 <ReduxFormSwitchInputComponent
     name='testFormSwitchInputComponent1'
 />
@@ -10,6 +12,8 @@ Editable switch with no labels set:
 Disabled switch with no labels set:
 
 ```jsx
+
+const {ReduxFormSwitchInputComponent} = require('./redux_form_switch_input_component');
 
 <ReduxFormSwitchInputComponent
     name='testFormSwitchInputComponent2'
@@ -21,6 +25,8 @@ Editable switch with default value set but no labels:
 
 ```jsx
 
+const {ReduxFormSwitchInputComponent} = require('./redux_form_switch_input_component');
+
 <ReduxFormSwitchInputComponent
     name='reduxFormSwitchInputComponents.testFormSwitchInputComponentWithDefaultValue1'
 />
@@ -29,6 +35,8 @@ Editable switch with default value set but no labels:
 Disabled switch with default value set but no labels:
 
 ```jsx
+
+const {ReduxFormSwitchInputComponent} = require('./redux_form_switch_input_component');
 
 <ReduxFormSwitchInputComponent
     name='reduxFormSwitchInputComponents.testFormSwitchInputComponentWithDefaultValue2'
@@ -39,6 +47,8 @@ Disabled switch with default value set but no labels:
 Editable switch with both labels set:
 
 ```jsx
+
+const {ReduxFormSwitchInputComponent} = require('./redux_form_switch_input_component');
 
 <ReduxFormSwitchInputComponent
     name='testFormSwitchInputComponent3'
@@ -52,6 +62,8 @@ Editable switch with both labels set as well as default value:
 
 ```jsx
 
+const {ReduxFormSwitchInputComponent} = require('./redux_form_switch_input_component');
+
 <ReduxFormSwitchInputComponent
     name='reduxFormSwitchInputComponents.testFormSwitchInputComponentWithDefaultValue3'
 
@@ -63,6 +75,8 @@ Editable switch with both labels set as well as default value:
 Disabled switch with both labels set:
 
 ```jsx
+
+const {ReduxFormSwitchInputComponent} = require('./redux_form_switch_input_component');
 
 <ReduxFormSwitchInputComponent
     name='testFormSwitchInputComponent4'
@@ -77,6 +91,8 @@ Disabled switch with both labels set:
 Disabled switch with both labels set as well as default value:
 
 ```jsx
+
+const {ReduxFormSwitchInputComponent} = require('./redux_form_switch_input_component');
 
 <ReduxFormSwitchInputComponent
     name='reduxFormSwitchInputComponents.testFormSwitchInputComponentWithDefaultValue4'

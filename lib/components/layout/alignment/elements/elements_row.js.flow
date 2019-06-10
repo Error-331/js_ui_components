@@ -189,3 +189,4 @@ ElementsRowFunction.displayName = 'ElementsRow';
 
 // exports
 export const ElementsRow = injectSheet(styles)(ElementsRowFunction);
+export default ElementsRow;

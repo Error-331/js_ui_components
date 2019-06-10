@@ -11,6 +11,8 @@ import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/ut
 import {RegularCardComponent} from './../layout/structure/regular_card_component';
 import {CollapsibleComponent} from './../utility/collapsible_component';
 
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+
 // styles definition
 const styles = theme => ({
     componentContainer: {},
@@ -113,9 +115,12 @@ const styles = theme => ({
 });
 
 // component implementation
-export class VerticalNavigationMenuComponentClass extends Component {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class VerticalNavigationMenuClass extends Component {
     // region static props
-    static displayName = 'VerticalNavigationMenuComponent';
+    static displayName = 'VerticalNavigationMenuClass';
 
     static defaultProps = {
         title: '',
@@ -222,5 +227,16 @@ export class VerticalNavigationMenuComponentClass extends Component {
     }
 }
 
+function VerticalNavigationMenuComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <VerticalNavigationMenuClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+VerticalNavigationMenuComponent.displayName = 'VerticalNavigationMenuComponent';
+
 // exports
-export const VerticalNavigationMenuComponent = injectSheet(styles)(VerticalNavigationMenuComponentClass);
+export {VerticalNavigationMenuClass, VerticalNavigationMenuComponent};
+export default VerticalNavigationMenuComponent;

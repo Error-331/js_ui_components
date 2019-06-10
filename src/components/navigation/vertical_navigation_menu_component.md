@@ -3,6 +3,7 @@ Test documentation:
 ```jsx
 
 const {Link} = require('react-router-dom');
+const {VerticalNavigationMenuComponent} = require('./vertical_navigation_menu_component');
 
 const data = [
             {name: 'Menu item 1', iconClassNames: 'fas fa-poo'},

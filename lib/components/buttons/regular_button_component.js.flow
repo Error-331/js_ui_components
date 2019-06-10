@@ -408,7 +408,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
+class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'RegularButtonClass';
 
@@ -584,8 +584,7 @@ export class RegularButtonClass extends React.Component<PropsTypes, StateTypes> 
     // endregion
 }
 
-// exports
-export function RegularButtonComponent(props: PropsTypes) {
+function RegularButtonComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <RegularButtonClass {...props} {...windowDimensions} />}
@@ -594,3 +593,7 @@ export function RegularButtonComponent(props: PropsTypes) {
 }
 
 RegularButtonComponent.displayName = 'RegularButtonComponent';
+
+// exports
+export {RegularButtonClass, RegularButtonComponent};
+export default RegularButtonComponent;

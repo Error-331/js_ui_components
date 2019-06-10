@@ -192,3 +192,4 @@ LinearBufferPreloaderFunction.displayName = 'LinearBufferPreloader';
 
 // exports
 export const LinearBufferPreloader = injectSheet(styles)(LinearBufferPreloaderFunction);
+export default LinearBufferPreloader;

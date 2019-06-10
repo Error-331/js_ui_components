@@ -335,7 +335,7 @@ function renderButtonsSlider(props: PropsTypes, shouldShowOverlay: boolean): Rea
     </SlideVisualEffect>;
 }
 
-export function ResumeCard1Function(props: PropsTypes): React.Node {
+function ResumeCard1Function(props: PropsTypes): React.Node {
     const {classes} = props;
     const [shouldShowOverlay, setShouldShowOverlay] = React.useState(false);
 
@@ -357,5 +357,8 @@ export function ResumeCard1Function(props: PropsTypes): React.Node {
 
 ResumeCard1Function.displayName = 'ResumeCard1';
 
+const ResumeCard1 = injectSheet(styles)(ResumeCard1Function);
+
 // exports
-export const ResumeCard1 = injectSheet(styles)(ResumeCard1Function);
+export {ResumeCard1Function, ResumeCard1};
+export default ResumeCard1;

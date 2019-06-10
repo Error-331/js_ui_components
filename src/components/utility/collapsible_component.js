@@ -11,6 +11,7 @@ import {isNil, complement, equals, always, defaultTo, pathSatisfies, cond} from 
 import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 export type StyleType = {[string]: mixed};
@@ -107,8 +108,11 @@ const styles = theme => ({
  */
 
 // component implementation
-export class CollapsibleComponentClass extends React.Component<PropsTypes, StateTypes> {
-    static displayName = 'CollapsibleComponent';
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class CollapsibleClass extends React.Component<PropsTypes, StateTypes> {
+    static displayName = 'CollapsibleClass';
 
     static defaultProps: {
         outerContainerClassNames: string,
@@ -257,7 +261,7 @@ export class CollapsibleComponentClass extends React.Component<PropsTypes, State
 
     render(): React.Node {
         const isContainerNotVisible: boolean = this.state.outerContainerStyles.display !== 'block' && this.state.outerContainerStyles.visibility !== 'visible';
-        const removeContentOnClose = defaultTo(CollapsibleComponentClass.defaultProps.removeContentOnClose)(this.props.removeContentOnClose);
+        const removeContentOnClose = defaultTo(CollapsibleClass.defaultProps.removeContentOnClose)(this.props.removeContentOnClose);
         const isHideChildren: boolean = isContainerNotVisible && removeContentOnClose;
 
         return (
@@ -301,5 +305,16 @@ export class CollapsibleComponentClass extends React.Component<PropsTypes, State
     }
 }
 
+function CollapsibleComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <CollapsibleClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+CollapsibleComponent.displayName = 'CollapsibleComponent';
+
 // exports
-export const CollapsibleComponent = injectSheet(styles)(CollapsibleComponentClass);
+export {CollapsibleClass, CollapsibleComponent};
+export default CollapsibleComponent;

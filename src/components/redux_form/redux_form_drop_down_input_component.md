@@ -2,6 +2,8 @@ Empty editable drop down input field without any specific parameters set:
 
 ```jsx
 
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
+
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent1'
     options={{
@@ -16,6 +18,8 @@ Empty editable drop down input field without any specific parameters set:
 Empty readonly drop down input field without any specific parameters set:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent2'
@@ -34,6 +38,8 @@ Empty disabled drop down input field without any specific parameters set:
 
 ```jsx
 
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
+
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent3'
     
@@ -50,6 +56,8 @@ Empty disabled drop down input field without any specific parameters set:
 Empty readonly and disabled drop down input field without any specific parameters set:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent4'
@@ -70,6 +78,8 @@ Editable drop down input field with default value set:
 
 ```jsx
 
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
+
 <ReduxFormDropDownInputComponent
     name='reduxFormDropDownInputComponents.testFromDropDownInputComponentWithDefaultValue1'
     options={{
@@ -84,6 +94,8 @@ Editable drop down input field with default value set:
 Readonly drop down input field with default value set:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='reduxFormDropDownInputComponents.testFromDropDownInputComponentWithDefaultValue2'
@@ -102,6 +114,8 @@ Disabled drop down input field with default value set:
 
 ```jsx
 
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
+
 <ReduxFormDropDownInputComponent
     name='reduxFormDropDownInputComponents.testFromDropDownInputComponentWithDefaultValue3'
     
@@ -118,6 +132,8 @@ Disabled drop down input field with default value set:
 Readonly and disabled drop down input field with default value set:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='reduxFormDropDownInputComponents.testFromDropDownInputComponentWithDefaultValue4'
@@ -138,6 +154,8 @@ Empty editable drop down input field with specified label:
 
 ```jsx
 
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
+
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent5'
     label='Test label'
@@ -154,6 +172,8 @@ Empty editable drop down input field with specified label:
 Empty readonly drop down input field with specified label:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent6'
@@ -174,6 +194,8 @@ Empty disabled drop down input field with specified label:
 
 ```jsx
 
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
+
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent7'
     label='Test label'
@@ -192,6 +214,8 @@ Empty disabled drop down input field with specified label:
 Empty readonly and disabled drop down input field with specified label:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent8'
@@ -212,6 +236,8 @@ Empty editable drop down input field with placeholder text:
 
 ```jsx
 
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
+
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent9'
     placeholder='Test placeholder text...'
@@ -228,6 +254,8 @@ Empty editable drop down input field with placeholder text:
 Empty editable drop down input field with specified label and placeholder text:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent10'
@@ -247,6 +275,8 @@ Empty editable drop down input field with specified label and placeholder text:
 Empty readonly drop down input field with specified label and placeholder text:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent11'
@@ -269,6 +299,8 @@ Empty disabled drop down input field with specified label and placeholder text:
 
 ```jsx
 
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
+
 <ReduxFormDropDownInputComponent
     name='testFormDropDownInputComponent12'
     
@@ -289,6 +321,8 @@ Empty disabled drop down input field with specified label and placeholder text:
 Editable drop down input field with specified label, placeholder text and default value:
 
 ```jsx
+
+const {ReduxFormDropDownInputComponent} = require('./redux_form_drop_down_input_component');
 
 <ReduxFormDropDownInputComponent
     name='reduxFormDropDownInputComponents.testFromDropDownInputComponentWithDefaultValue5'

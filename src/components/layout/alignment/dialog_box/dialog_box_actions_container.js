@@ -121,7 +121,7 @@ export const LEFT_TO_RIGHT_DIRECTION: string = 'ltr';
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class DialogBoxActionsContainerClass extends React.Component<PropsTypes, StateTypes> {
+class DialogBoxActionsContainerClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'DialogBoxActionsContainerClass';
 
@@ -242,8 +242,7 @@ export class DialogBoxActionsContainerClass extends React.Component<PropsTypes, 
     // endregion
 }
 
-// exports
-export function DialogBoxActionsContainer(props: PropsTypes) {
+function DialogBoxActionsContainer(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <DialogBoxActionsContainerClass {...props} {...windowDimensions} />}
@@ -252,3 +251,7 @@ export function DialogBoxActionsContainer(props: PropsTypes) {
 }
 
 DialogBoxActionsContainer.displayName = 'DialogBoxActionsContainer';
+
+// exports
+export {DialogBoxActionsContainerClass, DialogBoxActionsContainer};
+export default  DialogBoxActionsContainer;

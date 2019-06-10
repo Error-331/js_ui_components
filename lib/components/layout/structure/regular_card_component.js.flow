@@ -13,6 +13,7 @@ import {always, defaultTo, complement, gt, lt, is, isNil, isEmpty, ifElse, unles
 import type {ThemeType} from './../../../types/theme_types';
 
 import {RegularCardBodyComponent} from './regular_card_body_component';
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
 
 // type definitions
 type StyleType = {
@@ -199,9 +200,9 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class RegularCardComponent extends React.Component<PropsTypes, StateTypes> {
+class RegularCardClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'RegularCardComponent';
+    static displayName = 'RegularCardClass';
 
     static defaultProps = {
         containerClassName: '',
@@ -244,7 +245,7 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
 
     // region style accessors
     _getBodyStyle(): StyleType {
-        return defaultTo(RegularCardComponent.defaultProps.bodyStyle)
+        return defaultTo(RegularCardClass.defaultProps.bodyStyle)
         (this.props.bodyStyle);
     }
 
@@ -269,7 +270,7 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     }
 
     _getBodyClasses(): string {
-        return defaultTo(RegularCardComponent.defaultProps.bodyClassName)
+        return defaultTo(RegularCardClass.defaultProps.bodyClassName)
         (this.props.bodyClassName);
     }
 
@@ -298,7 +299,7 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     }
 
     _getClickBodyHandler(): ClickCallbackType {
-        return defaultTo(RegularCardComponent.defaultProps.onClickBody)
+        return defaultTo(RegularCardClass.defaultProps.onClickBody)
         (this.props.onClickBody);
     }
 
@@ -377,4 +378,16 @@ export class RegularCardComponent extends React.Component<PropsTypes, StateTypes
     // endregion
 }
 
+function RegularCardComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <RegularCardClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+RegularCardComponent.displayName = 'RegularCardComponent';
+
 // exports
+export {RegularCardClass, RegularCardComponent};
+export default RegularCardComponent;

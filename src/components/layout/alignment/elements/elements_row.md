@@ -2,7 +2,6 @@ A number of buttons aligned to the left:
 
 ```jsx
 
-const {ElementsRow} = require('./elements_row');
 const {RegularButtonComponent} = require('./../../../buttons/regular_button_component');
 
 <ElementsRow alignment='left'>
@@ -17,7 +16,6 @@ A number of buttons aligned to the center:
 
 ```jsx
 
-const {ElementsRow} = require('./elements_row');
 const {RegularButtonComponent} = require('./../../../buttons/regular_button_component');
 
 <ElementsRow alignment='center'>
@@ -32,7 +30,6 @@ A number of buttons aligned to the right:
 
 ```jsx
 
-const {ElementsRow} = require('./elements_row');
 const {RegularButtonComponent} = require('./../../../buttons/regular_button_component');
 
 <ElementsRow alignment='right'>
@@ -47,7 +44,6 @@ Line of right-aligned buttons with hyphenation enabled:
 
 ```jsx
 
-const {ElementsRow} = require('./elements_row');
 const {RegularButtonComponent} = require('./../../../buttons/regular_button_component');
 
 <ElementsRow wrap={true} alignment='right' style={{width: '120px'}}>

@@ -90,3 +90,4 @@ RegularPanelFunction.displayName = 'RegularPanelComponent';
 
 // exports
 export const RegularPanelComponent = injectSheet(styles)(RegularPanelFunction);
+export default RegularPanelComponent;

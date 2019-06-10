@@ -88,3 +88,4 @@ GlobalOverlayFunction.displayName = 'GlobalOverlayComponent';
 
 // exports
 export const GlobalOverlayComponent = injectSheet(styles)(GlobalOverlayFunction);
+export default GlobalOverlayComponent;

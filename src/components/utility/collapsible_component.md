@@ -5,6 +5,7 @@ Example usage of the component using minimal parameters set:
 const {Component} = require('react');
 const {RegularButtonComponent} = require('./../buttons/regular_button_component');
 const {InlineTextBlock} = require('./../layout/text/inline_text_block');
+const {CollapsibleComponent} = require('./collapsible_component');
 
 class DemoCollapsibleComponent1 extends Component {
     _onSwitchCollapsible() {

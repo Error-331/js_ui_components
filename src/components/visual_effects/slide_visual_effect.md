@@ -5,9 +5,9 @@ Examples of possible slide effect transitions:
 const {Component} = require('react');
 const injectSheet = require('react-jss').default;
 
-const {SlideVisualEffect} = require('./slide_visual_effect');
 const {ElementsColumn} = require('./../layout');
 const {RegularButtonComponent} = require('./../buttons');
+const {SlideVisualEffect} = require('./slide_visual_effect');
 
 const styles = theme => ({
     componentContainer: {

@@ -2,7 +2,7 @@ Example horizontal table with enabled header:
 
 ```jsx
 
-const {HorizontalTableComponent} = require('./');
+const {HorizontalTableComponent} = require('./horizontal_table_component');
 
 const columnNames = ['Column 1', 'Test Column 2', 'Col 3', 'Long Test Column 4', 'Some additional Column 5', 'Test_column_6', 'Test_column_long_7', 'Some_add_col_8'];
 
@@ -22,7 +22,7 @@ Example horizontal table index column and preset number of visible columns:
 
 ```jsx
 
-const {HorizontalTableComponent} = require('./');
+const {HorizontalTableComponent} = require('./horizontal_table_component');
 
 const columnNames = ['Col 1', 'Col 2', 'Col 3', 'Col 4', 'Col 5', 'Col 6', 'Col 7', 'Col 8'];
 
@@ -42,7 +42,7 @@ Example horizontal table with disabled header and preset number of visible colum
 
 ```jsx
 
-const {HorizontalTableComponent} = require('./');
+const {HorizontalTableComponent} = require('./horizontal_table_component');
 
 const columnNames = ['Col 1', 'Col 2', 'Col 3', 'Col 4', 'Col 5', 'Col 6', 'Col 7', 'Col 8'];
 

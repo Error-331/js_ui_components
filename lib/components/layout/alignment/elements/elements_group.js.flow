@@ -77,3 +77,4 @@ ElementsGroupFunction.displayName = 'ElementsGroup';
 
 // exports
 export const ElementsGroup = injectSheet(styles)(ElementsGroupFunction);
+export default ElementsGroup;

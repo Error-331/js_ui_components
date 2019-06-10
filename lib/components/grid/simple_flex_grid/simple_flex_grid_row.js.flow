@@ -101,3 +101,4 @@ SimpleFlexGridRowFunction.displayName = 'SimpleFlexGridRow';
 
 // exports
 export const SimpleFlexGridRow = injectSheet(styles)(SimpleFlexGridRowFunction);
+export default SimpleFlexGridRow;

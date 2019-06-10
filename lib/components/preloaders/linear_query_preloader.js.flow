@@ -62,3 +62,4 @@ LinearQueryPreloaderFunction.displayName = 'LinearQueryPreloader';
 
 // exports
 export const LinearQueryPreloader = injectSheet(styles)(LinearQueryPreloaderFunction);
+export default LinearQueryPreloader;

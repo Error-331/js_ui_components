@@ -122,7 +122,7 @@ const styles = theme => ({
 // $FlowFixMe decorators
 @DragDropContext(HTML5Backend)
 @injectSheet(styles)
-export class CardDrawerClass extends React.Component<PropsTypes, StateTypes> {
+class CardDrawerClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'CardDrawerClass';
 
@@ -326,9 +326,7 @@ export class CardDrawerClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 }
 
-// exports
-// exports
-export function CardDrawerComponent(props: PropsTypes) {
+function CardDrawerComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <CardDrawerClass {...props} {...windowDimensions} />}
@@ -337,3 +335,7 @@ export function CardDrawerComponent(props: PropsTypes) {
 }
 
 CardDrawerComponent.displayName = 'CardDrawerComponent';
+
+// exports
+export {CardDrawerClass, CardDrawerComponent};
+export default CardDrawerComponent;

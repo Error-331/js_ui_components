@@ -69,3 +69,4 @@ InlineTextBlockFunction.displayName = 'InlineTextBlock';
 
 // exports
 export const InlineTextBlock = injectSheet(styles)(InlineTextBlockFunction);
+export default InlineTextBlock;

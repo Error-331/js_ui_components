@@ -4,6 +4,7 @@ Editable checkbox with no labels set:
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 
@@ -46,6 +47,7 @@ Disabled checkbox with no labels set:
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 
@@ -94,6 +96,7 @@ Editable checkbox with default value set but no labels:
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 
@@ -137,6 +140,7 @@ Disabled checkbox with default value set but no labels:
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 
@@ -185,6 +189,7 @@ Editable checkbox with label (left):
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 
@@ -239,6 +244,7 @@ Editable checkbox with label (right):
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 
@@ -293,6 +299,7 @@ Editable checkbox with label (right) set as well as default value:
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 
@@ -347,6 +354,7 @@ Disabled checkbox with label (right) set:
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 
@@ -407,6 +415,7 @@ Disabled checkbox with label (right) set as well as default value:
 
 const injectSheet = require('react-jss').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormCheckboxInputComponent} = require('./redux_form_checkbox_input_component');
 
 const styles = theme => ({});
 

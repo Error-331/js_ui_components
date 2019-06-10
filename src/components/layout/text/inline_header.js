@@ -107,3 +107,4 @@ InlineHeaderFunction.displayName = 'InlineHeader';
 
 // exports
 export const InlineHeader = injectSheet(styles)(InlineHeaderFunction);
+export default InlineHeader;

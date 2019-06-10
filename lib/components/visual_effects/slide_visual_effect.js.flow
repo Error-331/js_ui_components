@@ -145,7 +145,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTypes> {
+class SlideVisualEffectClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'SlideVisualEffectClass';
 
@@ -403,8 +403,7 @@ export class SlideVisualEffectClass extends React.Component<PropsTypes, StateTyp
     // endregion
 }
 
-// exports
-export function SlideVisualEffect(props: PropsTypes) {
+function SlideVisualEffect(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <SlideVisualEffectClass {...props} {...windowDimensions} />}
@@ -413,3 +412,7 @@ export function SlideVisualEffect(props: PropsTypes) {
 }
 
 SlideVisualEffect.displayName = 'SlideVisualEffect';
+
+// exports
+export {SlideVisualEffectClass, SlideVisualEffect};
+export default SlideVisualEffect;

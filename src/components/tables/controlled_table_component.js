@@ -13,6 +13,7 @@ import {__, is, isNil, defaultTo, unless, clone, bind, map, curry, append, prepe
 // local imports
 import type {CombinedEventType} from './../../types/dom_types';
 
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 import {RegularTableComponent} from './regular_table_component';
 import {ElementsRow} from './../layout/alignment/elements/elements_row';
 
@@ -112,9 +113,11 @@ const styles = theme => ({
  */
 
 // component implementation
-export class ControlledTableComponentClass extends React.Component<PropsTypes, StateTypes> {
+// $FlowFixMe decorators
+@injectSheet(styles)
+class ControlledTableClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'ControlledTableComponent';
+    static displayName = 'ControlledTableClass';
 
     static defaultProps = {
         idColumnIndex: null,
@@ -231,23 +234,23 @@ export class ControlledTableComponentClass extends React.Component<PropsTypes, S
     }
 
     _areRowsSelectable(): boolean {
-        return defaultTo(ControlledTableComponentClass.defaultProps.selectableRows)(this.props.selectableRows);
+        return defaultTo(ControlledTableClass.defaultProps.selectableRows)(this.props.selectableRows);
     }
 
     _getRowControls(): boolean {
-        return defaultTo(ControlledTableComponentClass.defaultProps.rowControls)(this.props.rowControls);
+        return defaultTo(ControlledTableClass.defaultProps.rowControls)(this.props.rowControls);
     }
 
     _getColumnNames(): ColumnNamesType {
-        return defaultTo(ControlledTableComponentClass.defaultProps.columnNames)(this.props.columnNames);
+        return defaultTo(ControlledTableClass.defaultProps.columnNames)(this.props.columnNames);
     }
 
     _getData(): DataType | null {
-        return defaultTo(clone(ControlledTableComponentClass.defaultProps.data))(this.props.data);
+        return defaultTo(clone(ControlledTableClass.defaultProps.data))(this.props.data);
     }
 
     _getIdColumnIndex(): number | null {
-        return defaultTo(ControlledTableComponentClass.defaultProps.idColumnIndex)(this.props.idColumnIndex);
+        return defaultTo(ControlledTableClass.defaultProps.idColumnIndex)(this.props.idColumnIndex);
     }
 
     // endregion
@@ -268,5 +271,16 @@ export class ControlledTableComponentClass extends React.Component<PropsTypes, S
     // endregion
 }
 
+function ControlledTableComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <ControlledTableClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+ControlledTableComponent.displayName = 'ControlledTableComponent';
+
 // exports
-export const ControlledTableComponent = injectSheet(styles)(ControlledTableComponentClass);
+export {ControlledTableClass, ControlledTableComponent};
+export default ControlledTableComponent;

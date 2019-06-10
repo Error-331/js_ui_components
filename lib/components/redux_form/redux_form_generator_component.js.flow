@@ -296,3 +296,4 @@ ReduxFormGeneratorComponent.displayName = 'ReduxFormGeneratorComponent';
 
 // exports
 export {ReduxFormGeneratorClass, ReduxFormGeneratorComponent};
+export default ReduxFormGeneratorComponent;

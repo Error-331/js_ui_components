@@ -71,3 +71,4 @@ HorizontalDividerFunction.displayName = 'HorizontalDivider';
 
 // exports
 export const HorizontalDivider = injectSheet(styles)(HorizontalDividerFunction);
+export default HorizontalDivider;

@@ -10,7 +10,8 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
-const {RegularPanelComponent} = require('./regular_panel_component');
+import {RegularPanelComponent} from './regular_panel_component';
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
 
 // type definitions
 export type ClickCallbackType = (event: SyntheticEvent<HTMLElement>) => void;
@@ -132,9 +133,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class RegularCardHeaderComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class RegularCardHeaderClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'RegularCardHeaderComponent';
+    static displayName = 'RegularCardHeaderClass';
 
     static defaultProps = {
         onIconClick: () => {},
@@ -179,7 +183,7 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
 
     // region prop accessors
     _getIconClickHandler(): ClickCallbackType {
-        return defaultTo(RegularCardHeaderComponentClass.defaultProps.onIconClick)(this.props.onIconClick);
+        return defaultTo(RegularCardHeaderClass.defaultProps.onIconClick)(this.props.onIconClick);
     }
 
     _getContainerStyle(): StyleType {
@@ -223,5 +227,16 @@ export class RegularCardHeaderComponentClass extends React.Component<PropsTypes,
     // endregion
 }
 
+function RegularCardHeaderComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <RegularCardHeaderClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+RegularCardHeaderComponent.displayName = 'RegularCardHeaderComponent';
+
 // exports
-export const RegularCardHeaderComponent = injectSheet(styles)(RegularCardHeaderComponentClass);
+export {RegularCardHeaderClass, RegularCardHeaderComponent};
+export default RegularCardHeaderComponent;

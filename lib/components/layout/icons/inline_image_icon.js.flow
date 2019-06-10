@@ -100,4 +100,5 @@ function InlineImageIconFunction(props: PropsTypes) {
 InlineImageIconFunction.displayName = 'InlineImageIcon';
 
 // exports
-export const InlineImageIcon= injectSheet(styles)(InlineImageIconFunction);
+export const InlineImageIcon = injectSheet(styles)(InlineImageIconFunction);
+export default InlineImageIcon;

@@ -94,13 +94,16 @@ type StateTypes = {};
  */
 
 // component implementation
-export class ReduxFormDateInputComponentClass extends React.Component<PropsTypes, StateTypes> {
-    static displayName = 'ReduxFormDateInputComponent';
+class ReduxFormDateInputClass extends React.Component<PropsTypes, StateTypes> {
+    static displayName = 'ReduxFormDateInputClass';
 
     render(): React.Node {
         return <Field type='select' component={FormDateInputComponent} {...this.props}/>;
     }
 }
 
+const ReduxFormDateInputComponent = ReduxFormDateInputClass;
+
 // exports
-export const ReduxFormDateInputComponent = ReduxFormDateInputComponentClass;
+export {ReduxFormDateInputClass, ReduxFormDateInputComponent};
+export default ReduxFormDateInputComponent;

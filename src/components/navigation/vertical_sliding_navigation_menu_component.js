@@ -225,7 +225,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTypes, StateTypes> {
+class VerticalSlidingNavigationMenuClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'VerticalSlidingNavigationMenuClass';
 
@@ -474,8 +474,7 @@ export class VerticalSlidingNavigationMenuClass extends React.Component<PropsTyp
     // endregion
 }
 
-// exports
-export function VerticalSlidingNavigationMenuComponent(props: PropsTypes) {
+function VerticalSlidingNavigationMenuComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <VerticalSlidingNavigationMenuClass {...props} {...windowDimensions} />}
@@ -484,3 +483,7 @@ export function VerticalSlidingNavigationMenuComponent(props: PropsTypes) {
 }
 
 VerticalSlidingNavigationMenuComponent.displayName = 'VerticalSlidingNavigationMenuComponent';
+
+// exports
+export {VerticalSlidingNavigationMenuClass, VerticalSlidingNavigationMenuComponent};
+export default VerticalSlidingNavigationMenuComponent;

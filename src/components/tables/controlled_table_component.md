@@ -3,6 +3,7 @@ Example controlled table with rows selectors and rows controls shown (example 1)
 ```jsx
 
 const moment = require('moment');
+const {ControlledTableComponent} = require('./controlled_table_component');
 
 const currentDate = moment();
 const currentOffset = currentDate.utcOffset();
@@ -54,6 +55,7 @@ Example controlled table with rows selectors and rows controls shown (example 2)
 ```jsx
 
 const moment = require('moment');
+const {ControlledTableComponent} = require('./controlled_table_component');
 
 const currentDate = moment();
 const currentOffset = currentDate.utcOffset();
@@ -104,6 +106,8 @@ Example controlled table with rows selectors and rows controls shown (example 3)
 ```jsx
 
 const moment = require('moment');
+
+const {ControlledTableComponent} = require('./controlled_table_component');
 const {SPECIFIC_COLUMN_TYPE_LONG_TEXT} = require('./regular_table_component');
 
 const currentDate = moment();

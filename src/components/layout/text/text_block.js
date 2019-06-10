@@ -68,3 +68,4 @@ TextBlockFunction.displayName = 'TextBlock';
 
 // exports
 export const TextBlock = injectSheet(styles)(TextBlockFunction);
+export default TextBlock;

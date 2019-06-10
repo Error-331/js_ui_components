@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import {defaultTo} from 'ramda';
 
 // local imports
+import {MainThemeContext} from './../../../theming/providers/main_theme_provider';
 
 // type definitions
 export type CSSStylesType = {
@@ -99,9 +100,9 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-class RegularCardBodyComponent extends React.Component<PropsTypes, StateTypes> {
+class RegularCardBodyClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'RegularCardBodyComponent';
+    static displayName = 'RegularCardBodyClass';
 
     static defaultProps = {
         onClick: () => {},
@@ -123,7 +124,7 @@ class RegularCardBodyComponent extends React.Component<PropsTypes, StateTypes> {
 
     // region style accessors
     _getStyle(): CSSStylesType {
-        return defaultTo(RegularCardBodyComponent.defaultProps.style)
+        return defaultTo(RegularCardBodyClass.defaultProps.style)
         (this.props.style);
     }
 
@@ -144,7 +145,7 @@ class RegularCardBodyComponent extends React.Component<PropsTypes, StateTypes> {
 
     // region prop accessors
     _getClickHandler(): ClickCallbackType {
-        return defaultTo(RegularCardBodyComponent.defaultProps.onClick)
+        return defaultTo(RegularCardBodyClass.defaultProps.onClick)
         (this.props.onClick);
     }
 
@@ -173,5 +174,16 @@ class RegularCardBodyComponent extends React.Component<PropsTypes, StateTypes> {
     // endregion
 }
 
+function RegularCardBodyComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <RegularCardBodyClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+RegularCardBodyComponent.displayName = 'RegularCardBodyComponent';
+
 // exports
-export {RegularCardBodyComponent};
+export {RegularCardBodyClass, RegularCardBodyComponent};
+export default RegularCardBodyComponent;

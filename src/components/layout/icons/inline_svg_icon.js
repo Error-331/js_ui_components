@@ -198,3 +198,4 @@ InlineSVGIconFunction.displayName = 'InlineSVGIcon';
 
 // exports
 export const InlineSVGIcon = injectSheet(styles)(InlineSVGIconFunction);
+export default InlineSVGIcon;

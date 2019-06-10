@@ -21,6 +21,8 @@ import {FormTextInputComponent} from './form_text_input_component';
 import {GlobalOverlayComponent} from './../window/global_overlay_component';
 import {RegularCardComponent} from './../layout/structure/regular_card_component';
 
+import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+
 // type definitions
 type OptionValueType = string | number;
 type OptionType = { [string]: OptionValueType };
@@ -28,7 +30,6 @@ type OptionType = { [string]: OptionValueType };
 type CSSStylesType = {
     [string]: mixed
 };
-
 
 type PropsTypes = FieldProps & {
     /**
@@ -219,9 +220,12 @@ const styles = theme => ({
  */
 
 // component implementation
-export class FormDropDownInputComponentClass extends React.Component<PropsTypes, StateTypes> {
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class FormDropDownInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormDropDownInputComponent';
+    static displayName = 'FormDropDownInputClass';
 
     static defaultProps = {
         readOnly: false,
@@ -272,8 +276,8 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
         self._onOptionClick = self._onOptionClick.bind(this);
 
         this.state = {
-            optionsShown: FormDropDownInputComponentClass.defaultState.optionsShown,
-            selectedOption: FormDropDownInputComponentClass.defaultState.selectedOption,
+            optionsShown: FormDropDownInputClass.defaultState.optionsShown,
+            selectedOption: FormDropDownInputClass.defaultState.selectedOption,
         };
 
         this._id = this._createInputId();
@@ -334,7 +338,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
 
     // region state accessors
     _getInternalSelectedOption(): OptionType | null {
-        return defaultTo(FormDropDownInputComponentClass.defaultState.selectedOption)
+        return defaultTo(FormDropDownInputClass.defaultState.selectedOption)
         (this.state.selectedOption);
     }
 
@@ -343,7 +347,7 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // region prop accessors
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input}: {input: ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormDropDownInputComponentClass.defaultProps.input) : input;
+        return isNil(input) ? clone(FormDropDownInputClass.defaultProps.input) : input;
     }
 
     _getFormTextInputComponentProps(): FormTextInputTypes {
@@ -562,5 +566,16 @@ export class FormDropDownInputComponentClass extends React.Component<PropsTypes,
     // endregion
 }
 
+function FormDropDownInputComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <FormDropDownInputClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+FormDropDownInputComponent.displayName = 'FormDropDownInputComponent';
+
 // exports
-export const FormDropDownInputComponent = injectSheet(styles)(FormDropDownInputComponentClass);
+export {FormDropDownInputClass, FormDropDownInputComponent};
+export default FormDropDownInputComponent;

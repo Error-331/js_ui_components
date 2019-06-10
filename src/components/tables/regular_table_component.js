@@ -107,7 +107,7 @@ export const VERTICAL_TABLE_TYPE: string = 'vertical';
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
+class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'RegularTableClass';
 
@@ -244,8 +244,7 @@ export class RegularTableClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 }
 
-// exports
-export function RegularTableComponent(props: PropsTypes) {
+function RegularTableComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <RegularTableClass {...props} {...windowDimensions} />}
@@ -254,3 +253,7 @@ export function RegularTableComponent(props: PropsTypes) {
 }
 
 RegularTableComponent.displayName = 'RegularTableComponent';
+
+// exports
+export {RegularTableClass, RegularTableComponent};
+export default RegularTableComponent;

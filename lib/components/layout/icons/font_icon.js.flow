@@ -131,3 +131,4 @@ FontIconFunction.displayName = 'FontIcon';
 
 // exports
 export const FontIcon = injectSheet(styles)(FontIconFunction);
+export default FontIcon;

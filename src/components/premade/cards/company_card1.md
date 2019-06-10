@@ -2,8 +2,6 @@ Usage example (without overlay buttons):
 
 ```jsx
 
-const {CompanyCard1} = require('./company_card1');
-
 <CompanyCard1
     name='FEETBOOT'
     phone='+380688256335'
@@ -18,7 +16,6 @@ Usage example (with overlay buttons):
 
 ```jsx
 
-const {CompanyCard1} = require('./company_card1');
 const {RegularButtonComponent} = require('./../../buttons/regular_button_component');
 
 <CompanyCard1

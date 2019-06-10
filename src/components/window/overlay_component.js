@@ -149,7 +149,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class OverlayClass extends React.Component<PropsTypes, StateTypes> {
+class OverlayClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'OverlayClass';
 
@@ -278,8 +278,7 @@ export class OverlayClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 }
 
-// exports
-export function OverlayComponent(props: PropsTypes) {
+function OverlayComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <OverlayClass {...props} {...windowDimensions} />}
@@ -288,3 +287,7 @@ export function OverlayComponent(props: PropsTypes) {
 }
 
 OverlayComponent.displayName = 'OverlayComponent';
+
+// exports
+export {OverlayClass, OverlayComponent};
+export default OverlayComponent;

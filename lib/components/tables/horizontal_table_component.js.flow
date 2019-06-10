@@ -380,3 +380,4 @@ HorizontalTableComponent.displayName = 'HorizontalTableComponent';
 
 // exports
 export {HorizontalTableClass, HorizontalTableComponent};
+export default HorizontalTableComponent;

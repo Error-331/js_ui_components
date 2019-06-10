@@ -3,6 +3,7 @@ Editable radio buttons (medium) without labels:
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 
@@ -25,6 +26,7 @@ Disabled radio buttons (medium) without labels:
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 
@@ -51,6 +53,7 @@ Editable radio buttons (medium) with default value set but no labels:
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 
@@ -73,6 +76,7 @@ Disabled radio buttons (medium) with default value set but no labels:
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 
@@ -99,6 +103,7 @@ Editable radio buttons (medium) with labels (left):
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 
@@ -127,6 +132,7 @@ Editable radio buttons (medium) with labels (right):
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 
@@ -155,6 +161,7 @@ Editable radio buttons (medium) with labels (right) set as well as default value
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 
@@ -183,6 +190,7 @@ Disabled radio buttons (medium) with labels (right) set:
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 
@@ -215,6 +223,7 @@ Disabled radio buttons (medium) with labels (right) set as well as default value
 ```jsx
 
 const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 <ElementsGroup>
 

@@ -109,13 +109,16 @@ type StateTypes = {};
  */
 
 // component implementation
-export class ReduxFormTextInputComponentClass extends React.Component<PropsTypes, StateTypes> {
-    static displayName = 'ReduxFormTextInputComponent';
+class ReduxFormTextInputClass extends React.Component<PropsTypes, StateTypes> {
+    static displayName = 'ReduxFormTextInputClass';
 
     render(): React.Node {
         return <Field name={this.props.name} component={FormTextInputComponent} {...this.props}/>;
     }
 }
 
+const ReduxFormTextInputComponent = ReduxFormTextInputClass;
+
 // exports
-export const ReduxFormTextInputComponent = ReduxFormTextInputComponentClass;
+export {ReduxFormTextInputClass, ReduxFormTextInputComponent};
+export default ReduxFormTextInputComponent;

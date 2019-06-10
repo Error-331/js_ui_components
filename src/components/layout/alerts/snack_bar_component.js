@@ -123,7 +123,7 @@ const styles = theme => ({
 @injectSheet(styles)
 class SnackBarClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'SnackBar';
+    static displayName = 'SnackBarClass';
 
     static defaultProps = {
         items: null,

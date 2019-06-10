@@ -2,6 +2,8 @@ Card body example 1:
 
 ```jsx
 
+const {RegularCardBodyComponent} = require('./regular_card_body_component');
+
 <RegularCardBodyComponent>
     <h3>
         Test header 1
@@ -19,6 +21,8 @@ Card body example 1:
 Card body example 2:
 
 ```jsx
+
+const {RegularCardBodyComponent} = require('./regular_card_body_component');
 
 <RegularCardBodyComponent>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin vitae nisl eget bibendum. Nunc tristique est a dolor interdum, eu faucibus

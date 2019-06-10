@@ -160,7 +160,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class VerticalTableClass extends React.Component<PropsTypes, StateTypes> {
+class VerticalTableClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'VerticalTableClass';
 
@@ -370,8 +370,7 @@ export class VerticalTableClass extends React.Component<PropsTypes, StateTypes> 
     // endregion
 }
 
-// exports
-export function VerticalTableComponent(props: PropsTypes) {
+function VerticalTableComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <VerticalTableClass {...props} {...windowDimensions} />}
@@ -380,3 +379,7 @@ export function VerticalTableComponent(props: PropsTypes) {
 }
 
 VerticalTableComponent.displayName = 'VerticalTableComponent';
+
+// exports
+export {VerticalTableClass, VerticalTableComponent};
+export default VerticalTableComponent;

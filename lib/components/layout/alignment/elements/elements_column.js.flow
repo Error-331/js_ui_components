@@ -153,3 +153,4 @@ ElementsColumnFunction.displayName = 'ElementsColumn';
 
 // exports
 export const ElementsColumn = injectSheet(styles)(ElementsColumnFunction);
+export default ElementsColumn;

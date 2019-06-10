@@ -125,3 +125,4 @@ ScrollableAreaFunction.displayName = 'ScrollableAreaComponent';
 
 // exports
 export const ScrollableAreaComponent = injectSheet(styles)(ScrollableAreaFunction);
+export default ScrollableAreaComponent;

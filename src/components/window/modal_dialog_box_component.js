@@ -129,7 +129,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-export class ModalDialogBoxClass extends React.Component<PropsTypes, StateTypes> {
+class ModalDialogBoxClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'ModalDialogBoxClass';
 
@@ -296,8 +296,7 @@ export class ModalDialogBoxClass extends React.Component<PropsTypes, StateTypes>
     // endregion
 }
 
-// exports
-export function ModalDialogBoxComponent(props: PropsTypes) {
+function ModalDialogBoxComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
             {windowDimensions => <ModalDialogBoxClass {...props} {...windowDimensions} />}
@@ -306,3 +305,7 @@ export function ModalDialogBoxComponent(props: PropsTypes) {
 }
 
 ModalDialogBoxComponent.displayName = 'ModalDialogBoxComponent';
+// exports
+
+export {ModalDialogBoxClass, ModalDialogBoxComponent};
+export default ModalDialogBoxComponent

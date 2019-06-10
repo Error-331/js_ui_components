@@ -289,7 +289,7 @@ function renderButtonsSlider(props: PropsTypes, shouldShowOverlay: boolean): Rea
     </SlideVisualEffect>;
 }
 
-export function VacancyCard1Function(props: PropsTypes): React.Node {
+function VacancyCard1Function(props: PropsTypes): React.Node {
     const {classes} = props;
     let {showButtonsOverlay, onClick} = props;
 
@@ -314,5 +314,8 @@ export function VacancyCard1Function(props: PropsTypes): React.Node {
 
 VacancyCard1Function.displayName = 'VacancyCard1';
 
+const VacancyCard1 = injectSheet(styles)(VacancyCard1Function);
+
 // exports
-export const VacancyCard1 = injectSheet(styles)(VacancyCard1Function);
+export {VacancyCard1Function, VacancyCard1};
+export default VacancyCard1;

@@ -109,3 +109,4 @@ LinearDeterminatePreloaderFunction.displayName = 'LinearDeterminatePreloader';
 
 // exports
 export const LinearDeterminatePreloader = injectSheet(styles)(LinearDeterminatePreloaderFunction);
+export default LinearDeterminatePreloader;

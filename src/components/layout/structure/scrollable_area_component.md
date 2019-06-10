@@ -2,8 +2,6 @@ Scrollable area without any styling:
 
 ```jsx
 
-const {ScrollableAreaComponent} = require('./scrollable_area_component');
-
 <ScrollableAreaComponent>
 
     <p>
@@ -32,8 +30,6 @@ const {ScrollableAreaComponent} = require('./scrollable_area_component');
 Scrollable area with custom styling (scrollbars shown):
 
 ```jsx
-
-const {ScrollableAreaComponent} = require('./scrollable_area_component');
 
 const scrollableAreaStyle = {
     height: '100px',
@@ -65,17 +61,9 @@ const scrollableAreaStyle = {
 
 ```
 
-
-
-
-
-
-
 Scrollable area with fixed rows count:
 
 ```jsx
-
-const {ScrollableAreaComponent} = require('./scrollable_area_component');
 
 <ScrollableAreaComponent rowsCount={3}>
 
