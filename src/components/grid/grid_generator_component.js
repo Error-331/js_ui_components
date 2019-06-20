@@ -486,5 +486,6 @@ function GridGeneratorComponent(props: PropsTypes) {
 GridGeneratorComponent.displayName = 'GridGeneratorComponent';
 
 // exports
-export type {PropsType, ItemType, ItemsType, PropsTypes, StateTypes};
+export type {PropsType, ItemType, ItemsType, StateTypes};
 export {GridGeneratorClass, GridGeneratorComponent};
+export default GridGeneratorComponent;
