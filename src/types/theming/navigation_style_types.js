@@ -19,4 +19,5 @@ export type NavigationStylesType = {
     bodyHoverColor1: string,
 
     fontColor1: string,
+    fontColor2: string,
 };

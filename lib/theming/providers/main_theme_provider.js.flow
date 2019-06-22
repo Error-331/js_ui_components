@@ -76,11 +76,14 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
     // region lifecycle methods
     componentDidMount(): void {
         window.addEventListener('resize', this._onWindowResizeBound);
+        window.addEventListener('load', this._onWindowResizeBound);
+
         this._saveWindowDimensions();
     }
 
     componentWillUnmount(): void {
         window.removeEventListener('resize', this._onWindowResizeBound);
+        window.removeEventListener('load', this._onWindowResizeBound);
     }
 
     // endregion

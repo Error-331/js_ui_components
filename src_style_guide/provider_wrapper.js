@@ -21,7 +21,6 @@ import {
     SimpleFlexGridRow,
     SimpleFlexGridColumn,
     ReduxFormDropDownInputComponent,
-    FormDropDownInputComponent
 } from './../src';
 
 

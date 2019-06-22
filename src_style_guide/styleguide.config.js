@@ -29,7 +29,8 @@ module.exports = {
 
     styleguideComponents: {
         Wrapper:  path.join(__dirname, './modules/containers/component_wrapper_container'),
-        StyleGuideRenderer: path.join(__dirname, './provider_wrapper')
+        StyleGuideRenderer: path.join(__dirname, './provider_wrapper'),
+   //     SectionsRenderer: path.join(__dirname, './modules/containers/section_wrapper_container'),
     },
 
     configureServer(app) {
@@ -38,6 +39,7 @@ module.exports = {
 
     serverPort: parseInt(process.env.serverPort) || 6060,
 
+    pagePerSection: true,
     sections: [
         {
             name: 'UI Components',
@@ -53,7 +55,9 @@ module.exports = {
                             content: path.join(__dirname, './docs/grid/simple_flex_grid/index.md'),
                             components: path.join(__dirname, './../src/components/grid/simple_flex_grid/**/simple_[A-Za-z_]*.js'),
                         },
-                    ]
+                    ],
+
+                    sectionDepth: 1,
                 },
 
                 {
@@ -77,6 +81,8 @@ module.exports = {
                                     components: path.join(__dirname, './../src/components/layout/alignment/**/dialog_box_[A-Za-z_]*.js'),
                                 }
                             ],
+
+                            sectionDepth: 2,
                         },
 
                         {
@@ -102,7 +108,9 @@ module.exports = {
                             content: path.join(__dirname, './docs/layout/icons/index.md'),
                             components: path.join(__dirname, './../src/components/layout/icons/**/[A-Za-z_]*_[A-Za-z_]*.js'),
                         },
-                    ]
+                    ],
+
+                    sectionDepth: 5,
                 },
 
                 {
@@ -162,7 +170,9 @@ module.exports = {
                             content: path.join(__dirname, './docs/gamification/cards/index.md'),
                             components: path.join(__dirname, './../src/components/gamification/cards/**/[A-Za-z_]*_component.js'),
                         },
-                    ]
+                    ],
+
+                    sectionDepth: 1,
                 },
 
                 {
@@ -195,9 +205,13 @@ module.exports = {
                             name: 'Cards',
                             components: path.join(__dirname, './../src/components/premade/cards/**/[A-Za-z_]*_card[0-1]*.js'),
                         },
-                    ]
+                    ],
+
+                    sectionDepth: 2,
                 },
-            ]
+            ],
+
+            sectionDepth: 15,
         },
 
         {
@@ -206,5 +220,5 @@ module.exports = {
         },
 
         {}
-    ]
+    ],
 };
