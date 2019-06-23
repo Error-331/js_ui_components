@@ -7,7 +7,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import classNames from 'classnames';
-import {isNil, equals, defaultTo, unless, map, length, mergeDeepRight} from 'ramda';
+import {isNil, equals, defaultTo, unless, map, length, mergeDeepRight, addIndex} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
@@ -73,6 +73,13 @@ type PropsTypes = {
      */
 
     selectionBarClassName?: string,
+
+    /**
+     * Style object that will be added to outer component container.
+     *
+     */
+
+    componentContainerStyle?: CSSStylesType,
 
     /**
      * Style object that will be added to component tab container.
@@ -189,9 +196,6 @@ const styles = theme => ({
  */
 
 // component implementation
-
-// $FlowFixMe decorators
-@injectSheet(styles)
 class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'HorizontalTabNavigationClass';
@@ -206,6 +210,7 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
         tabContainerClassName: '',
         selectionBarClassName: '',
 
+        componentContainerStyle: {},
         tabContainerStyle: {},
         selectionBarStyle: {},
         tabLabelContainerStyle: {},
@@ -288,6 +293,11 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     _getTabLabelContainerStyle(): CSSStylesType {
         return defaultTo(HorizontalTabNavigationClass.defaultProps.tabLabelContainerStyle)
         (this.props.tabLabelContainerStyle);
+    }
+
+    _getComponentContainerStyle(): CSSStylesType {
+        return defaultTo(HorizontalTabNavigationClass.defaultProps.componentContainerStyle)
+        (this.props.componentContainerStyle);
     }
 
     _getSelectionBarClassName(): string {
@@ -445,11 +455,12 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
 
     _renderTabContainers(): React.Node {
         const tabStyle: CSSStylesType = this._getTabContainerStyle();
+        const mapIndexed = addIndex(map);
 
-        return map((tabData: TabData) => {
+        return mapIndexed((tabData: TabData, tabIndex: string) => {
             const label: string = defaultTo('')(tabData.label);
 
-            return <div
+            return <div key={`tab_${tabIndex}`}
                 className={this._getTabContainerClassName()}
                 style={tabStyle}
             >
@@ -468,7 +479,9 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
 
     _renderComponentContainer(): React.Node {
         return <div
-            className={this._getComponentContainerClassName()}>
+            className={this._getComponentContainerClassName()}
+            style={this._getComponentContainerStyle()}
+        >
 
             {this._renderTabsContainer()}
             {this._renderSelectionBarContainer()}
@@ -490,6 +503,7 @@ function HorizontalTabNavigationComponent(props: PropsTypes) {
     );
 }
 
+HorizontalTabNavigationComponent = injectSheet(styles)(HorizontalTabNavigationComponent);
 HorizontalTabNavigationComponent.displayName = 'HorizontalTabNavigationComponent';
 
 // exports
