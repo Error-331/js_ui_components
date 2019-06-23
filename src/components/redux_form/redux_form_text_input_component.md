@@ -1171,7 +1171,7 @@ const TestContainer = injectSheet(styles)(TestContainerComponent);
 
 ```
 
-Empty editable text area input field with specific icon:
+Empty editable text area input field without specific icon:
 
 ```jsx
 
@@ -2385,6 +2385,387 @@ function TestContainerComponent(props) {
                     />
                    </SimpleFlexGridColumn>
                </SimpleFlexGridRow>               
+           </SimpleFlexGridContainer>;
+}
+
+const TestContainer = injectSheet(styles)(TestContainerComponent);
+
+<TestContainer/>
+
+```
+
+User styled (variant 1) editable text input with errors and warnings shown (note that 'errorsIfTouched' and 'warningsIfTouched' flags are both set to true):
+
+```jsx
+
+const injectSheet = require('react-jss').default;
+
+const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormTextInputComponent} = require('./redux_form_text_input_component');
+const {FormTextInputVariant1Class} = require('./../form/form_text_input_variants/form_text_input_variant1_component');
+
+const topAdditionalPadding = 7;
+const iconAdditionalPadding = 2;
+
+const styles = theme => ({
+    componentContainer: {
+        boxSizing: 'border-box',
+
+        position: 'relative',
+        display: 'flex',
+
+        flexBasis: 'auto',
+        flexShrink: 1,
+        flexGrow: 0,
+
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        alignContent: 'flex-start',
+
+        '& > $inputContainer': {
+            boxSizing: 'border-box',
+            position: 'relative',
+            
+            '& > $inputControl': {
+                boxSizing: 'border-box',
+                overflow: 'hidden',
+            
+                width: '100%',
+            
+                margin: '0 0 0 0',
+
+                border: '1px solid #C2C2C2',
+
+                padding: '12px 17px 12px 17px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: `12px`,
+
+                boxShadow: 'none',
+
+                color: 'black',
+
+                '&::-webkit-input-placeholder': {
+                    color: 'grey',
+                },
+
+                '&::-moz-placeholder': {
+                    color: 'grey',
+                },
+
+                '&::-ms-input-placeholder': {
+                    color: 'grey',
+                },
+
+                '&.error': {
+                    color: 'black',
+                    borderColor: 'red',
+                },
+
+            },
+                        
+            '& > $inputControlLabel': {
+                position: 'absolute',
+
+                top: `${theme.inputStyles.fontSize - theme.inputStyles.labelInactiveFontSize}px`,
+                left: '0px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: `${theme.inputStyles.labelActiveFontSize}px`,
+
+                cursor: 'text',
+
+                transition: '.2s ease-out',
+
+                fontSize: `11px`,
+                '-webkit-transform': 'translateY(-120%)',
+                transform: 'translateY(-120%)',
+
+                color: 'black',
+
+                '&.error': {
+                    color: 'red',
+                },
+            },
+
+            '& > $inputControlLabel:first-letter': {
+                textTransform: 'capitalize',
+            },
+            
+            '& > $inputControlIcon': {
+                position: 'absolute',
+                top: '14px',
+                right: '17px',
+
+                color: 'gray',
+                fontSize: '12px',
+
+                '&.error': {
+                    color: 'red'
+                },
+            },                  
+        },
+             
+        '& > $subMessagesContainer': {
+            boxSizing: 'border-box',
+            display: 'flex',
+
+            flexBasis: 'auto',
+            flexShrink: '1',
+            flexGrow: '0',
+
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            alignContent: 'flex-start',
+        },
+
+        '& > $errorsContainer': {
+            marginTop: '2px',
+            color: theme.inputStyles.attentionColor,
+
+            '& > $errorContainer': {
+                marginTop: '2px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: theme.inputStyles.errorFontSize,
+                
+                color: 'red',
+            }
+        },
+
+        '& > $warningsContainer': {
+            color: 'blue',
+
+            '& > $warningContainer': {
+                marginTop: '2px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: theme.inputStyles.errorFontSize,
+            },
+        },
+    },
+
+    inputContainer: {},
+    inputControl: {},
+    inputControlLabel: {},
+    inputControlIcon: {},
+
+    subMessagesContainer: {},
+
+    errorsContainer: {},
+    errorContainer: {},
+
+    warningsContainer: {},
+    warningContainer: {},
+});
+
+const FormTextInputCustomComponent = injectSheet(styles)(FormTextInputVariant1Class);
+
+function TestContainerComponent(props) {
+    const {classes, theme} = props;
+
+    return <SimpleFlexGridContainer>
+               <SimpleFlexGridRow>
+                   <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
+                    <ReduxFormTextInputComponent
+                        customComponent={<FormTextInputCustomComponent/>}
+                        name='reduxFormTextInputComponents.testFormTextInputComponentWithDefaultValue10'    
+                        
+                        errorsIfTouched={false}
+                        warningsIfTouched={false}  
+
+                        label='Test label'
+                        placeholder='Test placeholder text...'
+                        iconClassNames='fas fa-check'
+                    />
+                   </SimpleFlexGridColumn>          
+               </SimpleFlexGridRow>                      
+           </SimpleFlexGridContainer>;
+}
+
+const TestContainer = injectSheet(styles)(TestContainerComponent);
+
+<TestContainer/>
+
+```
+
+User styled (variant 2) editable text input:
+
+```jsx
+
+const injectSheet = require('react-jss').default;
+
+const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+const {ReduxFormTextInputComponent} = require('./redux_form_text_input_component');
+const {FormTextInputVariant1Class} = require('./../form/form_text_input_variants/form_text_input_variant1_component');
+const {RegularButtonComponent} = require('./../buttons/regular_button_component');
+
+const topAdditionalPadding = 7;
+const iconAdditionalPadding = 2;
+
+const styles = theme => ({
+    componentContainer: {
+        boxSizing: 'border-box',
+
+        position: 'relative',
+        display: 'flex',
+
+        flexBasis: 'auto',
+        flexShrink: 1,
+        flexGrow: 0,
+
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        alignContent: 'flex-start',
+
+        '& > $inputContainer': {
+            boxSizing: 'border-box',
+            position: 'relative',
+            
+            '& > $inputControl': {
+                boxSizing: 'border-box',
+                overflow: 'hidden',
+            
+                width: '100%',
+            
+                margin: '0 0 0 0',
+
+                border: '1px solid #2CAD6A',
+
+                padding: '12px 17px 12px 17px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: `12px`,
+
+                boxShadow: 'none',
+
+                color: 'black',
+
+                '&::-webkit-input-placeholder': {
+                    color: 'grey',
+                },
+
+                '&::-moz-placeholder': {
+                    color: 'grey',
+                },
+
+                '&::-ms-input-placeholder': {
+                    color: 'grey',
+                },
+
+                '&.error': {
+                    color: 'black',
+                    borderColor: 'red',
+                },
+            },                                    
+        },
+             
+        '& > $subMessagesContainer': {
+            boxSizing: 'border-box',
+            display: 'flex',
+
+            flexBasis: 'auto',
+            flexShrink: '1',
+            flexGrow: '0',
+
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            alignContent: 'flex-start',
+        },
+
+        '& > $errorsContainer': {
+            marginTop: '2px',
+            color: theme.inputStyles.attentionColor,
+
+            '& > $errorContainer': {
+                marginTop: '2px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: theme.inputStyles.errorFontSize,
+                
+                color: 'red',
+            }
+        },
+
+        '& > $warningsContainer': {
+            color: 'blue',
+
+            '& > $warningContainer': {
+                marginTop: '2px',
+
+                fontFamily: theme.inputStyles.fontStack,
+                fontSize: theme.inputStyles.errorFontSize,
+            },
+        },
+    },
+
+    inputContainer: {},
+    inputControl: {},
+
+    subMessagesContainer: {},
+
+    errorsContainer: {},
+    errorContainer: {},
+
+    warningsContainer: {},
+    warningContainer: {},
+});
+
+const FormTextInputCustomComponent = injectSheet(styles)(FormTextInputVariant1Class);
+
+const regularButtonContainerStyles = {
+    height: '100%',
+    maxWidth: '120px',
+    
+    borderRadius: '0px',
+    boxShadow: 'unset',
+    backgroundColor: '#2CAD6A',
+};
+
+const regularButtonCaptionStyle = {
+    textTransform: 'capitalize',
+    fontSize: '12px'
+};
+
+function TestContainerComponent(props) {
+    const {classes, theme} = props;
+
+    return <SimpleFlexGridContainer>
+               <SimpleFlexGridRow>
+                   <SimpleFlexGridColumn style={{padding: '10px 0px 5px 5px'}} full={true}>
+                    <ReduxFormTextInputComponent
+                        customComponent={<FormTextInputCustomComponent/>}
+                        name='testFormTextAreaInputComponent17'    
+                        
+                        errorsIfTouched={false}
+                        warningsIfTouched={false}  
+   
+                        placeholder='Test placeholder text...'
+                    />
+                   </SimpleFlexGridColumn>    
+                   
+                   <SimpleFlexGridColumn style={{padding: '10px 5px 5px 0px'}} full={true}>
+                    <RegularButtonComponent 
+                        label='subscribe' 
+                        containerStyles={regularButtonContainerStyles}
+                        captionStyle={regularButtonCaptionStyle}
+                    />
+                   </SimpleFlexGridColumn>                    
+                   
+                      
+               </SimpleFlexGridRow>                      
            </SimpleFlexGridContainer>;
 }
 

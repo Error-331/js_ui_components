@@ -92,6 +92,12 @@ export type PropsTypes = ThemeProps & {
     style?: StyleType,
 
     /**
+     * Styles which will be added to button caption
+     */
+
+    captionStyle?: StyleType,
+
+    /**
      * Icon class name
      */
 
@@ -415,6 +421,7 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
     static defaultProps = {
         label: '',
 
+        captionStyle: {},
         onClick: () => {},
     };
 
@@ -520,6 +527,11 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
         return defaultTo('')(this.props.label);
     }
 
+    _getCaptionStyle(): StyleType {
+        return defaultTo(RegularButtonClass.defaultProps.captionStyle)
+        (this.props.captionStyle);
+    }
+
     _getContainerStyles(): StyleType {
         const containerStyles: StyleType = defaultTo({})(this.props.containerStyles);
         const style: StyleType = defaultTo({})(this.props.style);
@@ -552,7 +564,10 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
 
     // region render methods
     _renderCaptionContainer(): React.Node {
-        return <InlineTextBlock className={this._getCaptionContainerClass()}>
+        return <InlineTextBlock
+            className={this._getCaptionContainerClass()}
+            style={this._getCaptionStyle()}
+        >
             {this._getLabel()}
         </InlineTextBlock>;
     }

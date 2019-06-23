@@ -9,6 +9,7 @@ import {Field} from 'redux-form/immutable';
 // local imports
 import {FormTextInputComponent} from './../form/form_text_input_component';
 import {StyleType} from "../buttons/regular_button_component";
+import type {ElementType} from "react";
 
 // type definitions
 type CSSStylesType = {
@@ -23,6 +24,12 @@ export type PropsTypes = {
      */
 
     variant?: number,
+
+    /**
+     * Custom made representation of current component
+     */
+
+    customComponent?: ElementType | React.Node,
 
     /**
      * Input name
