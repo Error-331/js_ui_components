@@ -82,6 +82,13 @@ type PropsTypes = {
     componentContainerStyle?: CSSStylesType,
 
     /**
+     * Style object that will be added to component tabs container.
+     *
+     */
+
+    tabsContainerStyle?: CSSStylesType,
+
+    /**
      * Style object that will be added to component tab container.
      *
      */
@@ -94,6 +101,13 @@ type PropsTypes = {
      */
 
     tabLabelContainerStyle?: CSSStylesType,
+
+    /**
+     * Style object that will be added to components selection bar outer container.
+     *
+     */
+
+    selectionBarContainerStyle?: CSSStylesType,
 
     /**
      * Style object that will be added to components selection bar container.
@@ -211,9 +225,11 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
         selectionBarClassName: '',
 
         componentContainerStyle: {},
+        tabsContainerStyle: {},
         tabContainerStyle: {},
-        selectionBarStyle: {},
         tabLabelContainerStyle: {},
+        selectionBarContainerStyle: {},
+        selectionBarStyle: {},
 
         tabSpacing: 0,
     };
@@ -245,6 +261,11 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     // endregion
 
     // region style accessors
+    _getSelectionBarContainerStyle(): CSSStylesType {
+        return defaultTo(HorizontalTabNavigationClass.defaultProps.selectionBarContainerStyle)
+        (this.props.selectionBarContainerStyle);
+    }
+
     _getSelectionBarStyle(): CSSStylesType {
         const selectedTabIndex: number | null = this._getSelectedTabIndex();
 
@@ -274,6 +295,11 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
             left: `${barLeftPosition}px`,
             width: `${tabWidth}px`,
         }, selectionBarStyle);
+    }
+
+    _getTabsContainerStyle(): CSSStylesType {
+        return defaultTo(HorizontalTabNavigationClass.defaultProps.tabsContainerStyle)
+        (this.props.tabsContainerStyle);
     }
 
     _getTabContainerStyle(): CSSStylesType {
@@ -436,7 +462,10 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
             return null;
         }
 
-        return <div className={this._getSelectionBarContainerClassName()}>
+        return <div
+            className={this._getSelectionBarContainerClassName()}
+            style={this._getSelectionBarContainerStyle()}
+        >
             <div
                 className={this._getSelectionBarClassName()}
                 style={this._getSelectionBarStyle()}
@@ -472,7 +501,9 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     _renderTabsContainer(): React.Node {
         return <div
             ref={this.$tabsContainer}
-            className={this._getTabsContainerClassName()}>
+            className={this._getTabsContainerClassName()}
+            style={this._getTabsContainerStyle()}
+        >
             {this._renderTabContainers()}
         </div>;
     }
