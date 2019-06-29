@@ -11,6 +11,7 @@ import type {FontFacesType, FontFacesListType, FontFacesFuncType} from './../../
 export const fontFacesFunc: FontFacesFuncType = (fontFaces: FontFacesType): FontFacesListType => {
     return [
         fontFaces.RobotoThin,
+        fontFaces.RobotoLight,
         fontFaces.RobotoRegular,
         fontFaces.RobotoBold,
     ];

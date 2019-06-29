@@ -18,38 +18,9 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        'presets': [
-                            [
-                                '@babel/env',
-                                {
-                                    'modules': 'commonjs',
-                                    'targets': {
-                                        'browsers': [ '>0.25%', 'not ie 11', 'not op_mini all']
-                                    },
-                                    'useBuiltIns': 'usage',
-                                    'corejs': 3
-                                }
-                            ],
-                            ['@babel/flow'],
-                            ['@babel/react']
-                        ],
-                        'plugins': [
-                            [
-                                '@babel/plugin-proposal-decorators',
-                                {
-                                    'legacy': true
-                                }
-                            ],
-                            [
-                                '@babel/plugin-proposal-class-properties',
-                                {
-                                    'loose': true
-                                }
-                            ]
-                        ]
+                        rootMode: 'upward',
                     }
                 }
-
             },
 
 

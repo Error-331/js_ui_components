@@ -16,6 +16,13 @@ export const fontFaces: FontFacesType = Object.freeze({
         src: 'url(/assets/fonts/roboto/Roboto-Thin.ttf) format("truetype")',
     },
 
+    RobotoLight: {
+        fontFamily: 'Roboto-Light',
+        fontStyle: 'normal',
+        fontWeight: 300,
+        src: 'url(/assets/fonts/roboto/Roboto-Light.ttf) format("truetype")',
+    },
+
     RobotoRegular: {
         fontFamily: 'Roboto-Regular',
         fontStyle: 'normal',
