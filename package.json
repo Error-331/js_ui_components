@@ -11,7 +11,7 @@
     "webfuturistics"
   ],
   "homepage": "https://github.com/owner/project#readme",
-  "main": "./lib/index.js",
+  "main": "./src/index.js",
   "engines": {
     "node": ">=8.11.2"
   },
