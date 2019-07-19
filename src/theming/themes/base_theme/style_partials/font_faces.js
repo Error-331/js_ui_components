@@ -10,6 +10,8 @@ import type {FontFacesType, FontFacesListType, FontFacesFuncType} from './../../
 // exports
 export const fontFacesFunc: FontFacesFuncType = (fontFaces: FontFacesType): FontFacesListType => {
     return [
+        fontFaces.RobotoThin,
+        fontFaces.RobotoLight,
         fontFaces.RobotoRegular,
         fontFaces.RobotoBold,
     ];
