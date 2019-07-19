@@ -8,3 +8,4 @@ export const SMALL_SIZE = 'small';
 export const MEDIUM_SIZE = 'medium';
 export const LARGE_SIZE = 'large';
 export const EXTRA_LARGE_SIZE = 'extraLarge';
+export const CUSTOM_SIZE = 'custom';

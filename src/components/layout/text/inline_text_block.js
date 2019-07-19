@@ -5,12 +5,16 @@
 // external imports
 import * as React from 'react';
 import injectSheet from 'react-jss';
+import {defaultTo, mergeDeepRight} from 'ramda';
 import classNames from 'classnames';
+import type {ThemeType} from "../../../types/theme_types";
 
 // local imports
 
 // type definitions
 type PropsTypes = {
+    fontSize?: number,
+
     /**
      * React style object for in deep control of how text block is represented
      */
@@ -22,6 +26,14 @@ type PropsTypes = {
      */
 
     className?: string,
+
+    /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
 
     /**
      * JSS inner classes
@@ -42,7 +54,6 @@ type PropsTypes = {
 const styles = theme => ({
     componentContainer: {
         fontFamily: theme.layoutStyles.fontStack,
-        fontSize: theme.layoutStyles.bodyFontSize,
 
         color: theme.layoutStyles.bodyFontColor,
     }
@@ -59,8 +70,14 @@ const styles = theme => ({
 
 // component implementation
 function InlineTextBlockFunction(props: PropsTypes) {
-    const {classes, children, className, style} = props;
+    const {classes, theme, children, className} = props;
     const componentClassNames: string = classNames(classes.componentContainer, className);
+
+    let {style, fontSize} = props;
+    style = defaultTo({})(fontSize);
+    fontSize = defaultTo(theme.layoutStyles.bodyFontSize)(fontSize);
+
+    style = mergeDeepRight({}, style, {fontSize});
 
     return <span className={componentClassNames} style={{...style}}>{children}</span>;
 }

@@ -12,10 +12,10 @@ import {defaultTo} from 'ramda';
 // local imports
 import type {CombinedEventType} from './../../../types/dom_types';
 
-import {MEDIUM_SIZE} from './../../../theming/constants/general_constants';
+import {MEDIUM_SIZE, CUSTOM_SIZE} from './../../../theming/constants/general_constants';
 
 // type definitions
-export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge';
+export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge' | 'custom';
 export type ClickCallbackType = (event: CombinedEventType, rowIndex: mixed) => void;
 
 type PropsTypes = {
@@ -111,6 +111,8 @@ function FontIconFunction(props: PropsTypes) {
     let {size, accent, onClick, style, iconClassName, className, classes} = props;
     size = defaultTo(MEDIUM_SIZE)(size);
     accent = defaultTo(false)(accent);
+
+    size = size === CUSTOM_SIZE ? '' : size;
 
     const combinedClassName: string = classNames(
         classes.componentContainer,
