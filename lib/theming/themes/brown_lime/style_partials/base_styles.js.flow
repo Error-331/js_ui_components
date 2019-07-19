@@ -6,12 +6,12 @@
 import {mergeDeepRight} from 'ramda';
 
 // local imports
-import type {ColorPaletteType, BaseStylesType, BaseStylesFuncType} from './../../../../types/theming/';
+import type {ColorPaletteType, FontStacksType, BaseStylesType, BaseStylesFuncType} from './../../../../types/theming/';
 import {baseStylesFunc as canonicalBaseStylesFunc} from './../../base_theme';
 
 // exports
-export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteType): BaseStylesType => {
-    const newBaseStyles: BaseStylesType = mergeDeepRight(canonicalBaseStylesFunc(colorPalette), {
+export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteType, fontStacks: FontStacksType): BaseStylesType => {
+    const newBaseStyles: BaseStylesType = mergeDeepRight(canonicalBaseStylesFunc(colorPalette, fontStacks), {
         // accent colors
         accentColorPrimary: colorPalette.materialLime200,
 

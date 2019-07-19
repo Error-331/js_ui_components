@@ -3,7 +3,7 @@
 // @flow
 
 // external imports
-import {always, mergeAll, mergeDeepRight} from 'ramda';
+import {mergeAll} from 'ramda';
 
 // local imports
 import type {
@@ -64,7 +64,7 @@ export const extendTheme = (
     const fontStacks: FontStacksType = newFontStacksFunc();
     const colorPalette: ColorPaletteType = newColorPaletteFunc();
     const materialDepthLevels: MaterialDepthLevelsType = newMaterialDepthLevelsFunc();
-    const baseStyles: BaseStylesType = newBaseStylesFunc(colorPalette);
+    const baseStyles: BaseStylesType = newBaseStylesFunc(colorPalette, fontStacks);
 
     const newBaseThemePartials: BaseThemePartialsType = Object.freeze({
         '@font-face': fontFaces,

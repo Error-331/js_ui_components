@@ -50,6 +50,7 @@ import {
 import {colorUtilities} from './../../business_logic/color_utilities';
 import {styleValuesRegister} from './../../business_logic/style_values_register';
 import {styleSheetRegister} from './../../business_logic/style_sheet_register';
+import {fontFamilyUtilities} from './../../business_logic/font_family_utilities';
 
 // base theme partials preparation
 const fontFaces: FontFacesListType = fontFacesFunc(commonFontFaces);
@@ -58,7 +59,7 @@ const fontStacks: FontStacksType = fontStacksFunc();
 const colorPalette: ColorPaletteType = colorPaletteFunc();
 const materialDepthLevels: MaterialDepthLevelsType = materialDepthLevelsFunc();
 
-const baseStyles: BaseStylesType = baseStylesFunc(colorPalette);
+const baseStyles: BaseStylesType = baseStylesFunc(colorPalette, fontStacks);
 
 export const baseThemePartials: BaseThemePartialsType = Object.freeze({
     '@font-face': fontFaces,
@@ -96,6 +97,7 @@ export const baseTheme: ThemeType = Object.freeze({
     colorUtilities,
     styleValuesRegister,
     styleSheetRegister,
+    fontFamilyUtilities,
 
     ...clone(baseThemePartials),
     ...clone(additionalThemePartials)

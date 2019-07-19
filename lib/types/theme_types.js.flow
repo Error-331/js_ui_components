@@ -12,6 +12,7 @@ import type {
 
     BaseThemePartialsType,
     AdditionalThemePartialsType,
+    FontFamilyUtilitiesType,
 } from './theming';
 
 // exports
@@ -22,5 +23,6 @@ export type CSSStylesType = {
 export type ThemeType = BaseThemePartialsType & AdditionalThemePartialsType & {
     colorUtilities: ColorUtilitiesTypes,
     styleValuesRegister: StyleValuesRegisterType,
-    styleSheetRegister: StyleSheetRegisterType
+    styleSheetRegister: StyleSheetRegisterType,
+    fontFamilyUtilities: FontFamilyUtilitiesType,
 }

@@ -5,15 +5,14 @@
 // external imports
 
 // local imports
-import type {FontStacksType} from './../../../../types/theming/font_stack_types';
 import type {BaseStylesType} from './../../../../types/theming/base_style_types';
 import type {ButtonStyleType} from './../../../../types/theming/button_style_types';
 
 // exports
-export const buttonStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): ButtonStyleType => {
+export const buttonStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): ButtonStyleType => {
     return Object.freeze({
-        fontStackRegular: fontStacks.regularFontFamilyStack,
-        fontStackBold: fontStacks.boldFontFamilyStack,
+        fontStackRegular: baseStyles.regularFontStack,
+        fontStackBold: baseStyles.boldFontStack,
 
         // TODO: deprecated
         regularButtonMinimumWidth: 110, // px

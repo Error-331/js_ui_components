@@ -5,7 +5,6 @@
 // external imports
 
 // local imports
-import type {FontStacksType} from './../../../../types/theming/font_stack_types';
 import type {BaseStylesType} from './../../../../types/theming/base_style_types';
 import type {InputStylesType} from './../../../../types/theming/input_style_types';
 
@@ -27,7 +26,7 @@ const checkMarkTopOffsetPercentage: number = (checkboxControlLabelVerticalSpacin
 const checkMarkLeftOffsetPercentage: number = (checkboxControlLabelHorizontalSpacing * 100) / checkboxControlLabelWidth; // %
 
 // exports
-export const inputStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): InputStylesType => {
+export const inputStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): InputStylesType => {
     return Object.freeze({
         checkboxControlLabelWidth,
         checkboxControlLabelHeight,
@@ -47,7 +46,7 @@ export const inputStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStack
 
         checkMarkLineWidth: 2, //px
 
-        fontStack: fontStacks.regularFontFamilyStack,
+        fontStack: baseStyles.regularFontStack,
 
         fontSize: baseStyles.secondaryFontSize, // px
         labelActiveFontSize: baseStyles.tertiaryFontSize, // px

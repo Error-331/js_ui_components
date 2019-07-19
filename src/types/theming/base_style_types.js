@@ -7,7 +7,7 @@
 // local imports
 
 // exports
-import type {ColorPaletteType} from './';
+import type {ColorPaletteType, FontStacksType} from './';
 
 export type BaseStylesType = {
     accentColorPrimary: string,
@@ -43,6 +43,11 @@ export type BaseStylesType = {
     tertiaryFontSize: number,
 
     iconPrimaryFontSize: number,
+
+    thinFontStack: string,
+    lightFontStack: string,
+    regularFontStack: string,
+    boldFontStack: string,
 };
 
-export type BaseStylesFuncType = (colorPalette: ColorPaletteType) => BaseStylesType;
+export type BaseStylesFuncType = (colorPalette: ColorPaletteType, fontStacks: FontStacksType) => BaseStylesType;

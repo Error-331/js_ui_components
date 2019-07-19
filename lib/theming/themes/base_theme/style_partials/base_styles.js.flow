@@ -7,9 +7,10 @@
 // local imports
 import type {ColorPaletteType} from './../../../../types/theming/color_palette_types';
 import type {BaseStylesType, BaseStylesFuncType} from './../../../../types/theming/base_style_types';
+import type {FontStacksType} from './../../../../types/theming/font_stack_types';
 
 // exports
-export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteType): BaseStylesType => {
+export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteType, fontStacks: FontStacksType): BaseStylesType => {
     return Object.freeze({
         // accent colors
         accentColorPrimary: colorPalette.materialRed800,
@@ -35,6 +36,7 @@ export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteTyp
         utilityBGColor: colorPalette.materialGrey600,
         noneTransparentBGColor: colorPalette.materialWhite,
 
+        // font size
         inlineHeaderLevel1FontSize: 68, // px
         inlineHeaderLevel2FontSize: 58, // px
         inlineHeaderLevel3FontSize: 48, // px
@@ -46,6 +48,12 @@ export const baseStylesFunc: BaseStylesFuncType = (colorPalette: ColorPaletteTyp
         secondaryFontSize: 15, // px
         tertiaryFontSize: 12,
 
-        iconPrimaryFontSize: 15 // px
+        iconPrimaryFontSize: 15, // px
+
+        // font family
+        thinFontStack: fontStacks.thinFontFamilyStack,
+        lightFontStack: fontStacks.lightFontFamilyStack,
+        regularFontStack: fontStacks.regularFontFamilyStack,
+        boldFontStack: fontStacks.boldFontFamilyStack,
     });
 };

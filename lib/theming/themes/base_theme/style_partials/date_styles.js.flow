@@ -5,16 +5,15 @@
 // external imports
 
 // local imports
-import type {FontStacksType} from './../../../../types/theming/font_stack_types';
 import type {BaseStylesType} from './../../../../types/theming/base_style_types';
 import type {DateStylesType} from './../../../../types/theming/date_style_types';
 
 // exports
-export const dateStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): DateStylesType => {
+export const dateStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): DateStylesType => {
     return Object.freeze({
         calendarCompactMaxWidth: 500, // px
 
-        fontStack: fontStacks.regularFontFamilyStack,
+        fontStack: baseStyles.regularFontStack,
         regularFontSize: baseStyles.primaryFontSize, // px
 
         fontColor: baseStyles.mainPrimaryColor,

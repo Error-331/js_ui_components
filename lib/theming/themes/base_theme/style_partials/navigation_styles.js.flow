@@ -6,15 +6,14 @@
 
 // local imports
 import type {BaseStylesType} from './../../../../types/theming/base_style_types';
-import type {FontStacksType} from './../../../../types/theming/font_stack_types';
 import type {NavigationStylesType} from './../../../../types/theming';
 
 // exports
-export const navigationStylesFunc = ({fontStacks, baseStyles}: {fontStacks: FontStacksType, baseStyles: BaseStylesType}): NavigationStylesType => {
+export const navigationStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): NavigationStylesType => {
     return Object.freeze({
         verticalNavigationMaxWidth: 280, // px
 
-        fontStack: fontStacks.regularFontFamilyStack,
+        fontStack: baseStyles.regularFontStack,
 
         iconFontSize: baseStyles.primaryFontSize, // px
         captionFontSize: baseStyles.secondaryFontSize, // px
