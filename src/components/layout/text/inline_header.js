@@ -7,17 +7,28 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {isNil, T, lt, gt, equals, defaultTo, cond, always} from 'ramda';
+import {isNil, T, lt, gt, defaultTo, cond, always, mergeDeepRight} from 'ramda';
 
 // local imports
+import type {ThemeType} from './../../../types/theme_types';
+
+import {REGULAR_FONT} from './../../../theming/constants/general_constants';
 
 // type definitions
+export type FontFamilyType = 'thin' | 'light' | 'regular' | 'bold';
+
 type PropsTypes = {
     /**
      * Header level (effects font size)
      */
 
     level?: number,
+
+    /**
+     * Font family type ('thin', 'light', 'regular', 'bold')
+     */
+
+    fontFamilyType?: FontFamilyType,
 
     /**
      * React style object for in deep control of how header is represented
@@ -30,6 +41,14 @@ type PropsTypes = {
      */
 
     className?: string,
+
+    /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
 
     /**
      * JSS inner classes
@@ -88,7 +107,7 @@ const styles = theme => ({
 
 // component implementation
 function InlineHeaderFunction(props: PropsTypes) {
-    const {level, classes, children, className, style} = props;
+    const {level, classes, theme, children, className} = props;
     const userLevel: number = defaultTo(1)(level);
 
     const levelClassName = cond([
@@ -99,6 +118,15 @@ function InlineHeaderFunction(props: PropsTypes) {
     ])(userLevel);
 
     const componentClassNames: string = classNames(classes.componentContainer, levelClassName, className);
+
+    let {style, fontFamilyType} = props;
+
+    fontFamilyType = defaultTo(REGULAR_FONT)(fontFamilyType);
+    style = defaultTo({})(style);
+
+    style = mergeDeepRight({
+        fontFamily: theme.fontFamilyUtilities.getFontFamilyByType(theme, fontFamilyType),
+    }, style);
 
     return <span className={componentClassNames} style={style}>{children}</span>;
 }
