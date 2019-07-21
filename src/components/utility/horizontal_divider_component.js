@@ -11,6 +11,10 @@ import classNames from 'classnames';
 // local imports
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
     /**
      * Name of the class which will be applied to outer container (along with default one) of the component
@@ -23,6 +27,18 @@ type PropsTypes = {
      */
 
     bodyContainerClassName?: string,
+
+    /**
+     * React style object for in deep control of how component container is represented
+     */
+
+    style?: CSSStylesType,
+
+    /**
+     * React style object for in deep control of how component body container is represented
+     */
+
+    bodyStyle?: CSSStylesType,
 
     /**
      * JSS inner classes
@@ -56,14 +72,14 @@ const styles = theme => ({
 
 // component implementation
 function HorizontalDividerFunction(props: PropsTypes) {
-    const {classes, componentContainerClassName, bodyContainerClassName} = props;
+    const {classes, componentContainerClassName, bodyContainerClassName, style, bodyStyle} = props;
     const {componentContainer, bodyContainer} = classes;
 
     const componentContainerClassNames: string = classNames(componentContainer, componentContainerClassName);
     const bodyContainerClassNames: string = classNames(bodyContainer, bodyContainerClassName);
 
-    return <div className={componentContainerClassNames}>
-        <div className={bodyContainerClassNames}/>
+    return <div className={componentContainerClassNames} style={style}>
+        <div className={bodyContainerClassNames} style={bodyStyle}/>
     </div>;
 }
 
