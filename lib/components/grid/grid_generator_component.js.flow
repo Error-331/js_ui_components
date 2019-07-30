@@ -45,11 +45,11 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-type PropsType = {
+export type PropsType = {
     [string]: any
 };
 
-type ItemBaseType = {
+export type ItemBaseType = {
     props?: PropsType,
     name?: string,
     hspan?: number,
@@ -57,17 +57,17 @@ type ItemBaseType = {
     children?: React.Node
 };
 
-type ItemType = ItemBaseType & {
+export type ItemType = ItemBaseType & {
     elm: ElementType | React.Node,
 };
 
-type ServiceItemType = ItemBaseType & {
+export type ServiceItemType = ItemBaseType & {
     elm: null,
     serviceItem: boolean,
 }
 
-type RowItemsType = Array<ItemType | ServiceItemType>;
-type ItemsType = Array<RowItemsType>;
+export type RowItemsType = Array<ItemType | ServiceItemType>;
+export type ItemsType = Array<RowItemsType>;
 
 type PropsTypes = {
     /**

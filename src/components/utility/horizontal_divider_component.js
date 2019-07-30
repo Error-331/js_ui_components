@@ -70,6 +70,15 @@ const styles = theme => ({
     bodyContainer: {},
 });
 
+/**
+ * Horizontal divider.
+ * Displays simple horizontal line.
+ *
+ * @version 1.0.0
+ * @author [Sergei Selihov](https://github.com/Error-331)
+ *
+ */
+
 // component implementation
 function HorizontalDividerFunction(props: PropsTypes) {
     const {classes, componentContainerClassName, bodyContainerClassName, style, bodyStyle} = props;
