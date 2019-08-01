@@ -2474,10 +2474,8 @@ const styles = theme => ({
                 left: '0px',
 
                 fontFamily: theme.inputStyles.fontStack,
-                fontSize: `${theme.inputStyles.labelActiveFontSize}px`,
 
                 cursor: 'text',
-
                 transition: '.2s ease-out',
 
                 fontSize: `11px`,

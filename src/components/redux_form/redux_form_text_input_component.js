@@ -3,13 +3,14 @@
 // @flow
 
 // external imports
+import type {ElementType} from 'react';
+
 import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
+import type {StyleType} from './../buttons/regular_button_component';
 import {FormTextInputComponent} from './../form/form_text_input_component';
-import {StyleType} from "../buttons/regular_button_component";
-import type {ElementType} from "react";
 
 // type definitions
 type CSSStylesType = {

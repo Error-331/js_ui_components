@@ -258,7 +258,7 @@ class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
             error, warning,
             placeholder, label,
             value, initial, name,
-            onChange, onFocus, onBlur, onClick: () => {console.log('fff')},
+            onChange, onFocus, onBlur, onClick: () => {},
             componentContainerClassName, componentContainerStyles, iconClassNames, style,
         };
 

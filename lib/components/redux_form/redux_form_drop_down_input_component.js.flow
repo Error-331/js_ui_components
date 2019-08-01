@@ -3,6 +3,8 @@
 // @flow
 
 // external imports
+import type {ElementType} from 'react';
+
 import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
@@ -20,6 +22,12 @@ export type PropsTypes = {
      */
 
     variant?: number,
+
+    /**
+     * Custom made representation of text input
+     */
+
+    textInputCustomComponent?: ElementType | React.Node,
 
     /**
      * Input name
@@ -64,6 +72,12 @@ export type PropsTypes = {
      */
 
     componentContainerClassName?: string,
+
+    /**
+     * Class name which will be added to the icon container of the current component
+     */
+
+    iconClassName?: string,
 
     /**
      * Styles for component container (main outer container) of the form drop down input component

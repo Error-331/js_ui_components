@@ -3,6 +3,8 @@
 // @flow
 
 // external imports
+import type {ElementType} from 'react';
+
 import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
@@ -23,6 +25,7 @@ import {RegularCardComponent} from './../layout/structure/regular_card_component
 
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
+
 // type definitions
 type OptionValueType = string | number;
 type OptionType = { [string]: OptionValueType };
@@ -37,6 +40,12 @@ type PropsTypes = FieldProps & {
      */
 
     variant?: number,
+
+    /**
+     * Custom made representation of text input
+     */
+
+    textInputCustomComponent?: ElementType | React.Node,
 
     /**
      * List of possible options
@@ -73,6 +82,12 @@ type PropsTypes = FieldProps & {
      */
 
     componentContainerClassName?: string,
+
+    /**
+     * Class name which will be added to the icon container of the current component
+     */
+
+    iconClassName?: string,
 
     /**
      * Styles for component container (main outer container) of the form drop down input component
@@ -254,6 +269,8 @@ class FormDropDownInputClass extends React.Component<PropsTypes, StateTypes> {
             onFocus: () => {},
         },
 
+        iconClassName: 'fas fa-angle-down',
+
         classes: {},
     };
 
@@ -324,6 +341,11 @@ class FormDropDownInputClass extends React.Component<PropsTypes, StateTypes> {
         return this.props.classes.inputControl;
     }
 
+    _getIconClassName(): string {
+        return defaultTo(FormDropDownInputClass.defaultProps.iconClassName)
+        (this.props.iconClassName);
+    }
+
     _getComponentOuterContainerClasses(): string {
         return classNames(
             this.props.classes.componentOuterContainer,
@@ -352,7 +374,7 @@ class FormDropDownInputClass extends React.Component<PropsTypes, StateTypes> {
 
     _getFormTextInputComponentProps(): FormTextInputTypes {
         const input = this._getInputData();
-        const {variant, readOnly, disabled, placeholder, label, meta} = this.props;
+        const {variant, textInputCustomComponent, readOnly, disabled, placeholder, label, meta} = this.props;
 
         const currentName: string = defaultTo(this._id)(input.name);
         const currentValue: OptionValueType = defaultTo('')(this._getSelectedLabel());
@@ -367,12 +389,13 @@ class FormDropDownInputClass extends React.Component<PropsTypes, StateTypes> {
 
         return {
             variant,
+            customComponent: textInputCustomComponent,
             type: 'text',
             readOnly,
             disabled,
             placeholder,
             label,
-            iconClassNames: 'fas fa-angle-down',
+            iconClassNames: this._getIconClassName(),
             meta,
             input: newInput
         };
