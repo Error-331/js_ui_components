@@ -3,11 +3,13 @@
 // @flow
 
 // external imports
+import type {ElementType} from 'react';
+
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import classNames from 'classnames';
-import {isNil, equals, defaultTo, unless, map, length, mergeDeepRight, addIndex} from 'ramda';
+import {is, isNil, ifElse, equals, defaultTo, unless, map, length, mergeDeepRight, addIndex} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
@@ -17,10 +19,12 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-type TabData = {
-    label: string | React.Node | null;
+export type TabData = {
+    label: string | React.Node | ElementType | null;
     icon: string | null;
 };
+
+export type TabsData = TabData[];
 
 type PropsTypes = {
 
@@ -36,7 +40,7 @@ type PropsTypes = {
      *
      */
 
-    tabs: TabData[],
+    tabs: TabsData,
 
     /**
      * Index of the selected tab (if not set - selection bar will not be shown).
@@ -169,6 +173,7 @@ const styles = theme => ({
                     fontFamily: theme.navigationStyles.fontStack,
                     fontSize: `${theme.navigationStyles.captionFontSize}px`,
 
+                    textDecoration: 'none',
                     color: theme.navigationStyles.fontColor2
                 }
             },
@@ -247,8 +252,12 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
 
     constructor(props: PropsTypes) {
         super(props);
+        const self: any = this;
 
         this.$tabsContainer = React.createRef();
+
+        self._renderStringLabel = self._renderStringLabel.bind(this);
+        self._renderComponentLabel = self._renderComponentLabel.bind(this);
     }
 
     // endregion
@@ -337,8 +346,11 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
         return this.props.classes.selectionBarContainer;
     }
 
-    _getTabLabelContainerClassName(): string {
-        return this.props.classes.tabLabelContainer;
+    _getTabLabelContainerClassName(customClassName?: string): string {
+        return classNames(
+            this.props.classes.tabLabelContainer,
+            customClassName,
+        );
     }
 
     _getTabContainerClassName(): string {
@@ -441,7 +453,7 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
         return length(this._getTabsData());
     }
 
-    _getTabsData(): TabData[] {
+    _getTabsData(): TabsData {
         return defaultTo(HorizontalTabNavigationClass.defaultProps.tabs)(this.props.tabs);
     }
 
@@ -473,7 +485,18 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
         </div>;
     }
 
-    _renderTabLabel(label: string): React.Node {
+    _renderComponentLabel(label: ElementType): React.Node {
+        return React.cloneElement(
+            label,
+            {
+                ...label.props,
+                style: Object.assign({}, this._getTabLabelContainerStyle(), label.props.style),
+                className: this._getTabLabelContainerClassName(label.props.className)
+            }
+        );
+    }
+
+    _renderStringLabel(label: string): React.Node {
         return <div
             className={this._getTabLabelContainerClassName()}
             style={this._getTabLabelContainerStyle()}
@@ -482,12 +505,20 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
         </div>;
     }
 
+    _renderTabLabel(label: string | ElementType | React.Node): React.Node {
+        return ifElse(
+            is(String),
+            this._renderStringLabel,
+            this._renderComponentLabel,
+        )(label);
+    }
+
     _renderTabContainers(): React.Node {
         const tabStyle: CSSStylesType = this._getTabContainerStyle();
         const mapIndexed = addIndex(map);
 
         return mapIndexed((tabData: TabData, tabIndex: string) => {
-            const label: string = defaultTo('')(tabData.label);
+            const label: string | React.Node = defaultTo('')(tabData.label);
 
             return <div key={`tab_${tabIndex}`}
                 className={this._getTabContainerClassName()}
