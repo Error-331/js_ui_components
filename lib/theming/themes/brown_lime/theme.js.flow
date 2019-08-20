@@ -3,7 +3,6 @@
 // @flow
 
 // external imports
-import {always} from 'ramda';
 
 // local imports
 import * as baseTheme from './../base_theme';
