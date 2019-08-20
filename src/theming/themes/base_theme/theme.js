@@ -45,7 +45,7 @@ import {
     dateStylesFunc,
     navigationStylesFunc,
     scrollBarStylesFunc,
-} from './';
+} from './index';
 
 import {colorUtilities} from './../../business_logic/color_utilities';
 import {styleValuesRegister} from './../../business_logic/style_values_register';
