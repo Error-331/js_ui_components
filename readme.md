@@ -34,6 +34,50 @@
 
     // region render methods
     // endregion
+    
+# Container boilerplate  
+
+```jsx harmony
+'use strict';
+
+// @flow
+
+// external imports
+import * as React from 'react';
+import {connect} from 'react-redux';
+
+// local imports
+import HeaderComponent from './../../components/header/header_component';
+
+// type definitions
+type PropsTypes = {};
+
+// constants declaration
+
+// component implementation
+function HeaderContainerFunction(props: PropsTypes) {
+    const {location} = props;
+
+    return <HeaderComponent
+        location={location}
+    />;
+}
+
+const mapStateToProps = () => ({});
+const mapDispatchToProps = () => ({});
+
+let HeaderContainer = connect(mapStateToProps, mapDispatchToProps)(HeaderContainerFunction);
+HeaderContainer.displayName = 'HeaderContainer';
+
+// exports
+export {
+    HeaderContainerFunction,
+    HeaderContainer
+};
+
+export default HeaderContainer;
+
+```
 
 https://codepen.io/TrevorWelch/pen/NwERXE
 # TODO

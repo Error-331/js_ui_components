@@ -277,9 +277,15 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
 
     _getSelectionBarStyle(): CSSStylesType {
         const selectedTabIndex: number | null = this._getSelectedTabIndex();
+        const selectionBarStyle: CSSStylesType = defaultTo(HorizontalTabNavigationClass.defaultProps.selectionBarStyle)
+        (this.props.selectionBarStyle);
 
         if (isNil(selectedTabIndex) || selectedTabIndex === null) {
-            return {};
+            console.log('sas1');
+            return mergeDeepRight({
+                left: `0px`,
+                width: `0px`,
+            }, selectionBarStyle);
         }
 
         let tabWidth: number | string = 0;
@@ -296,9 +302,6 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
             tabWidth = this._getTabWidth();
             barLeftPosition = tabWidth * selectedTabIndex + spacing;
         }
-
-        const selectionBarStyle: CSSStylesType = defaultTo(HorizontalTabNavigationClass.defaultProps.selectionBarStyle)
-        (this.props.selectionBarStyle);
 
         return mergeDeepRight({
             left: `${barLeftPosition}px`,
@@ -469,10 +472,6 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     // region render methods
     _renderSelectionBarContainer(): React.Node {
         const selectedTabIndex: number | null = this._getSelectedTabIndex();
-
-        if (isNil(selectedTabIndex)) {
-            return null;
-        }
 
         return <div
             className={this._getSelectionBarContainerClassName()}

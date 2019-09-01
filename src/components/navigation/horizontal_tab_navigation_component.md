@@ -171,7 +171,7 @@ class TestContainerComponent extends Component {
                 tabLabelContainerStyle={tabLabelContainerStyle}
                 
                 tabSpacing={20}
-                selectedTabIndex={3} 
+                selectedTabIndex={null} 
                 tabs={tabsData}
             />
 
