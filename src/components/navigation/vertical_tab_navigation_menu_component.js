@@ -9,7 +9,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import classNames from 'classnames';
-import {is, isNil, ifElse, equals, defaultTo, unless, map, length, mergeDeepRight, addIndex} from 'ramda';
+import {is, isNil, ifElse, defaultTo, map, length, mergeDeepRight, addIndex} from 'ramda';
 
 // local imports
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
@@ -27,13 +27,6 @@ export type TabData = {
 export type TabsData = TabData[];
 
 type PropsTypes = {
-    /**
-     * Flag that indicates whether tabs should occupy space equal to there content
-     *
-     */
-
-    flexible?: boolean,
-
     /**
      * Tabs data
      *
@@ -57,11 +50,11 @@ type PropsTypes = {
     componentContainerClassName?: string,
 
     /**
-     * Class name that will be added to component tabs container.
+     * Class name that will be added to component tabs container (real part of it).
      *
      */
 
-    tabsContainerClassName?: string,
+    realTabsContainerClassName?: string,
 
     /**
      * Class name that will be added to component tab container.
@@ -85,11 +78,11 @@ type PropsTypes = {
     componentContainerStyle?: CSSStylesType,
 
     /**
-     * Style object that will be added to component tabs container.
+     * Style object that will be added to component tabs container (real part of it).
      *
      */
 
-    tabsContainerStyle?: CSSStylesType,
+    realTabsContainerStyle?: CSSStylesType,
 
     /**
      * Style object that will be added to component tab container.
@@ -97,6 +90,13 @@ type PropsTypes = {
      */
 
     tabContainerStyle?: CSSStylesType,
+
+    /**
+     * Style object that will be added to component tabs container (imaginary part of it).
+     *
+     */
+
+    imaginaryTabsContainerStyle?: CSSStylesType,
 
     /**
      * Style object that will be added to components tab label container.
@@ -120,13 +120,6 @@ type PropsTypes = {
     selectionBarStyle?: CSSStylesType,
 
     /**
-     * Spacing between elements.
-     *
-     */
-
-    tabSpacing?: number,
-
-    /**
      * JSS inner classes
      *
      * @ignore
@@ -142,30 +135,38 @@ type StateTypes = {};
 const styles = theme => ({
     componentContainer: {
         boxSizing: 'border-box',
-        width: '100%',
+        position: 'relative',
 
-        '& > $tabsContainer': {
+        '& > $realTabsContainer': {
             boxSizing: 'border-box',
+            position: 'relative',
             display: 'flex',
-            overflow: 'hidden',
 
-            flexDirection: 'row',
+            top: '0px',
+
+            flexDirection: 'column',
             flexWrap: 'nowrap',
+
             justifyContent: 'flex-start',
             alignItems: 'stretch',
             alignContent: 'flex-start',
 
+            zIndex: 2,
+
             '& > $tabContainer': {
                 flexBasis: 'auto',
-                flexShrink: 0,
+                flexShrink: 1,
                 flexGrow: 0,
 
                 cursor: 'pointer',
 
                 '& > $tabLabelContainer': {
-                    textAlign: 'center',
+                    textAlign: 'left',
 
-                    padding: '3px',
+                    paddingTop: '10px',
+                    paddingBottom: '10px',
+
+                    paddingLeft: '20px',
 
                     textTransform: 'uppercase',
 
@@ -178,27 +179,52 @@ const styles = theme => ({
             },
         },
 
-        '& > $selectionBarContainer': {
+        '& > $imaginaryTabsContainer': {
             boxSizing: 'border-box',
-            position: 'relative',
-            overflow: 'hidden',
+            position: 'absolute',
 
             width: '100%',
+            height: '50px',
 
-            marginTop: '3px',
+            top: '0px',
+            zIndex: 1,
 
-            '& > $selectionBar': {
+            '& > $selectionBarContainer': {
                 boxSizing: 'border-box',
+
+                display: 'flex',
                 position: 'relative',
 
-                height: '2px',
+                top: '0px',
 
-                backgroundColor: theme.baseStyles.accentColorPrimary,
+                flexDirection: 'row',
+                flexWrap: 'nowrap',
+
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                alignContent: 'flex-start',
+
+                backgroundColor: theme.baseStyles.noneTransparentBGColor,
+
+                '& > $selectionBar': {
+                    boxSizing: 'border-box',
+                    flexBasis: 'auto',
+                    flexShrink: 0,
+                    flexGrow: 0,
+
+                    width: '4px',
+                    height: '100%',
+
+                    backgroundColor: theme.baseStyles.accentColorPrimary,
+                }
             }
-        }
+        },
+
     },
 
-    tabsContainer: {},
+    realTabsContainer: {},
+    imaginaryTabsContainer: {},
+
     tabContainer: {},
     tabLabelContainer: {},
 
@@ -207,7 +233,8 @@ const styles = theme => ({
 });
 
 /**
- * Horizontal tab navigation component styled according to material-UI guidelines.
+ * Vertical tab navigation menu.
+ * Displays vertical tab navigation menu.
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)
@@ -215,46 +242,43 @@ const styles = theme => ({
  */
 
 // component implementation
-class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateTypes> {
+class VerticalTabNavigationMenuClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'HorizontalTabNavigationClass';
+    static displayName = 'VerticalTabNavigationMenuClass';
 
     static defaultProps = {
-        flexible: false,
         tabs: [],
         selectedTabIndex: null,
 
         componentContainerClassName: '',
-        tabsContainerClassName: '',
+        realTabsContainerClassName: '',
         tabContainerClassName: '',
         selectionBarClassName: '',
 
         componentContainerStyle: {},
-        tabsContainerStyle: {},
+        realTabsContainerStyle: {},
         tabContainerStyle: {},
         tabLabelContainerStyle: {},
         selectionBarContainerStyle: {},
+        imaginaryTabsContainerStyle: {},
         selectionBarStyle: {},
-
-        tabSpacing: 0,
     };
 
     // endregion
 
     // region private props
-    $tabsContainer: any;
+    $realTabsContainer: any;
 
     componentContainerWidth: number = 0; // px
 
     // endregion
 
     // region constructor
-
     constructor(props: PropsTypes) {
         super(props);
         const self: any = this;
 
-        this.$tabsContainer = React.createRef();
+        this.$realTabsContainer = React.createRef();
 
         self._renderStringLabel = self._renderStringLabel.bind(this);
         self._renderComponentLabel = self._renderComponentLabel.bind(this);
@@ -270,70 +294,63 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     // endregion
 
     // region style accessors
-    _getSelectionBarContainerStyle(): CSSStylesType {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.selectionBarContainerStyle)
-        (this.props.selectionBarContainerStyle);
+    _getSelectionBarStyle(): CSSStylesType {
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.selectionBarStyle)
+        (this.props.selectionBarStyle);
     }
 
-    _getSelectionBarStyle(): CSSStylesType {
+    _getSelectionBarContainerStyle(): CSSStylesType {
         const selectedTabIndex: number | null = this._getSelectedTabIndex();
-        const selectionBarStyle: CSSStylesType = defaultTo(HorizontalTabNavigationClass.defaultProps.selectionBarStyle)
-        (this.props.selectionBarStyle);
 
         if (isNil(selectedTabIndex) || selectedTabIndex === null) {
-            return mergeDeepRight({
-                left: `0px`,
-                width: `0px`,
-            }, selectionBarStyle);
+            return {
+                display: 'none',
+            };
         }
 
-        let tabWidth: number | string = 0;
-        let barLeftPosition: number = 0;
+        const selectionBarStyle: CSSStylesType = defaultTo(VerticalTabNavigationMenuClass.defaultProps.selectionBarContainerStyle)
+        (this.props.selectionBarContainerStyle);
 
-        const tabSpacing: number = this._getTabSpacing();
-        const halfTabSpacing: number = tabSpacing / 2;
-        const spacing = tabSpacing * selectedTabIndex + halfTabSpacing;
 
-        if (this._isFlexible()) {
-            tabWidth = this._getChildWidth(selectedTabIndex);
-            barLeftPosition = this._getChildrenWidth(selectedTabIndex) + spacing;
-        } else {
-            tabWidth = this._getTabWidth();
-            barLeftPosition = tabWidth * selectedTabIndex + spacing;
+        const tabsContainerHeight: number = this._getRealTabsContaineHeight();
+        const tabCount: number = this._getTabCount();
+
+        let selectionBarContainerHeight: number = 0;
+
+        if (tabCount !== 0) {
+            selectionBarContainerHeight = tabsContainerHeight / tabCount
         }
+
+        const selectionBarContainerTop: number = selectedTabIndex * selectionBarContainerHeight;
 
         return mergeDeepRight({
-            left: `${barLeftPosition}px`,
-            width: `${tabWidth}px`,
+            top: `${selectionBarContainerTop}px`,
+            height: `${selectionBarContainerHeight}px`,
         }, selectionBarStyle);
     }
 
-    _getTabsContainerStyle(): CSSStylesType {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.tabsContainerStyle)
-        (this.props.tabsContainerStyle);
+    _getImaginaryTabsContainerStyle(): CSSStylesType {
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.imaginaryTabsContainerStyle)
+        (this.props.imaginaryTabsContainerStyle);
+    }
+
+    _getRealTabsContainerStyle(): CSSStylesType {
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.realTabsContainerStyle)
+        (this.props.realTabsContainerStyle);
     }
 
     _getTabContainerStyle(): CSSStylesType {
-        const isFlexible: boolean = this._isFlexible();
-        const margin: number = this._getTabSpacing() / 2;
-
-        const tabContainerStyle = defaultTo(HorizontalTabNavigationClass.defaultProps.tabContainerStyle)
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.tabContainerStyle)
         (this.props.tabContainerStyle);
-
-        return mergeDeepRight({
-            width: isFlexible ? 'auto' : `${this._getTabWidth()}px`,
-            marginLeft: `${margin}px`,
-            marginRight: `${margin}px`,
-        }, tabContainerStyle);
     }
 
     _getTabLabelContainerStyle(): CSSStylesType {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.tabLabelContainerStyle)
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.tabLabelContainerStyle)
         (this.props.tabLabelContainerStyle);
     }
 
     _getComponentContainerStyle(): CSSStylesType {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.componentContainerStyle)
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.componentContainerStyle)
         (this.props.componentContainerStyle);
     }
 
@@ -346,6 +363,10 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
 
     _getSelectionBarContainerClassName(): string {
         return this.props.classes.selectionBarContainer;
+    }
+
+    _getImaginaryTabsContainerClassName(): string {
+        return this.props.classes.imaginaryTabsContainer;
     }
 
     _getTabLabelContainerClassName(customClassName?: string): string {
@@ -362,10 +383,10 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
         );
     }
 
-    _getTabsContainerClassName(): string {
+    _getRealTabsContainerClassName(): string {
         return classNames(
-            this.props.classes.tabsContainer,
-            this._getUserTabsContainerClassName(),
+            this.props.classes.realTabsContainer,
+            this._getUserRealTabsContainerClassName(),
         );
     }
 
@@ -384,71 +405,36 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     // endregion
 
     // region prop accessors
-    _getTabSpacing(): number {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.tabSpacing)
-        (this.props.tabSpacing);
-    }
-
     _getUserComponentContainerClassName(): string {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.componentContainerClassName)
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.componentContainerClassName)
         (this.props.componentContainerClassName);
     }
 
-    _getUserTabsContainerClassName(): string {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.tabsContainerClassName)
-        (this.props.tabsContainerClassName);
+    _getUserRealTabsContainerClassName(): string {
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.realTabsContainerClassName)
+        (this.props.realTabsContainerClassName);
     }
 
     _getUserTabContainerClassName(): string {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.tabContainerClassName)
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.tabContainerClassName)
         (this.props.tabContainerClassName);
     }
 
     _getUserSelectionBarClassName(): string {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.selectionBarClassName)
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.selectionBarClassName)
         (this.props.selectionBarClassName);
     }
 
     _getSelectedTabIndex(): number | null {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.selectedTabIndex)(this.props.selectedTabIndex);
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.selectedTabIndex)(this.props.selectedTabIndex);
     }
 
-    _getTabWidth(): number {
-        const tabCont: number = this._getTabCount();
-
-        return unless(
-            equals(0),
-            (count: number) => this._getTabsContainerWidth() / count - this._getTabSpacing(),
-        )(tabCont);
-    }
-
-    _getChildrenWidth(endChildIndex: number): number {
-        if (isNil(this.$tabsContainer) || isNil(this.$tabsContainer.current)) {
+    _getRealTabsContaineHeight(): number {
+        if (isNil(this.$realTabsContainer ) || isNil(this.$realTabsContainer.current)) {
             return 0;
         }
 
-        let totalChildrenWidth: number = 0;
-        for (let childIndex = 0; childIndex < endChildIndex; childIndex++) {
-            totalChildrenWidth += this.$tabsContainer.current.children[childIndex].clientWidth;
-        }
-
-        return totalChildrenWidth;
-    }
-
-    _getChildWidth(childIndex: number): number {
-        if (isNil(this.$tabsContainer) || isNil(this.$tabsContainer.current)) {
-            return 0;
-        }
-
-        return this.$tabsContainer.current.children[childIndex].clientWidth;
-    }
-
-    _getTabsContainerWidth(): number {
-        if (isNil(this.$tabsContainer) || isNil(this.$tabsContainer.current)) {
-            return 0;
-        }
-
-        return this.$tabsContainer.current.clientWidth;
+        return this.$realTabsContainer.current.clientHeight;
     }
 
     _getTabCount(): number {
@@ -456,11 +442,7 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     }
 
     _getTabsData(): TabsData {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.tabs)(this.props.tabs);
-    }
-
-    _isFlexible(): boolean {
-        return defaultTo(HorizontalTabNavigationClass.defaultProps.flexible)(this.props.flexible);
+        return defaultTo(VerticalTabNavigationMenuClass.defaultProps.tabs)(this.props.tabs);
     }
 
     // endregion
@@ -469,15 +451,28 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     // endregion
 
     // region render methods
+    _renderSelectionBar(): React.Node {
+        return <div
+            className={this._getSelectionBarClassName()}
+            style={this._getSelectionBarStyle()}
+        />;
+    }
+
     _renderSelectionBarContainer(): React.Node {
         return <div
             className={this._getSelectionBarContainerClassName()}
             style={this._getSelectionBarContainerStyle()}
         >
-            <div
-                className={this._getSelectionBarClassName()}
-                style={this._getSelectionBarStyle()}
-            />
+            {this._renderSelectionBar()}
+        </div>;
+    }
+
+    _renderImaginaryTabsContainer(): React.Node {
+        return <div
+            className={this._getImaginaryTabsContainerClassName()}
+            style={this._getImaginaryTabsContainerStyle()}
+        >
+            {this._renderSelectionBarContainer()}
         </div>;
     }
 
@@ -517,19 +512,19 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
             const label: string | React.Node = defaultTo('')(tabData.label);
 
             return <div key={`tab_${tabIndex}`}
-                className={this._getTabContainerClassName()}
-                style={tabStyle}
+                        className={this._getTabContainerClassName()}
+                        style={tabStyle}
             >
                 {this._renderTabLabel(label)}
             </div>;
         }, this._getTabsData());
     }
 
-    _renderTabsContainer(): React.Node {
+    _renderRealTabsContainer(): React.Node {
         return <div
-            ref={this.$tabsContainer}
-            className={this._getTabsContainerClassName()}
-            style={this._getTabsContainerStyle()}
+            ref={this.$realTabsContainer}
+            className={this._getRealTabsContainerClassName()}
+            style={this._getRealTabsContainerStyle()}
         >
             {this._renderTabContainers()}
         </div>;
@@ -540,9 +535,8 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
             className={this._getComponentContainerClassName()}
             style={this._getComponentContainerStyle()}
         >
-
-            {this._renderTabsContainer()}
-            {this._renderSelectionBarContainer()}
+            {this._renderRealTabsContainer()}
+            {this._renderImaginaryTabsContainer()}
         </div>;
     }
 
@@ -553,17 +547,17 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     // endregion
 }
 
-function HorizontalTabNavigationComponent(props: PropsTypes) {
+function VerticalTabNavigationMenuComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
-            {windowDimensions => <HorizontalTabNavigationClass {...props} {...windowDimensions} />}
+            {windowDimensions => <VerticalTabNavigationMenuClass {...props} {...windowDimensions} />}
         </MainThemeContext.Consumer>
     );
 }
 
-HorizontalTabNavigationComponent = injectSheet(styles)(HorizontalTabNavigationComponent);
-HorizontalTabNavigationComponent.displayName = 'HorizontalTabNavigationComponent';
+VerticalTabNavigationMenuComponent = injectSheet(styles)(VerticalTabNavigationMenuComponent);
+VerticalTabNavigationMenuComponent.displayName = 'VerticalTabNavigationMenuComponent';
 
 // exports
-export {HorizontalTabNavigationClass, HorizontalTabNavigationComponent};
-export default HorizontalTabNavigationComponent;
+export {VerticalTabNavigationMenuClass, VerticalTabNavigationMenuComponent};
+export default VerticalTabNavigationMenuComponent;
