@@ -290,7 +290,6 @@ class VerticalTabNavigationMenuClass extends React.Component<PropsTypes, StateTy
     // endregion
 
     // region lifecycle methods
-
     // endregion
 
     // region style accessors
@@ -312,7 +311,7 @@ class VerticalTabNavigationMenuClass extends React.Component<PropsTypes, StateTy
         (this.props.selectionBarContainerStyle);
 
 
-        const tabsContainerHeight: number = this._getRealTabsContaineHeight();
+        const tabsContainerHeight: number = this._getRealTabsContainerHeight();
         const tabCount: number = this._getTabCount();
 
         let selectionBarContainerHeight: number = 0;
@@ -429,7 +428,7 @@ class VerticalTabNavigationMenuClass extends React.Component<PropsTypes, StateTy
         return defaultTo(VerticalTabNavigationMenuClass.defaultProps.selectedTabIndex)(this.props.selectedTabIndex);
     }
 
-    _getRealTabsContaineHeight(): number {
+    _getRealTabsContainerHeight(): number {
         if (isNil(this.$realTabsContainer ) || isNil(this.$realTabsContainer.current)) {
             return 0;
         }
