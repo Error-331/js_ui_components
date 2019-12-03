@@ -98,4 +98,3 @@ https://codepen.io/TrevorWelch/pen/NwERXE
 - make mechanism that always returns top`est z-Index;
 - form generator - options -> props
 - replace calssnames with clsx;
-- finish horizontal table;

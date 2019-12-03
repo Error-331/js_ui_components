@@ -39,7 +39,15 @@ type RowControlType = {
 };
 
 type RowControlsType = Array<RowControlType>;
-type ColumnNamesType = Array<string | React.Element<any>>;
+
+type ColumnNameClickHandlerType = (event: CombinedEventType, columnIndex: mixed) => void;
+type ColumnNameSpecificType = {
+    onClickHandler?: ColumnNameClickHandlerType,
+    ascending: boolean | null,
+    name: string | React.Element<any>,
+};
+
+type ColumnNamesType = Array<string | React.Element<any> | ColumnNameSpecificType>;
 
 type PropsTypes = {
     /**
@@ -71,6 +79,10 @@ type PropsTypes = {
      */
 
     idColumnIndex?: number,
+
+    /**
+     * Flag that indicates whether table rows should be selectable (this will tell the component to show checkboxes next to rows as well)
+     */
 
     selectableRows?: boolean,
 
@@ -105,7 +117,7 @@ const styles = theme => ({
 });
 
 /**
- * Controlled table component to material-UI guidelines.
+ * Controlled table component styled according to material-UI guidelines.
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)

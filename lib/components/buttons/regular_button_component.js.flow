@@ -68,6 +68,12 @@ export type PropsTypes = ThemeProps & {
     disabled?: boolean,
 
     /**
+     * Callback function which will be called once user clicks on a button
+     */
+
+    onClick?: ?ClickCallbackType,
+
+    /**
      * Alias of 'containerClassName'
      */
 
@@ -77,7 +83,7 @@ export type PropsTypes = ThemeProps & {
      * Class name which will be added to outer container of the component
      */
 
-    containerClassName?: ?string,
+    containerClassName?: string,
 
     /**
      * Styles which will be added to outer container of the component
@@ -104,12 +110,6 @@ export type PropsTypes = ThemeProps & {
     iconClassName?: string,
 
     /**
-     * Callback function which will be called once user clicks on a button
-     */
-
-    onClick?: ?ClickCallbackType,
-
-    /**
      * JSS inner classes
      *
      * @ignore
@@ -124,10 +124,10 @@ type StateTypes = {};
 const verticalPadding: number = 11; // px
 const horizontalPadding: number = 16; // px
 
-const doubleVerticalPadding: number = verticalPadding * 2;
-const doubleHorizontalPadding: number = horizontalPadding * 2;
+const doubleVerticalPadding: number = verticalPadding * 2; // px
+const doubleHorizontalPadding: number = horizontalPadding * 2; // px
 
-const roundButtonSpacing: number =  max(doubleHorizontalPadding, doubleVerticalPadding);
+const roundButtonSpacing: number = max(doubleHorizontalPadding, doubleVerticalPadding);
 
 const styles = theme => ({
     componentContainer: {
@@ -419,6 +419,10 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
     static displayName = 'RegularButtonClass';
 
     static defaultProps = {
+        variant: 'contained',
+        shape: 'rectangular',
+        textType: 'default',
+
         label: '',
 
         captionStyle: {},
@@ -498,18 +502,18 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
     }
 
     _getVariant(): string {
-        const {variant = 'contained'} = this.props;
-        return variant.toLowerCase();
+        return defaultTo(RegularButtonClass.defaultProps.variant)
+        (this.props.variant).toLowerCase();
     }
 
     _getShape(): string {
-        const {shape = 'rectangular'} = this.props;
-        return shape.toLowerCase();
+        return defaultTo(RegularButtonClass.defaultProps.shape)
+        (this.props.shape).toLowerCase();
     }
 
     _getTextType(): string {
-        const {textType = 'default'} = this.props;
-        return textType.toLowerCase();
+        return defaultTo(RegularButtonClass.defaultProps.textType)
+        (this.props.textType).toLowerCase();
     }
 
     _getLabelPosition(): string {
