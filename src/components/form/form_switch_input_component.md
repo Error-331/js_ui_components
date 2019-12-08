@@ -1,1 +1,1 @@
-[Please see examples from 'ReduxFormSwitchInputComponent' section.](#reduxformswitchinputcomponent)
+[Please see examples from 'ReduxFormSwitchInputComponent' section.](#/UI%20Components/Redux%20form/ReduxFormSwitchInputClass)

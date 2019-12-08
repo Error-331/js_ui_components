@@ -1,1 +1,1 @@
-[Please see examples from 'ReduxFormCheckboxInputComponent' section.](#reduxformcheckboxinputcomponent)
+[Please see examples from 'ReduxFormCheckboxInputComponent' section.](#/UI%20Components/Redux%20form/ReduxFormCheckboxInputClass)

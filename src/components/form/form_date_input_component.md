@@ -1,1 +1,1 @@
-[Please see examples from 'ReduxFormDateInputComponent' section.](#reduxformdateinputcomponent)
+[Please see examples from 'ReduxFormDateInputComponent' section.](#/UI%20Components/Redux%20form/ReduxFormDateInputClass)

@@ -1,1 +1,1 @@
-[Please see examples from 'ReduxFormRadioButtonInputComponent' section.](#reduxformradiobuttoninputcomponent)
+[Please see examples from 'ReduxFormRadioButtonInputComponent' section.](#/UI%20Components/Redux%20form/ReduxFormRadioButtonInputClass)

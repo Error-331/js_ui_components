@@ -1,1 +1,1 @@
-[Please see examples from 'ReduxFormTextInputComponent' section.](#reduxformtextinputcomponent)
+[Please see examples from 'ReduxFormTextInputComponent' section.](#/UI%20Components/Redux%20form/ReduxFormTextInputClass)
