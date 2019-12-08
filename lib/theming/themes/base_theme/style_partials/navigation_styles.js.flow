@@ -19,6 +19,8 @@ export const navigationStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType})
         captionFontSize: baseStyles.secondaryFontSize, // px
 
         bodyBGColor1: baseStyles.primaryBGColor,
+        bodyBGColor2: baseStyles.noneTransparentBGColor,
+
         bodyHoverColor1: baseStyles.mainQuaternaryColor,
 
         fontColor1: baseStyles.noneTransparentBGColor,

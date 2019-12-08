@@ -16,6 +16,8 @@ export type NavigationStylesType = {
     captionFontSize: number, // px
 
     bodyBGColor1: string,
+    bodyBGColor2: string,
+
     bodyHoverColor1: string,
 
     fontColor1: string,

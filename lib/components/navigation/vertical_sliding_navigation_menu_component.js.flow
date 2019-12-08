@@ -51,13 +51,19 @@ type PropsTypes = {
      * Navigation items
      */
 
-    items?: Array<ItemType>,
+    items?: Array<ItemType | null>,
 
     /**
      * Indexes of selected items in deep
      */
 
     selectedItems?: Array<number>,
+
+    /**
+     * Flag that indicates whether menu (and its contents) should have inverted colors
+     */
+
+    invertColor?: boolean,
 
     /**
      * Callback function which will be called once user clicks on menu item
@@ -201,6 +207,48 @@ const styles = theme => ({
                 }
             }
         },
+
+        '&.inverted': {
+            backgroundColor: theme.navigationStyles.bodyBGColor2,
+
+            '& > $menuItemContainer': {
+                '&:hover': {
+                    backgroundColor: theme.navigationStyles.bodyHoverColor1,
+
+                    '& > $itemIconContainer': {
+                        color: theme.navigationStyles.fontColor1,
+                    },
+
+                    '& > $itemCaptionContainer': {
+                        color: theme.navigationStyles.fontColor1,
+                    }
+                },
+
+                '&.utility': {
+                    cursor: 'default',
+
+                    '& > $dividerOuterContainer': {
+                        '& > $dividerInnerContainer': {
+                            backgroundColor: theme.navigationStyles.bodyBGColor1
+                        }
+                    },
+                },
+
+                '&.utility:hover': {
+                },
+
+                '& > $itemNodeContainer': {
+                },
+
+                '& > $itemIconContainer': {
+                    color: theme.navigationStyles.bodyBGColor1,
+                },
+
+                '& > $itemCaptionContainer': {
+                    color: theme.navigationStyles.bodyBGColor1,
+                }
+            },
+        }
     },
 
     menuItemContainer: {},
@@ -232,6 +280,8 @@ class VerticalSlidingNavigationMenuClass extends React.Component<PropsTypes, Sta
     static defaultProps = {
         items: null,
         selectedItems: null,
+
+        invertColor: false,
 
         backButtonCaption: 'back',
         backButtonIconClassName: 'fas fa-arrow-left',
@@ -280,7 +330,10 @@ class VerticalSlidingNavigationMenuClass extends React.Component<PropsTypes, Sta
     }
 
     _getComponentContainerClassName(): string {
-        return this.props.classes.componentContainer;
+        return classNames(
+            this.props.classes.componentContainer,
+            {inverted: this._isInverted()},
+        );
     }
 
     _getMenuItemContainer(): string {
@@ -308,6 +361,11 @@ class VerticalSlidingNavigationMenuClass extends React.Component<PropsTypes, Sta
     // endregion
 
     // region prop accessors
+    _isInverted(): boolean {
+        return defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.invertColor)
+        (this.props.invertColor);
+    }
+
     _getBackButtonCaption(): string {
         return defaultTo(VerticalSlidingNavigationMenuClass.defaultProps.backButtonCaption)(this.props.backButtonCaption);
     }
@@ -409,7 +467,13 @@ class VerticalSlidingNavigationMenuClass extends React.Component<PropsTypes, Sta
         </div>;
     }
 
-    _renderItem({node, caption, iconClassName, children}: ItemType, index: number): React.Node {
+    _renderItem(item: ItemType, index: number): React.Node {
+        if (isNil(item)) {
+            return this._renderMenuItemContainer(0, 'node', null, 'utility', this._renderDivider());
+        }
+
+        const {node, caption, iconClassName, children} = item;
+
         if (isNotNil(node)) {
             return this._renderMenuItemContainer(index, 'node', null, null, this._renderNodeContainer(node));
         } else {
