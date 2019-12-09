@@ -19,11 +19,10 @@ import {InlineTextBlock} from './../layout/text/inline_text_block';
 import {FontIcon} from './../layout/icons/font_icon';
 
 // type definitions
-export type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
+export type ClickCallbackType = (event: SyntheticEvent<HTMLDivElement>) => void;
 export type StyleType = {[string]: mixed};
 
 type PropsTypes = {
-
     /**
      * Flag that describes how the chip will look like
      */
@@ -41,6 +40,12 @@ type PropsTypes = {
      */
 
     clickable?: boolean,
+
+    /**
+     * Flag that describes whether right icon of the chip component should be clickable
+     */
+
+    rightIconClickable?: boolean,
 
     /**
      * Chip label
@@ -64,7 +69,13 @@ type PropsTypes = {
      * Callback function which will be called once user clicks on a chip
      */
 
-    onClick?: ?ClickCallbackType,
+    onClick?: ClickCallbackType,
+
+    /**
+     * Callback function which will be called once user clicks on right icon
+     */
+
+    onRightIconClick?: ClickCallbackType,
 
     /**
      * Alias of 'containerClassName'
@@ -97,6 +108,12 @@ type PropsTypes = {
     style?: StyleType,
 
     /**
+     * Styles which will be added to outer container of the component when user mouse hovers over it
+     */
+
+    hoverStyle?: StyleType,
+
+    /**
      * Styles which will be added to chip label
      */
 
@@ -125,7 +142,9 @@ type PropsTypes = {
     classes: any
 };
 
-type StateTypes = {};
+type StateTypes = {
+    isMouseOver: boolean
+};
 
 // styles definition
 const verticalPadding: number = 6; // px
@@ -182,7 +201,7 @@ const styles = theme => ({
             '& > $iconContainer': {
                 '&.default': {
                     color: theme.buttonStyles.fontColorDefaultWithBG,
-                }
+                },
             },
         },
 
@@ -263,7 +282,6 @@ const styles = theme => ({
                 backgroundColor: theme.baseStyles.transparentBGColor,
             },
 
-
             '& > $labelContainer': {
                 '&.default': {
                     color: theme.buttonStyles.fontColorSecondary,
@@ -295,6 +313,10 @@ const styles = theme => ({
 
             color: theme.buttonStyles.fontColorDefault,
 
+            '&.clickable': {
+                cursor: 'pointer',
+            },
+
             '&.left': {
                 marginRight: '5px',
             },
@@ -310,7 +332,7 @@ const styles = theme => ({
 
             '&.secondary': {
                 color: theme.buttonStyles.fontColorSecondary,
-            }
+            },
         },
 
         '& > $labelContainer': {
@@ -347,6 +369,7 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
         variant: 'contained',
         textType: 'default',
         clickable: false,
+        rightIconClickable: false,
         disabled: false,
 
         label: '',
@@ -356,17 +379,38 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
 
         style: {},
         containerStyle: {},
+        hoverStyle: {},
         labelStyle: {},
         rightIconStyle: {},
 
         onClick: () => {},
+        onRightIconClick: () => {},
     };
+
+    static defaultState = {
+        isMouseOver: false,
+    };
+
     // endregion
 
     // region private props
     // endregion
 
     // region constructor
+    constructor(props: PropsTypes) {
+        super(props);
+
+        this.state = {
+            isMouseOver: ChipClass.defaultState.isMouseOver,
+        };
+
+        const self: any = this;
+
+        self._clickRightIconHandler = self._clickRightIconHandler.bind(this);
+        self._mouseOverContainerHandler = self._mouseOverContainerHandler.bind(this);
+        self._mouseLeaveContainerHandler = self._mouseLeaveContainerHandler.bind(this);
+    }
+
     // endregion
 
     // region business logic
@@ -403,6 +447,22 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
         (this.props.labelStyle);
     }
 
+    _getContainerStyle(): StyleType {
+        const containerStyles: StyleType = defaultTo(ChipClass.defaultProps.containerStyle)
+        (this.props.containerStyle);
+
+        const style: StyleType = defaultTo(ChipClass.defaultProps.style)
+        (this.props.style);
+
+        const hoverStyles: StyleType = this._isMouseOver() ? this._getContainerHoverStyle() : {};
+        return Object.assign({}, containerStyles, style, hoverStyles);
+    }
+
+    _getContainerHoverStyle(): StyleType {
+        return defaultTo(ChipClass.defaultProps.hoverStyle)
+        (this.props.hoverStyle);
+    }
+
     _getRightIconClassName(): string | null {
         const rightIconClassName: string = defaultTo(ChipClass.defaultProps.rightIconClassName)
         (this.props.rightIconClassName);
@@ -415,25 +475,18 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
         const {iconContainer} = classes;
         const textType: string = this._getTextType();
 
+        const isDisabled: boolean = this._isDisabled();
+
         return classNames(
             iconContainer,
             rightIconClassName,
             {
+                'clickable': !isDisabled && this._isRightIconClickable(),
                 'right': equals('left', this._getLabelPosition()),
                 'left': equals('right', this._getLabelPosition()),
             },
             textType
         );
-    }
-
-    _getContainerStyle(): StyleType {
-        const containerStyles: StyleType = defaultTo(ChipClass.defaultProps.containerStyle)
-        (this.props.containerStyle);
-
-        const style: StyleType = defaultTo(ChipClass.defaultProps.style)
-        (this.props.style);
-
-        return Object.assign({}, containerStyles, style);
     }
 
     _getLabelContainerClass(): string {
@@ -465,12 +518,22 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region state accessors
+    _isMouseOver(): boolean {
+        return defaultTo(ChipClass.defaultState.isMouseOver)
+        (this.state.isMouseOver);
+    }
+
     // endregion
 
     // region prop accessors
     _getClickHandler(): ClickCallbackType {
         return defaultTo(ChipClass.defaultProps.onClick)
         (this.props.onClick);
+    }
+
+    _getClickRightIconHandler(): ClickCallbackType {
+        return defaultTo(ChipClass.defaultProps.onRightIconClick)
+        (this.props.onRightIconClick);
     }
 
     _isDisabled(): boolean {
@@ -491,6 +554,11 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
     _isClickable(): boolean {
         return defaultTo(ChipClass.defaultProps.clickable)
         (this.props.clickable);
+    }
+
+    _isRightIconClickable(): boolean {
+        return defaultTo(ChipClass.defaultProps.rightIconClickable)
+        (this.props.rightIconClickable);
     }
 
     _getLabelPosition(): string | null {
@@ -516,6 +584,24 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region handlers
+    _clickRightIconHandler(event: SyntheticEvent<HTMLDivElement>): void {
+        event.stopPropagation();
+
+        this._getClickRightIconHandler()(event);
+    }
+
+    _mouseOverContainerHandler(): void {
+        this.setState({
+            isMouseOver: true,
+        });
+    }
+
+    _mouseLeaveContainerHandler(): void {
+        this.setState({
+            isMouseOver: false,
+        });
+    }
+
     // endregion
 
     // region render methods
@@ -523,7 +609,11 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
         const rightIconClassName: string | null = this._getRightIconClassName();
 
         if (!isNil(rightIconClassName)) {
+            const isDisabled: boolean = this._isDisabled();
+            const isClickable: boolean = this._isRightIconClickable();
+
             return <FontIcon
+                onClick={isDisabled && isClickable ? null : this._clickRightIconHandler}
                 className={rightIconClassName}
                 style={this._getRightIconStyle()}
                 size='custom'
@@ -547,12 +637,15 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
     _renderComponentContainer(): React.Node {
         const labelPosition: string | null = this._getLabelPosition();
         const isDisabled: boolean = this._isDisabled();
+        const isClickable: boolean = this._isClickable();
 
         return <div
             className={this._getComponentContainerClass()}
             style={this._getContainerStyle()}
 
-            onClick={isDisabled ? null : this._getClickHandler()}
+            onClick={isDisabled && isClickable ? null : this._getClickHandler()}
+            onMouseOver={this._mouseOverContainerHandler}
+            onMouseLeave={this._mouseLeaveContainerHandler}
         >
             {equals('right', labelPosition) ? this._renderRightIconContainer() : null}
             {this._renderLabelContainer()}
