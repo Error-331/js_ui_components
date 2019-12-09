@@ -6,27 +6,22 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {T, always, isNil, cond, equals, defaultTo, clone} from 'ramda';
-import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
-
 import type {ElementType} from 'react';
 import type {FieldProps} from 'redux-form';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
-import type {FormTextInputVariant1Types as ComponentVariantPropsType} from './form_text_input_variants/form_text_input_variant1_component';
-
-import {FormTextInputVariant1Component} from './form_text_input_variants/form_text_input_variant1_component';
-import {FormTextInputVariant2Component} from './form_text_input_variants/form_text_input_variant2_component';
-import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+import {generateRandomIdNumber} from "@webfuturistics/design_components/lib/helpers/general/dom_helpers";
+import {always, clone, cond, defaultTo, equals, isNil, T} from "ramda";
+import type {FormTextInputVariant1Types as ComponentVariantPropsType} from "./form_text_input_variants";
+import {FormTextInputVariant1Component, FormTextInputVariant2Component} from "./form_text_input_variants";
+import {MainThemeContext} from "../../theming/providers";
 
 // type definitions
 type CSSStylesType = {
     [string]: mixed
 };
-
-type InputTypes = 'text' | 'password' | 'textarea';
 
 export type FormTextInputTypes = {
     /**
@@ -160,28 +155,19 @@ const styles = theme => ({});
 
 // $FlowFixMe decorators
 @injectSheet(styles)
-class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
+class FormSliderInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
-    static displayName = 'FormTextInputClass';
+    static displayName = 'FormSliderInputClass';
 
     static defaultProps = {
-        variant: 1,
     };
 
     // endregion
 
     // region private props
-    _id: string;
-
     // endregion
 
     // region constructor
-    constructor(props: PropsTypes): void {
-        super(props);
-
-        this._id = this._createInputId();
-    }
-
     // endregion
 
     // region lifecycle methods
@@ -194,34 +180,9 @@ class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region state accessors
-    _createInputId(): string {
-        const {name} = this._getInputData();
-        const randomIdNumber: number = generateRandomIdNumber();
-
-        if (isNil(name)) {
-            throw new Error('Name cannot be null, cannot create input ID');
-        }
-
-        return `text_input_${name}_${randomIdNumber}`;
-    }
-
     // endregion
 
     // region prop accessors
-    _getVariant(): number {
-        return defaultTo(FormTextInputClass.defaultProps.variant)(this.props.variant);
-    }
-
-    _getMetaData(): ReduxFormFieldComponentMetaDataPropsTypes {
-        const {meta}: {meta: ?ReduxFormFieldComponentMetaDataPropsTypes} = this.props;
-        return isNil(meta) ? clone(FormTextInputClass.defaultProps.meta) : meta;
-    }
-
-    _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
-        const {input}: {input: ?ReduxFormFieldComponentInputDataPropsTypes} = this.props;
-        return isNil(input) ? clone(FormTextInputClass.defaultProps.input) : input;
-    }
-
     // endregion
 
     // region handlers
@@ -229,62 +190,22 @@ class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
 
     // region render methods
     render(): React.Node {
-        const {
-            customComponent,
-            type,
-
-            readOnly,
-            disabled,
-            errorsIfTouched,
-            warningsIfTouched,
-
-            placeholder,
-            label,
-
-            componentContainerClassName,
-            componentContainerStyles,
-            iconClassNames,
-            style
-        } = this.props;
-
-        const {value, name, onChange, onFocus, onBlur} = this._getInputData();
-        const {initial, active, touched, pristine, dirty, error, warning} = this._getMetaData();
-
-        const componentVariantProps: ComponentVariantPropsType = {
-            type, id: this._id,
-            readOnly, disabled, active, touched, pristine, dirty,
-            errorsIfTouched, warningsIfTouched,
-            error, warning,
-            placeholder, label,
-            value, initial, name,
-            onChange, onFocus, onBlur, onClick: () => {},
-            componentContainerClassName, componentContainerStyles, iconClassNames, style,
-        };
-
-        if (!isNil(customComponent)) {
-            return React.cloneElement(customComponent, componentVariantProps);
-        }
-
-        return cond([
-            [equals(1), always(<FormTextInputVariant1Component {...componentVariantProps}/>)],
-            [equals(2), always(<FormTextInputVariant2Component {...componentVariantProps}/>)],
-            [T, always(null)]
-        ])(this._getVariant());
+        return 331;
     }
 
     // endregion
 }
 
-function FormTextInputComponent(props: PropsTypes) {
+function FormSliderInputComponent(props: PropsTypes) {
     return (
         <MainThemeContext.Consumer>
-            {windowDimensions => <FormTextInputClass {...props} {...windowDimensions} />}
+            {windowDimensions => <FormSliderInputClass {...props} {...windowDimensions} />}
         </MainThemeContext.Consumer>
     );
 }
 
-FormTextInputComponent.displayName = 'FormTextInputComponent';
+FormSliderInputComponent.displayName = 'FormSliderInputComponent';
 
 // exports
-export {FormTextInputClass, FormTextInputComponent};
-export default FormTextInputComponent;
+export {FormSliderInputClass, FormSliderInputComponent};
+export default FormSliderInputComponent;
