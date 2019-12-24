@@ -45,6 +45,12 @@ export type PropsTypes = {
     type?: InputTypes,
 
     /**
+     * Height of textarea (if type = 'textarea') input component (based on lines)
+     */
+
+    rows?: number,
+
+    /**
      * Flag that dictates whether component should be readable only (text can be readable but not editable)
      */
 

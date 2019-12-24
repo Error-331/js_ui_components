@@ -48,6 +48,12 @@ export type FormTextInputTypes = {
     type?: InputTypes,
 
     /**
+     * Height of textarea (if type = 'textarea') input component (based on lines)
+     */
+
+    rows?: number,
+
+    /**
      * Flag that dictates whether component should be readable only (text can be readable but not editable)
      */
 
@@ -238,6 +244,7 @@ class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
             errorsIfTouched,
             warningsIfTouched,
 
+            rows,
             placeholder,
             label,
 
@@ -256,7 +263,7 @@ class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
             errorsIfTouched, warningsIfTouched,
             error, warning,
             placeholder, label,
-            value, initial, name,
+            value, initial, name, rows,
             onChange, onFocus, onBlur, onClick: () => {},
             componentContainerClassName, componentContainerStyles, iconClassNames, style,
         };

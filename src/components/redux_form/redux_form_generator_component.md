@@ -19,6 +19,9 @@ const testItems1 = [
         {type: 'text', hspan: 3, name: 'input3', props: {label: 'Note'}}
     ],
     [
+        {type: 'textarea', hspan: 3, name: 'textreainput1', props: {label: 'Description', rows: 5}}, 
+    ],    
+    [
         {type: 'checkbox', hspan: 1, name: 'input4', props: {label: 'Employed', labelPosition: 'right'}}, 
         {type: 'dropdown', hspan: 2, name: 'input5', props: {label: 'Role', options: dropDownOptions}}
     ],

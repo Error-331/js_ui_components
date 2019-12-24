@@ -28,6 +28,12 @@ export type FormTextInputVariant1Types = {
     type?: InputTypes,
 
     /**
+     * Height of textarea (if type = 'textarea') input component (based on lines)
+     */
+
+    rows?: number,
+
+    /**
      *  Unique string value used to differentiate current input component
      */
 
@@ -189,6 +195,7 @@ type StateTypes = {};
 // styles definition
 const topAdditionalPadding: number = 7;
 const iconAdditionalPadding: number = 2;
+const bottomBorderWidth: number = 1;
 
 const styles = theme => ({
     componentContainer: {
@@ -217,8 +224,8 @@ const styles = theme => ({
             display: 'flex',
 
             flexBasis: 'auto',
-            flexShrink: '1',
-            flexGrow: '0',
+            flexShrink: 1,
+            flexGrow: 0,
 
             flexDirection: 'column',
             flexWrap: 'nowrap',
@@ -229,7 +236,6 @@ const styles = theme => ({
 
             '& > $inputControl': {
                 boxSizing: 'border-box',
-                overflow: 'hidden',
 
                 flexBasis: `${theme.inputStyles.lineHeight}px`,
                 flexShrink: '0',
@@ -238,7 +244,7 @@ const styles = theme => ({
                 margin: '0 0 0 0',
 
                 border: 'none',
-                borderBottomWidth: '1px',
+                borderBottomWidth: `${bottomBorderWidth}px`,
                 borderBottomStyle: 'solid',
                 borderBottomColor: theme.inputStyles.inactiveColor,
                 borderRadius: '0',
@@ -271,6 +277,14 @@ const styles = theme => ({
 
                 '&::-ms-input-placeholder': {
                     color: theme.inputStyles.disabledColor
+                },
+
+                '&.noneScrollable': {
+                    overflow: 'hidden',
+                },
+
+                '&.scrollable': {
+                    overflow: 'visible',
                 },
 
                 '&.focus': {
@@ -494,7 +508,6 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
     // endregion
 
     // region style accessors
-
     _getComponentContainerStyles(): CSSStylesType {
         const componentContainerStyles: CSSStylesType = defaultTo(FormTextInputVariant1Class.defaultProps.componentContainerStyles)
         (this.props.componentContainerStyles);
@@ -559,9 +572,12 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
 
     _getInputClasses(): string {
         const hasFocus: boolean = this._isInputHasFocus();
+        const isTextArea: boolean = this._isTextArea();
 
         return classNames(
             this._getInputControlClassName(),
+            {'scrollable': isTextArea},
+            {'noneScrollable': !isTextArea},
             {'focus': hasFocus},
             {'error': this._hasErrors()},
             {'readOnly': this._isReadOnly()},
@@ -730,6 +746,10 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
         (this.props.readOnly);
     }
 
+    _isTextArea(): boolean {
+        return equals('textarea', this._getTextInputType())
+    }
+
     _getInitial(): string {
         const initialValue: string = defaultTo(FormTextInputVariant1Class.defaultProps.initial)
         (this.props.initial);
@@ -865,10 +885,13 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
         const disabledParam: ?string = this._isDisabled() ? 'disabled' : undefined;
 
         const inputValue: string = this._getValue();
-        const numberOfLines: number = inputValue.replace(/^\s*[\r\n]/gm, '').split(/\r|\r\n|\n/).length;
-        const flexBasis: number = numberOfLines * this.props.theme.inputStyles.lineHeight;
+        const {rows} = this.props;
+
+        const numberOfLines: number = isNil(rows) ? inputValue.replace(/^\s*[\r\n]/gm, '').split(/\r|\r\n|\n/).length : rows;
+        const flexBasis: number = (numberOfLines * this.props.theme.inputStyles.lineHeight) + bottomBorderWidth;
 
         return <textarea
+            rows={numberOfLines}
             className={this._getInputClasses()}
 
             value={inputValue}
@@ -891,10 +914,10 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
 
     _renderInput(): React.Node {
         return ifElse(
-            equals('textarea'),
+            equals(true),
             this._renderTextAreaInput,
             this._renderTextInput
-        )(this._getTextInputType());
+        )(this._isTextArea());
     }
 
     _renderInputContainer(): React.Node {

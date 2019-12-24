@@ -9,7 +9,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import {isNotNil} from '@webfuturistics/design_components';
-import {isNil, defaultTo, unless, map, bind} from 'ramda';
+import {isNil, defaultTo, clone, unless, map, bind} from 'ramda';
 
 // local imports
 import type {ItemType as GridItemType} from './../grid/grid_generator_component';
@@ -40,7 +40,7 @@ export type PropsType = ReduxFormTextInputPropsType |
 export type ItemType = {
     elm?: ElementType,
     props: PropsType,
-    type?: 'text' | 'checkbox',
+    type?: 'text' | 'textarea' | 'checkbox' | 'dropdown' | 'date',
     name: string,
     hspan?: number,
     vspan?: number,
@@ -130,7 +130,48 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
     // region business logic
     _prepareProps<T>(props: PropsType): T {
         const preparedProps: T = (props: any);
-        return preparedProps;
+        return clone(preparedProps);
+    }
+
+    _prepareTextInputPlaceholder(item: ItemType): string {
+        const {props} = item;
+
+        let {label, placeholder} = props;
+        return isNil(placeholder) && !isNil(label) ? `${label}...` : placeholder;
+    }
+
+    _prepareInputProps<InputPropsType>(item: ItemType): InputPropsType {
+        const {name, props} = item;
+
+        let newProps: InputPropsType = this._prepareProps(props);
+        return defaultTo({name})(newProps);
+    }
+
+    _prepareInputItem<InputPropsType>(elm: ElementType, item: ItemType, extraProps?: InputPropsType): GridItemType {
+        const {name, hspan, vspan} = item;
+        extraProps = defaultTo({})(extraProps);
+
+        return {
+            elm,
+            name,
+            hspan,
+            vspan,
+            props: {
+                name,
+                ...this._prepareInputProps<ReduxFormTextInputPropsType>(item),
+                ...extraProps
+            }
+        };
+    }
+
+    _prepareTextLikeInputItem<InputPropsType>(elm: ElementType, item: ItemType, extraProps?: InputPropsType): GridItemType {
+        extraProps = defaultTo({})(extraProps);
+
+        return this._prepareInputItem<InputPropsType>(
+            elm,
+            item,
+            {placeholder: this._prepareTextInputPlaceholder(item), ...extraProps}
+        );
     }
 
     // endregion
@@ -174,75 +215,6 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region render methods
-    _prepareDateInputItem(item: ItemType): GridItemType {
-        const {name, hspan, vspan, props} = item;
-
-        let newProps: ReduxFormDateInputPropsType = this._prepareProps(props);
-        newProps = defaultTo({name})(newProps);
-
-        let {label, placeholder} = newProps;
-        placeholder = isNil(placeholder) && !isNil(label) ? `${label}...` : placeholder;
-
-        return {
-            elm: ReduxFormDateInputComponent,
-            name,
-            hspan,
-            vspan,
-            props: {name, ...props, placeholder}
-        };
-    }
-
-    _prepareDropDownInputItem(item: ItemType): GridItemType {
-        const {name, hspan, vspan, props} = item;
-
-        let newProps: ReduxFormDropDownInputPropsType = this._prepareProps(props);
-        newProps = defaultTo({name, options: {}})(newProps);
-
-        let {label, placeholder} = newProps;
-        placeholder = isNil(placeholder) && !isNil(label) ? `${label}...` : placeholder;
-
-        return {
-            elm: ReduxFormDropDownInputComponent,
-            name,
-            hspan,
-            vspan,
-            props: {name, ...newProps, placeholder}
-        };
-    }
-
-    _prepareCheckboxInputItem(item: ItemType): GridItemType {
-        const {name, hspan, vspan, props} = item;
-
-        let newProps: ReduxCheckboxInputPropsType = this._prepareProps(props);
-        newProps = defaultTo({name})(newProps);
-
-        return {
-            elm: ReduxFormCheckboxInputComponent,
-            name,
-            hspan,
-            vspan,
-            props: {name, ...newProps},
-        };
-    }
-
-    _prepareTextInputItem(item: ItemType): GridItemType {
-        const {name, hspan, vspan, props} = item;
-
-        let newProps: ReduxFormTextInputPropsType = this._prepareProps(props);
-        newProps = defaultTo({name})(newProps);
-
-        let {label, placeholder} = newProps;
-        placeholder = isNil(placeholder) && !isNil(label) ? `${label}...` : placeholder;
-
-        return {
-            elm: ReduxFormTextInputComponent,
-            name,
-            hspan,
-            vspan,
-            props: {name, ...newProps, placeholder},
-        };
-    }
-
     _prepareItem(item: ItemType): GridItemType | null {
         const {elm, type} = item;
 
@@ -252,13 +224,15 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
 
         switch(type) {
             case 'text':
-                return this._prepareTextInputItem(item);
+                return this._prepareTextLikeInputItem<ReduxFormTextInputPropsType>(ReduxFormTextInputComponent, item);
+            case 'textarea':
+                return this._prepareTextLikeInputItem<ReduxFormTextInputPropsType>(ReduxFormTextInputComponent, item, {type: 'textarea'});
             case 'checkbox':
-                return this._prepareCheckboxInputItem(item);
+                return this._prepareInputItem<ReduxCheckboxInputPropsType>(ReduxFormCheckboxInputComponent, item);
             case 'dropdown':
-                return this._prepareDropDownInputItem(item);
+                return this._prepareTextLikeInputItem<ReduxFormDropDownInputPropsType>(ReduxFormDropDownInputComponent, item);
             case 'date':
-                return this._prepareDateInputItem(item);
+                return this._prepareTextLikeInputItem<ReduxFormDateInputPropsType>(ReduxFormDateInputComponent, item);
             default:
                 return null;
         }
