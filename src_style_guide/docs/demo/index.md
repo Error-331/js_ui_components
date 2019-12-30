@@ -147,13 +147,13 @@ const headerComponent = <RegularCardHeaderComponent iconClassNames="fas fa-windo
 
 const formItems = [
     [
-        {type: 'text', name: 'edit.template.name', options: {placeholder: 'template name...', label: 'Name', iconClassNames: 'fas fa-window-alt'}},
-        {type: 'checkbox', name: 'edit.template.isActive', options: {labelPosition: 'right', label: 'active'}}
+        {type: 'text', name: 'edit.template.name', props: {placeholder: 'template name...', label: 'Name', iconClassNames: 'fas fa-window-alt'}},
+        {type: 'checkbox', name: 'edit.template.isActive', props: {labelPosition: 'right', label: 'active'}}
     ],
     
     [
-        {type: 'text', name: 'edit.template.directory.name', options: {placeholder: 'template directory name...', label: 'Directory name', iconClassNames: 'fas fa-folder'}},
-        {type: 'checkbox', name: 'edit.template.isArchived', options: {labelPosition: 'right', label: 'archived'}}
+        {type: 'text', name: 'edit.template.directory.name', props: {placeholder: 'template directory name...', label: 'Directory name', iconClassNames: 'fas fa-folder'}},
+        {type: 'checkbox', name: 'edit.template.isArchived', props: {labelPosition: 'right', label: 'archived'}}
     ],
 ];
 

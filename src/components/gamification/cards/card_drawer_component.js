@@ -121,7 +121,7 @@ const styles = theme => ({
 
 // $FlowFixMe decorators
 @DragDropContext(HTML5Backend)
-@injectSheet(styles)
+@injectSheet(styles, {injectTheme: true})
 class CardDrawerClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'CardDrawerClass';

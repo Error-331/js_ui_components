@@ -6,7 +6,7 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {merge, defaultTo} from 'ramda';
+import {mergeRight, defaultTo} from 'ramda';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
@@ -111,7 +111,7 @@ const styles = theme => ({});
 // component implementation
 
 // $FlowFixMe decorators
-@injectSheet(styles)
+@injectSheet(styles, {injectTheme: true})
 class ModalClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'ModalClass';
@@ -132,12 +132,12 @@ class ModalClass extends React.Component<PropsTypes, StateTypes> {
     // region style accessors
     _getBodyOuterStyles(): CSSStylesType {
         const userStyles: CSSStylesType = defaultTo({})(this.props.bodyOuterStyles);
-        return merge(defaultBodyOuterStyles, userStyles);
+        return mergeRight(defaultBodyOuterStyles, userStyles);
     }
 
     _getBodyInnerStyle(): CSSStylesType {
         const userStyles: CSSStylesType = defaultTo({})(this.props.bodyInnerStyles);
-        return merge(defaultBodyInnerStyles, userStyles);
+        return mergeRight(defaultBodyInnerStyles, userStyles);
     }
 
     // endregion

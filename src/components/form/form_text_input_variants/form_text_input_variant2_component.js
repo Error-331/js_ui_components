@@ -259,7 +259,7 @@ const styles = theme => ({
  */
 
 // component implementation
-const FormTextInputVariant2Component = injectSheet(styles)(FormTextInputVariant1Class);
+const FormTextInputVariant2Component = injectSheet(styles, {injectTheme: true})(FormTextInputVariant1Class);
 FormTextInputVariant2Component.displayName = 'FormTextInputVariant2Component';
 
 // exports

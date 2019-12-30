@@ -113,5 +113,5 @@ function RotatingFontIconPreloaderFunction(props: PropsTypes) {
 RotatingFontIconPreloaderFunction.displayName = 'RotatingFontIconPreloader';
 
 // exports
-export const RotatingFontIconPreloader = injectSheet(styles)(RotatingFontIconPreloaderFunction);
+export const RotatingFontIconPreloader = injectSheet(styles, {injectTheme: true})(RotatingFontIconPreloaderFunction);
 export default RotatingFontIconPreloader;

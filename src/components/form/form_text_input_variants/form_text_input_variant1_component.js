@@ -948,7 +948,7 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
     // endregion
 }
 
-const FormTextInputVariant1Component = injectSheet(styles)(FormTextInputVariant1Class);
+const FormTextInputVariant1Component = injectSheet(styles, {injectTheme: true})(FormTextInputVariant1Class);
 FormTextInputVariant1Component.displayName = 'FormTextInputVariant1Component';
 
 // exports

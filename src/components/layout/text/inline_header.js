@@ -134,5 +134,5 @@ function InlineHeaderFunction(props: PropsTypes) {
 InlineHeaderFunction.displayName = 'InlineHeader';
 
 // exports
-export const InlineHeader = injectSheet(styles)(InlineHeaderFunction);
+export const InlineHeader = injectSheet(styles, {injectTheme: true})(InlineHeaderFunction);
 export default InlineHeader;

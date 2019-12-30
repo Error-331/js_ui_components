@@ -12,7 +12,7 @@ import makeRootReducer from './reducers';
 const createReduxStore = (initialState = Map(), middlewares = []) => {
     const enhancers = [];
 
-    const devToolsExtension = window.devToolsExtension;
+    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
     if (is(Function, devToolsExtension)) {
         enhancers.push(devToolsExtension());
     }

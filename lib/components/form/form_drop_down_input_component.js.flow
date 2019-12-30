@@ -237,7 +237,7 @@ const styles = theme => ({
 // component implementation
 
 // $FlowFixMe decorators
-@injectSheet(styles)
+@injectSheet(styles, {injectTheme: true})
 class FormDropDownInputClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormDropDownInputClass';

@@ -124,5 +124,5 @@ function ScrollableAreaFunction(props: PropsTypes) {
 ScrollableAreaFunction.displayName = 'ScrollableAreaComponent';
 
 // exports
-export const ScrollableAreaComponent = injectSheet(styles)(ScrollableAreaFunction);
+export const ScrollableAreaComponent = injectSheet(styles, {injectTheme: true})(ScrollableAreaFunction);
 export default ScrollableAreaComponent;

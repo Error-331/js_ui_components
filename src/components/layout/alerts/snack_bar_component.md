@@ -1,4 +1,4 @@
-Test
+Example of Snackbar component:
 
 ```jsx
 

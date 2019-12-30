@@ -7,7 +7,7 @@ import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import {FormCheckboxInputComponent} from '../form/form_checkbox_input_component';
+import {FormCheckboxInputComponent} from './../form/form_checkbox_input_component';
 
 // type definitions
 type CSSStylesType = {

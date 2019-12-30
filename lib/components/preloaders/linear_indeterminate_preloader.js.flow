@@ -164,5 +164,5 @@ function LinearIndeterminatePreloaderFunction(props: PropsTypes) {
 LinearIndeterminatePreloaderFunction.displayName = 'LinearIndeterminatePreloader';
 
 // exports
-export const LinearIndeterminatePreloader = injectSheet(styles)(LinearIndeterminatePreloaderFunction);
+export const LinearIndeterminatePreloader = injectSheet(styles, {injectTheme: true})(LinearIndeterminatePreloaderFunction);
 export default LinearIndeterminatePreloader;

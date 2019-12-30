@@ -87,5 +87,5 @@ function GlobalOverlayFunction(props: PropsTypes) {
 GlobalOverlayFunction.displayName = 'GlobalOverlayComponent';
 
 // exports
-export const GlobalOverlayComponent = injectSheet(styles)(GlobalOverlayFunction);
+export const GlobalOverlayComponent = injectSheet(styles, {injectTheme: true})(GlobalOverlayFunction);
 export default GlobalOverlayComponent;

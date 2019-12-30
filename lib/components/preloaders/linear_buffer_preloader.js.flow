@@ -191,5 +191,5 @@ function LinearBufferPreloaderFunction(props: PropsTypes) {
 LinearBufferPreloaderFunction.displayName = 'LinearBufferPreloader';
 
 // exports
-export const LinearBufferPreloader = injectSheet(styles)(LinearBufferPreloaderFunction);
+export const LinearBufferPreloader = injectSheet(styles, {injectTheme: true})(LinearBufferPreloaderFunction);
 export default LinearBufferPreloader;

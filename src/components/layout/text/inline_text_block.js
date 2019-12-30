@@ -105,5 +105,5 @@ function InlineTextBlockFunction(props: PropsTypes) {
 InlineTextBlockFunction.displayName = 'InlineTextBlock';
 
 // exports
-export const InlineTextBlock = injectSheet(styles)(InlineTextBlockFunction);
+export const InlineTextBlock = injectSheet(styles, {injectTheme: true})(InlineTextBlockFunction);
 export default InlineTextBlock;

@@ -35,7 +35,7 @@ return <SimpleFlexGridContainer>
 
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 
@@ -84,7 +84,7 @@ return <SimpleFlexGridContainer>
 </SimpleFlexGridContainer>;
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 
@@ -128,7 +128,7 @@ return <SimpleFlexGridContainer>
 </SimpleFlexGridContainer>;
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 
@@ -177,7 +177,7 @@ return <SimpleFlexGridContainer>
 </SimpleFlexGridContainer>;
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 
@@ -232,7 +232,7 @@ return <SimpleFlexGridContainer>
 </SimpleFlexGridContainer>;
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 
@@ -287,7 +287,7 @@ return <SimpleFlexGridContainer>
 </SimpleFlexGridContainer>;
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 
@@ -342,7 +342,7 @@ return <SimpleFlexGridContainer>
 </SimpleFlexGridContainer>;
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 
@@ -403,7 +403,7 @@ return <SimpleFlexGridContainer>
 </SimpleFlexGridContainer>;
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 
@@ -464,7 +464,7 @@ return <SimpleFlexGridContainer>
 </SimpleFlexGridContainer>;
 }
 
-const TestContainer = injectSheet(styles)(TestContainerComponent);
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
 
 <TestContainer/>
 

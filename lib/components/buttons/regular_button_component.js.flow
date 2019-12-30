@@ -7,10 +7,11 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import {defaultTo, or, is, isEmpty, isNil, equals, unless, always, max} from 'ramda';
+import {defaultTo, or, isEmpty, isNil, equals, unless, always, max} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
+import type {ThemeType} from './../../types/theme_types';
 import type {StateTypes as ThemeProps} from './../../theming/providers/main_theme_provider';
 
 import {SMALL_SIZE} from './../../theming/constants/general_constants';
@@ -71,7 +72,7 @@ export type PropsTypes = ThemeProps & {
      * Callback function which will be called once user clicks on a button
      */
 
-    onClick?: ?ClickCallbackType,
+    onClick?: ClickCallbackType,
 
     /**
      * Alias of 'containerClassName'
@@ -108,6 +109,14 @@ export type PropsTypes = ThemeProps & {
      */
 
     iconClassName?: string,
+
+    /**
+     * JSS theme object
+     *
+     * @ignore
+     */
+
+    theme: ThemeType,
 
     /**
      * JSS inner classes
@@ -375,26 +384,6 @@ const styles = theme => ({
             '&.secondary': {
                 color: theme.buttonStyles.fontColorSecondary,
             },
-
-            '&.tiny': {
-                fontSize: theme.buttonStyles.tinyCaptionFontSize,
-            },
-
-            '&.small': {
-                fontSize: theme.buttonStyles.smallCaptionFontSize,
-            },
-
-            '&.medium': {
-                fontSize: theme.buttonStyles.mediumCaptionFontSize,
-            },
-
-            '&.large': {
-                fontSize: theme.buttonStyles.largeCaptionFontSize,
-            },
-
-            '&.extraLarge': {
-                fontSize: theme.buttonStyles.extraLargeCaptionFontSize,
-            },
         }
     },
 
@@ -413,7 +402,7 @@ const styles = theme => ({
 // component implementation
 
 // $FlowFixMe decorators
-@injectSheet(styles)
+@injectSheet(styles, {injectTheme: true})
 class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'RegularButtonClass';
@@ -438,6 +427,28 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
         const self: any = this;
 
         self._onClick = self._onClick.bind(this);
+    }
+
+    // endregion
+
+    // region business logic
+    _getLabelFontSize(): number {
+        const {theme} = this.props;
+
+        switch(this._getSize()) {
+            case 'tiny':
+                return theme.buttonStyles.tinyCaptionFontSize;
+            case 'small':
+                return theme.buttonStyles.smallCaptionFontSize;
+            case 'medium':
+                return theme.buttonStyles.mediumCaptionFontSize;
+            case 'large':
+                return theme.buttonStyles.largeCaptionFontSize;
+            case 'extraLarge':
+                return theme.buttonStyles.extraLargeCaptionFontSize;
+            default:
+                return theme.buttonStyles.smallCaptionFontSize;
+        }
     }
 
     // endregion
@@ -485,7 +496,7 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
         const {classes: {captionContainer}} = this.props;
         const textType: string = this._getTextType();
 
-        return classNames(captionContainer, this._getSize(), textType);
+        return classNames(captionContainer, textType);
     }
 
     // endregion
@@ -518,7 +529,7 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
 
     _getLabelPosition(): string {
         let {labelPosition} = this.props;
-        labelPosition = is(String, labelPosition) ? labelPosition.toLowerCase() : labelPosition;
+        labelPosition = typeof labelPosition === 'string' ? labelPosition.toLowerCase() : labelPosition;
 
         if (this._isLabelEmpty()) {
             return '';
@@ -555,9 +566,10 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
 
     // region handlers
     _onClick(event: SyntheticEvent<HTMLButtonElement>): void {
-        const {onClick}: {onClick?: ?ClickCallbackType} = this.props;
+        const {onClick} = this.props;
 
-        if (isNil(onClick) && !is(Function, onClick)) {
+        // TODO: stupid flow.js - cannot use isNil here
+        if (onClick === null || onClick === undefined) {
             return;
         }
 
@@ -569,6 +581,8 @@ class RegularButtonClass extends React.Component<PropsTypes, StateTypes> {
     // region render methods
     _renderCaptionContainer(): React.Node {
         return <InlineTextBlock
+            fontSize={this._getLabelFontSize()}
+
             className={this._getCaptionContainerClass()}
             style={this._getCaptionStyle()}
         >

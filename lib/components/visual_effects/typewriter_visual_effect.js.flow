@@ -151,7 +151,7 @@ export const TYPEWRITER_VISUAL_EFFECT_ANIMATION_STATE_BACKWARD_NAME: AnimationSt
 // component implementation
 
 // $FlowFixMe decorators
-@injectSheet(styles)
+@injectSheet(styles, {injectTheme: true})
 class TypewriterVisualEffectClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'TypewriterVisualEffectClass';

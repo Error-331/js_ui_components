@@ -4,17 +4,16 @@
 
 // external imports
 import * as React from 'react';
-import injectSheet from 'react-jss';
+import injectSheet, {useTheme} from 'react-jss';
 import classNames from 'classnames';
 
-import {is, isNil, defaultTo} from 'ramda';
+import {isNil, defaultTo} from 'ramda';
 import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/utility_helpers';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
-import {ModalClass} from './modal_component';
 
 // type definitions
 type CSSStylesType = {
@@ -148,10 +147,14 @@ const styles = theme => ({
 // component implementation
 
 // $FlowFixMe decorators
-@injectSheet(styles)
+@injectSheet(styles, {injectTheme: true})
 class OverlayClass extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'OverlayClass';
+
+    static defaultProps = {
+        show: false,
+    };
 
     // endregion
 
@@ -223,20 +226,20 @@ class OverlayClass extends React.Component<PropsTypes, StateTypes> {
 
     _shouldShow(): boolean {
         const {show} = this.props;
-        return defaultTo(ModalClass.defaultProps.show)(show);
+        return defaultTo(OverlayClass.defaultProps.show)(show);
     }
 
     // endregion
 
     // region handlers
     _onOverlayClick(event: SyntheticMouseEvent<any>): void {
-        event.stopPropagation()
+        event.stopPropagation();
 
         const targetDOMElement:EventTarget = event.target;
         const {classes, onOverlayClick} = this.props;
         const {childrenContainer} = classes;
 
-        if (is(Function, onOverlayClick) &&
+        if (typeof onOverlayClick === 'function' &&
             isNotNil(targetDOMElement) &&
             targetDOMElement instanceof HTMLDivElement &&
             targetDOMElement.classList.contains(childrenContainer)) {

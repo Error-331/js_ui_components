@@ -136,7 +136,7 @@ const styles = theme => ({
 // component implementation
 
 // $FlowFixMe decorators
-@injectSheet(styles)
+@injectSheet(styles, {injectTheme: true})
 class FormCheckboxVariant1Class extends React.Component<PropsTypes, StateTypes> {
     // region static props
     static displayName = 'FormCheckboxVariant1Class';
