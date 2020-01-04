@@ -3,19 +3,27 @@
 // @flow
 
 // external imports
-import React, { useState } from 'react';
-import {createUseStyles} from 'react-jss';
-
 import type {ElementType} from 'react';
 import type {FieldProps} from 'redux-form';
 
+import React, {useState, useCallback, useContext} from 'react';
+import {createUseStyles, useTheme} from 'react-jss';
+
+import {isNil} from 'ramda';
+
+
 // local imports
 import type {ThemeType} from './../../types/theme_types';
+import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
-import {generateRandomIdNumber} from "@webfuturistics/design_components/lib/helpers/general/dom_helpers";
-import {always, clone, cond, defaultTo, equals, isNil, T} from 'ramda';
 
-import {MainThemeContext} from "../../theming/providers";
+import GlobalOverlayComponent from './../window/global_overlay_component'
+
+
+import {generateRandomIdNumber} from "@webfuturistics/design_components/lib/helpers/general/dom_helpers";
+
+
+import {MainThemeContext} from './../../theming/providers';
 
 // type definitions
 type CSSStylesType = {
@@ -141,12 +149,77 @@ type StateTypes = {};
 // styles definition
 const useStyles = createUseStyles(theme => ({
     componentContainer: {
+        boxSizing: 'border-box',
+
+        position: 'relative',
+        display: 'flex',
+
+        flexBasis: 'auto',
+        flexShrink: 1,
+        flexGrow: 0,
+
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        alignContent: 'flex-start',
+
+        backgroundColor: 'yellow',
+
+        '& > $trackContainer': {
+            position: 'relative',
+
+            flexBasis: 'auto',
+            flexShrink: 1,
+            flexGrow: 1,
+
+            height: '1px',
+            backgroundColor: theme.inputStyles.inactiveColor,
+        },
+
+        '& > $handleContainer': {
+            position: 'absolute',
+
+            flexBasis: 'auto',
+            flexShrink: 1,
+            flexGrow: 0,
+
+            width: '12px',
+            height: '12px',
+
+            borderRadius: '50%',
+
+            cursor: 'pointer',
+            backgroundColor: theme.inputStyles.inactiveColor,
+        },
+
+        '& > $handleDummyContainer': {
+            position: 'relative',
+
+            flexBasis: 'auto',
+            flexShrink: 1,
+            flexGrow: 0,
+
+            width: '0px',
+            height: '12px',
+
+            borderRadius: '50%',
+
+            cursor: 'pointer',
+            backgroundColor: theme.inputStyles.inactiveColor,
+        },
     },
+
+    trackContainer: {},
+
+    handleContainer: {},
+    handleDummyContainer: {}
 }));
 
 /**
- * Text input component styled according to material-UI guidelines.
- * Component is intended to be used as a parameter for ['Redux-form' Field component](#reduxformtextinputcomponent).
+ * Slider input component styled according to material-UI guidelines.
+ * Component is intended to be used as a parameter for ['Redux-form' Field component](#reduxformsliderinputcomponent).
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)
@@ -154,47 +227,125 @@ const useStyles = createUseStyles(theme => ({
  */
 
 // component implementation
-function FormSliderInputFunction(props: PropsTypes) {
-    const theme = useTheme()
-    const classes = useStyles({...props, theme})
+function FormSliderInputComponent(props: PropsTypes) {
+    // region style hooks declaration
+    const theme = useTheme();
+    const classes = useStyles({...props, theme});
 
+    // endregion
 
-    // Declare a new state variable, which we'll call "count"
-    const [count, setCount] = useState(0);
+    // region context hooks declaration
+    const themeContext: ThemContextType = useContext(MainThemeContext);
 
-    return (
-        <div>
-            slider
+    // endregion
+
+    // region state hooks declaration
+    const [componentContainerLeft, setComponentContainerLeft] = useState(null);
+    const [componentContainerRight, setComponentContainerRight] = useState(null);
+
+    const [handleGrabbed, setHandleGrabbed] = useState(false);
+    const [clientX, setClientX] = useState(null);
+
+    // endregion
+
+    // region callback hooks declaration
+    const componentContainerRef: any = useCallback($node => {
+        if (!isNil($node)) {
+            const {left, right} = $node.getBoundingClientRect();
+
+            setComponentContainerLeft(left);
+            setComponentContainerRight(right);
+        }
+    }, []);
+
+    // endregion
+
+    // region event handler helpers
+    const containerMouseDownHandler = (): void => setHandleGrabbed(true);
+
+    const overlayMouseLeaveHandler = (): void => setHandleGrabbed(false);
+    const overlayMouseUpHandler = (): void => setHandleGrabbed(false);
+    const overlayMouseMoveHandler = (event: SyntheticEvent<HTMLDivElement>): void => {
+        if (handleGrabbed) {
+            setClientX(event.clientX);
+        }
+    };
+
+    // endregion
+
+    // region render helpers
+    const renderOverlay = (): React.Node => {
+      return (
+          <GlobalOverlayComponent
+              show={handleGrabbed}
+              opacity={0}
+
+              onMouseUp={overlayMouseUpHandler}
+              onMouseMove={overlayMouseMoveHandler}
+              onMouseLeave={overlayMouseLeaveHandler}
+          />
+      );
+    };
+
+    const renderHandleDummyContainer = (): React.Node => {
+      const {handleDummyContainer} = classes;
+
+      return (
+        <div className={handleDummyContainer}>
         </div>
-    );
-}
+      );
+    };
 
-/*
-    render(): React.Node {
-        if (isNil(this.$testRef) || isNil(this.$testRef.current)) {
-        } else {
-            console.log('clientLeft:', this.$testRef.current.clientLeft);
-            console.log('clientTop:', this.$testRef.current.clientTop);
-            console.log('scrollTop:', this.$testRef.current.scrollTop);
-            console.log('getBoundingClientRect():', this.$testRef.current.getBoundingClientRect());
+    const renderHandleContainer = (): React.Node => {
+        const {handleContainer} = classes;
+
+        let c = 0;
+
+        if (!isNil(clientX) && !isNil(componentContainerLeft)) {
+            c = clientX - componentContainerLeft;
         }
 
-        return <div ref={this.$testRef}>
-            Slider
-        </div>;
-    }
- */
+        const style = {
+            left: `${c}px`,
+        };
 
-function FormSliderInputComponent(props: PropsTypes) {
-    return (
-        <MainThemeContext.Consumer>
-            {windowDimensions => <FormSliderInputFunction {...props} {...windowDimensions} />}
-        </MainThemeContext.Consumer>
-    );
+        return <div
+            className={handleContainer}
+            style={style}
+        >
+        </div>;
+    };
+
+    const renderTrackContainer = (): React.Node => {
+        const {trackContainer} = classes;
+
+        return <div className={trackContainer}>
+        </div>;
+    };
+
+    const renderComponentContainer = (): React.Node => {
+      const {componentContainer} = classes;
+
+      return (
+          <div
+              ref={componentContainerRef}
+              className={componentContainer}
+
+              onMouseDown={containerMouseDownHandler}
+         //     onMouseLeave={containerMouseOutHandler}
+          >
+              {renderTrackContainer()}
+              {renderHandleContainer()}
+              {renderHandleDummyContainer()}
+              {renderOverlay()}
+          </div>
+      );
+    };
+
+    // endregion
+
+    return renderComponentContainer();
 }
 
-FormSliderInputComponent.displayName = 'FormSliderInputComponent';
-
 // exports
-export {FormSliderInputFunction, FormSliderInputComponent};
 export default FormSliderInputComponent;

@@ -40,6 +40,24 @@ type PropsTypes = {
     onOverlayClick?: (event: SyntheticMouseEvent<any>) => void,
 
     /**
+     * Callback function which will be called when a mouse button is pressed while the pointer is inside the overlay.
+     */
+
+    onMouseUp?: (event: SyntheticEvent<HTMLElement>) => void,
+
+    /**
+     * Callback function which will be called when a mouse is moved while the cursor's is inside the overlay.
+     */
+
+    onMouseMove?: (event: SyntheticEvent<HTMLElement>) => void,
+
+    /**
+     * Callback function which will be called when a mouse is is moved out of the overlay.
+     */
+
+    onMouseLeave?: (event: SyntheticEvent<HTMLElement>) => void,
+
+    /**
      * Child node (with optional sub-nodes)
      */
 
@@ -164,6 +182,10 @@ class OverlayClass extends React.Component<PropsTypes, StateTypes> {
         const self: any = this;
 
         self._onOverlayClick = self._onOverlayClick.bind(this);
+        self._onOverlayMouseUp = self._onOverlayMouseUp.bind(this);
+        self._onOverlayMouseMove = self._onOverlayMouseMove.bind(this);
+        self._onOverlayMouseLeave = self._onOverlayMouseLeave.bind(this);
+
         this.state = {
             zIndex: props.theme.styleValuesRegister.zIndex
         };
@@ -232,6 +254,30 @@ class OverlayClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region handlers
+    _onOverlayMouseLeave(event: SyntheticMouseEvent<any>): void {
+        const {onMouseLeave} = this.props;
+
+        if (typeof onMouseLeave === 'function') {
+            onMouseLeave(event);
+        }
+    }
+
+    _onOverlayMouseMove(event: SyntheticMouseEvent<any>): void {
+        const {onMouseMove} = this.props;
+
+        if (typeof onMouseMove === 'function') {
+            onMouseMove(event);
+        }
+    }
+
+    _onOverlayMouseUp(event: SyntheticMouseEvent<any>): void {
+        const {onMouseUp} = this.props;
+
+        if (typeof onMouseUp === 'function') {
+            onMouseUp(event);
+        }
+    }
+
     _onOverlayClick(event: SyntheticMouseEvent<any>): void {
         event.stopPropagation();
 
@@ -266,6 +312,10 @@ class OverlayClass extends React.Component<PropsTypes, StateTypes> {
     _renderOverlayContainer(): React.Node {
         return <div
             onClick={this._onOverlayClick}
+            onMouseUp={this._onOverlayMouseUp}
+            onMouseMove={this._onOverlayMouseMove}
+            onMouseLeave={this._onOverlayMouseLeave}
+
             className={this._getOverlayContainerClasses()}
             style={this._getOverlayContainerStyle()}
         >

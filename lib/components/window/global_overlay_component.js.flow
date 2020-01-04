@@ -32,6 +32,24 @@ type PropsTypes = {
     onOverlayClick?: (event: SyntheticEvent<HTMLElement>) => void,
 
     /**
+     * Callback function which will be called when a mouse button is pressed while the pointer is inside the overlay.
+     */
+
+    onMouseUp?: (event: SyntheticEvent<HTMLElement>) => void,
+
+    /**
+     * Callback function which will be called when a mouse is moved while the cursor's is inside the overlay.
+     */
+
+    onMouseMove?: (event: SyntheticEvent<HTMLElement>) => void,
+
+    /**
+     * Callback function which will be called when a mouse is is moved out of the overlay.
+     */
+
+    onMouseLeave?: (event: SyntheticEvent<HTMLElement>) => void,
+
+    /**
      * Child node (with optional sub-nodes)
      */
 
@@ -72,13 +90,17 @@ const styles = theme => ({
 
 // component implementation
 function GlobalOverlayFunction(props: PropsTypes) {
-    const {show, opacity, onOverlayClick, children, classes} = props;
+    const {show, opacity, onOverlayClick, onMouseUp, onMouseMove, onMouseLeave, children, classes} = props;
 
     return <OverlayComponent
         show={show}
         opacity={opacity}
-        onOverlayClick={onOverlayClick}
         containerClassName={classes.componentContainer}
+
+        onOverlayClick={onOverlayClick}
+        onMouseUp={onMouseUp}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
     >
         {children}
     </OverlayComponent>;
