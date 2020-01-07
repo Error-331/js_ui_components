@@ -10,7 +10,7 @@ import {Field} from 'redux-form/immutable';
 import {FormRadioButtonInputComponent} from './../form/form_radio_button_input_component';
 
 // type definitions
-type PropsTypes = {
+export type PropsTypes = {
     /**
      * Input name
      */

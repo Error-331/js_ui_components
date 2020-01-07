@@ -26,7 +26,11 @@ const testItems1 = [
         {type: 'dropdown', hspan: 2, name: 'input5', props: {label: 'Role', options: dropDownOptions}}
     ],
     [
-        {type: 'date', hspan: 3, name: 'input6', props: {label: 'Date of birth'}}
+        {type: 'radio', name: 'input6', props: {value: 'male', label: 'Male', labelPosition: 'right'}},
+        {type: 'date', hspan: 2, name: 'input7', props: {label: 'Date of birth'}}
+    ],
+    [
+        {type: 'radio', name: 'input6', props: {value: 'female', label: 'Female', labelPosition: 'right'}}
     ]
 ];
 

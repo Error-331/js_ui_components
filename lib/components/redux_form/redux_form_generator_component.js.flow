@@ -16,6 +16,7 @@ import type {ItemType as GridItemType} from './../grid/grid_generator_component'
 
 import type {PropsTypes as ReduxFormTextInputPropsType} from './redux_form_text_input_component';
 import type {PropsTypes as ReduxCheckboxInputPropsType} from './redux_form_checkbox_input_component';
+import type {PropsTypes as ReduxRadioButtonInputPropsType} from './redux_form_radio_button_input_component';
 import type {PropsTypes as ReduxFormDropDownInputPropsType} from './redux_form_drop_down_input_component';
 import type {PropsTypes as ReduxFormDateInputPropsType} from './redux_form_date_input_component';
 
@@ -24,6 +25,7 @@ import {GridGeneratorComponent} from './../grid/grid_generator_component';
 
 import {ReduxFormTextInputComponent} from './redux_form_text_input_component';
 import {ReduxFormCheckboxInputComponent} from './redux_form_checkbox_input_component';
+import {ReduxFormRadioButtonInputComponent} from './redux_form_radio_button_input_component';
 import {ReduxFormDropDownInputComponent} from './redux_form_drop_down_input_component';
 import {ReduxFormDateInputComponent} from './redux_form_date_input_component';
 
@@ -40,7 +42,7 @@ export type PropsType = ReduxFormTextInputPropsType |
 export type ItemType = {
     elm?: ElementType,
     props: PropsType,
-    type?: 'text' | 'textarea' | 'checkbox' | 'dropdown' | 'date',
+    type?: 'text' | 'textarea' | 'checkbox' | 'radio' | 'dropdown' | 'date',
     name: string,
     hspan?: number,
     vspan?: number,
@@ -229,6 +231,8 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
                 return this._prepareTextLikeInputItem<ReduxFormTextInputPropsType>(ReduxFormTextInputComponent, item, {type: 'textarea'});
             case 'checkbox':
                 return this._prepareInputItem<ReduxCheckboxInputPropsType>(ReduxFormCheckboxInputComponent, item);
+            case 'radio':
+                return this._prepareInputItem<ReduxRadioButtonInputPropsType>(ReduxFormRadioButtonInputComponent, item);
             case 'dropdown':
                 return this._prepareTextLikeInputItem<ReduxFormDropDownInputPropsType>(ReduxFormDropDownInputComponent, item);
             case 'date':
