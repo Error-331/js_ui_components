@@ -3,25 +3,50 @@
 // @flow
 
 // external imports
-import type {ElementType} from 'react';
+import type {ElementType, Node} from 'react';
 import type {FieldProps} from 'redux-form';
 
-import React, {useState, useCallback, useContext} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
 
-import {isNil} from 'ramda';
+import {
+    __,
+    T,
+    always,
+    identity,
+    isNil,
+    isEmpty,
+    ifElse,
+    cond,
+    any,
+    defaultTo,
+    nth,
+    prop,
+    mergeRight,
+    apply,
+    pipe,
+    gt,
+    lt,
+    clamp,
+    prepend,
+    reduce,
+    sortBy,
+    toPairs,
+    keys,
+    subtract,
+    multiply,
+    divide
+} from 'ramda';
 
+import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
+import FormSliderHandleComponent from './form_slider_handle_component';
 import GlobalOverlayComponent from './../window/global_overlay_component'
-
-
-import {generateRandomIdNumber} from "@webfuturistics/design_components/lib/helpers/general/dom_helpers";
-
 
 import {MainThemeContext} from './../../theming/providers';
 
@@ -30,24 +55,40 @@ type CSSStylesType = {
     [string]: mixed
 };
 
+type HandlesDataType = {
+    [string]: number
+};
+
 export type FormTextInputTypes = {
     /**
-     * Number that indicates which visual variant will be used to represent the text input
+     * The minimum allowed value of the slider.
+     */
+
+    min?: number,
+
+    /**
+     * The maximum allowed value of the slider.
+     */
+
+    max?: number,
+
+    /**
+     * Granularity of the slider.
+     */
+
+    step?: number,
+
+    /**
+     * Number that indicates which visual variant will be used to represent the slider input
      */
 
     variant?: number,
 
     /**
-     * Custom made representation of current component
+     * Custom representation of slider handle
      */
 
-    customComponent?: ElementType | React.Node,
-
-    /**
-     * Input type (text or password)
-     */
-
-    type?: InputTypes,
+    customHandleComponent?: ElementType | Node,
 
     /**
      * Flag that dictates whether component should be readable only (text can be readable but not editable)
@@ -62,52 +103,10 @@ export type FormTextInputTypes = {
     disabled?: ?boolean,
 
     /**
-     * Flag that dictates whether errors should be shown only after user interacts with input or always (e.g. even if initial value is set)
-     */
-
-    errorsIfTouched?: boolean,
-
-    /**
-     * Flag that dictates whether warnings should be shown only after user interacts with input or always (e.g. even if initial value is set)
-     */
-
-    warningsIfTouched?: boolean,
-
-    /**
-     * Placeholder text used as hint for the user of how appropriate data should look like
-     */
-
-    placeholder?: ?string,
-
-    /**
-     * Input label
-     */
-
-    label?: ?string,
-
-    /**
      * Class name which will be added to the component container (main outer container)
      */
 
     componentContainerClassName?: string,
-
-    /**
-     * Class names which will be added to the icon container of the current component
-     */
-
-    iconClassNames?: ?string,
-
-    /**
-     * Styles for component container (main outer container) of the form text input component
-     */
-
-    componentContainerStyles?: CSSStylesType,
-
-    /**
-     * Alias of 'componentContainerStyles'
-     */
-
-    style?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -165,8 +164,6 @@ const useStyles = createUseStyles(theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
-        backgroundColor: 'yellow',
-
         '& > $trackContainer': {
             position: 'relative',
 
@@ -177,45 +174,16 @@ const useStyles = createUseStyles(theme => ({
             height: '1px',
             backgroundColor: theme.inputStyles.inactiveColor,
         },
-
-        '& > $handleContainer': {
-            position: 'absolute',
-
-            flexBasis: 'auto',
-            flexShrink: 1,
-            flexGrow: 0,
-
-            width: '12px',
-            height: '12px',
-
-            borderRadius: '50%',
-
-            cursor: 'pointer',
-            backgroundColor: theme.inputStyles.inactiveColor,
-        },
-
-        '& > $handleDummyContainer': {
-            position: 'relative',
-
-            flexBasis: 'auto',
-            flexShrink: 1,
-            flexGrow: 0,
-
-            width: '0px',
-            height: '12px',
-
-            borderRadius: '50%',
-
-            cursor: 'pointer',
-            backgroundColor: theme.inputStyles.inactiveColor,
-        },
     },
 
     trackContainer: {},
-
-    handleContainer: {},
-    handleDummyContainer: {}
+    handleDummyContainer: {},
 }));
+
+const dummyHandleStyles: CSSStylesType = {
+    position: 'relative',
+    width: '0px',
+};
 
 /**
  * Slider input component styled according to material-UI guidelines.
@@ -227,7 +195,24 @@ const useStyles = createUseStyles(theme => ({
  */
 
 // component implementation
+// TODO: capture 'mouseup' event not on overlay but on document
 function FormSliderInputComponent(props: PropsTypes) {
+    // region private variables declaration
+    const sliderMin: number = defaultTo(0, props.min);
+    const sliderMax: number = defaultTo(100, props.max);
+    const sliderStep: number = defaultTo(1, props.step);
+
+    let {value, onChange} = defaultTo({}, props.input);
+    let {initial} = defaultTo({}, props.meta);
+
+    initial = !isNil(initial) && !isNil(initial.toObject) ? initial.toObject() : initial;
+
+    value = defaultTo(null)(value);
+    value = isEmpty(value) ? null : value;
+    value = !isNil(value) && !isNil(value.toObject) ? value.toObject() : value;
+
+    // endregion
+
     // region style hooks declaration
     const theme = useTheme();
     const classes = useStyles({...props, theme});
@@ -240,11 +225,23 @@ function FormSliderInputComponent(props: PropsTypes) {
     // endregion
 
     // region state hooks declaration
+    const [initialHandleId, setInitialHandleId] = useState(null);
+    const [grabbedHandleId, setGrabbedHandleId] = useState(null);
+
     const [componentContainerLeft, setComponentContainerLeft] = useState(null);
     const [componentContainerRight, setComponentContainerRight] = useState(null);
 
-    const [handleGrabbed, setHandleGrabbed] = useState(false);
-    const [clientX, setClientX] = useState(null);
+    // endregion
+
+    // region effect hooks declaration
+    useEffect(() => setInitialHandleId(`handle_${generateRandomIdNumber()}`), []);
+
+    // endregion
+
+    // region state variables declaration
+    const sliderWidth: number | null = ifElse(any(isNil), always(null), apply(subtract))([componentContainerRight, componentContainerLeft]);
+    const unitsCount: number = divide(subtract(sliderMax, sliderMin), sliderStep);
+    const unitWidth: number | null = ifElse(any(isNil), always(null), apply(divide))([sliderWidth, unitsCount]);
 
     // endregion
 
@@ -256,28 +253,98 @@ function FormSliderInputComponent(props: PropsTypes) {
             setComponentContainerLeft(left);
             setComponentContainerRight(right);
         }
-    }, []);
+    }, [themeContext.windowDimensions.innerWidth]);
+
+    // endregion
+
+    // region business logic
+    const clampHandleXPos = clamp(0, sliderWidth);
+
+    const findNearestGrabbedHandleId = (clientX: number): string | null => {
+        return ifElse(
+            isNil,
+            always(null),
+            pipe(
+                toPairs,
+                sortBy(
+                    pipe(
+                        prop(1),
+                        subtract(clientX),
+                        Math.abs
+                    )
+                ),
+                nth(0),
+                prop(0)
+            )
+        )(getHandlesData())
+    };
+
+    const normalizeClientX = cond([
+        [(clientX: number | null) => any(isNil, [clientX, componentContainerLeft, componentContainerRight]), always(0)],
+        [(clientX: number | null) => lt(clientX, componentContainerLeft), always(componentContainerLeft)],
+        [(clientX: number | null) => gt(clientX, componentContainerRight), always(componentContainerRight)],
+        [T, identity],
+    ]);
+
+    const calcUnitsByClientX = pipe(
+        normalizeClientX,
+        prepend(__, [componentContainerLeft]),
+        ifElse(any(isNil), always(0), apply(subtract)),
+        prepend(__, [unitWidth]),
+        ifElse(
+            any(isNil),
+            always(0),
+            pipe(apply(divide), Math.round)
+        ),
+    );
+
+    const calcHandleXPosByUnits = pipe(
+        multiply(sliderWidth),
+        divide(__, unitsCount),
+        Math.round,
+        clampHandleXPos
+    );
+
+    const getHandlesData = ():  HandlesDataType | null => {
+        if (isNil(initialHandleId)) {
+            return null;
+        }
+
+        const initialHandlesData: HandlesDataType = defaultTo({[initialHandleId]: 0})(initial);
+        const handlesData: HandlesDataType = defaultTo(initialHandlesData)(value);
+
+        return handlesData;
+    };
 
     // endregion
 
     // region event handler helpers
-    const containerMouseDownHandler = (): void => setHandleGrabbed(true);
+    const containerMouseDownHandler = (event: SyntheticMouseEvent<HTMLDivElement>): void => {
+        const currentUnits: number = calcUnitsByClientX(event.clientX);
+        const nearestGrabbedHandleId: string | null = findNearestGrabbedHandleId(currentUnits);
 
-    const overlayMouseLeaveHandler = (): void => setHandleGrabbed(false);
-    const overlayMouseUpHandler = (): void => setHandleGrabbed(false);
-    const overlayMouseMoveHandler = (event: SyntheticEvent<HTMLDivElement>): void => {
-        if (handleGrabbed) {
-            setClientX(event.clientX);
+        if (!isNil(nearestGrabbedHandleId)) {
+            setGrabbedHandleId(nearestGrabbedHandleId);
+            onChange(mergeRight(getHandlesData(), {[nearestGrabbedHandleId]: currentUnits}));
+        }
+    };
+
+    const overlayMouseLeaveHandler = (): void => setGrabbedHandleId(null);
+    const overlayMouseUpHandler = (): void => setGrabbedHandleId(null);
+    const overlayMouseMoveHandler = (event: SyntheticMouseEvent<HTMLDivElement>): void => {
+        if (!isNil(grabbedHandleId)) {
+            const currentUnits: number = calcUnitsByClientX(event.clientX);
+            onChange(mergeRight(getHandlesData(), {[grabbedHandleId]: currentUnits}))
         }
     };
 
     // endregion
 
     // region render helpers
-    const renderOverlay = (): React.Node => {
+    const renderOverlay = (): Node => {
       return (
           <GlobalOverlayComponent
-              show={handleGrabbed}
+              show={!isNil(grabbedHandleId)}
               opacity={0}
 
               onMouseUp={overlayMouseUpHandler}
@@ -287,43 +354,42 @@ function FormSliderInputComponent(props: PropsTypes) {
       );
     };
 
-    const renderHandleDummyContainer = (): React.Node => {
-      const {handleDummyContainer} = classes;
+    const renderDummyHandleContainer = (): Node => <FormSliderHandleComponent style={dummyHandleStyles}/>;
 
-      return (
-        <div className={handleDummyContainer}>
-        </div>
-      );
-    };
+    const renderHandleContainers = (): Node => {
+        const handlesData: HandlesDataType | null = getHandlesData();
 
-    const renderHandleContainer = (): React.Node => {
-        const {handleContainer} = classes;
-
-        let c = 0;
-
-        if (!isNil(clientX) && !isNil(componentContainerLeft)) {
-            c = clientX - componentContainerLeft;
+        if (isNil(handlesData)) {
+            return null;
         }
 
-        const style = {
-            left: `${c}px`,
-        };
+        return reduce((nodes: Node[], id: string) => {
+            const xPos: number = calcHandleXPosByUnits(handlesData[id]);
+            const active: boolean = !isNil(grabbedHandleId) && grabbedHandleId === id;
 
-        return <div
-            className={handleContainer}
-            style={style}
-        >
-        </div>;
+            nodes.push(<FormSliderHandleComponent
+                variant={props.variant}
+
+                key={id}
+                value={xPos}
+                active={ active}
+
+                readOnly={props.readOnly}
+                disabled={props.disabled}
+            />);
+
+            return nodes;
+        }, [], keys(handlesData))
     };
 
-    const renderTrackContainer = (): React.Node => {
+    const renderTrackContainer = (): Node => {
         const {trackContainer} = classes;
 
         return <div className={trackContainer}>
         </div>;
     };
 
-    const renderComponentContainer = (): React.Node => {
+    const renderComponentContainer = (): Node => {
       const {componentContainer} = classes;
 
       return (
@@ -332,11 +398,11 @@ function FormSliderInputComponent(props: PropsTypes) {
               className={componentContainer}
 
               onMouseDown={containerMouseDownHandler}
-         //     onMouseLeave={containerMouseOutHandler}
           >
               {renderTrackContainer()}
-              {renderHandleContainer()}
-              {renderHandleDummyContainer()}
+              {renderHandleContainers()}
+              {renderDummyHandleContainer()}
+
               {renderOverlay()}
           </div>
       );
@@ -344,6 +410,7 @@ function FormSliderInputComponent(props: PropsTypes) {
 
     // endregion
 
+    // init render
     return renderComponentContainer();
 }
 

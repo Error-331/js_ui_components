@@ -92,6 +92,10 @@ const ComponentFormContainerConnected = reduxForm({
             testFromDateInputComponentWithDefaultValue5: moment('2017-02-08 09:30:26'),
         },
 
+        reduxSliderInputComponents: {
+            testFromSliderInputComponentWithDefaultValue1: {handle1: 10, handle2: 50},
+        },
+
         login: {
           email: '',
           password: '',
