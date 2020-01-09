@@ -20,7 +20,7 @@ function TestContainerComponent(props) {
                </SimpleFlexGridRow>
                
                <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
-                   <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
+                   <SimpleFlexGridColumn style={{padding: '15px 5px 15px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
                        <ReduxFormSliderInputComponent
                            variant={2}
                            name='testFormSliderInputComponent1'
@@ -58,7 +58,7 @@ function TestContainerComponent(props) {
                </SimpleFlexGridRow>
                
                <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
-                   <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
+                   <SimpleFlexGridColumn style={{padding: '15px 5px 15px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
                        <ReduxFormSliderInputComponent
                            variant={2}
                            name='reduxSliderInputComponents.testFromSliderInputComponentWithDefaultValue1'

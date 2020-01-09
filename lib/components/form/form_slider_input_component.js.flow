@@ -8,6 +8,7 @@ import type {FieldProps} from 'redux-form';
 
 import React, {useState, useEffect, useCallback, useContext} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
+import classNames from 'classnames';
 
 import {
     __,
@@ -27,10 +28,17 @@ import {
     pipe,
     gt,
     lt,
+    equals,
     clamp,
+    length,
+    head,
+    last,
     prepend,
+    map,
     reduce,
+    juxt,
     sortBy,
+    pair,
     toPairs,
     keys,
     subtract,
@@ -174,9 +182,44 @@ const useStyles = createUseStyles(theme => ({
             height: '1px',
             backgroundColor: theme.inputStyles.inactiveColor,
         },
+
+        '& > $trackProgressContainer': {
+            position: 'absolute',
+
+            flexBasis: 'auto',
+            flexShrink: 0,
+            flexGrow: 0,
+
+            width: '0px',
+            height: '1px',
+
+            backgroundColor: theme.inputStyles.activeColor,
+        },
+
+        '&.variant1': {
+            '& > $trackContainer': {
+                backgroundColor: theme.inputStyles.inactiveColor,
+            },
+
+            '& > $trackProgressContainer': {
+                backgroundColor: theme.inputStyles.activeColor,
+            },
+        },
+
+        '&.variant2': {
+            '& > $trackContainer': {
+                backgroundColor: theme.inputStyles.alternateInputColor,
+            },
+
+            '& > $trackProgressContainer': {
+                height: '2px',
+                backgroundColor: theme.inputStyles.alternateInputColor,
+            },
+        }
     },
 
     trackContainer: {},
+    trackProgressContainer: {},
     handleDummyContainer: {},
 }));
 
@@ -201,6 +244,8 @@ function FormSliderInputComponent(props: PropsTypes) {
     const sliderMin: number = defaultTo(0, props.min);
     const sliderMax: number = defaultTo(100, props.max);
     const sliderStep: number = defaultTo(1, props.step);
+
+    const sliderVariant: number = defaultTo(1, props.variant);
 
     let {value, onChange} = defaultTo({}, props.input);
     let {initial} = defaultTo({}, props.meta);
@@ -259,6 +304,7 @@ function FormSliderInputComponent(props: PropsTypes) {
 
     // region business logic
     const clampHandleXPos = clamp(0, sliderWidth);
+
 
     const findNearestGrabbedHandleId = (clientX: number): string | null => {
         return ifElse(
@@ -372,7 +418,7 @@ function FormSliderInputComponent(props: PropsTypes) {
 
                 key={id}
                 value={xPos}
-                active={ active}
+                active={active}
 
                 readOnly={props.readOnly}
                 disabled={props.disabled}
@@ -380,6 +426,43 @@ function FormSliderInputComponent(props: PropsTypes) {
 
             return nodes;
         }, [], keys(handlesData))
+    };
+
+    const renderProgressTrackContainer = (): Node => {
+        const handlesData: HandlesDataType | null = getHandlesData();
+
+        if (isNil(handlesData)) {
+            return null;
+        }
+
+        const [left, right] = pipe(
+            pipe(
+                toPairs,
+                sortBy(
+                    prop(1)
+                ),
+            ),
+
+            cond([
+                [pipe(length, equals(__, 0)), always([0, 0])],
+                [pipe(length, equals(__, 1)), pipe(nth(0), nth(1), pair(0))],
+                [pipe(length, gt(__, 1)), pipe(juxt([head, last]), map(nth(1)))],
+                [T, always([0, 0])]
+            ]),
+
+            map(calcHandleXPosByUnits),
+        )(handlesData);
+
+        const style: CSSStylesType = {
+            left: `${left}px`,
+
+            width: `${right - left}px`,
+        };
+
+        const {trackProgressContainer} = classes;
+
+        return <div className={trackProgressContainer} style={style}>
+        </div>;
     };
 
     const renderTrackContainer = (): Node => {
@@ -391,15 +474,20 @@ function FormSliderInputComponent(props: PropsTypes) {
 
     const renderComponentContainer = (): Node => {
       const {componentContainer} = classes;
+      const className: string = classNames(componentContainer, {
+          variant1: equals(sliderVariant, 1),
+          variant2: equals(sliderVariant, 2),
+      });
 
       return (
           <div
               ref={componentContainerRef}
-              className={componentContainer}
+              className={className}
 
               onMouseDown={containerMouseDownHandler}
           >
               {renderTrackContainer()}
+              {renderProgressTrackContainer()}
               {renderHandleContainers()}
               {renderDummyHandleContainer()}
 

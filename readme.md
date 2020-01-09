@@ -1,6 +1,6 @@
 # UI Components (WebFuturistics)
 
-# Component sections
+# Component sections (class)
 
     // region static props
     // endregion
@@ -34,6 +34,40 @@
 
     // region render methods
     // endregion
+    
+# Component sections (function)
+
+    // region private variables declaration
+    // endregion
+    
+    // region style hooks declaration
+    // endregion
+    
+    // region context hooks declaration
+    // endregion
+    
+    // region state hooks declaration
+    // endregion
+    
+    // region effect hooks declaration
+    // endregion
+    
+    // region state variables declaration
+    // endregion
+    
+    // region callback hooks declaration
+    // endregion
+    
+    // region business logic
+    // endregion
+    
+    // region event handler helpers
+    // endregion
+    
+    // region render helpers
+    // endregion
+    
+    // init render
     
 # Container boilerplate  
 

@@ -9,7 +9,7 @@ import type {FieldProps} from 'redux-form';
 import React, {useState, useCallback, useContext} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
 
-import {always, isNil, ifElse, defaultTo, any, mergeRight, apply, subtract, divide} from 'ramda';
+import {always, isNil, ifElse, defaultTo, any, mergeRight, apply, subtract, divide, equals} from 'ramda';
 import classNames from 'classnames';
 
 // local imports
@@ -120,6 +120,58 @@ const useStyles = createUseStyles(theme => ({
                     }`,
             }
         },
+
+        '&.variant1': {
+            '& > $handleKnob': {
+                backgroundColor: theme.inputStyles.inactiveColor,
+
+                '&:hover': {
+                    boxShadow: `0px 0px 0px 8px ${
+                        apply(
+                            theme.colorUtilities.toRGBAStyleString,
+                            [...theme.colorUtilities.hexToRGBArray(theme.inputStyles.inactiveColor), 0.2]
+                        )
+
+                        }`,
+                },
+
+                '&.active': {
+                    boxShadow: `0px 0px 0px 12px ${
+                        apply(
+                            theme.colorUtilities.toRGBAStyleString,
+                            [...theme.colorUtilities.hexToRGBArray(theme.inputStyles.inactiveColor), 0.2]
+                        )
+
+                        }`,
+                }
+            },
+        },
+
+        '&.variant2': {
+            '& > $handleKnob': {
+                backgroundColor: theme.inputStyles.alternateInputColor,
+
+                '&:hover': {
+                    boxShadow: `0px 0px 0px 8px ${
+                        apply(
+                            theme.colorUtilities.toRGBAStyleString,
+                            [...theme.colorUtilities.hexToRGBArray(theme.inputStyles.alternateInputColor), 0.2]
+                        )
+
+                        }`,
+                },
+
+                '&.active': {
+                    boxShadow: `0px 0px 0px 12px ${
+                        apply(
+                            theme.colorUtilities.toRGBAStyleString,
+                            [...theme.colorUtilities.hexToRGBArray(theme.inputStyles.alternateInputColor), 0.2]
+                        )
+
+                        }`,
+                }
+            },
+        },
     },
 
     handleKnob: {},
@@ -137,6 +189,8 @@ const useStyles = createUseStyles(theme => ({
 // component implementation
 function FormSliderHandleComponent(props: PropsTypes) {
     // region private variables declaration
+    const handleVariant: number = defaultTo(1, props.variant);
+
     const active: boolean = defaultTo(false)(props.active);
     const style: CSSStylesType = defaultTo({})(props.style);
 
@@ -200,6 +254,11 @@ function FormSliderHandleComponent(props: PropsTypes) {
 
     const renderComponentContainer = (): Node => {
         const {componentContainer} = classes;
+        const className: string = classNames(componentContainer, {
+            variant1: equals(handleVariant, 1),
+            variant2: equals(handleVariant, 2),
+        });
+
 
         const preparedStyle = mergeRight({
             left: `${handlePositionXByContainerWidth}px`,
@@ -208,7 +267,7 @@ function FormSliderHandleComponent(props: PropsTypes) {
         return <div
             ref={componentContainerRef}
 
-            className={componentContainer}
+            className={className}
             style={preparedStyle}
         >
             {renderHandleKnob()}
