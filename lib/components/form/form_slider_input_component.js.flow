@@ -3,25 +3,58 @@
 // @flow
 
 // external imports
-import type {ElementType} from 'react';
+import type {Node} from 'react';
 import type {FieldProps} from 'redux-form';
 
-import React, {useState, useCallback, useContext} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
+import classNames from 'classnames';
 
-import {isNil} from 'ramda';
+import {
+    __,
+    T,
+    always,
+    identity,
+    isNil,
+    isEmpty,
+    ifElse,
+    cond,
+    any,
+    defaultTo,
+    nth,
+    prop,
+    mergeRight,
+    apply,
+    pipe,
+    gt,
+    lt,
+    equals,
+    clamp,
+    length,
+    head,
+    last,
+    prepend,
+    map,
+    reduce,
+    juxt,
+    sortBy,
+    pair,
+    toPairs,
+    keys,
+    subtract,
+    multiply,
+    divide
+} from 'ramda';
 
+import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
+import FormSliderHandleComponent from './form_slider_handle_component';
 import GlobalOverlayComponent from './../window/global_overlay_component'
-
-
-import {generateRandomIdNumber} from "@webfuturistics/design_components/lib/helpers/general/dom_helpers";
-
 
 import {MainThemeContext} from './../../theming/providers';
 
@@ -30,60 +63,46 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-export type FormTextInputTypes = {
+type HandlesDataType = {
+    [string]: number
+};
+
+export type FormSliderInputTypes = {
     /**
-     * Number that indicates which visual variant will be used to represent the text input
+     * The minimum allowed value of the slider.
+     */
+
+    min?: number,
+
+    /**
+     * The maximum allowed value of the slider.
+     */
+
+    max?: number,
+
+    /**
+     * Granularity of the slider.
+     */
+
+    step?: number,
+
+    /**
+     * Number that indicates which visual variant will be used to represent the slider input
      */
 
     variant?: number,
 
     /**
-     * Custom made representation of current component
-     */
-
-    customComponent?: ElementType | React.Node,
-
-    /**
-     * Input type (text or password)
-     */
-
-    type?: InputTypes,
-
-    /**
-     * Flag that dictates whether component should be readable only (text can be readable but not editable)
+     * Flag that dictates whether component should be readable only (handles will be fixed in place)
      */
 
     readOnly?: ?boolean,
 
     /**
-     * Flag that dictates whether component should be disabled (text can not be readable or editable)
+     * Flag that dictates whether component should be disabled (handles will be fixed in place and whole component will be grayed)
      */
 
     disabled?: ?boolean,
-
-    /**
-     * Flag that dictates whether errors should be shown only after user interacts with input or always (e.g. even if initial value is set)
-     */
-
-    errorsIfTouched?: boolean,
-
-    /**
-     * Flag that dictates whether warnings should be shown only after user interacts with input or always (e.g. even if initial value is set)
-     */
-
-    warningsIfTouched?: boolean,
-
-    /**
-     * Placeholder text used as hint for the user of how appropriate data should look like
-     */
-
-    placeholder?: ?string,
-
-    /**
-     * Input label
-     */
-
-    label?: ?string,
 
     /**
      * Class name which will be added to the component container (main outer container)
@@ -92,13 +111,7 @@ export type FormTextInputTypes = {
     componentContainerClassName?: string,
 
     /**
-     * Class names which will be added to the icon container of the current component
-     */
-
-    iconClassNames?: ?string,
-
-    /**
-     * Styles for component container (main outer container) of the form text input component
+     * Styles for component container (main outer container) of the slider input component
      */
 
     componentContainerStyles?: CSSStylesType,
@@ -108,6 +121,36 @@ export type FormTextInputTypes = {
      */
 
     style?: CSSStylesType,
+
+    /**
+     * Styles for slider track
+     */
+
+    trackStyle?: CSSStylesType,
+
+    /**
+     * Styles for slider track which displays how far the handle have been dragged by the user
+     */
+
+    trackProgressStyle?: CSSStylesType,
+
+    /**
+     * Styles for handle container (main outer container) of the slider input component
+     */
+
+    knobStyle?: CSSStylesType,
+
+    /**
+     * Styles for handle container (main outer container) of the slider input component which are applied when user puts mouse cursor over this container
+     */
+
+    knobHoverStyle?: CSSStylesType,
+
+    /**
+     * Styles for handle container (main outer container) of the slider input component which are applied when user drags the slider handle
+     */
+
+    activeKnobStyle?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -126,7 +169,7 @@ export type FormTextInputTypes = {
     input?: ?ReduxFormFieldComponentInputDataPropsTypes,
 };
 
-type PropsTypes = FieldProps & FormTextInputTypes & {
+type PropsTypes = FieldProps & FormSliderInputTypes & {
     /**
      * JSS theme object
      *
@@ -165,8 +208,6 @@ const useStyles = createUseStyles(theme => ({
         alignItems: 'center',
         alignContent: 'flex-start',
 
-        backgroundColor: 'yellow',
-
         '& > $trackContainer': {
             position: 'relative',
 
@@ -178,48 +219,54 @@ const useStyles = createUseStyles(theme => ({
             backgroundColor: theme.inputStyles.inactiveColor,
         },
 
-        '& > $handleContainer': {
+        '& > $trackProgressContainer': {
             position: 'absolute',
 
             flexBasis: 'auto',
-            flexShrink: 1,
-            flexGrow: 0,
-
-            width: '12px',
-            height: '12px',
-
-            borderRadius: '50%',
-
-            cursor: 'pointer',
-            backgroundColor: theme.inputStyles.inactiveColor,
-        },
-
-        '& > $handleDummyContainer': {
-            position: 'relative',
-
-            flexBasis: 'auto',
-            flexShrink: 1,
+            flexShrink: 0,
             flexGrow: 0,
 
             width: '0px',
-            height: '12px',
+            height: '1px',
 
-            borderRadius: '50%',
-
-            cursor: 'pointer',
-            backgroundColor: theme.inputStyles.inactiveColor,
+            backgroundColor: theme.inputStyles.activeColor,
         },
+
+        '&.variant1': {
+            '& > $trackContainer': {
+                backgroundColor: theme.inputStyles.inactiveColor,
+            },
+
+            '& > $trackProgressContainer': {
+                backgroundColor: theme.inputStyles.activeColor,
+            },
+        },
+
+        '&.variant2': {
+            '& > $trackContainer': {
+                backgroundColor: theme.inputStyles.alternateInputColor,
+            },
+
+            '& > $trackProgressContainer': {
+                height: '2px',
+                backgroundColor: theme.inputStyles.alternateInputColor,
+            },
+        }
     },
 
     trackContainer: {},
-
-    handleContainer: {},
-    handleDummyContainer: {}
+    trackProgressContainer: {},
+    handleDummyContainer: {},
 }));
+
+const dummyHandleStyles: CSSStylesType = {
+    position: 'relative',
+    width: '0px',
+};
 
 /**
  * Slider input component styled according to material-UI guidelines.
- * Component is intended to be used as a parameter for ['Redux-form' Field component](#reduxformsliderinputcomponent).
+ * Component is intended to be used as a parameter for ['Redux-form' Field component](#/UI%20Components/Redux%20form/ReduxFormSliderInputComponent).
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)
@@ -227,10 +274,39 @@ const useStyles = createUseStyles(theme => ({
  */
 
 // component implementation
+// TODO: capture 'mouseup' event not on overlay but on document
 function FormSliderInputComponent(props: PropsTypes) {
+    // region private variables declaration
+    const sliderMin: number = defaultTo(0, props.min);
+    const sliderMax: number = defaultTo(100, props.max);
+    const sliderStep: number = defaultTo(1, props.step);
+
+    const sliderVariant: number = defaultTo(1, props.variant);
+
+    const componentContainerStyles: CSSStylesType = defaultTo({}, props.componentContainerStyles);
+    const style: CSSStylesType = defaultTo({}, props.style);
+
+    const trackStyle: CSSStylesType = defaultTo({}, props.trackStyle);
+    const trackProgressStyle: CSSStylesType = defaultTo({}, props.trackProgressStyle);
+
+    const knobStyle: CSSStylesType = defaultTo({}, props.knobStyle);
+    const knobHoverStyle: CSSStylesType = defaultTo({}, props.knobHoverStyle);
+    const activeKnobStyle: CSSStylesType = defaultTo({}, props.activeKnobStyle);
+
+    let {value, onChange} = defaultTo({}, props.input);
+    let {initial} = defaultTo({}, props.meta);
+
+    initial = !isNil(initial) && !isNil(initial.toObject) ? initial.toObject() : initial;
+
+    value = defaultTo(null)(value);
+    value = isEmpty(value) ? null : value;
+    value = !isNil(value) && !isNil(value.toObject) ? value.toObject() : value;
+
+    // endregion
+
     // region style hooks declaration
-    const theme = useTheme();
-    const classes = useStyles({...props, theme});
+    const theme: ThemeType = useTheme();
+    const classes: {[string]: string} = useStyles({...props, theme});
 
     // endregion
 
@@ -240,11 +316,23 @@ function FormSliderInputComponent(props: PropsTypes) {
     // endregion
 
     // region state hooks declaration
+    const [initialHandleId, setInitialHandleId] = useState(null);
+    const [grabbedHandleId, setGrabbedHandleId] = useState(null);
+
     const [componentContainerLeft, setComponentContainerLeft] = useState(null);
     const [componentContainerRight, setComponentContainerRight] = useState(null);
 
-    const [handleGrabbed, setHandleGrabbed] = useState(false);
-    const [clientX, setClientX] = useState(null);
+    // endregion
+
+    // region effect hooks declaration
+    useEffect(() => setInitialHandleId(`handle_${generateRandomIdNumber()}`), []);
+
+    // endregion
+
+    // region state variables declaration
+    const sliderWidth: number | null = ifElse(any(isNil), always(null), apply(subtract))([componentContainerRight, componentContainerLeft]);
+    const unitsCount: number = divide(subtract(sliderMax, sliderMin), sliderStep);
+    const unitWidth: number | null = ifElse(any(isNil), always(null), apply(divide))([sliderWidth, unitsCount]);
 
     // endregion
 
@@ -256,28 +344,100 @@ function FormSliderInputComponent(props: PropsTypes) {
             setComponentContainerLeft(left);
             setComponentContainerRight(right);
         }
-    }, []);
+    }, [themeContext.windowDimensions.innerWidth]);
 
     // endregion
 
-    // region event handler helpers
-    const containerMouseDownHandler = (): void => setHandleGrabbed(true);
+    // region business logic
+    const clampHandleXPos: (posX: number) => number = clamp(0, sliderWidth);
 
-    const overlayMouseLeaveHandler = (): void => setHandleGrabbed(false);
-    const overlayMouseUpHandler = (): void => setHandleGrabbed(false);
-    const overlayMouseMoveHandler = (event: SyntheticEvent<HTMLDivElement>): void => {
-        if (handleGrabbed) {
-            setClientX(event.clientX);
+    const findNearestGrabbedHandleId: (clientX: number) => string | null = (clientX: number): string | null => {
+        return ifElse(
+            isNil,
+            always(null),
+            pipe(
+                toPairs,
+                sortBy(
+                    pipe(
+                        prop(1),
+                        subtract(clientX),
+                        Math.abs
+                    )
+                ),
+                nth(0),
+                prop(0)
+            )
+        )(getHandlesData())
+    };
+
+    const normalizeClientX: (clientX: number | null) => number = cond([
+        [(clientX: number | null) => any(isNil, [clientX, componentContainerLeft, componentContainerRight]), always(0)],
+        [(clientX: number | null) => lt(clientX, componentContainerLeft), always(componentContainerLeft)],
+        [(clientX: number | null) => gt(clientX, componentContainerRight), always(componentContainerRight)],
+        [T, identity],
+    ]);
+
+    const calcUnitsByClientX: (clientX: number | null) => number = pipe(
+        normalizeClientX,
+        prepend(__, [componentContainerLeft]),
+        ifElse(any(isNil), always(0), apply(subtract)),
+        prepend(__, [unitWidth]),
+        ifElse(
+            any(isNil),
+            always(0),
+            pipe(apply(divide), Math.round)
+        ),
+    );
+
+    const calcHandleXPosByUnits: (units: number) => number  = pipe(
+        multiply(sliderWidth),
+        divide(__, unitsCount),
+        Math.round,
+        clampHandleXPos
+    );
+
+    const getHandlesData: (units: number) => HandlesDataType | null = (): HandlesDataType | null => {
+        if (isNil(initialHandleId)) {
+            return null;
         }
+
+        const initialHandlesData: HandlesDataType = defaultTo({[initialHandleId]: 0})(initial);
+        const handlesData: HandlesDataType = defaultTo(initialHandlesData)(value);
+
+        return handlesData;
     };
 
     // endregion
 
+    // region event handler helpers
+    const containerMouseDownHandler: (event: SyntheticMouseEvent<HTMLDivElement>) => void =
+        (event: SyntheticMouseEvent<HTMLDivElement>): void => {
+            const currentUnits: number = calcUnitsByClientX(event.clientX);
+            const nearestGrabbedHandleId: string | null = findNearestGrabbedHandleId(currentUnits);
+
+            if (!isNil(nearestGrabbedHandleId)) {
+                setGrabbedHandleId(nearestGrabbedHandleId);
+                onChange(mergeRight(getHandlesData(), {[nearestGrabbedHandleId]: currentUnits}));
+            }
+        };
+
+    const overlayMouseLeaveHandler: () => void = (): void => setGrabbedHandleId(null);
+    const overlayMouseUpHandler: () => void = (): void => setGrabbedHandleId(null);
+    const overlayMouseMoveHandler: (event: SyntheticMouseEvent<HTMLDivElement>) => void =
+        (event: SyntheticMouseEvent<HTMLDivElement>): void => {
+            if (!isNil(grabbedHandleId)) {
+                const currentUnits: number = calcUnitsByClientX(event.clientX);
+                onChange(mergeRight(getHandlesData(), {[grabbedHandleId]: currentUnits}))
+            }
+        };
+
+    // endregion
+
     // region render helpers
-    const renderOverlay = (): React.Node => {
+    const renderOverlay: () => Node = (): Node => {
       return (
           <GlobalOverlayComponent
-              show={handleGrabbed}
+              show={!isNil(grabbedHandleId)}
               opacity={0}
 
               onMouseUp={overlayMouseUpHandler}
@@ -287,56 +447,112 @@ function FormSliderInputComponent(props: PropsTypes) {
       );
     };
 
-    const renderHandleDummyContainer = (): React.Node => {
-      const {handleDummyContainer} = classes;
+    const renderDummyHandleContainer: () => Node = (): Node => <FormSliderHandleComponent style={dummyHandleStyles}/>;
 
-      return (
-        <div className={handleDummyContainer}>
-        </div>
-      );
-    };
+    const renderHandleContainers: () => Node = (): Node => {
+        const handlesData: HandlesDataType | null = getHandlesData();
 
-    const renderHandleContainer = (): React.Node => {
-        const {handleContainer} = classes;
-
-        let c = 0;
-
-        if (!isNil(clientX) && !isNil(componentContainerLeft)) {
-            c = clientX - componentContainerLeft;
+        if (isNil(handlesData)) {
+            return null;
         }
 
-        const style = {
-            left: `${c}px`,
-        };
+        return reduce((nodes: Node[], id: string) => {
+            const xPos: number = calcHandleXPosByUnits(handlesData[id]);
+            const active: boolean = !isNil(grabbedHandleId) && grabbedHandleId === id;
 
-        return <div
-            className={handleContainer}
-            style={style}
-        >
+            nodes.push(<FormSliderHandleComponent
+                variant={props.variant}
+
+                key={id}
+                value={xPos}
+                active={active}
+
+                disabled={props.disabled}
+
+                knobStyle={knobStyle}
+                knobHoverStyle={knobHoverStyle}
+                activeKnobStyle={activeKnobStyle}
+            />);
+
+            return nodes;
+        }, [], keys(handlesData))
+    };
+
+    const renderProgressTrackContainer: () => Node = (): Node => {
+        const handlesData: HandlesDataType | null = getHandlesData();
+
+        if (isNil(handlesData)) {
+            return null;
+        }
+
+        const [left, right] = pipe(
+            pipe(
+                toPairs,
+                sortBy(
+                    prop(1)
+                ),
+            ),
+
+            cond([
+                [pipe(length, equals(__, 0)), always([0, 0])],
+                [pipe(length, equals(__, 1)), pipe(nth(0), nth(1), pair(0))],
+                [pipe(length, gt(__, 1)), pipe(juxt([head, last]), map(nth(1)))],
+                [T, always([0, 0])]
+            ]),
+
+            map(calcHandleXPosByUnits),
+        )(handlesData);
+
+        const style: CSSStylesType = mergeRight({
+            left: `${left}px`,
+
+            width: `${right - left}px`,
+        }, trackProgressStyle);
+
+        const {trackProgressContainer} = classes;
+
+        return <div className={trackProgressContainer} style={style}>
         </div>;
     };
 
-    const renderTrackContainer = (): React.Node => {
+    const renderTrackContainer: () => Node = (): Node => {
         const {trackContainer} = classes;
+        const style: CSSStylesType = mergeRight({}, trackStyle);
 
-        return <div className={trackContainer}>
+        return <div className={trackContainer} style={style}>
         </div>;
     };
 
-    const renderComponentContainer = (): React.Node => {
+    const renderComponentContainer: () => Node = (): Node => {
       const {componentContainer} = classes;
+      const className: string = classNames(
+          componentContainer,
+          {
+            variant1: equals(sliderVariant, 1),
+            variant2: equals(sliderVariant, 2),
+          },
+          props.componentContainerClassName
+      );
+
+      const containerStyle: CSSStylesType = pipe(
+          mergeRight(__, componentContainerStyles),
+          mergeRight(__, style),
+      )({});
 
       return (
           <div
               ref={componentContainerRef}
-              className={componentContainer}
+              className={className}
+
+              style={containerStyle}
 
               onMouseDown={containerMouseDownHandler}
-         //     onMouseLeave={containerMouseOutHandler}
           >
               {renderTrackContainer()}
-              {renderHandleContainer()}
-              {renderHandleDummyContainer()}
+              {renderProgressTrackContainer()}
+              {renderHandleContainers()}
+              {renderDummyHandleContainer()}
+
               {renderOverlay()}
           </div>
       );
@@ -344,6 +560,7 @@ function FormSliderInputComponent(props: PropsTypes) {
 
     // endregion
 
+    // init render
     return renderComponentContainer();
 }
 

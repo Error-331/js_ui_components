@@ -116,8 +116,6 @@ const styles = theme => ({
             borderRightStyle: 'none',
 
             transform: 'rotate(-45deg)',
-
-
         },
     },
 
