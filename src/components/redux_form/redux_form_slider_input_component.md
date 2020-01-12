@@ -1,4 +1,4 @@
-Test:
+Two variants of slider input component with single handle:
 
 ```jsx
 
@@ -36,7 +36,7 @@ const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComp
 
 ```
 
-Test:
+Two variants of slider input component with multiple handles:
 
 ```jsx
 
@@ -65,6 +65,48 @@ function TestContainerComponent(props) {
                        />
                    </SimpleFlexGridColumn>
                </SimpleFlexGridRow>               
+           </SimpleFlexGridContainer>;
+}
+
+const TestContainer = injectSheet(styles, {injectTheme: true})(TestContainerComponent);
+
+<TestContainer/>
+
+```
+
+Slider input component with multiple handles and custom styling:
+
+```jsx
+
+const injectSheet = require('react-jss').default;
+const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
+
+const styles = theme => ({});
+const trackStyle = {backgroundColor: '#D5D5D5'};
+const trackProgressStyle = {backgroundColor: '#2DAD6A'};
+
+const knobStyle = {width: '20px', height: '20px', backgroundColor: '#2DAD6A'};
+const knobHoverStyle = {boxShadow: 'none'};
+const activeKnobStyle = {boxShadow: 'none'};
+
+function TestContainerComponent(props) {
+    const {classes, theme} = props;
+
+    return <SimpleFlexGridContainer>               
+               <SimpleFlexGridRow>
+                   <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
+                       <ReduxFormSliderInputComponent
+                           name='reduxSliderInputComponents.testFromSliderInputComponentWithDefaultValue2'
+                           
+                           trackStyle={trackStyle}
+                           trackProgressStyle={trackProgressStyle}
+                           
+                           knobStyle={knobStyle}
+                           knobHoverStyle={knobHoverStyle}
+                           activeKnobStyle={activeKnobStyle}
+                       />
+                   </SimpleFlexGridColumn>          
+               </SimpleFlexGridRow>            
            </SimpleFlexGridContainer>;
 }
 

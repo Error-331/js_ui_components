@@ -94,6 +94,7 @@ const ComponentFormContainerConnected = reduxForm({
 
         reduxSliderInputComponents: {
             testFromSliderInputComponentWithDefaultValue1: {handle1: 10, handle2: 50},
+            testFromSliderInputComponentWithDefaultValue2: {handle1: 20, handle2: 80},
         },
 
         login: {

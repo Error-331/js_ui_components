@@ -9,7 +9,7 @@ import type {FieldProps} from 'redux-form';
 import React, {useState, useCallback, useContext} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
 
-import {always, isNil, ifElse, defaultTo, any, mergeRight, apply, subtract, divide, equals} from 'ramda';
+import {__, always, identity, isNil, ifElse, defaultTo, any, pipe, mergeRight, apply, subtract, divide, equals} from 'ramda';
 import classNames from 'classnames';
 
 // local imports
@@ -24,6 +24,10 @@ type CSSStylesType = {
 };
 
 export type FormTextInputTypes = {
+    /**
+     * Flag which is set when user drags the slider handle
+     */
+
     active?: boolean,
 
     /**
@@ -33,18 +37,34 @@ export type FormTextInputTypes = {
     variant?: number,
 
     /**
-     * Flag that dictates whether component should be readable only (text can be readable but not editable)
+     * Styles for component container (main outer container) of the form slider handle component
      */
 
-    readOnly?: ?boolean,
+    componentContainerStyles?: CSSStylesType,
 
     /**
-     * Flag that dictates whether component should be disabled (text can not be readable or editable)
+     * Alias of 'componentContainerStyles'
      */
 
-    disabled?: ?boolean,
-
     style?: CSSStylesType,
+
+    /**
+     * Styles for knob container
+     */
+
+    knobStyle?: CSSStylesType,
+
+    /**
+     * Styles for knob container which are applied when user puts mouse cursor over this container
+     */
+
+    knobHoverStyle?: CSSStylesType,
+
+    /**
+     * Styles for knob container which are applied when user drags the slider handle
+     */
+
+    activeKnobStyle?: CSSStylesType,
 };
 
 type PropsTypes = FormTextInputTypes & {
@@ -179,7 +199,7 @@ const useStyles = createUseStyles(theme => ({
 
 /**
  * Slider handle (knob) component styled according to material-UI guidelines.
- * Component is intended to be used as part of ['Redux-form' Form slider input component](#formsliderinputcomponent).
+ * Component is intended to be used as part of ['Redux-form' slider input component](#/UI%20Components/Redux%20form/ReduxFormSliderInputComponent) or [form slider input component](#/UI%20Components/Form/FormSliderInputComponent).
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)
@@ -194,11 +214,15 @@ function FormSliderHandleComponent(props: PropsTypes) {
     const active: boolean = defaultTo(false)(props.active);
     const style: CSSStylesType = defaultTo({})(props.style);
 
+    const knobStyle: CSSStylesType = defaultTo({})(props.knobStyle);
+    const knobHoverStyle: CSSStylesType = defaultTo({})(props.knobHoverStyle);
+    const activeKnobStyle: CSSStylesType = defaultTo({}, props.activeKnobStyle);
+
     // endregion
 
     // region style hooks declaration
-    const theme = useTheme();
-    const classes = useStyles({...props, theme});
+    const theme: ThemeType = useTheme();
+    const classes: {[string]: string} = useStyles({...props, theme});
 
     // endregion
 
@@ -209,6 +233,7 @@ function FormSliderHandleComponent(props: PropsTypes) {
 
     // region state hooks declaration
     const [componentContainerWidth, setComponentContainerWidth] = useState(null);
+    const [isOver, setIsOver] = useState(false);
 
     // endregion
 
@@ -237,18 +262,25 @@ function FormSliderHandleComponent(props: PropsTypes) {
     // endregion
 
     // region event handler helpers
+    const handleMouseOverHandler = (): void => setIsOver(true);
+    const handleMouseLeaveHandler = (): void => setIsOver(false);
+
     // endregion
 
     // region render helpers
-    // endregion
-
-
     const renderHandleKnob = (): Node => {
         const {handleKnob} = classes;
         const className: string = classNames(handleKnob, {active: active});
 
+        const style: CSSStylesType = pipe(
+            mergeRight(__, knobStyle),
+            isOver ? mergeRight(__,  knobHoverStyle) : identity,
+            active ? mergeRight(__,  activeKnobStyle) : identity,
+        )({});
+
         return <div
             className={className}
+            style={style}
         />;
     };
 
@@ -259,7 +291,6 @@ function FormSliderHandleComponent(props: PropsTypes) {
             variant2: equals(handleVariant, 2),
         });
 
-
         const preparedStyle = mergeRight({
             left: `${handlePositionXByContainerWidth}px`,
         }, style);
@@ -267,12 +298,17 @@ function FormSliderHandleComponent(props: PropsTypes) {
         return <div
             ref={componentContainerRef}
 
+            onMouseOver={handleMouseOverHandler}
+            onMouseLeave={handleMouseLeaveHandler}
+
             className={className}
             style={preparedStyle}
         >
             {renderHandleKnob()}
         </div>;
     };
+
+    // endregion
 
     // init render
     return renderComponentContainer();
