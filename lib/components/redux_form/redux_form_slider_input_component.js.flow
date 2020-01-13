@@ -4,7 +4,6 @@
 
 // external imports
 import type {Node} from 'react';
-import type {FieldProps} from 'redux-form';
 
 import React from 'react';
 import {Field} from 'redux-form/immutable';

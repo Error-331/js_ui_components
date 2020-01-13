@@ -8,8 +8,9 @@ import React, {Component} from 'react';
 import Logo from 'react-styleguidist/lib/client/rsg-components/Logo';
 import Markdown from 'react-styleguidist/lib/client/rsg-components/Markdown';
 import Styled from 'react-styleguidist/lib/client/rsg-components/Styled';
-import cx from 'classnames';
 import Ribbon from 'react-styleguidist/lib/client/rsg-components/Ribbon';
+
+import cx from 'classnames';
 
 // local imports
 import MainContainer from './modules/containers/main_container';
@@ -22,7 +23,6 @@ import {
     SimpleFlexGridColumn,
     ReduxFormDropDownInputComponent,
 } from './../src';
-
 
 //
 const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space}) => ({

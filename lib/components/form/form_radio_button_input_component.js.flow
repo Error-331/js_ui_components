@@ -18,6 +18,10 @@ import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentI
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = FieldProps & {
     /**
      * Flag that dictates whether component should be disabled
@@ -58,6 +62,18 @@ type PropsTypes = FieldProps & {
      */
 
     input?: ?ReduxFormFieldComponentInputDataPropsTypes,
+
+    /**
+     * Styles for component container (main outer container) of the form radio input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
+
+    /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
 
     /**
      * JSS inner classes
@@ -230,6 +246,13 @@ class FormRadioButtonInputClass extends React.Component<PropsTypes, StateTypes> 
     // endregion
 
     // region style accessors
+    _getComponentContainerStyles(): CSSStylesType {
+        const componentContainerStyles: CSSStylesType = defaultTo({})(this.props.componentContainerStyles);
+        const style: CSSStylesType = defaultTo({})(this.props.style);
+
+        return Object.assign({}, componentContainerStyles, style);
+    }
+
     _getLabelClasses(): string {
         const {disabled, labelPosition, classes: {checkboxLabel, checkboxLeftLabel, checkboxRightLabel}} = this.props;
 
@@ -343,7 +366,10 @@ class FormRadioButtonInputClass extends React.Component<PropsTypes, StateTypes> 
         const {labelPosition} = this.props;
 
         return (
-            <div className={this.props.classes.componentContainer}>
+            <div
+                className={this.props.classes.componentContainer}
+                style={this._getComponentContainerStyles()}
+            >
                 {labelPosition === 'left' ? this._renderLabel() : null}
                 {this._renderInput()}
                 {this._renderInputControlLabel()}

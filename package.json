@@ -20,7 +20,7 @@
     "prepublish-submodule": "rm -rf ./lib/ ; npm run prepublish-babel && npm run prepublish-flow",
     "prepublish-babel": "babel ./src --out-dir ./lib",
     "prepublish-flow": "flow-copy-source ./src ./lib",
-    "copy-assets-to-public": "rm -rf ./public/ && mkdir -p ./public && cp -a ./src/assets/. ./public/assets/",
+    "copy-assets-to-public": "rm -rf ./public/ && mkdir -p ./public/assets/css && cp -a ./src/assets/. ./public/assets/ && cp ./node_modules/draft-js/dist/Draft.css ./public/assets/css/Draft.css",
     "copy-demo-assets-to-public": "cp -a ./src/demo_assets/. ./public/assets/",
     "start-frontend-style-guide-server": "styleguidist server --config ./src_style_guide/styleguide.config.js"
   },
@@ -49,6 +49,9 @@
     "ramda": "0.26.1",
     "lodash.debounce": "4.0.8"
   },
+  "optionalDependencies": {
+    "draft-js": "0.11.4"
+  },
   "devDependencies": {
     "@webfuturistics/design_components": "github:WebFuturistics/js_design_components",
     "@babel/cli": "7.4.4",
@@ -59,6 +62,7 @@
     "@babel/plugin-proposal-decorators": "7.4.4",
     "@babel/plugin-proposal-class-properties": "7.4.4",
     "@babel/plugin-proposal-object-rest-spread": "7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "7.7.4",
     "flow-bin": "0.100.0",
     "flow-typed": "2.5.2",
     "flow-copy-source": "2.0.6",

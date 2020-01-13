@@ -2,8 +2,6 @@ Example of generated Redux form:
 
 ```jsx
 
-const {ReduxFormGeneratorComponent} = require('./redux_form_generator_component');
-
 const dropDownOptions = {
   'Option1': 1,
   'Option2': 2,
@@ -30,8 +28,11 @@ const testItems1 = [
         {type: 'date', hspan: 2, name: 'input7', props: {label: 'Date of birth'}}
     ],
     [
-        {type: 'radio', name: 'input6', props: {value: 'female', label: 'Female', labelPosition: 'right'}}
-    ]
+        {type: 'radio', hspan: 3, name: 'input6', props: {value: 'female', label: 'Female', labelPosition: 'right'}},
+    ],
+    [
+        {type: 'slider', hspan: 3, name: 'input8', props: {min: 0, max: 100, step: 5}},
+    ],
 ];
 
 <ReduxFormGeneratorComponent items={testItems1}/>

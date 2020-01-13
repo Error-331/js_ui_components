@@ -9,6 +9,12 @@ const express = require('express');
 // exports
 module.exports = {
     webpackConfig: require('./../webpack_configs/webpack.styleguidist.config.js'),
+
+    require: [
+        "core-js/modules/es.promise",
+        "core-js/modules/es.array.iterator",
+    ],
+
     template: {
         head: {
             meta: [
@@ -22,6 +28,10 @@ module.exports = {
                 {
                     rel: 'stylesheet',
                     href: '/assets/fonts/fontawesome_pro/web-fonts-with-css/css/all.css'
+                },
+                {
+                    rel: 'stylesheet',
+                    href: '/assets/css/Draft.css'
                 }
             ]
         }

@@ -10,6 +10,10 @@ import {Field} from 'redux-form/immutable';
 import {FormRadioButtonInputComponent} from './../form/form_radio_button_input_component';
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 export type PropsTypes = {
     /**
      * Input name
@@ -45,7 +49,19 @@ export type PropsTypes = {
      * Value that indicates where label should be placed on left side of the checkbox or on the right
      */
 
-    labelPosition?: 'left' | 'right'
+    labelPosition?: 'left' | 'right',
+
+    /**
+     * Styles for component container (main outer container) of the form radio input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
+
+    /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
 };
 
 type StateTypes = {};
@@ -67,13 +83,9 @@ class ReduxFormRadioButtonInputClass extends React.Component<PropsTypes, StateTy
         return <Field
             type='radio'
             name={this.props.name}
-            value={this.props.value}
-            disabled={this.props.disabled}
-
-            label={this.props.label}
-            labelPosition={this.props.labelPosition}
-
             component={FormRadioButtonInputComponent}
+
+            {...this.props}
         />;
     }
 }
