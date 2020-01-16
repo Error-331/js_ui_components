@@ -54,6 +54,9 @@
     
     // region state variables declaration
     // endregion
+   
+    // region ref hooks declaration
+    // endregion
     
     // region callback hooks declaration
     // endregion

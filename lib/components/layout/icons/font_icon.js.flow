@@ -16,7 +16,7 @@ import {MEDIUM_SIZE, CUSTOM_SIZE} from './../../../theming/constants/general_con
 
 // type definitions
 export type FontIconSizeType = 'tiny' | 'small' | 'medium' | 'large' | 'extraLarge' | 'custom';
-export type ClickCallbackType = (event: CombinedEventType, rowIndex: mixed) => void;
+export type ClickCallbackType = (event: CombinedEventType) => void;
 
 type PropsTypes = {
     /**
@@ -36,6 +36,12 @@ type PropsTypes = {
      */
 
     onClick?: ClickCallbackType,
+
+    /**
+     * Callback function which will be called once user press mouse key while pointing cursor over icon
+     */
+
+    onMouseDown?: ClickCallbackType,
 
     /**
      * React style object for in deep control of how icon is represented
@@ -108,7 +114,7 @@ const styles = theme => ({
 
 // component implementation
 function FontIconFunction(props: PropsTypes) {
-    let {size, accent, onClick, style, iconClassName, className, classes} = props;
+    let {size, accent, onClick, onMouseDown, style, iconClassName, className, classes} = props;
     size = defaultTo(MEDIUM_SIZE)(size);
     accent = defaultTo(false)(accent);
 
@@ -124,6 +130,7 @@ function FontIconFunction(props: PropsTypes) {
 
     return <i
         onClick={onClick}
+        onMouseDown={onMouseDown}
         className={combinedClassName}
         style={style}
     />;

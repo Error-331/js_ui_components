@@ -50,6 +50,7 @@ import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/help
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
+import type {RenderFunctionNoArgs} from './../../types/common_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
@@ -336,6 +337,9 @@ function FormSliderInputComponent(props: PropsTypes) {
 
     // endregion
 
+    // region ref hooks declaration
+    // endregion
+
     // region callback hooks declaration
     const componentContainerRef: any = useCallback($node => {
         if (!isNil($node)) {
@@ -396,7 +400,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         clampHandleXPos
     );
 
-    const getHandlesData: (units: number) => HandlesDataType | null = (): HandlesDataType | null => {
+    const getHandlesData: () => HandlesDataType | null = (): HandlesDataType | null => {
         if (isNil(initialHandleId)) {
             return null;
         }
@@ -434,7 +438,7 @@ function FormSliderInputComponent(props: PropsTypes) {
     // endregion
 
     // region render helpers
-    const renderOverlay: () => Node = (): Node => {
+    const renderOverlay: RenderFunctionNoArgs = (): Node => {
       return (
           <GlobalOverlayComponent
               show={!isNil(grabbedHandleId)}
@@ -447,7 +451,7 @@ function FormSliderInputComponent(props: PropsTypes) {
       );
     };
 
-    const renderDummyHandleContainer: () => Node = (): Node => <FormSliderHandleComponent style={dummyHandleStyles}/>;
+    const renderDummyHandleContainer: RenderFunctionNoArgs = (): Node => <FormSliderHandleComponent style={dummyHandleStyles}/>;
 
     const renderHandleContainers: () => Node = (): Node => {
         const handlesData: HandlesDataType | null = getHandlesData();
@@ -478,7 +482,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         }, [], keys(handlesData))
     };
 
-    const renderProgressTrackContainer: () => Node = (): Node => {
+    const renderProgressTrackContainer: RenderFunctionNoArgs = (): Node => {
         const handlesData: HandlesDataType | null = getHandlesData();
 
         if (isNil(handlesData)) {
@@ -515,7 +519,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         </div>;
     };
 
-    const renderTrackContainer: () => Node = (): Node => {
+    const renderTrackContainer: RenderFunctionNoArgs = (): Node => {
         const {trackContainer} = classes;
         const style: CSSStylesType = mergeRight({}, trackStyle);
 
@@ -523,7 +527,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         </div>;
     };
 
-    const renderComponentContainer: () => Node = (): Node => {
+    const renderComponentContainer: RenderFunctionNoArgs = (): Node => {
       const {componentContainer} = classes;
       const className: string = classNames(
           componentContainer,
