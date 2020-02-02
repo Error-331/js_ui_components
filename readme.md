@@ -70,7 +70,7 @@
     // region render helpers
     // endregion
     
-    // init render
+    // init
     
 # Container boilerplate  
 

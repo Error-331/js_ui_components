@@ -271,7 +271,6 @@ function FormRichTextInputComponent(props: PropsTypes) {
     // endregion
 
     // region event handler helpers
-
     const editorToggleInlineStyleHandle = curry((inlineStyle: string, event: SyntheticMouseEvent<HTMLDivElement>) => {
         event.preventDefault();
         const {RichUtils} = draftJSLib;
@@ -282,8 +281,6 @@ function FormRichTextInputComponent(props: PropsTypes) {
                 inlineStyle
             )
         );
-
-
     });
 
     // endregion
