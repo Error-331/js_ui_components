@@ -68,8 +68,6 @@ type PropsTypes = {
 // styles definition
 const styles = theme => ({
     componentContainer: {
-        fontFamily: theme.layoutStyles.fontStack,
-
         color: theme.layoutStyles.bodyFontColor,
     }
 });
