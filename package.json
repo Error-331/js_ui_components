@@ -15,6 +15,10 @@
   "engines": {
     "node": ">=8.11.2"
   },
+  "apidoc": {
+    "title": "UI components",
+    "url" : "https://github.com/WebFuturistics/js_ui_components"
+  },
   "scripts": {
     "install-flow-types": "flow-typed install",
     "prepublish-submodule": "rm -rf ./lib/ ; npm run prepublish-babel && npm run prepublish-flow",
