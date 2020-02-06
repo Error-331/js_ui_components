@@ -29,6 +29,7 @@ import {
     gt,
     lt,
     equals,
+    or,
     clamp,
     length,
     head,
@@ -97,13 +98,13 @@ export type FormSliderInputTypes = {
      * Flag that dictates whether component should be readable only (handles will be fixed in place)
      */
 
-    readOnly?: ?boolean,
+    readOnly?: boolean,
 
     /**
      * Flag that dictates whether component should be disabled (handles will be fixed in place and whole component will be grayed)
      */
 
-    disabled?: ?boolean,
+    disabled?: boolean,
 
     /**
      * Class name which will be added to the component container (main outer container)
@@ -233,7 +234,13 @@ const useStyles = createUseStyles(theme => ({
             backgroundColor: theme.inputStyles.activeColor,
         },
 
-        '&.variant1': {
+        '&.variant2': {
+            '& > $trackProgressContainer': {
+                height: '3px',
+            },
+        },
+
+        '&.enabled.variant1': {
             '& > $trackContainer': {
                 backgroundColor: theme.inputStyles.inactiveColor,
             },
@@ -243,14 +250,38 @@ const useStyles = createUseStyles(theme => ({
             },
         },
 
-        '&.variant2': {
+        '&.enabled.variant2': {
             '& > $trackContainer': {
                 backgroundColor: theme.inputStyles.alternateInputColor,
             },
 
             '& > $trackProgressContainer': {
-                height: '2px',
                 backgroundColor: theme.inputStyles.alternateInputColor,
+            },
+        },
+
+        '&.disabled': {
+            '& > $trackContainer': {
+                border: 'none',
+                borderRadius: '0',
+                borderBottomWidth: `1px`,
+                borderBottomStyle: 'dotted',
+                borderBottomColor: theme.inputStyles.disabledColor,
+
+                backgroundColor: 'transparent',
+            },
+        },
+
+        '&.disabled.variant1': {
+            '& > $trackProgressContainer': {
+                backgroundColor: theme.inputStyles.disabledColor,
+            },
+        },
+
+        '&.disabled.variant2': {
+            '& > $trackProgressContainer': {
+                height: '3px',
+                backgroundColor: theme.inputStyles.disabledColor,
             },
         }
     },
@@ -278,6 +309,11 @@ const dummyHandleStyles: CSSStylesType = {
 // TODO: capture 'mouseup' event not on overlay but on document
 function FormSliderInputComponent(props: PropsTypes) {
     // region private variables declaration
+    const readOnly: boolean = defaultTo(false, props.readOnly);
+    const disabled: boolean = defaultTo(false, props.disabled);
+
+    const isNoneInteractive: boolean = or(readOnly, disabled);
+
     const sliderMin: number = defaultTo(0, props.min);
     const sliderMax: number = defaultTo(100, props.max);
     const sliderStep: number = defaultTo(1, props.step);
@@ -416,6 +452,10 @@ function FormSliderInputComponent(props: PropsTypes) {
     // region event handler helpers
     const containerMouseDownHandler: (event: SyntheticMouseEvent<HTMLDivElement>) => void =
         (event: SyntheticMouseEvent<HTMLDivElement>): void => {
+            if (isNoneInteractive) {
+                return;
+            }
+
             const currentUnits: number = calcUnitsByClientX(event.clientX);
             const nearestGrabbedHandleId: string | null = findNearestGrabbedHandleId(currentUnits);
 
@@ -439,16 +479,20 @@ function FormSliderInputComponent(props: PropsTypes) {
 
     // region render helpers
     const renderOverlay: RenderFunctionNoArgs = (): Node => {
-      return (
-          <GlobalOverlayComponent
-              show={!isNil(grabbedHandleId)}
-              opacity={0}
+        if (isNoneInteractive) {
+            return null;
+        }
 
-              onMouseUp={overlayMouseUpHandler}
-              onMouseMove={overlayMouseMoveHandler}
-              onMouseLeave={overlayMouseLeaveHandler}
-          />
-      );
+        return (
+            <GlobalOverlayComponent
+                show={!isNil(grabbedHandleId)}
+                opacity={0}
+
+                onMouseUp={overlayMouseUpHandler}
+                onMouseMove={overlayMouseMoveHandler}
+                onMouseLeave={overlayMouseLeaveHandler}
+            />
+        );
     };
 
     const renderDummyHandleContainer: RenderFunctionNoArgs = (): Node => <FormSliderHandleComponent style={dummyHandleStyles}/>;
@@ -471,7 +515,8 @@ function FormSliderInputComponent(props: PropsTypes) {
                 value={xPos}
                 active={active}
 
-                disabled={props.disabled}
+                readOnly={readOnly}
+                disabled={disabled}
 
                 knobStyle={knobStyle}
                 knobHoverStyle={knobHoverStyle}
@@ -528,15 +573,18 @@ function FormSliderInputComponent(props: PropsTypes) {
     };
 
     const renderComponentContainer: RenderFunctionNoArgs = (): Node => {
-      const {componentContainer} = classes;
-      const className: string = classNames(
-          componentContainer,
-          {
-            variant1: equals(sliderVariant, 1),
-            variant2: equals(sliderVariant, 2),
-          },
-          props.componentContainerClassName
-      );
+        const {componentContainer} = classes;
+        const className: string = classNames(
+            componentContainer,
+
+            {
+                enabled: !disabled,
+                disabled,
+                variant1: equals(sliderVariant, 1),
+                variant2: equals(sliderVariant, 2),
+            },
+            props.componentContainerClassName
+        );
 
       const containerStyle: CSSStylesType = pipe(
           mergeRight(__, componentContainerStyles),

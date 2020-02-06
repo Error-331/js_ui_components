@@ -37,6 +37,19 @@ export type FormTextInputTypes = {
     variant?: number,
 
     /**
+     * Flag that dictates whether component should be readable only (handle will be fixed in place and regular mouse pointer will be used)
+     */
+
+    readOnly?: boolean,
+
+    /**
+     * Flag that dictates whether component should be disabled (handle will be fixed in place, regular mouse pointer will be used
+     * and whole component will be grayed)
+     */
+
+    disabled?: boolean,
+
+    /**
      * Styles for component container (main outer container) of the form slider handle component
      */
 
@@ -138,6 +151,10 @@ const useStyles = createUseStyles(theme => ({
                     )
 
                     }`,
+            },
+
+            '&.readonly:hover, &.disabled:hover': {
+                boxShadow: 'initial',
             }
         },
 
@@ -192,6 +209,19 @@ const useStyles = createUseStyles(theme => ({
                 }
             },
         },
+
+        '&.readonly': {
+            cursor: 'initial',
+        },
+
+        '&.disabled': {
+            cursor: 'initial',
+
+            '& > $handleKnob': {
+                backgroundColor: theme.inputStyles.disabledColor,
+            }
+        }
+
     },
 
     handleKnob: {},
@@ -199,7 +229,8 @@ const useStyles = createUseStyles(theme => ({
 
 /**
  * Slider handle (knob) component styled according to material-UI guidelines.
- * Component is intended to be used as part of ['Redux-form' slider input component](#/UI%20Components/Redux%20form/ReduxFormSliderInputComponent) or [form slider input component](#/UI%20Components/Form/FormSliderInputComponent).
+ * Component is intended to be used as part of ['Redux-form' slider input component](#/UI%20Components/Redux%20form/ReduxFormSliderInputComponent) or
+ * [form slider input component](#/UI%20Components/Form/FormSliderInputComponent).
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)
@@ -209,6 +240,8 @@ const useStyles = createUseStyles(theme => ({
 // component implementation
 function FormSliderHandleComponent(props: PropsTypes) {
     // region private variables declaration
+    const readOnly: boolean = defaultTo(false, props.readOnly);
+    const disabled: boolean = defaultTo(false, props.disabled);
     const handleVariant: number = defaultTo(1, props.variant);
 
     const active: boolean = defaultTo(false)(props.active);
@@ -270,7 +303,11 @@ function FormSliderHandleComponent(props: PropsTypes) {
     // region render helpers
     const renderHandleKnob = (): Node => {
         const {handleKnob} = classes;
-        const className: string = classNames(handleKnob, {active: active});
+        const className: string = classNames(handleKnob, {
+            active: active,
+            readonly: equals(readOnly, true),
+            disabled: equals(disabled, true),
+        });
 
         const style: CSSStylesType = pipe(
             mergeRight(__, knobStyle),
@@ -286,10 +323,20 @@ function FormSliderHandleComponent(props: PropsTypes) {
 
     const renderComponentContainer = (): Node => {
         const {componentContainer} = classes;
-        const className: string = classNames(componentContainer, {
-            variant1: equals(handleVariant, 1),
-            variant2: equals(handleVariant, 2),
-        });
+        const className: string = classNames(componentContainer,
+            equals(disabled, true) ?
+                {
+                    disabled
+                }
+
+                :
+
+                {
+                    variant1: equals(handleVariant, 1),
+                    variant2: equals(handleVariant, 2),
+                    readonly: equals(readOnly, true),
+                }
+        );
 
         const preparedStyle = mergeRight({
             left: `${handlePositionXByContainerWidth}px`,

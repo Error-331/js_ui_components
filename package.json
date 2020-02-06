@@ -17,7 +17,7 @@
   },
   "apidoc": {
     "title": "UI components",
-    "url" : "https://github.com/WebFuturistics/js_ui_components"
+    "url": "https://github.com/WebFuturistics/js_ui_components"
   },
   "scripts": {
     "install-flow-types": "flow-typed install",
