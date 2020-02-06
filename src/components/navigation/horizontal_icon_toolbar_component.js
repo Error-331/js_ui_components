@@ -8,7 +8,7 @@ import type {Node} from 'react';
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
 
-import {isNil} from 'ramda';
+import {isNil, defaultTo, addIndex, map} from 'ramda';
 import classNames from 'classnames';
 
 // local imports
@@ -20,11 +20,25 @@ import {MainThemeContext} from './../../theming/providers';
 import FontIcon from './../layout/icons/font_icon';
 
 // type definitions
+export type ControlIconDataType = {
+    active?: boolean,
+    title?: string,
+    iconClassName?: string,
+
+    mouseClickHandler?: (event: SyntheticMouseEvent<HTMLDivElement>) => void,
+    mouseDownHandler?: (event: SyntheticMouseEvent<HTMLDivElement>) => void,
+};
+
+export type ControlGroupDataType = Array<ControlIconDataType>;
+export type ControlSectionDataType = Array<ControlGroupDataType>
+
 type CSSStylesType = {
     [string]: mixed
 };
 
 export type FormTextInputTypes = {
+    data?: ControlSectionDataType,
+
 
     className?: string,
     style?: CSSStylesType,
@@ -120,8 +134,12 @@ const useStyles = createUseStyles(theme => ({
                     '&:first-child': {
                         marginLeft: `0px`,
                     },
+                },
+
+                '&.firstGroupInSection': {
+                    backgroundColor: 'red',
                 }
-            }
+            },
         },
     },
 
@@ -142,6 +160,8 @@ const useStyles = createUseStyles(theme => ({
 // component implementation
 function HorizontalIconToolbarComponent(props: PropsTypes) {
     // region private variables declaration
+    const data: ControlSectionDataType = defaultTo([], props.data);
+
     // endregion
 
     // region style hooks declaration
@@ -156,6 +176,8 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
     // endregion
 
     // region state hooks declaration
+    const [firstElementFlags, setFirstElementFlags] = useState([]);
+
     // endregion
 
     // region effect hooks declaration
@@ -164,36 +186,29 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
             return;
         }
 
-        console.log($toolbarRef.current.children);
+        const $controlSections: Array<HTMLDivElement> = $toolbarRef.current.children;
 
-        for (let i = 0; i < $toolbarRef.current.children.length; i++) {
+        const firstElementFlags: Array<Array<boolean>> = map(($controlSection: HTMLDivElement) => {
+            const $controlGroups: Array<HTMLDivElement> = $controlSection.children;
+            let currentOffsetTop: number = 0;
 
-
-            const $currentControlSection = $toolbarRef.current.children[i];
-            let c0 = 0;
-            let c1 = [];
-
-            for (let i = 0; i < $currentControlSection.children.length; i++) {
-                if (i === 0) {
-                    c0 = $currentControlSection.children[i].offsetTop;
-                    c1.push(true);
+            return addIndex(map)(($controlGroup: HTMLDivElement, controlGroupIndex: number) => {
+                if (controlGroupIndex === 0) {
+                    currentOffsetTop = $controlGroup.offsetTop;
+                    return true;
                 } else {
-                    if ($currentControlSection.children[i].offsetTop > c0) {
-                        c0 = $currentControlSection.children[i].offsetTop;
-                        c1.push(true);
+                    if ($controlGroup.offsetTop > currentOffsetTop) {
+                        currentOffsetTop = $controlGroup.offsetTop;
+                        return true;
                     } else {
-                        c1.push(false);
+                        return false;
                     }
                 }
+            }, $controlGroups);
+        }, $controlSections);
 
-
-
-
-
-
-            }
-        }
-    });
+        setFirstElementFlags(firstElementFlags);
+    }, [themeContext.windowDimensions.innerWidth]);
 
     // endregion
 
@@ -215,46 +230,56 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
     // endregion
 
     // region render helpers
+    const renderControls = (controlGroupData: ControlGroupDataType) => {
+        return addIndex(map)((controlIconData: ControlIconDataType, index: number) => {
+            let {iconClassName} = controlIconData;
+            const {control} = classes;
+
+            return <FontIcon
+                size='small'
+                className={control}
+                iconClassName={iconClassName}
+                key={`control_${index}`}
+            />;
+        }, controlGroupData);
+    };
+
+    const renderControlGroups = (controlSectionData: ControlSectionDataType, groupFlags) => {
+        return addIndex(map)((controlGroupData: ControlGroupDataType, index: number) => {
+            const groupFlag = defaultTo(false, groupFlags[index]);
+            const {controlsGroup} = classes;
+
+            const className: string = classNames(controlsGroup, {firstGroupInSection: groupFlag});
+
+            return <div
+                className={className}
+                key={`group_${index}`}
+            >
+                {renderControls(controlGroupData, groupFlags)}
+            </div>;
+        }, controlSectionData);
+    };
+
+    const renderControlSections = () => {
+        return addIndex(map)((controlSectionData: ControlSectionDataType, index: number) => {
+            const groupFlags = defaultTo([], firstElementFlags[index]);
+            const {controlSection} = classes;
+
+            return <div
+                className={controlSection}
+                key={`section_${index}`}
+            >
+                {renderControlGroups(controlSectionData, groupFlags)}
+            </div>;
+        }, data);
+    };
+
     const renderComponentContainer = () => {
-        const {componentContainer, controlSection, controlsGroup, control} = classes;
+        const {componentContainer} = classes;
 
         return <div ref={$toolbarRef} className={componentContainer}>
-            <div className={controlSection}>
-                <div className={controlsGroup}>
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h1' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h2' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h3' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h4' />
-                </div>
-                <div className={controlsGroup}>
-                    <FontIcon size='small' className={control} iconClassName='fas fa-link' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-image' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-film' />
-                </div>
-                <div className={controlsGroup}>
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h1' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h2' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h3' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h4' />
-                </div>
-                <div className={controlsGroup}>
-                    <FontIcon size='small' className={control} iconClassName='fas fa-link' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-image' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-film' />
-                </div>
-                <div className={controlsGroup}>
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h1' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h2' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h3' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h4' />
-                </div>
-                <div className={controlsGroup}>
-                    <FontIcon size='small' className={control} iconClassName='fas fa-link' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-image' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-film' />
-                </div>
-            </div>
-        </div>;
+            {renderControlSections()}
+        </div>
     };
 
     // endregion
