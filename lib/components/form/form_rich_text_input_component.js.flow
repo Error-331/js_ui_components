@@ -8,9 +8,11 @@ import type {FieldProps} from 'redux-form';
 
 import type {EditorState} from 'draft-js';
 import type {DraftInlineStyle} from 'draft-js/lib/DraftInlineStyle';
-import type {DraftBlockRenderConfig} from 'draft-js/lib//DraftBlockRenderConfig';
+import type {DraftBlockRenderConfig} from 'draft-js/lib/DraftBlockRenderConfig';
 import type {CoreDraftBlockType} from 'draft-js/lib/DraftBlockType';
-import type {BlockNodeRecord} from 'draft-js/lib//BlockNodeRecord';
+import type {BlockNodeRecord} from 'draft-js/lib/BlockNodeRecord';
+
+import type {Curry} from 'ramda';
 
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
@@ -43,6 +45,7 @@ import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
 import TextBlock from './../layout/text/text_block';
+import InlineHeader from './../layout/text/inline_header';
 import FontIcon from './../layout/icons/font_icon';
 
 // type definitions
@@ -63,8 +66,13 @@ type BlockControlDataType = ControlDataType & {
     blockData: string,
 };
 
+type BlockTypeControlType = ControlDataType & {
+    blockType: string,
+};
+
 type InlineControlsDataType = Array<InlineControlDataType>;
 type BlockControlsDataType = Array<BlockControlDataType>;
+type BlockTypeControlsType = Array<BlockTypeControlType>;
 
 export type FormSliderInputTypes = {
     /**
@@ -224,23 +232,43 @@ const useStyles = createUseStyles(theme => ({
             },
         },
 
-        '& $contentBlockAlignInitial > div': {
+        '& $contentBlockAlignInitial': {
             textAlign: 'initial'
         },
 
-        '& $contentBlockAlignLeft > div': {
+        '& $contentBlockAlignInitial > div,span': {
+            textAlign: 'initial'
+        },
+
+        '& $contentBlockAlignLeft': {
             textAlign: 'left'
         },
 
-        '& $contentBlockAlignRight > div': {
+        '& $contentBlockAlignLeft > div,span': {
+            textAlign: 'left'
+        },
+
+        '& $contentBlockAlignRight': {
             textAlign: 'right'
         },
 
-        '& $contentBlockAlignCenter > div': {
+        '& $contentBlockAlignRight > div,span': {
+            textAlign: 'right'
+        },
+
+        '& $contentBlockAlignCenter': {
             textAlign: 'center'
         },
 
-        '& $contentBlockAlignJustify > div': {
+        '& $contentBlockAlignCenter > div,span': {
+            textAlign: 'center'
+        },
+
+        '& $contentBlockAlignJustify': {
+            textAlign: 'justify'
+        },
+
+        '& $contentBlockAlignJustify > div,span': {
             textAlign: 'justify'
         },
     },
@@ -265,12 +293,20 @@ const LIB_LOADER_LOADED: string = 'LIB_LOADER_LOADED';
 const LIB_LOADER_LOAD_ERROR: string = 'LIB_LOADER_LOAD_ERROR';
 
 const BLOCK_ALIGNMENT_DATA_TYPE: string = 'BLOCK_ALIGNMENT_DATA_TYPE';
+const BLOCK_HEADER_TYPE: string = 'BLOCK_HEADER_TYPE';
 
 const BLOCK_ALIGNMENT_DATA_INITIAL: string = 'BLOCK_ALIGNMENT_DATA_INITIAL';
 const BLOCK_ALIGNMENT_DATA_LEFT: string = 'BLOCK_ALIGNMENT_DATA_LEFT';
 const BLOCK_ALIGNMENT_DATA_RIGHT: string = 'BLOCK_ALIGNMENT_DATA_RIGHT';
 const BLOCK_ALIGNMENT_DATA_CENTER: string = 'BLOCK_ALIGNMENT_DATA_CENTER';
 const BLOCK_ALIGNMENT_DATA_JUSTIFY: string = 'BLOCK_ALIGNMENT_DATA_JUSTIFY';
+
+const BLOCK_HEADER_UNSTYLED_TYPE: string = 'unstyled';
+
+const BLOCK_HEADER_LEVEL_1_TYPE: string = 'header-one';
+const BLOCK_HEADER_LEVEL_2_TYPE: string = 'header-two';
+const BLOCK_HEADER_LEVEL_3_TYPE: string = 'header-three';
+const BLOCK_HEADER_LEVEL_4_TYPE: string = 'header-four';
 
 const GENERAL_INLINE_STYLES_CONTROLS: InlineControlsDataType = [
     {label: 'Bold', controlStyle: 'BOLD', iconClassName: 'fas fa-bold'},
@@ -285,6 +321,42 @@ const ALIGNMENT_BLOCK_STYLES_CONTROLS: BlockControlsDataType = [
     {label: 'Justify', blockData: BLOCK_ALIGNMENT_DATA_JUSTIFY, iconClassName: 'fas fa-align-justify'},
 ];
 
+const HEADER_BLOCK_TYPE_CONTROLS: BlockTypeControlsType = [
+    {label: 'Header level 1', blockType: BLOCK_HEADER_LEVEL_1_TYPE, iconClassName: 'fas fa-h1'},
+    {label: 'Header level 2', blockType: BLOCK_HEADER_LEVEL_2_TYPE, iconClassName: 'fas fa-h2'},
+    {label: 'Header level 3', blockType: BLOCK_HEADER_LEVEL_3_TYPE, iconClassName: 'fas fa-h3'},
+    {label: 'Header level 4', blockType: BLOCK_HEADER_LEVEL_4_TYPE, iconClassName: 'fas fa-h4'},
+];
+
+const editorBlockRenderMap: Immutable.Map<CoreDraftBlockType, DraftBlockRenderConfig> = Immutable.Map({
+    'header-one': {
+        element: 'div',
+        wrapper: <InlineHeader level={1} />,
+    },
+
+    'header-two': {
+        element: 'div',
+        wrapper: <InlineHeader level={2} />,
+    },
+
+    'header-three': {
+        element: 'div',
+        wrapper: <InlineHeader level={3} />,
+    },
+
+    'header-four': {
+        element: 'div',
+        wrapper: <InlineHeader level={4} />,
+    },
+
+    'unstyled': {
+        element: 'div',
+        wrapper: <TextBlock />,
+    }
+});
+
+let extendedEditorBlockRenderMap: Immutable.Map<CoreDraftBlockType, DraftBlockRenderConfig>;
+
 /**
  * Rich text input component styled according to material-UI guidelines.
  * Component is intended to be used as a parameter for ['Redux-form' Field component](#/UI%20Components/Redux%20form/ReduxFormRichInputComponent).
@@ -297,19 +369,6 @@ const ALIGNMENT_BLOCK_STYLES_CONTROLS: BlockControlsDataType = [
 // component implementation
 function FormRichTextInputComponent(props: PropsTypes) {
     // region private variables declaration
-    const editorBlockRenderMap: Immutable.Map<CoreDraftBlockType, DraftBlockRenderConfig> = Immutable.Map({
-       /* 'header-one': {},
-        'header-two': {},
-        'header-three': {},
-        'header-four': {},
-        'header-five': {},*/
-
-        'unstyled': {
-            element: 'div',
-            wrapper: <TextBlock />,
-        }
-    });
-
     // endregion
 
     // region style hooks declaration
@@ -342,6 +401,24 @@ function FormRichTextInputComponent(props: PropsTypes) {
     // endregion
 
     // region business logic
+    // TODO: for future use
+   /* const editorBlockRender = (contentBlock) => {
+        const type = contentBlock.getType();
+
+
+
+        if (type === 'header-one') {
+            return {
+                component: BlockHeaderAdapterComponent,
+                editable: true,
+                props: {
+                    level: 1,
+                },
+            };
+
+        }
+    };*/
+
     const areBlocksHasData = (
         dataKey: string,
         dataValue: string,
@@ -353,44 +430,40 @@ function FormRichTextInputComponent(props: PropsTypes) {
         }, contentBlocks);
     };
 
-    const isSomeBlockHasData = (
-        dataKey: string,
-        dataValue: string,
-        contentBlocks: Array<BlockNodeRecord>
-    ): boolean => {
-        return any(equals(true), areBlocksHasData(dataKey, dataValue, contentBlocks));
+    const areBlocksOfType = (
+      blockType: string,
+      contentBlocks: Array<BlockNodeRecord>
+    ): Array<boolean> => {
+        return map((contentBlock: BlockNodeRecord) => {
+            const currentBlockType: string = contentBlock.getType();
+            return currentBlockType === blockType;
+        }, contentBlocks);
     };
 
-    const isAllBlockHasData = (
-        dataKey: string,
-        dataValue: string,
-        contentBlocks: Array<BlockNodeRecord>
-    ): boolean => {
-        return all(equals(true), areBlocksHasData(dataKey, dataValue, contentBlocks));
-    };
+    const blocksHasDataBy: Curry = curry((
+      byFunc: equals<boolean>,
+      dataKey: string,
+      dataValue: string,
+      contentBlocks: Array<BlockNodeRecord>
+    ) => {
+        return byFunc(equals(true), areBlocksHasData(dataKey, dataValue, contentBlocks));
+    });
 
-    const isNoneBlockHasData = (
-        dataKey: string,
-        dataValue: string,
-        contentBlocks: Array<BlockNodeRecord>
-    ): boolean => {
-        return none(equals(true), areBlocksHasData(dataKey, dataValue, contentBlocks));
-    };
+    const blocksOfTypeBy: Curry = curry((
+      byFunc: equals<boolean>,
+      blockType: string,
+      contentBlocks: Array<BlockNodeRecord>
+    ) => {
+        return byFunc(equals(true), areBlocksOfType(blockType, contentBlocks));
+    });
 
-    const isSomeSelectedBlockHasData = (
-        dataKey: string,
-        dataValue: string,
-    ): boolean => isSomeBlockHasData(dataKey, dataValue, getSelectedContentBlocks());
+    const isSomeBlocksHasData: Curry = blocksHasDataBy(any);
+    const isAllBlocksHasData: Curry = blocksHasDataBy(all);
+    const isNoneBlocksHasData: Curry = blocksHasDataBy(none);
 
-    const isAllSelectedBlockHasData = (
-        dataKey: string,
-        dataValue: string,
-    ): boolean => isAllBlockHasData(dataKey, dataValue, getSelectedContentBlocks());
-
-    const isNoneSelectedBlockHasData = (
-        dataKey: string,
-        dataValue: string,
-    ): boolean => isNoneBlockHasData(dataKey, dataValue, getSelectedContentBlocks());
+    const isSomeBlocksOfType: Curry = blocksOfTypeBy(any);
+    const isAllBlocksOfType: Curry = blocksOfTypeBy(all);
+    const isNoneBlocksOfType: Curry = blocksOfTypeBy(none);
 
     const getSelectedContentBlocks = (): Array<BlockNodeRecord> => {
         if (isNil(editorState)) {
@@ -424,6 +497,16 @@ function FormRichTextInputComponent(props: PropsTypes) {
         return contentBlocks;
     };
 
+    const getDefaultBlockDataByType: (blockDataType: string) => string = cond([
+      [equals(BLOCK_ALIGNMENT_DATA_TYPE), always(BLOCK_ALIGNMENT_DATA_INITIAL)],
+      [T, always('')]
+    ]);
+
+    const getDefaultBlockTypeByType: (blockType: string) => string = cond([
+        [equals(BLOCK_HEADER_TYPE), always(BLOCK_HEADER_UNSTYLED_TYPE)],
+        [T, always('')]
+    ]);
+
     const getBlockClassName = (contentBlock: BlockNodeRecord): string => {
         let blockClassName: string = '';
 
@@ -448,10 +531,30 @@ function FormRichTextInputComponent(props: PropsTypes) {
         return blockClassName;
     };
 
+    const setBlockType = (blockType: string) => {
+        if (isNil(editorState)) {
+            return;
+        }
+
+        const selectionState: SelectionState = editorState.getSelection();
+        const contentState: ContentState = editorState.getCurrentContent();
+
+        const {EditorState, Modifier} = draftJSLib;
+
+        const newContentState: ContentState = Modifier.setBlockType(
+          contentState,
+          selectionState,
+          blockType
+        );
+
+        const newEditorState: EditorState = EditorState.createWithContent(newContentState);
+        setEditorState(EditorState.forceSelection(newEditorState, selectionState));
+    };
+
     const setBlockData: (blockDataKey: string, blockData: string) => void =
       (blockDataKey: string, blockData: string): void => {
         if (isNil(editorState)) {
-            return null;
+            return;
         }
 
         const selectionState: SelectionState = editorState.getSelection();
@@ -473,6 +576,27 @@ function FormRichTextInputComponent(props: PropsTypes) {
 
     // region event handler helpers
     const editorToggleBlockType = curry((
+      blockType: string,
+      event: SyntheticMouseEvent<HTMLDivElement>
+    ) => {
+        event.preventDefault();
+
+        if (isNil(editorState)) {
+            return;
+        }
+
+        if (isAllBlocksOfType(blockType, getSelectedContentBlocks())) {
+            setBlockType(getDefaultBlockTypeByType(blockType));
+        } else if (isSomeBlocksOfType(blockType, getSelectedContentBlocks())) {
+            setBlockType(blockType);
+        } else if (isNoneBlocksOfType(blockType, getSelectedContentBlocks())) {
+            setBlockType(blockType);
+        } else {
+            return;
+        }
+    });
+
+    const editorToggleBlockData = curry((
         blockDataKey: string,
         blockData: string,
         event: SyntheticMouseEvent<HTMLDivElement>
@@ -483,11 +607,11 @@ function FormRichTextInputComponent(props: PropsTypes) {
             return;
         }
 
-        if (isAllSelectedBlockHasData(blockDataKey, blockData)) {
-            setBlockData(blockDataKey, BLOCK_ALIGNMENT_DATA_INITIAL);
-        } else if (isSomeSelectedBlockHasData(blockDataKey, blockData)) {
+        if (isAllBlocksHasData(blockDataKey, blockData, getSelectedContentBlocks())) {
+            setBlockData(blockDataKey, getDefaultBlockDataByType(blockDataKey));
+        } else if (isSomeBlocksHasData(blockDataKey, blockData, getSelectedContentBlocks())) {
             setBlockData(blockDataKey, blockData);
-        } else if (isNoneSelectedBlockHasData(blockDataKey, blockData)) {
+        } else if (isNoneBlocksHasData(blockDataKey, blockData, getSelectedContentBlocks())) {
             setBlockData(blockDataKey, blockData);
         } else {
             return;
@@ -524,8 +648,9 @@ function FormRichTextInputComponent(props: PropsTypes) {
         return <Editor
             ref={$editorRef}
             editorState={editorState}
-
-            blockRenderMap={editorBlockRenderMap}
+            blockRenderMap={extendedEditorBlockRenderMap}
+            // TODO: for future use
+            //blockRendererFn={editorBlockRender}
             blockStyleFn={getBlockClassName}
 
             onChange={setEditorState}
@@ -562,6 +687,27 @@ function FormRichTextInputComponent(props: PropsTypes) {
         />;
     };
 
+    const renderHeaderBlockStylesControls = () => {
+        const {control} = classes;
+
+        const controls: Node = map((controlData: BlockTypeControlType) => {
+            const {blockType, iconClassName} = controlData;
+
+            const className: string = classNames(control, {
+                active: isSomeBlocksOfType(blockType, getSelectedContentBlocks()),
+            });
+
+            return renderControlIcon(
+              className,
+              iconClassName,
+              editorToggleBlockType(blockType),
+              blockType
+            );
+        }, HEADER_BLOCK_TYPE_CONTROLS);
+
+        return renderControlGroup(controls);
+    };
+
     const renderAlignmentBlockStylesControls: RenderFunctionNoArgs = () => {
         const {control} = classes;
 
@@ -569,13 +715,13 @@ function FormRichTextInputComponent(props: PropsTypes) {
             const {blockData, iconClassName} = controlData;
 
             const className: string = classNames(control, {
-                active: isSomeSelectedBlockHasData(BLOCK_ALIGNMENT_DATA_TYPE, blockData),
+                active: isSomeBlocksHasData(BLOCK_ALIGNMENT_DATA_TYPE, blockData,  getSelectedContentBlocks()),
             });
 
             return renderControlIcon(
                 className,
                 iconClassName,
-                editorToggleBlockType(BLOCK_ALIGNMENT_DATA_TYPE, blockData),
+                editorToggleBlockData(BLOCK_ALIGNMENT_DATA_TYPE, blockData),
                 blockData
             );
         }, ALIGNMENT_BLOCK_STYLES_CONTROLS);
@@ -614,13 +760,11 @@ function FormRichTextInputComponent(props: PropsTypes) {
 
                 {renderAlignmentBlockStylesControls()}
 
+                {renderHeaderBlockStylesControls()}
+
                 <div className={controlsGroup}>
                     <FontIcon size='small' className={control} iconClassName='fas fa-quote-left' />
 
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h1' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h2' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h3' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-h4' />
 
                     <FontIcon size='small' className={control} iconClassName='fas fa-link' />
                     <FontIcon size='small' className={control} iconClassName='fas fa-image' />
@@ -655,6 +799,7 @@ function FormRichTextInputComponent(props: PropsTypes) {
             import('draft-js')
                 .then((draftJS: {[any]: any}) => {
                     draftJSLib = draftJS.default;
+                    extendedEditorBlockRenderMap = draftJSLib.DefaultDraftBlockRenderMap.merge(editorBlockRenderMap);
 
                     setEditorState(draftJSLib.EditorState.createEmpty());
                     setLibLoaderState(LIB_LOADER_LOADED);

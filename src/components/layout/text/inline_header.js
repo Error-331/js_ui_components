@@ -110,7 +110,7 @@ function InlineHeaderFunction(props: PropsTypes) {
     const {level, classes, theme, children, className} = props;
     const userLevel: number = defaultTo(1)(level);
 
-    const levelClassName = cond([
+    const levelClassName: string = cond([
         [isNil, always('level1')],
         [level => lt(level, 0), always('level1')],
         [level => gt(level, 6), always('level6')],

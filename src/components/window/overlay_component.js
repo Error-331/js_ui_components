@@ -4,7 +4,7 @@
 
 // external imports
 import * as React from 'react';
-import injectSheet, {useTheme} from 'react-jss';
+import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
 import {isNil, defaultTo} from 'ramda';
