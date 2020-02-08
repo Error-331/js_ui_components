@@ -586,28 +586,28 @@ function FormSliderInputComponent(props: PropsTypes) {
             props.componentContainerClassName
         );
 
-      const containerStyle: CSSStylesType = pipe(
-          mergeRight(__, componentContainerStyles),
-          mergeRight(__, style),
-      )({});
+        const containerStyle: CSSStylesType = pipe(
+            mergeRight(__, componentContainerStyles),
+            mergeRight(__, style),
+        )({});
 
-      return (
-          <div
-              ref={componentContainerRef}
-              className={className}
+        return (
+            <div
+                ref={componentContainerRef}
+                className={className}
 
-              style={containerStyle}
+                style={containerStyle}
 
-              onMouseDown={containerMouseDownHandler}
-          >
-              {renderTrackContainer()}
-              {renderProgressTrackContainer()}
-              {renderHandleContainers()}
-              {renderDummyHandleContainer()}
+                onMouseDown={containerMouseDownHandler}
+            >
+                {renderTrackContainer()}
+                {renderProgressTrackContainer()}
+                {renderHandleContainers()}
+                {renderDummyHandleContainer()}
 
-              {renderOverlay()}
-          </div>
-      );
+                {renderOverlay()}
+            </div>
+        );
     };
 
     // endregion

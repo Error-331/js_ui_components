@@ -31,6 +31,7 @@ import {
     any,
     none,
     map,
+    mergeDeepRight,
 } from 'ramda';
 
 import SelectionState from 'draft-js/lib/SelectionState';
@@ -44,9 +45,12 @@ import type {RenderFunctionNoArgs} from './../../types/common_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
+import type {ControlGroupDataType, ControlIconDataType} from './../navigation/horizontal_icon_toolbar_component';
+
+import HorizontalIconToolbarComponent from './../navigation/horizontal_icon_toolbar_component';
+
 import TextBlock from './../layout/text/text_block';
 import InlineHeader from './../layout/text/inline_header';
-import FontIcon from './../layout/icons/font_icon';
 
 // type definitions
 type CSSStylesType = {
@@ -162,74 +166,9 @@ const useStyles = createUseStyles(theme => ({
         alignContent: 'flex-start',
 
         '& > $toolbarContainer': {
-            display: 'flex',
-
-            flexDirection: 'column',
-            flexWrap: 'nowrap',
-
             flexBasis: 'auto',
             flexShrink: 1,
             flexGrow: 0,
-
-            justifyContent: 'flex-start',
-            alignItems: 'stretch',
-            alignContent: 'flex-start',
-
-            '& > $controlSection': {
-                boxSizing: 'border-box',
-                display: 'flex',
-
-                flexBasis: 'auto',
-                flexShrink: 1,
-                flexGrow: 0,
-
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                alignContent: 'flex-start',
-
-                '& > $controlsGroup': {
-                    boxSizing: 'border-box',
-                    display: 'flex',
-
-                    flexBasis: 'auto',
-                    flexShrink: 1,
-                    flexGrow: 0,
-
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    alignContent: 'flex-start',
-
-                    '& > $control': {
-                        boxSizing: 'border-box',
-
-                        flexBasis: 'auto',
-                        flexShrink: 1,
-                        flexGrow: 0,
-
-                        marginLeft: `${theme.layoutStyles.leftSpacing}px`,
-
-                        color: theme.inputStyles.inactiveColor,
-
-                        '&.active': {
-                            color: theme.inputStyles.activeColor,
-                        },
-
-                        '&:hover': {
-                            color: theme.inputStyles.hoverColor
-                        },
-
-                        '&:first-child': {
-                            marginLeft: `0px`,
-                        },
-                    }
-                }
-            },
         },
 
         '& $contentBlockAlignInitial': {
@@ -309,23 +248,23 @@ const BLOCK_HEADER_LEVEL_3_TYPE: string = 'header-three';
 const BLOCK_HEADER_LEVEL_4_TYPE: string = 'header-four';
 
 const GENERAL_INLINE_STYLES_CONTROLS: InlineControlsDataType = [
-    {label: 'Bold', controlStyle: 'BOLD', iconClassName: 'fas fa-bold'},
-    {label: 'Italic', controlStyle: 'ITALIC', iconClassName: 'fas fa-italic'},
-    {label: 'Underline', controlStyle: 'UNDERLINE', iconClassName: 'fas fa-underline'},
+    {title: 'Bold', controlStyle: 'BOLD', iconClassName: 'fas fa-bold'},
+    {title: 'Italic', controlStyle: 'ITALIC', iconClassName: 'fas fa-italic'},
+    {title: 'Underline', controlStyle: 'UNDERLINE', iconClassName: 'fas fa-underline'},
 ];
 
 const ALIGNMENT_BLOCK_STYLES_CONTROLS: BlockControlsDataType = [
-    {label: 'Align left', blockData: BLOCK_ALIGNMENT_DATA_LEFT, iconClassName: 'fas fa-align-left'},
-    {label: 'Align center', blockData: BLOCK_ALIGNMENT_DATA_CENTER, iconClassName: 'fas fa-align-center'},
-    {label: 'Align right', blockData: BLOCK_ALIGNMENT_DATA_RIGHT, iconClassName: 'fas fa-align-right'},
-    {label: 'Justify', blockData: BLOCK_ALIGNMENT_DATA_JUSTIFY, iconClassName: 'fas fa-align-justify'},
+    {title: 'Align left', blockData: BLOCK_ALIGNMENT_DATA_LEFT, iconClassName: 'fas fa-align-left'},
+    {title: 'Align center', blockData: BLOCK_ALIGNMENT_DATA_CENTER, iconClassName: 'fas fa-align-center'},
+    {title: 'Align right', blockData: BLOCK_ALIGNMENT_DATA_RIGHT, iconClassName: 'fas fa-align-right'},
+    {title: 'Justify', blockData: BLOCK_ALIGNMENT_DATA_JUSTIFY, iconClassName: 'fas fa-align-justify'},
 ];
 
 const HEADER_BLOCK_TYPE_CONTROLS: BlockTypeControlsType = [
-    {label: 'Header level 1', blockType: BLOCK_HEADER_LEVEL_1_TYPE, iconClassName: 'fas fa-h1'},
-    {label: 'Header level 2', blockType: BLOCK_HEADER_LEVEL_2_TYPE, iconClassName: 'fas fa-h2'},
-    {label: 'Header level 3', blockType: BLOCK_HEADER_LEVEL_3_TYPE, iconClassName: 'fas fa-h3'},
-    {label: 'Header level 4', blockType: BLOCK_HEADER_LEVEL_4_TYPE, iconClassName: 'fas fa-h4'},
+    {title: 'Header level 1', blockType: BLOCK_HEADER_LEVEL_1_TYPE, iconClassName: 'fas fa-h1'},
+    {title: 'Header level 2', blockType: BLOCK_HEADER_LEVEL_2_TYPE, iconClassName: 'fas fa-h2'},
+    {title: 'Header level 3', blockType: BLOCK_HEADER_LEVEL_3_TYPE, iconClassName: 'fas fa-h3'},
+    {title: 'Header level 4', blockType: BLOCK_HEADER_LEVEL_4_TYPE, iconClassName: 'fas fa-h4'},
 ];
 
 const editorBlockRenderMap: Immutable.Map<CoreDraftBlockType, DraftBlockRenderConfig> = Immutable.Map({
@@ -465,6 +404,51 @@ function FormRichTextInputComponent(props: PropsTypes) {
     const isAllBlocksOfType: Curry = blocksOfTypeBy(all);
     const isNoneBlocksOfType: Curry = blocksOfTypeBy(none);
 
+    const prepareGeneralInlineStylesControls: () => ControlGroupDataType = (): ControlGroupDataType => {
+        const currentInlineStyle: DraftInlineStyle = editorState.getCurrentInlineStyle();
+
+        return map((controlData: InlineControlsDataType) => {
+            const toolbarControlData: ControlIconDataType = mergeDeepRight({}, controlData);
+
+            const {controlStyle} = controlData;
+
+            toolbarControlData.active = currentInlineStyle.has(controlStyle);
+            toolbarControlData.mouseDownHandler = editorToggleInlineStyleHandle(controlStyle);
+
+            return toolbarControlData;
+        }, GENERAL_INLINE_STYLES_CONTROLS);
+    };
+
+    const prepareAlignmentBlockStylesControls: RenderFunctionNoArgs = () => {
+        const selectedContentBlocks: Array<BlockNodeRecord> = getSelectedContentBlocks();
+
+        return map((controlData: BlockControlDataType) => {
+            const toolbarControlData: ControlIconDataType = mergeDeepRight({}, controlData);
+
+            const {blockData} = controlData;
+
+            toolbarControlData.active = isSomeBlocksHasData(BLOCK_ALIGNMENT_DATA_TYPE, blockData, selectedContentBlocks);
+            toolbarControlData.mouseDownHandler = editorToggleBlockData(BLOCK_ALIGNMENT_DATA_TYPE, blockData);
+
+            return toolbarControlData;
+        },  ALIGNMENT_BLOCK_STYLES_CONTROLS);
+    };
+
+    const prepareHeaderBlockStylesControls = () => {
+        const selectedContentBlocks: Array<BlockNodeRecord> = getSelectedContentBlocks();
+
+        return map((controlData: BlockTypeControlType) => {
+            const toolbarControlData: ControlIconDataType = mergeDeepRight({}, controlData);
+
+            const {blockType} = controlData;
+
+            toolbarControlData.active = isSomeBlocksOfType(blockType, selectedContentBlocks);
+            toolbarControlData.mouseDownHandler = editorToggleBlockType(blockType);
+
+            return toolbarControlData;
+        }, HEADER_BLOCK_TYPE_CONTROLS);
+    };
+
     const getSelectedContentBlocks = (): Array<BlockNodeRecord> => {
         if (isNil(editorState)) {
             return [];
@@ -498,8 +482,8 @@ function FormRichTextInputComponent(props: PropsTypes) {
     };
 
     const getDefaultBlockDataByType: (blockDataType: string) => string = cond([
-      [equals(BLOCK_ALIGNMENT_DATA_TYPE), always(BLOCK_ALIGNMENT_DATA_INITIAL)],
-      [T, always('')]
+        [equals(BLOCK_ALIGNMENT_DATA_TYPE), always(BLOCK_ALIGNMENT_DATA_INITIAL)],
+        [T, always('')]
     ]);
 
     const getDefaultBlockTypeByType: (blockType: string) => string = cond([
@@ -657,110 +641,29 @@ function FormRichTextInputComponent(props: PropsTypes) {
         />;
     };
 
-    const renderControlGroup: (children: Node) => Node = (children: Node) => {
-        const {controlsGroup} = classes;
-
-        return <div className={controlsGroup}>
-            {children}
-        </div>;
-    };
-
-    const renderControlIcon: (
-        className: string,
-        iconClassName: string,
-        onMouseDown: (data: any, event: SyntheticMouseEvent<HTMLDivElement>) => void,
-        key: string,
-    ) => Node = (
-        className: string,
-        iconClassName: string,
-        onMouseDown: (data: any, event: SyntheticMouseEvent<HTMLDivElement>) => void,
-        key: string,
-    ) => {
-        return <FontIcon
-            size='small'
-
-            className={className}
-            iconClassName={iconClassName}
-
-            onMouseDown={onMouseDown}
-            key={key}
-        />;
-    };
-
-    const renderHeaderBlockStylesControls = () => {
-        const {control} = classes;
-
-        const controls: Node = map((controlData: BlockTypeControlType) => {
-            const {blockType, iconClassName} = controlData;
-
-            const className: string = classNames(control, {
-                active: isSomeBlocksOfType(blockType, getSelectedContentBlocks()),
-            });
-
-            return renderControlIcon(
-              className,
-              iconClassName,
-              editorToggleBlockType(blockType),
-              blockType
-            );
-        }, HEADER_BLOCK_TYPE_CONTROLS);
-
-        return renderControlGroup(controls);
-    };
-
-    const renderAlignmentBlockStylesControls: RenderFunctionNoArgs = () => {
-        const {control} = classes;
-
-        const controls: Node = map((controlData: BlockControlDataType) => {
-            const {blockData, iconClassName} = controlData;
-
-            const className: string = classNames(control, {
-                active: isSomeBlocksHasData(BLOCK_ALIGNMENT_DATA_TYPE, blockData,  getSelectedContentBlocks()),
-            });
-
-            return renderControlIcon(
-                className,
-                iconClassName,
-                editorToggleBlockData(BLOCK_ALIGNMENT_DATA_TYPE, blockData),
-                blockData
-            );
-        }, ALIGNMENT_BLOCK_STYLES_CONTROLS);
-
-        return renderControlGroup(controls);
-    };
-
-    const renderGeneralInlineStylesControls: RenderFunctionNoArgs = () => {
-        const {control} = classes;
-        const currentInlineStyle: DraftInlineStyle = editorState.getCurrentInlineStyle();
-
-        const controls: Node = map((controlData: InlineControlDataType) => {
-            const {controlStyle, iconClassName} = controlData;
-
-            const className: string = classNames(control, {
-                active: currentInlineStyle.has(controlStyle)
-            });
-
-            return renderControlIcon(
-              className,
-              iconClassName,
-              editorToggleInlineStyleHandle(controlStyle),
-              controlStyle
-            );
-        }, GENERAL_INLINE_STYLES_CONTROLS);
-
-        return renderControlGroup(controls);
-    };
 
     const renderToolbarsContainer: RenderFunctionNoArgs = () => {
-        const {toolbarContainer, controlSection, controlsGroup, control} = classes;
+        const {toolbarContainer} = classes;
 
-        return <div className={toolbarContainer}>
+        const toolbarSections = [
+            [
+                prepareGeneralInlineStylesControls(),
+                prepareAlignmentBlockStylesControls(),
+                prepareHeaderBlockStylesControls(),
+            ]
+        ];
+
+        return <HorizontalIconToolbarComponent
+            className={toolbarContainer}
+            data={toolbarSections}
+        />;
+
+        /*return <div className={toolbarContainer}>
             <div className={controlSection}>
-                {renderGeneralInlineStylesControls()}
 
-                {renderAlignmentBlockStylesControls()}
 
-                {renderHeaderBlockStylesControls()}
+
+
 
                 <div className={controlsGroup}>
                     <FontIcon size='small' className={control} iconClassName='fas fa-quote-left' />
@@ -771,7 +674,7 @@ function FormRichTextInputComponent(props: PropsTypes) {
                     <FontIcon size='small' className={control} iconClassName='fas fa-film' />
                 </div>
             </div>
-        </div>;
+        </div>;*/
     };
 
     const renderEditorContainer: RenderFunctionNoArgs = () => {
@@ -815,7 +718,7 @@ function FormRichTextInputComponent(props: PropsTypes) {
 
         default:
             return null;
-    };
+    }
 }
 
 // exports

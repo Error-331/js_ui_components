@@ -357,7 +357,7 @@ function FormSliderHandleComponent(props: PropsTypes) {
 
     // endregion
 
-    // init render
+    // init
     return renderComponentContainer();
 }
 
