@@ -36,13 +36,13 @@ type PropsTypes = FieldProps & {
     appearance?: 'small' | 'medium',
 
     /**
-     * Checkbox label
+     * Radio button label label
      */
 
     label?: string,
 
     /**
-     * Value that indicates where label should be placed on left side of the checkbox or on the right
+     * Value that indicates where label should be placed on left side of the radio button or on the right
      */
 
     labelPosition?: 'left' | 'right',
@@ -87,109 +87,7 @@ type PropsTypes = FieldProps & {
 type StateTypes = {};
 
 // styles definition
-const styles = theme => ({
-    componentContainer: {
-        boxSizing: 'border-box',
-        display: 'flex',
-
-        flexBasis: 'auto',
-        flexGrow: 0,
-        flexShrink: 1,
-
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        alignContent: 'flex-start',
-
-        cursor: 'pointer',
-
-        '& > $checkboxLabel': {
-            boxSizing: 'border-box',
-
-            flexBasis: 'auto',
-            flexShrink: 1,
-            flexGrow: 0,
-
-            fontFamily: theme.inputStyles.fontStack,
-            fontSize: theme.inputStyles.fontSize,
-
-            color: theme.inputStyles.labelColor,
-
-            '&.disabled': {
-                color: theme.inputStyles.disabledColor
-            }
-        },
-
-        '& > $checkboxLeftLabel': {
-            paddingRight: `${theme.inputStyles.switchLabelOffset}px`,
-        },
-
-        '& > $checkboxRightLabel': {
-            paddingLeft: `${theme.inputStyles.switchLabelOffset}px`,
-        },
-
-        '& > $inputControl': {
-            display: 'none',
-
-            '&:checked + $inputControlLabel > $inputControlIcon': {
-                transform: 'scale(1)',
-            },
-
-            '&:checked + $inputControlLabel.disabled > $inputControlIcon': {
-                backgroundColor: theme.inputStyles.disabledColor
-            },
-        },
-
-        '& > $inputControlLabel': {
-            boxSizing: 'border-box',
-            display: 'flex',
-
-            flexDirection: 'column',
-            flexWrap: 'nowrap',
-
-            justifyContent: 'center',
-            alignItems: 'stretch',
-            alignContent: 'flex-start',
-
-            width: '20px',
-            height: '20px',
-
-            padding: '3px',
-
-            borderRadius: '50%',
-            border: `2px solid ${theme.inputStyles.switchSliderActiveBodyBGColor}`,
-
-            '& > $inputControlIcon': {
-                flexBasis: 'auto',
-                flexShrink: 0,
-                flexGrow: 1,
-
-                borderRadius: '50%',
-
-                backgroundColor: theme.inputStyles.switchSliderHandleActive,
-
-                transform: 'scale(0)',
-
-                transition: 'all .3s ease',
-                transitionProperty: 'transform, border-color'
-            }
-        },
-
-        '& > $inputControlLabel.disabled': {
-            borderColor: theme.inputStyles.disabledColor
-        }
-    },
-
-    checkboxLabel: {},
-    checkboxLeftLabel: {},
-    checkboxRightLabel: {},
-
-    inputControl: {},
-    inputControlLabel: {},
-    inputControlIcon: {},
-});
+const styles = theme => ({});
 
 /**
  * Radio button input component styled according to material-UI guidelines.
@@ -211,6 +109,7 @@ class FormRadioButtonInputClass extends React.Component<PropsTypes, StateTypes> 
     static defaultProps = {
         disabled: false,
 
+        labelPosition: 'left',
         leftLabel: '',
         rightLabel: '',
 
@@ -301,10 +200,7 @@ class FormRadioButtonInputClass extends React.Component<PropsTypes, StateTypes> 
     // endregion
 
     // region prop accessors
-    _isChecked(): boolean {
-        const {checked}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
-        return defaultTo(false)(checked);
-    }
+
 
     _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
         const {input} = this.props;
@@ -363,7 +259,7 @@ class FormRadioButtonInputClass extends React.Component<PropsTypes, StateTypes> 
     }
 
     _renderInputContainer(): React.Node {
-        const {labelPosition} = this.props;
+        const labelPosition: string = this._getLabelPosition();
 
         return (
             <div
