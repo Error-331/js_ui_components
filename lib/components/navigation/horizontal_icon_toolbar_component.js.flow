@@ -13,6 +13,7 @@ import classNames from 'classnames';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
+import type {RenderFunctionNoArgs} from './../../types/common_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 
 import {MainThemeContext} from './../../theming/providers';
@@ -31,7 +32,7 @@ export type ControlIconDataType = {
 };
 
 export type ControlGroupDataType = Array<ControlIconDataType>;
-export type ControlSectionDataType = Array<ControlGroupDataType>
+export type ControlSectionDataType = Array<ControlGroupDataType>;
 
 type CSSStylesType = {
     [string]: mixed
@@ -335,19 +336,7 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
         }, data);
     };
 
-
-    /*
-
-        const renderControlGroup: (children: Node) => Node = (children: Node) => {
-        const {controlsGroup} = classes;
-
-        return <div className={controlsGroup}>
-            {children}
-        </div>;
-    };
-     */
-
-    const renderComponentContainer = () => {
+    const renderComponentContainer: RenderFunctionNoArgs = (): Node => {
         const {componentContainer} = classes;
 
         return <div ref={$toolbarRef} className={componentContainer}>

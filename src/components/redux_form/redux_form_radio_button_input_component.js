@@ -3,11 +3,13 @@
 // @flow
 
 // external imports
+import type {Node, ElementType} from 'react';
+
 import * as React from 'react';
 import {Field} from 'redux-form/immutable';
 
 // local imports
-import {FormRadioButtonInputComponent} from './../form/form_radio_button_input_component';
+import FormRadioButtonInputComponent from './../form/form_radio_button_input_component';
 
 // type definitions
 type CSSStylesType = {
@@ -15,6 +17,18 @@ type CSSStylesType = {
 };
 
 export type PropsTypes = {
+    /**
+     * Number that indicates which visual variant will be used to represent the radio button
+     */
+
+    variant?: number,
+
+    /**
+     * Custom made representation of current component
+     */
+
+    customComponent?: ElementType | Node,
+
     /**
      * Input name
      */
@@ -26,6 +40,12 @@ export type PropsTypes = {
      */
 
     value: string,
+
+    /**
+     * Flag that dictates whether component should be readable only (none selectable)
+     */
+
+    readOnly?: ?boolean,
 
     /**
      * Flag that dictates whether component should be disabled
@@ -50,6 +70,12 @@ export type PropsTypes = {
      */
 
     labelPosition?: 'left' | 'right',
+
+    /**
+     * Class name which will be applied to outermost container of current component
+     */
+
+    className?: string,
 
     /**
      * Styles for component container (main outer container) of the form radio input component

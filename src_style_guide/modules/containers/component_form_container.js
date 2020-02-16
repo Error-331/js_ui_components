@@ -72,6 +72,7 @@ const ComponentFormContainerConnected = reduxForm({
             testFromRadioButtonInputComponentWithDefaultValue2: 'testVal2',
             testFromRadioButtonInputComponentWithDefaultValue3: 'testVal1',
             testFromRadioButtonInputComponentWithDefaultValue4: 'testVal2',
+            testFromRadioButtonInputComponentWithDefaultValue5: 'testVal1',
         },
 
         reduxFormDropDownInputComponents: {

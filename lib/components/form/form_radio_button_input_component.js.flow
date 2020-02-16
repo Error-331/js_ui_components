@@ -3,26 +3,48 @@
 // @flow
 
 // external imports
-import * as React from 'react';
-import injectSheet from 'react-jss';
-import classNames from 'classnames';
+import type {ElementType, Node} from 'react';
+import type {fieldPropTypes} from 'redux-form';
 
-import {always, equals, isNil, defaultTo, ifElse, clone} from 'ramda';
+import React, {useState, useEffect} from 'react';
+import {isElement} from 'react-dom/test-utils';
+
+import {isNil, defaultTo, ifElse} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
-import type {FieldProps} from 'redux-form';
-
 // local imports
+import type {RenderFunctionNoArgs} from './../../types/common_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
-import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+import {DEFAULT_REDUX_FORM_FIELD_COMPONENT_INPUT_DATA_PROPS} from './../../theming/constants/redux_form_constants';
+
+import FormRadioButtonInputVariant1Component from './form_radio_button_input_variants/form_radio_button_input_variant1_component';
+import FormRadioButtonInputVariant2Component from './form_radio_button_input_variants/form_radio_button_input_variant2_component';
 
 // type definitions
 type CSSStylesType = {
     [string]: mixed
 };
 
-type PropsTypes = FieldProps & {
+type PropsTypes = fieldPropTypes & {
+    /**
+     * Number that indicates which visual variant will be used to represent the radio button
+     */
+
+    variant?: number,
+
+    /**
+     * Custom made representation of current component
+     */
+
+    customComponent?: ElementType | Node,
+
+    /**
+     * Flag that dictates whether component should be readable only (none selectable)
+     */
+
+    readOnly?: ?boolean,
+
     /**
      * Flag that dictates whether component should be disabled
      */
@@ -36,16 +58,34 @@ type PropsTypes = FieldProps & {
     appearance?: 'small' | 'medium',
 
     /**
-     * Checkbox label
+     * Radio button label label
      */
 
     label?: string,
 
     /**
-     * Value that indicates where label should be placed on left side of the checkbox or on the right
+     * Value that indicates where label should be placed on left side of the radio button or on the right
      */
 
     labelPosition?: 'left' | 'right',
+
+    /**
+     * Class name which will be applied to outermost container of current component
+     */
+
+    className?: string,
+
+    /**
+     * Styles for component container (main outer container) of the form radio input component
+     */
+
+    componentContainerStyles?: CSSStylesType,
+
+    /**
+     * Alias of 'componentContainerStyles'
+     */
+
+    style?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -64,18 +104,6 @@ type PropsTypes = FieldProps & {
     input?: ?ReduxFormFieldComponentInputDataPropsTypes,
 
     /**
-     * Styles for component container (main outer container) of the form radio input component
-     */
-
-    componentContainerStyles?: CSSStylesType,
-
-    /**
-     * Alias of 'componentContainerStyles'
-     */
-
-    style?: CSSStylesType,
-
-    /**
      * JSS inner classes
      *
      * @ignore
@@ -87,109 +115,6 @@ type PropsTypes = FieldProps & {
 type StateTypes = {};
 
 // styles definition
-const styles = theme => ({
-    componentContainer: {
-        boxSizing: 'border-box',
-        display: 'flex',
-
-        flexBasis: 'auto',
-        flexGrow: 0,
-        flexShrink: 1,
-
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        alignContent: 'flex-start',
-
-        cursor: 'pointer',
-
-        '& > $checkboxLabel': {
-            boxSizing: 'border-box',
-
-            flexBasis: 'auto',
-            flexShrink: 1,
-            flexGrow: 0,
-
-            fontFamily: theme.inputStyles.fontStack,
-            fontSize: theme.inputStyles.fontSize,
-
-            color: theme.inputStyles.labelColor,
-
-            '&.disabled': {
-                color: theme.inputStyles.disabledColor
-            }
-        },
-
-        '& > $checkboxLeftLabel': {
-            paddingRight: `${theme.inputStyles.switchLabelOffset}px`,
-        },
-
-        '& > $checkboxRightLabel': {
-            paddingLeft: `${theme.inputStyles.switchLabelOffset}px`,
-        },
-
-        '& > $inputControl': {
-            display: 'none',
-
-            '&:checked + $inputControlLabel > $inputControlIcon': {
-                transform: 'scale(1)',
-            },
-
-            '&:checked + $inputControlLabel.disabled > $inputControlIcon': {
-                backgroundColor: theme.inputStyles.disabledColor
-            },
-        },
-
-        '& > $inputControlLabel': {
-            boxSizing: 'border-box',
-            display: 'flex',
-
-            flexDirection: 'column',
-            flexWrap: 'nowrap',
-
-            justifyContent: 'center',
-            alignItems: 'stretch',
-            alignContent: 'flex-start',
-
-            width: '20px',
-            height: '20px',
-
-            padding: '3px',
-
-            borderRadius: '50%',
-            border: `2px solid ${theme.inputStyles.switchSliderActiveBodyBGColor}`,
-
-            '& > $inputControlIcon': {
-                flexBasis: 'auto',
-                flexShrink: 0,
-                flexGrow: 1,
-
-                borderRadius: '50%',
-
-                backgroundColor: theme.inputStyles.switchSliderHandleActive,
-
-                transform: 'scale(0)',
-
-                transition: 'all .3s ease',
-                transitionProperty: 'transform, border-color'
-            }
-        },
-
-        '& > $inputControlLabel.disabled': {
-            borderColor: theme.inputStyles.disabledColor
-        }
-    },
-
-    checkboxLabel: {},
-    checkboxLeftLabel: {},
-    checkboxRightLabel: {},
-
-    inputControl: {},
-    inputControlLabel: {},
-    inputControlIcon: {},
-});
 
 /**
  * Radio button input component styled according to material-UI guidelines.
@@ -201,94 +126,49 @@ const styles = theme => ({
  */
 
 // component implementation
+function FormRadioButtonInputComponent(props: PropsTypes) {
+    // region private variables declaration
+    const variant: number = defaultTo(1, props.variant);
+    const customComponent: ElementType | Node | null = defaultTo(null, props.customComponent);
 
-// $FlowFixMe decorators
-@injectSheet(styles)
-class FormRadioButtonInputClass extends React.Component<PropsTypes, StateTypes> {
-    // region static props
-    static displayName = 'FormRadioButtonInputComponent';
+    const inputData: ReduxFormFieldComponentInputDataPropsTypes =
+        defaultTo(DEFAULT_REDUX_FORM_FIELD_COMPONENT_INPUT_DATA_PROPS, props.input);
 
-    static defaultProps = {
-        disabled: false,
+    const className: string = defaultTo('', props.className);
 
-        leftLabel: '',
-        rightLabel: '',
-
-        input: {
-            name: '',
-            value: '',
-
-            onChange: () => {},
-            onFocus: () => {},
-            onBlur: () => {},
-            onDrop: () => {},
-            onDragStart: () => {},
-            onFocus: () => {},
-        },
-
-        classes: {}
-    };
-
-    _id: ?string = null;
+    const componentContainerStyles: CSSStylesType = defaultTo({})(props.componentContainerStyles);
+    const style: CSSStylesType = Object.assign({}, componentContainerStyles, defaultTo({})(props.style));
 
     // endregion
 
-    // region constructor
-    constructor(props: PropsTypes): void {
-        super(props);
+    // region style hooks declaration
+    // endregion
 
-        this._id = this._createInputId();
-    }
+    // region context hooks declaration
+    // endregion
+
+    // region state hooks declaration
+    const [id, setId] = useState(null);
 
     // endregion
 
-    // region lifecycle methods
-    // endregion
-
-    // region style accessors
-    _getComponentContainerStyles(): CSSStylesType {
-        const componentContainerStyles: CSSStylesType = defaultTo({})(this.props.componentContainerStyles);
-        const style: CSSStylesType = defaultTo({})(this.props.style);
-
-        return Object.assign({}, componentContainerStyles, style);
-    }
-
-    _getLabelClasses(): string {
-        const {disabled, labelPosition, classes: {checkboxLabel, checkboxLeftLabel, checkboxRightLabel}} = this.props;
-
-        return classNames(
-            checkboxLabel,
-            ifElse(equals('left'), always(checkboxLeftLabel), always(checkboxRightLabel))(labelPosition),
-            {'disabled': disabled}
-        );
-    }
-
-    _getInputClasses(): string {
-        const {disabled}: {disabled: ?boolean} = this.props;
-
-        return classNames(
-            this.props.classes.inputControl,
-            {'disabled': disabled}
-        );
-    }
-
-    _getInputControlLabelClasses(): string {
-        const {disabled}: {disabled: ?boolean} = this.props;
-
-        return classNames(
-            this.props.classes.inputControlLabel,
-            {'disabled': disabled}
-        );
-    }
+    // region effect hooks declaration
+    useEffect(() => setId(createInputId), []);
 
     // endregion
 
-    // region label accessors
+    // region state variables declaration
     // endregion
 
-    // region state accessors
-    _createInputId(): string {
-        const {name} = this._getInputData();
+    // region ref hooks declaration
+    // endregion
+
+    // region callback hooks declaration
+    // endregion
+
+    // region business logic
+    const createInputId: () => string = (): string => {
+        const {name} = inputData;
         const randomIdNumber: number = generateRandomIdNumber();
 
         if (isNil(name)) {
@@ -296,105 +176,80 @@ class FormRadioButtonInputClass extends React.Component<PropsTypes, StateTypes> 
         }
 
         return `radio_button_input_${name}_${randomIdNumber}`;
-    }
+    };
 
     // endregion
 
-    // region prop accessors
-    _isChecked(): boolean {
-        const {checked}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
-        return defaultTo(false)(checked);
-    }
-
-    _getInputData(): ReduxFormFieldComponentInputDataPropsTypes {
-        const {input} = this.props;
-        return isNil(input) ? clone(FormRadioButtonInputClass.defaultProps.input) : input;
-    }
-
+    // region event handler helpers
     // endregion
 
-    // region handlers
-    // endregion
-
-    // region render methods
-    _renderLabel(): ?React.Node {
-        const {labelPosition, label} = this.props;
-
-        if (isNil(labelPosition) || isNil(label)) {
-            return null;
+    // region render helpers
+    const renderComponentVariant: (componentVariantProps: {[any]: [any]}) => Node = (componentVariantProps: {[any]: [any]}): Node => {
+        switch (variant) {
+            case 1:
+                return <FormRadioButtonInputVariant1Component {...componentVariantProps}/>;
+            case 2:
+                return <FormRadioButtonInputVariant2Component {...componentVariantProps}/>;
+            default:
+                return null;
         }
+    };
 
-        return <div className={this._getLabelClasses()}>
-            {label}
-        </div>;
-    }
+    const renderCustomComponent: (componentVariantProps: {[any]: [any]}) => Node = (componentVariantProps: {[any]: [any]}): Node => {
+        return ifElse(
+            isElement,
+            (elm) => {
+                return React.cloneElement(
+                    elm,
+                    {
+                        ...elm.props,
+                        ...componentVariantProps,
+                    }
+                );
+            },
+            (elm) => {
+                return React.createElement(elm, {...componentVariantProps});
+            }
+        )(customComponent);
+    };
 
-    _renderInputIcon(): React.Node {
-        return <div className={this.props.classes.inputControlIcon}>
-        </div>;
-    }
+    const render: RenderFunctionNoArgs = (): Node => {
+        const {name, value, checked, onChange} = inputData;
+        const {readOnly, disabled, labelPosition, label} = props;
 
-    _renderInputControlLabel(): React.Node {
-        return <label htmlFor={this._id} className={this._getInputControlLabelClasses()}>
-            {this._renderInputIcon()}
-        </label>;
-    }
+        const componentVariantProps: {[any]: [any]} = {
+            id,
 
-    _renderInput(): React.Node {
-        const {disabled}: {disabled: ?boolean} = this.props;
-        const {value, name, onChange}: ReduxFormFieldComponentInputDataPropsTypes = this._getInputData();
+            name,
+            value,
+            checked,
 
-        const checkedParam: ?string = this._isChecked() ? 'checked' : '';
-        const disabledParam: ?string = disabled ? 'disabled' : undefined;
+            readOnly,
+            disabled,
 
-        return <input
-            className={this._getInputClasses()}
+            labelPosition,
+            label,
 
-            disabled={disabledParam}
-            checked={checkedParam}
+            onChange,
 
-            type='radio'
-            value={value}
-            name={name}
-            id={this._id}
+            className,
+            style,
+        };
 
-            onChange={onChange}
-        />;
-    }
-
-    _renderInputContainer(): React.Node {
-        const {labelPosition} = this.props;
-
-        return (
-            <div
-                className={this.props.classes.componentContainer}
-                style={this._getComponentContainerStyles()}
-            >
-                {labelPosition === 'left' ? this._renderLabel() : null}
-                {this._renderInput()}
-                {this._renderInputControlLabel()}
-                {labelPosition === 'right' ? this._renderLabel() : null}
-            </div>
-        );
-    }
-
-    render(): React.Node {
-        return this._renderInputContainer();
-    }
+        if (!isNil(customComponent)) {
+            return renderCustomComponent(componentVariantProps);
+        } else {
+            return renderComponentVariant(componentVariantProps);
+        }
+    };
 
     // endregion
-}
 
-function FormRadioButtonInputComponent(props: PropsTypes) {
-    return (
-        <MainThemeContext.Consumer>
-            {windowDimensions => <FormRadioButtonInputClass {...props} {...windowDimensions} />}
-        </MainThemeContext.Consumer>
-    );
+    // init
+    return render();
 }
 
 FormRadioButtonInputComponent.displayName = 'FormRadioButtonInputComponent';
 
 // exports
-export {FormRadioButtonInputClass, FormRadioButtonInputComponent};
 export default FormRadioButtonInputComponent;
