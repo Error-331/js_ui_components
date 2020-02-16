@@ -5,20 +5,23 @@
 // external imports
 import type {Node} from 'react';
 
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useRef, useContext} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
 
-import {isNil, defaultTo, addIndex, map, forEach} from 'ramda';
+import {defaultTo, addIndex, map} from 'ramda';
 import classNames from 'classnames';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 import type {RenderFunctionNoArgs} from './../../types/common_types';
+import type {GroupRowPositionDataType, GroupsRowPositionDataType} from './../../types/common_data_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 
 import {MainThemeContext} from './../../theming/providers';
 
 import FontIcon from './../layout/icons/font_icon';
+
+import {useHorizontalSectionsAlignment} from './../../hooks/layout/sections_alignment_hooks';
 
 // type definitions
 export type ControlIconDataType = {
@@ -44,14 +47,6 @@ export type FormTextInputTypes = {
     className?: string,
     style?: CSSStylesType,
 };
-
-export type GroupFormatDataType = {
-    isFirst: boolean,
-    isLast?: boolean,
-    rowNum: number
-};
-
-export type GroupsFormatDataType = Array<GroupFormatDataType>;
 
 type PropsTypes = FormTextInputTypes & {
     /**
@@ -191,67 +186,9 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
     // endregion
 
     // region state hooks declaration
-    const [sectionsFormatData, setSectionsFormatData] = useState([]);
-
     // endregion
 
     // region effect hooks declaration
-    useEffect(() => {
-        if (isNil($toolbarRef) || isNil($toolbarRef.current)) {
-            return;
-        }
-
-        const $controlSections: Array<HTMLDivElement> = $toolbarRef.current.children;
-
-        const sectionsFormatData: Array<GroupsFormatDataType> = map(($controlSection: HTMLDivElement) => {
-            const controlSectionClientRect: ClientRect = $controlSection.getBoundingClientRect();
-            const $controlGroups: Array<HTMLDivElement> = $controlSection.children;
-
-            const sectionWidth: number = controlSectionClientRect.width;
-            let totalWidth: number = 0;
-            let currentRow: number = 0;
-
-            const groupFormatData: GroupsFormatDataType = [];
-
-            addIndex(forEach)(($controlGroup: HTMLDivElement, controlGroupIndex: number) => {
-                const controlGroupClientRect: ClientRect = $controlGroup.getBoundingClientRect();
-                const groupWidth: number = controlGroupClientRect.width;
-
-                if (controlGroupIndex === 0) {
-                    totalWidth += groupWidth;
-
-                    groupFormatData.push({isFirst: true, rowNum: currentRow});
-                } else {
-                    const groupWithWithPadding: number = groupWidth + theme.layoutStyles.formHorizontalSpacing;
-
-                    const totalWidthWithPaddedGroup: number = groupWithWithPadding + totalWidth;
-                    const totalWidthWithGroup: number = groupWidth + totalWidth;
-
-                    if (totalWidthWithPaddedGroup <= sectionWidth) {
-                        totalWidth += groupWithWithPadding;
-
-                        groupFormatData.push({isFirst: false, rowNum: currentRow});
-                    } else if (totalWidthWithGroup <= sectionWidth) {
-                        totalWidth = groupWidth;
-                        currentRow = currentRow + 1;
-
-                        groupFormatData[groupFormatData.length - 1].isLast = true;
-                        groupFormatData.push({isFirst: true, rowNum: currentRow});
-                    } else {
-                        totalWidth = groupWidth;
-                        currentRow = currentRow + 1;
-
-                        groupFormatData.push({isFirst: true, rowNum: currentRow});
-                    }
-                }
-            }, $controlGroups);
-
-            return groupFormatData;
-        }, $controlSections);
-
-        setSectionsFormatData(sectionsFormatData);
-    }, [themeContext.windowDimensions.innerWidth]);
-
     // endregion
 
     // region state variables declaration
@@ -263,6 +200,11 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
     // endregion
 
     // region callback hooks declaration
+    // endregion
+
+    // region custom hooks declaration
+    const SectionsRowPositionData = useHorizontalSectionsAlignment($toolbarRef);
+
     // endregion
 
     // region business logic
@@ -297,13 +239,13 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
         }, controlGroupData);
     };
 
-    const renderControlGroups = (controlSectionData: ControlSectionDataType, GroupsFormatData: GroupFormatDataType) => {
+    const renderControlGroups = (controlSectionData: ControlSectionDataType, GroupsRowPositionDataData: GroupRowPositionDataType) => {
         return addIndex(map)((controlGroupData: ControlGroupDataType, index: number) => {
-            const groupFormatData: GroupFormatDataType = defaultTo({}, GroupsFormatData[index]);
+            const groupsRowPositionData: GroupRowPositionDataType = defaultTo({}, GroupsRowPositionDataData[index]);
 
-            const ifFirstOnRow: boolean = defaultTo(false, groupFormatData.isFirst);
-            const isLastOnRow: boolean = defaultTo(false, groupFormatData.isLast);
-            const rowNum: number = defaultTo(false, groupFormatData.rowNum);
+            const ifFirstOnRow: boolean = defaultTo(false, groupsRowPositionData.isFirst);
+            const isLastOnRow: boolean = defaultTo(false, groupsRowPositionData.isLast);
+            const rowNum: number = defaultTo(false, groupsRowPositionData.rowNum);
 
             const {controlsGroup} = classes;
 
@@ -324,14 +266,14 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
 
     const renderControlSections = () => {
         return addIndex(map)((controlSectionData: ControlSectionDataType, index: number) => {
-            const groupFormatData: GroupsFormatDataType = defaultTo([], sectionsFormatData[index]);
+            const groupsRowPositionData: GroupsRowPositionDataType = defaultTo([], SectionsRowPositionData[index]);
             const {controlSection} = classes;
 
             return <div
                 className={controlSection}
                 key={`section_${index}`}
             >
-                {renderControlGroups(controlSectionData, groupFormatData)}
+                {renderControlGroups(controlSectionData, groupsRowPositionData)}
             </div>;
         }, data);
     };

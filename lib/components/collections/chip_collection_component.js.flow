@@ -3,19 +3,23 @@
 // @flow
 
 // external imports
+import type {ElementType, Node} from 'react';
 
-import * as React from 'react';
-import injectSheet from 'react-jss';
+import React, {useState, useEffect, useContext} from 'react'
+import {isElement} from 'react-dom/test-utils';
+import {createUseStyles, useTheme} from 'react-jss';
+
+import {isNil, defaultTo, ifElse} from 'ramda';
 
 // local imports
+import type {StateTypes as ThemContextType} from './../../theming/providers/main_theme_provider';
+import type {ThemeType} from './../../types/theme_types';
+import type {RenderFunctionNoArgs} from './../../types/common_types';
+
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
 type PropsTypes = {
-
-    data?: Array<string>,
-
-    editable?: boolean,
 
     /**
      * JSS inner classes
@@ -30,7 +34,21 @@ type StateTypes = {};
 
 // styles definition
 const styles = theme => ({
+    componentContainer: {
+        boxSizing: 'border-box',
+        display: 'flex',
 
+        flexBasis: 'auto',
+        flexGrow: 0,
+        flexShrink: 1,
+
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        alignContent: 'flex-start',
+    }
 });
 
 /**
@@ -42,53 +60,47 @@ const styles = theme => ({
  */
 
 // component implementation
-// $FlowFixMe decorators
-@injectSheet(styles)
-class ChipCollectionClass extends React.Component<PropsTypes, StateTypes> {
-    // region static props
+function ChipCollectionComponent(props: PropsTypes) {
+    // region private variables declaration
     // endregion
 
-    // region private props
+    // region style hooks declaration
+    const theme: ThemeType = useTheme();
+    const classes: {[string]: string} = useStyles({...props, theme});
+
     // endregion
 
-    // region constructor
+    // region context hooks declaration
+    const themeContext: ThemContextType = useContext(MainThemeContext);
+
+    // endregion
+
+    // region state hooks declaration
+    // endregion
+
+    // region effect hooks declaration
+    // endregion
+
+    // region state variables declaration
+    // endregion
+
+    // region ref hooks declaration
+    // endregion
+
+    // region callback hooks declaration
     // endregion
 
     // region business logic
     // endregion
 
-    // region lifecycle methods
+    // region event handler helpers
     // endregion
 
-    // region style accessors
+    // region render helpers
     // endregion
 
-    // region label accessors
-    // endregion
-
-    // region state accessors
-    // endregion
-
-    // region prop accessors
-    // endregion
-
-    // region handlers
-    // endregion
-
-    // region render methods
-    // endregion
+    // init
 }
-
-function ChipCollectionComponent(props: PropsTypes) {
-    return (
-        <MainThemeContext.Consumer>
-            {windowDimensions => <ChipCollectionClass {...props} {...windowDimensions} />}
-        </MainThemeContext.Consumer>
-    );
-}
-
-ChipCollectionComponent.displayName = 'ChipCollectionComponent';
 
 // exports
-export {ChipCollectionClass, ChipCollectionComponent};
 export default ChipCollectionComponent;
