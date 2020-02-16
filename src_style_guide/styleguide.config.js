@@ -126,7 +126,7 @@ module.exports = {
                 {
                     name: 'Form',
                     content: path.join(__dirname, './docs/form/index.md'),
-                    components: path.join(__dirname, './../src/components/form/**/[A-Za-z_]*_component.js'),
+                    components: path.join(__dirname, './../src/components/form/[A-Za-z_]*_component.js'),
                 },
 
                 {
