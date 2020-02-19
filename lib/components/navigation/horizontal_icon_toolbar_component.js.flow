@@ -14,14 +14,18 @@ import classNames from 'classnames';
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 import type {RenderFunctionNoArgs} from './../../types/common_types';
-import type {GroupRowPositionDataType, GroupsRowPositionDataType} from './../../types/common_data_types';
+import type {
+    ElementPositionDataType,
+    ElementsPositionDataType,
+    SectionsRowPositionDataType,
+} from './../../types/common_data_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 
 import {MainThemeContext} from './../../theming/providers';
+import {useHorizontalSectionsAlignment} from './../../hooks/layout/sections_alignment_hooks';
 
 import FontIcon from './../layout/icons/font_icon';
 
-import {useHorizontalSectionsAlignment} from './../../hooks/layout/sections_alignment_hooks';
 
 // type definitions
 export type ControlIconDataType = {
@@ -42,9 +46,22 @@ type CSSStylesType = {
 };
 
 export type FormTextInputTypes = {
+    /**
+     * Data used to create representation of toolbar icons
+     */
+
     data?: ControlSectionDataType,
 
+    /**
+     * Name of the class which will be applied to component outer container along with default one
+     */
+
     className?: string,
+
+    /**
+     * React style object for in deep control of how header is represented
+     */
+
     style?: CSSStylesType,
 };
 
@@ -203,7 +220,8 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
     // endregion
 
     // region custom hooks declaration
-    const SectionsRowPositionData = useHorizontalSectionsAlignment($toolbarRef);
+    const sectionsRowPositionData: SectionsRowPositionDataType =
+        useHorizontalSectionsAlignment($toolbarRef, theme.layoutStyles.formHorizontalSpacing);
 
     // endregion
 
@@ -239,13 +257,13 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
         }, controlGroupData);
     };
 
-    const renderControlGroups = (controlSectionData: ControlSectionDataType, GroupsRowPositionDataData: GroupRowPositionDataType) => {
+    const renderControlGroups = (controlSectionData: ControlSectionDataType, groupsRowPositionDataData: ElementPositionDataType) => {
         return addIndex(map)((controlGroupData: ControlGroupDataType, index: number) => {
-            const groupsRowPositionData: GroupRowPositionDataType = defaultTo({}, GroupsRowPositionDataData[index]);
+            const groupRowPositionData: ElementPositionDataType = defaultTo({}, groupsRowPositionDataData[index]);
 
-            const ifFirstOnRow: boolean = defaultTo(false, groupsRowPositionData.isFirst);
-            const isLastOnRow: boolean = defaultTo(false, groupsRowPositionData.isLast);
-            const rowNum: number = defaultTo(false, groupsRowPositionData.rowNum);
+            const ifFirstOnRow: boolean = defaultTo(false, groupRowPositionData.isFirst);
+            const isLastOnRow: boolean = defaultTo(false, groupRowPositionData.isLast);
+            const rowNum: number = defaultTo(false, groupRowPositionData.rowNum);
 
             const {controlsGroup} = classes;
 
@@ -264,9 +282,9 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
         }, controlSectionData);
     };
 
-    const renderControlSections = () => {
+    const renderControlSections: RenderFunctionNoArgs = () => {
         return addIndex(map)((controlSectionData: ControlSectionDataType, index: number) => {
-            const groupsRowPositionData: GroupsRowPositionDataType = defaultTo([], SectionsRowPositionData[index]);
+            const groupsRowPositionData: ElementsPositionDataType = defaultTo([], sectionsRowPositionData[index]);
             const {controlSection} = classes;
 
             return <div

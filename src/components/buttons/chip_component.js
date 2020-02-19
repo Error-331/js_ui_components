@@ -22,7 +22,7 @@ import {FontIcon} from './../layout/icons/font_icon';
 export type ClickCallbackType = (event: SyntheticEvent<HTMLDivElement>) => void;
 export type StyleType = {[string]: mixed};
 
-type PropsTypes = {
+export type BaseComponentProps = {
     /**
      * Flag that describes how the chip will look like
      */
@@ -124,7 +124,9 @@ type PropsTypes = {
      */
 
     rightIconStyle?: StyleType,
+};
 
+type PropsTypes = BaseComponentProps & {
     /**
      * JSS theme object
      *
@@ -140,7 +142,7 @@ type PropsTypes = {
      */
 
     classes: any
-};
+}
 
 type StateTypes = {
     isMouseOver: boolean

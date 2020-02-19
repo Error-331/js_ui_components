@@ -6,10 +6,9 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {useTheme} from 'react-jss';
 
-import {isNil, addIndex, map, reduce} from 'ramda';
+import {isNil, defaultTo, addIndex, map, reduce} from 'ramda';
 
 // local imports
-import type {ThemeType} from './../../types/theme_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {
     SectionRowPositionFullDataType,
@@ -21,38 +20,39 @@ import {MainThemeContext} from './../../theming/providers';
 // type definitions
 
 // helper functions implementation
-const prepareGroupsAlignmentData: ($controlGroups: Array<HTMLDivElement>, sectionWidth: number, theme: ThemeType) => SectionRowPositionFullDataType=
-    ($controlGroups: Array<HTMLDivElement>, sectionWidth: number, theme: ThemeType): SectionRowPositionFullDataType => {
+const prepareElementsAlignmentData: ($elements: Array<HTMLDivElement>, sectionWidth: number, spacingBetweenElms: number) => SectionRowPositionFullDataType=
+    ($elements: Array<HTMLDivElement>, sectionWidth: number, spacingBetweenElms: number): SectionRowPositionFullDataType => {
     return addIndex(reduce)(
-        (data, $controlGroup: HTMLDivElement, controlGroupIndex: number) => {
-            const controlGroupClientRect: ClientRect = $controlGroup.getBoundingClientRect();
-            const groupWidth: number = controlGroupClientRect.width;
+        (data, $element: HTMLDivElement, elementIndex: number) => {
+            const elementClientRect: ClientRect = $element.getBoundingClientRect();
+            const elementWidth: number = elementClientRect.width;
 
-            if (controlGroupIndex === 0) {
-                data.totalWidth += groupWidth;
-                data.groupsRowPositionData.push({isFirst: true, rowNum: data.currentRow});
+            if (elementIndex === 0) {
+                data.totalWidth += elementWidth;
+                data.elementsRowPositionData.push({isFirst: true, rowNum: data.currentRow});
 
                 return data;
             } else {
-                const groupWithWithPadding: number = groupWidth + theme.layoutStyles.formHorizontalSpacing;
+                const elementMarginLeft: number = defaultTo(0, spacingBetweenElms);
+                const elementWithWithPadding: number = elementWidth + elementMarginLeft;
 
-                const totalWidthWithPaddedGroup: number = groupWithWithPadding + data.totalWidth;
-                const totalWidthWithGroup: number = groupWidth + data.totalWidth;
+                const totalWidthWithPaddedElement: number = elementWithWithPadding + data.totalWidth;
+                const totalWidthWithElement: number = elementWidth + data.totalWidth;
 
-                if (totalWidthWithPaddedGroup <= sectionWidth) {
-                    data.totalWidth += groupWithWithPadding;
-                    data.groupsRowPositionData.push({isFirst: false, rowNum: data.currentRow});
+                if (totalWidthWithPaddedElement <= sectionWidth) {
+                    data.totalWidth += elementWithWithPadding;
+                    data.elementsRowPositionData.push({isFirst: false, rowNum: data.currentRow});
 
                     return data;
                 } else {
-                    if (totalWidthWithGroup <= sectionWidth) {
-                        data.groupsRowPositionData[data.groupsRowPositionData.length - 1].isLast = true;
+                    if (totalWidthWithElement <= sectionWidth) {
+                        data.elementsRowPositionData[data.elementsRowPositionData.length - 1].isLast = true;
                     }
 
-                    data.totalWidth = groupWidth;
+                    data.totalWidth = elementWidth;
                     data.currentRow = data.currentRow + 1;
 
-                    data.groupsRowPositionData.push({isFirst: true, rowNum: data.currentRow});
+                    data.elementsRowPositionData.push({isFirst: true, rowNum: data.currentRow});
 
                     return data;
                 }
@@ -60,15 +60,14 @@ const prepareGroupsAlignmentData: ($controlGroups: Array<HTMLDivElement>, sectio
 
         },
 
-        {totalWidth: 0, currentRow: 0, groupsRowPositionData: []},
-        $controlGroups,
+        {totalWidth: 0, currentRow: 0, elementsRowPositionData: []},
+        $elements,
     );
 };
 
 // hooks implementation
 // TODO: add memoization
-export function useHorizontalSectionsAlignment($containerRef: any): SectionsRowPositionDataType {
-    const theme: ThemeType = useTheme();
+function useHorizontalSectionsAlignment($containerRef: any, spacingBetweenElms: number): SectionsRowPositionDataType {
     const [sectionsAlignmentData, setSectionsAlignmentData] = useState([]);
     const themeContext: ThemContextType = useContext(MainThemeContext);
 
@@ -77,18 +76,44 @@ export function useHorizontalSectionsAlignment($containerRef: any): SectionsRowP
             return;
         }
 
-        const $controlSections: Array<HTMLDivElement> = $containerRef.current.children;
+        const $sections: Array<HTMLDivElement> = $containerRef.current.children;
 
-        const sectionsFormatData: SectionsRowPositionDataType = map(($controlSection: HTMLDivElement) => {
-            const controlSectionClientRect: ClientRect = $controlSection.getBoundingClientRect();
-            const $controlGroups: Array<HTMLDivElement> = $controlSection.children;
+        const sectionsFormatData: SectionsRowPositionDataType = map(($section: HTMLDivElement) => {
+            const controlSectionClientRect: ClientRect = $section.getBoundingClientRect();
+            const $elementsElements: Array<HTMLDivElement> = $section.children;
 
-            const sectionRowPositionData: SectionRowPositionFullDataType = prepareGroupsAlignmentData($controlGroups, controlSectionClientRect.width, theme);
-            return sectionRowPositionData.groupsRowPositionData;
-        }, $controlSections);
+            const sectionRowPositionData: SectionRowPositionFullDataType =
+                prepareElementsAlignmentData($elementsElements, controlSectionClientRect.width, spacingBetweenElms);
+            return sectionRowPositionData.elementsRowPositionData;
+        }, $sections);
 
         setSectionsAlignmentData(sectionsFormatData);
     }, [themeContext.windowDimensions.innerWidth]);
 
     return sectionsAlignmentData;
 }
+
+// TODO: add memoization
+ function useHorizontalElementsAlignment($containerRef: any, spacingBetweenElms: number) {
+    const [elementsAlignmentData, setElementsAlignmentData] = useState([]);
+    const themeContext: ThemContextType = useContext(MainThemeContext);
+
+    useEffect(() => {
+        if (isNil($containerRef) || isNil($containerRef.current)) {
+            return;
+        }
+
+        const $elements: Array<HTMLDivElement> = $containerRef.current.children;
+        const containerClientRect: ClientRect = $containerRef.current.getBoundingClientRect();
+
+        const sectionRowPositionData: SectionRowPositionFullDataType =
+            prepareElementsAlignmentData($elements, containerClientRect.width, spacingBetweenElms);
+
+        setElementsAlignmentData(sectionRowPositionData.elementsRowPositionData);
+    }, [themeContext.windowDimensions.innerWidth]);
+
+    return elementsAlignmentData;
+}
+
+// exports
+export {useHorizontalSectionsAlignment, useHorizontalElementsAlignment};

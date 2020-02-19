@@ -1,0 +1,1 @@
+Section describes UI components used to represent different collections.
