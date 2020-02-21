@@ -181,6 +181,20 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
     // endregion
 
     // region business logic
+    const findTagIndexByData: (currentTagData: string) => number =
+        (currentTagData: string): number => {
+            const value: Array<ChipCollectionDataType> | ImmutableList = pathOr([], ['value'], inputProps);
+
+            if (ImmutableList.isList(value)) {
+                return value.findIndex((listValue: ImmitableMap) => {
+                    const data: string | undefined = listValue.get('data');
+                    return !isNil(data) && data === currentTagData;
+                });
+            } else {
+                return findIndex(propEq('data', currentTagData))(value);
+            }
+        };
+
     const addTagFromTextInput: () => boolean = (): boolean => {
         if (isNil(textInputValue) || textInputValue === '') {
             return false;
@@ -201,19 +215,14 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
             rightIconClassName: 'fas fa-times-circle'
         };
 
-        if (ImmutableList.isList(value)) {
-            const valueNotExist: boolean = isNil(value.find((listValue: ImmitableMap) => {
-                const data: string | undefined = listValue.get('data');
-                return !isNil(data) && data === textInputValue;
-            }));
+        const valueNotExist: boolean = findTagIndexByData(textInputValue) === -1;
 
+        if (ImmutableList.isList(value)) {
             if (valueNotExist) {
                 onChange(value.push(ImmitableMap(newValue)));
                 return true;
             }
         } else {
-            const valueNotExist: boolean = findIndex(propEq('data', textInputValue))(value) === -1;
-
             if (valueNotExist) {
                 value.push(newValue);
 
@@ -233,15 +242,11 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
             const onChange: (event: SyntheticEvent<HTMLInputElement>) => void = pathOr(() => {}, ['onChange'], inputProps);
             const value: Array<ChipCollectionDataType> | ImmutableList = pathOr([], ['value'], inputProps);
 
-            if (ImmutableList.isList(value)) {
-                const tagIndex: number = value.findIndex((listValue: ImmitableMap) => {
-                    const data: string | undefined = listValue.get('data');
-                    return !isNil(data) && data === currentTagData;
-                });
+            const tagIndex: number = findTagIndexByData(currentTagData);
 
+            if (ImmutableList.isList(value)) {
                 onChange(value.delete(tagIndex));
             } else {
-                const tagIndex: number = findIndex(propEq('data', currentTagData))(value);
                 onChange(remove(tagIndex, 1, value));
             }
         };
