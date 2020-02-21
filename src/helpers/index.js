@@ -4,3 +4,5 @@
 
 // exports
 export * from './style_helpers';
+
+export * from './dom';

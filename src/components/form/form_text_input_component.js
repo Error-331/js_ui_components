@@ -26,6 +26,8 @@ type CSSStylesType = {
     [string]: mixed
 };
 
+export type ClickCallbackType = (event: SyntheticEvent<HTMLButtonElement>) => void;
+
 type InputTypes = 'text' | 'password' | 'textarea';
 
 export type FormTextInputTypes = {
@@ -64,6 +66,12 @@ export type FormTextInputTypes = {
      */
 
     disabled?: ?boolean,
+
+    /**
+     * Callback function which will be called once user press some buttons on keyboard while editing the text
+     */
+
+    onKeyPress?: ClickCallbackType,
 
     /**
      * Flag that dictates whether errors should be shown only after user interacts with input or always (e.g. even if initial value is set)
@@ -238,6 +246,7 @@ class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
         const {
             customComponent,
             type,
+            onKeyPress,
 
             readOnly,
             disabled,
@@ -260,6 +269,7 @@ class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
         const componentVariantProps: ComponentVariantPropsType = {
             type, id: this._id,
             readOnly, disabled, active, touched, pristine, dirty,
+            onKeyPress,
             errorsIfTouched, warningsIfTouched,
             error, warning,
             placeholder, label,

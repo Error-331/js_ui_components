@@ -11,6 +11,7 @@ import {isNil, isEmpty, ifElse, defaultTo, equals, toString, and, not, complemen
 
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
+import type {ClickCallbackType} from "../form_text_input_component";
 
 // type definitions
 type CSSStylesType = {
@@ -68,6 +69,18 @@ export type FormTextInputVariant1Types = {
      */
 
     disabled?: ?boolean,
+
+    /**
+     * Callback function which will be called once user press some buttons on keyboard while editing the text
+     */
+
+    onKeyPress?: ClickCallbackType,
+
+    /**
+     * Callback function which will be called once user press some buttons on keyboard while editing the text
+     */
+
+    onKeyPress?: ClickCallbackType,
 
     /**
      * Flag that indicates whether component should is active
@@ -477,6 +490,7 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
         onChange: () => {},
         onFocus: () => {},
         onBlur: () => {},
+        onKeyPress: () => {},
 
         componentContainerClassName: '',
         iconClassNames: '',
@@ -674,6 +688,11 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
     _getOnChangeCallback(): GenericCallbackType {
         return defaultTo(FormTextInputVariant1Class.defaultProps.onChange)
         (this.props.onChange);
+    }
+
+    _getOnKeyPressCallback(): GenericCallbackType {
+        return defaultTo(FormTextInputVariant1Class.defaultProps.onKeyPress)
+        (this.props.onKeyPress);
     }
 
     _getLabel(): string {
@@ -874,6 +893,7 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
             onChange={this._getOnChangeCallback()}
             onFocus={this._getOnFocusCallback()}
             onBlur={this._getOnBlurCallback()}
+            onKeyPress={this._getOnKeyPressCallback()}
 
             readOnly={readOnlyParam}
             disabled={disabledParam}

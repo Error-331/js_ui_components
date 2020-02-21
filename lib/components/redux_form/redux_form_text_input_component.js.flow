@@ -11,6 +11,7 @@ import {Field} from 'redux-form/immutable';
 // local imports
 import type {StyleType} from './../buttons/regular_button_component';
 import {FormTextInputComponent} from './../form/form_text_input_component';
+import type {ClickCallbackType} from "./../form/form_text_input_component";
 
 // type definitions
 type CSSStylesType = {
@@ -61,6 +62,12 @@ export type PropsTypes = {
      */
 
     disabled?: ?boolean,
+
+    /**
+     * Callback function which will be called once user press some buttons on keyboard while editing the text
+     */
+
+    onKeyPress?: ClickCallbackType,
 
     /**
      * Flag that dictates whether errors should be shown only after user interacts with input or always (e.g. even if initial value is set)

@@ -14,15 +14,92 @@ import {MAIN_FORM_NAME} from './../constants/redux_constants';
 // styles definition
 const styles = () => ({});
 
+// constants definition
+const FORM_TAG_INPUT_DEFAULT_DATA_SET_1 = [
+    {label: '.NET', data: '.NET', clickable: true},
+    {label: 'Android', data: 'Android', clickable: true},
+    {label: 'C / C++ / Embedded', data: 'C / C++ / Embedded', clickable: true},
+    {label: 'Data Sciance', data: 'Data Sciance', clickable: true},
+    {label: 'DBA', data: 'DBA', clickable: true},
+    {label: 'DevOps / Sysadmin', data: 'DevOps / Sysadmin', clickable: true},
+    {label: 'Fronte-end / JS', data: 'Fronte-end / JS', clickable: true},
+    {label: 'Gamedev / Unity / AS3', data: 'Gamedev / Unity / AS3', clickable: true},
+    {label: 'Golang', data: 'Golang', clickable: true},
+    {label: 'iOS', data: 'iOS', clickable: true},
+    {label: 'Java', data: 'Java', clickable: true},
+    {label: 'Lead', data: 'Lead', clickable: true},
+    {label: 'Node.js', data: 'Node.js', clickable: true},
+    {label: 'PHP', data: 'PHP', clickable: true},
+    {label: 'Product Manager', data: 'Product Manager', clickable: true},
+    {label: 'Product Manager (PM)', data: 'Product Manager (PM)', clickable: true},
+    {label: 'Python', data: 'Python', clickable: true},
+    {label: 'Rubu / Rails', data: 'Rubu / Rails', clickable: true},
+    {label: 'QA Automation', data: 'QA Automation', clickable: true},
+    {label: 'QA Manual', data: 'QA Manual', clickable: true},
+    {label: 'Scala', data: 'Scala', clickable: true},
+    {label: 'UX / Design', data: 'UX / Design', clickable: true},
+    {label: 'Бизнес-аналитика (BA)', data: 'Бизнес-аналитика (BA)', clickable: true},
+    {label: 'Маркетинг', data: 'Маркетинг', clickable: true},
+    {label: 'Поддержка', data: 'Поддержка', clickable: true},
+    {label: 'Продажи', data: 'Продажи', clickable: true},
+    {label: 'Рекрутеры и HR', data: 'Рекрутеры и HR', clickable: true},
+    {label: '(Другие)', data: '(Другие)', clickable: true},
+];
+
 // component definition
 class ComponentFormContainer extends Component {
+    // region static props
+    // endregion
+
+    // region private props
+    // endregion
+
+    // region constructor
+    constructor(props: PropsTypes) {
+        super(props);
+        const self: any = this;
+
+
+        self._onSubmit = self._onSubmit.bind(this);
+    }
+
+    // endregion
+
+    // region business logic
+    // endregion
+
+    // region lifecycle methods
+    // endregion
+
+    // region style accessors
+    // endregion
+
+    // region label accessors
+    // endregion
+
+    // region state accessors
+    // endregion
+
+    // region prop accessors
+    // endregion
+
+    // region handlers
+    _onSubmit(event) {
+        event.preventDefault();
+    }
+
+    // endregion
+
+    // region render methods
     render() {
         return (
-            <form onSubmit={() => {}}>
+            <form onSubmit={this._onSubmit}>
                 {this.props.children}
             </form>
         );
     }
+
+    // endregion
 }
 
 // exports
@@ -98,6 +175,10 @@ const ComponentFormContainerConnected = reduxForm({
             testFromSliderInputComponentWithDefaultValue2: {handle1: 30, handle2: 45},
             testFromSliderInputComponentWithDefaultValue3: {handle1: 35, handle2: 40},
             testFromSliderInputComponentWithDefaultValue4: {handle1: 20, handle2: 80},
+        },
+
+        reduxTagInputSeparateComponents: {
+            testFromTagInputSeparateComponentWithDefaultValue1: clone(FORM_TAG_INPUT_DEFAULT_DATA_SET_1),
         },
 
         login: {

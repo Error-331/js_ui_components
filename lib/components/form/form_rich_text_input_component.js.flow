@@ -6,7 +6,6 @@
 import type {Node, Element} from 'react';
 import type {FieldProps} from 'redux-form';
 
-import type {EditorState} from 'draft-js';
 import type {DraftInlineStyle} from 'draft-js/lib/DraftInlineStyle';
 import type {DraftBlockRenderConfig} from 'draft-js/lib/DraftBlockRenderConfig';
 import type {CoreDraftBlockType} from 'draft-js/lib/DraftBlockType';
@@ -14,7 +13,7 @@ import type {BlockNodeRecord} from 'draft-js/lib/BlockNodeRecord';
 
 import type {Curry} from 'ramda';
 
-import React, {useState, useEffect, useContext, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
 import Immutable from 'immutable';
 
@@ -42,7 +41,6 @@ let draftJSLib: {[any]: any};
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 import type {RenderFunctionNoArgs} from './../../types/common_types';
-import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
 import type {ControlGroupDataType, ControlIconDataType} from './../navigation/horizontal_icon_toolbar_component';

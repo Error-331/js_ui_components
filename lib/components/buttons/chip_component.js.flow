@@ -54,6 +54,12 @@ export type BaseComponentProps = {
     label?: string,
 
     /**
+     * Data associated with current component
+     */
+
+    data?: any,
+
+    /**
      * Value that indicates where label should be placed on left side of the chip or on the right
      */
 
@@ -377,6 +383,8 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
         label: '',
         labelPosition: 'left',
 
+        data: null,
+
         rightIconClassName: undefined,
 
         style: {},
@@ -408,7 +416,9 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
 
         const self: any = this;
 
-        self._clickRightIconHandler = self._clickRightIconHandler.bind(this);
+        self._onClickHandler = self._onClickHandler.bind(this);
+        self._onClickRightIconHandler = self._onClickRightIconHandler.bind(this);
+
         self._mouseOverContainerHandler = self._mouseOverContainerHandler.bind(this);
         self._mouseLeaveContainerHandler = self._mouseLeaveContainerHandler.bind(this);
     }
@@ -447,6 +457,11 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
     _getLabelStyle(): StyleType {
         return defaultTo(ChipClass.defaultProps.labelStyle)
         (this.props.labelStyle);
+    }
+
+    _getData(): any {
+        return defaultTo(ChipClass.defaultProps.data)
+        (this.props.data);
     }
 
     _getContainerStyle(): StyleType {
@@ -586,10 +601,16 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region handlers
-    _clickRightIconHandler(event: SyntheticEvent<HTMLDivElement>): void {
+    _onClickHandler(event: SyntheticEvent<HTMLDivElement>): void {
         event.stopPropagation();
 
-        this._getClickRightIconHandler()(event);
+        this._getClickHandler()(event, this._getData());
+    }
+
+    _onClickRightIconHandler(event: SyntheticEvent<HTMLDivElement>): void {
+        event.stopPropagation();
+
+        this._getClickRightIconHandler()(event, this._getData());
     }
 
     _mouseOverContainerHandler(): void {
@@ -615,7 +636,7 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
             const isClickable: boolean = this._isRightIconClickable();
 
             return <FontIcon
-                onClick={isDisabled && isClickable ? null : this._clickRightIconHandler}
+                onClick={isDisabled && isClickable ? null : this._onClickRightIconHandler}
                 className={rightIconClassName}
                 style={this._getRightIconStyle()}
                 size='custom'
@@ -645,7 +666,7 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
             className={this._getComponentContainerClass()}
             style={this._getContainerStyle()}
 
-            onClick={isDisabled && isClickable ? null : this._getClickHandler()}
+            onClick={isDisabled && isClickable ? null : this._onClickHandler}
             onMouseOver={this._mouseOverContainerHandler}
             onMouseLeave={this._mouseLeaveContainerHandler}
         >

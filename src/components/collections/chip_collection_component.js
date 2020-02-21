@@ -25,8 +25,7 @@ import {useHorizontalElementsAlignment} from './../../hooks/layout/sections_alig
 import ChipComponent from './../buttons/chip_component';
 
 // type definitions
-export type ControlGroupDataType = Array<ChipComponentProps>;
-export type ControlSectionDataType = Array<ControlGroupDataType>;
+export type ChipCollectionDataType = Array<ChipComponentProps>;
 
 type CSSStylesType = {
     [string]: mixed
@@ -37,7 +36,7 @@ type PropsTypes = {
      * Data used to create representation of 'chip' components
      */
 
-    data?: ControlSectionDataType,
+    data?: ChipCollectionDataType,
 
     /**
      * Name of the class which will be applied to component outer container along with default one
@@ -86,7 +85,7 @@ const useStyles = createUseStyles(theme => ({
             flexShrink: 1,
             flexGrow: 0,
 
-            marginLeft: `${theme.layoutStyles.sectionHorizontalSpacing}px`,
+            marginLeft: `${theme.layoutStyles.rightSpacing}px`,
 
             color: theme.inputStyles.inactiveColor,
 
@@ -99,11 +98,11 @@ const useStyles = createUseStyles(theme => ({
             },
 
             '&.lastChipInRow': {
-                marginRight: `${theme.layoutStyles.sectionHorizontalSpacing}px`,
+                marginRight: `${theme.layoutStyles.rightSpacing}px`,
             },
 
             '&.noneFirstChipInRow': {
-                paddingTop: `${theme.layoutStyles.sectionVerticalSpacing}px`,
+                paddingTop: `${theme.layoutStyles.topSpacing}px`,
             }
         },
     },
@@ -154,7 +153,7 @@ function ChipCollectionComponent(props: PropsTypes) {
 
     // region custom hooks declaration
     const elementsRowPositionData: SectionsRowPositionDataType =
-        useHorizontalElementsAlignment($mainContainerRef, theme.layoutStyles.sectionHorizontalSpacing);
+        useHorizontalElementsAlignment($mainContainerRef, theme.layoutStyles.rightSpacing, [data]);
 
     // endregion
 
@@ -183,9 +182,7 @@ function ChipCollectionComponent(props: PropsTypes) {
 
             chipData = defaultTo({}, chipData);
             const {containerClassName, className} = chipData;
-
             const componentClassName = classNames(containerClassName, className);
-
 
             return <div
                 className={containerClassName1}

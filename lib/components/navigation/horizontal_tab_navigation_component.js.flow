@@ -249,7 +249,6 @@ class HorizontalTabNavigationClass extends React.Component<PropsTypes, StateType
     // endregion
 
     // region constructor
-
     constructor(props: PropsTypes) {
         super(props);
         const self: any = this;

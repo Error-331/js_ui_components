@@ -1,4 +1,4 @@
-Test:
+Example of horizontal icon toolbar usage:
 
 ```jsx
 

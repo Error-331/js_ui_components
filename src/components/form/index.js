@@ -12,3 +12,4 @@ export * from './form_text_input_component';
 export * from './form_slider_handle_component';
 export * from './form_slider_input_component';
 export * from './form_rich_text_input_component';
+export * from './form_tag_input_separate_component';

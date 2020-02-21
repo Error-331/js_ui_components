@@ -12,3 +12,4 @@ export * from './redux_form_text_input_component';
 export * from './redux_form_generator_component';
 export * from './redux_form_slider_input_component';
 export * from './redux_form_rich_text_input_component';
+export * from './redux_form_tag_input_separate_component';
