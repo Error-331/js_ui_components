@@ -8,6 +8,8 @@ import type {FieldProps} from 'redux-form';
 
 import React, {useState, useEffect, useCallback, useContext} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
+
+import {Map as ImmitableMap} from 'immutable';
 import classNames from 'classnames';
 
 import {
@@ -65,7 +67,7 @@ type CSSStylesType = {
     [string]: mixed
 };
 
-type HandlesDataType = {
+type HandlesDataType = ImmitableMap | {
     [string]: number
 };
 
@@ -333,11 +335,8 @@ function FormSliderInputComponent(props: PropsTypes) {
     let {value, onChange} = defaultTo({}, props.input);
     let {initial} = defaultTo({}, props.meta);
 
-    initial = !isNil(initial) && !isNil(initial.toObject) ? initial.toObject() : initial;
-
     value = defaultTo(null)(value);
     value = isEmpty(value) ? null : value;
-    value = !isNil(value) && !isNil(value.toObject) ? value.toObject() : value;
 
     // endregion
 
@@ -391,11 +390,27 @@ function FormSliderInputComponent(props: PropsTypes) {
     // region business logic
     const clampHandleXPos: (posX: number) => number = clamp(0, sliderWidth);
 
+    const updateHandleData: (handleId: string, units: number) => HandlesDataType | null =
+        (handleId: string, units: number): HandlesDataType | null => {
+            const handlesData: HandlesDataType | null = getHandlesData();
+
+            if (isNil(handlesData)) {
+                return handlesData;
+            }
+
+            if (ImmitableMap.isMap(handlesData)) {
+                return handlesData.set(handleId, units);
+            } else {
+                return mergeRight(handlesData, {[handleId]: units});
+            }
+        };
+
     const findNearestGrabbedHandleId: (clientX: number) => string | null = (clientX: number): string | null => {
         return ifElse(
             isNil,
             always(null),
             pipe(
+                (data: {[any]: any} | ImmitableMap) => ImmitableMap.isMap(data) ? data.toObject() : data,
                 toPairs,
                 sortBy(
                     pipe(
@@ -461,7 +476,7 @@ function FormSliderInputComponent(props: PropsTypes) {
 
             if (!isNil(nearestGrabbedHandleId)) {
                 setGrabbedHandleId(nearestGrabbedHandleId);
-                onChange(mergeRight(getHandlesData(), {[nearestGrabbedHandleId]: currentUnits}));
+                onChange(updateHandleData(nearestGrabbedHandleId, currentUnits));
             }
         };
 
@@ -471,7 +486,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         (event: SyntheticMouseEvent<HTMLDivElement>): void => {
             if (!isNil(grabbedHandleId)) {
                 const currentUnits: number = calcUnitsByClientX(event.clientX);
-                onChange(mergeRight(getHandlesData(), {[grabbedHandleId]: currentUnits}))
+                onChange(updateHandleData(grabbedHandleId, currentUnits));
             }
         };
 
@@ -498,10 +513,14 @@ function FormSliderInputComponent(props: PropsTypes) {
     const renderDummyHandleContainer: RenderFunctionNoArgsType = (): Node => <FormSliderHandleComponent style={dummyHandleStyles}/>;
 
     const renderHandleContainers: () => Node = (): Node => {
-        const handlesData: HandlesDataType | null = getHandlesData();
+        let handlesData: HandlesDataType | null = getHandlesData();
 
         if (isNil(handlesData)) {
             return null;
+        }
+
+        if (ImmitableMap.isMap(handlesData)) {
+            handlesData = handlesData.toObject();
         }
 
         return reduce((nodes: Node[], id: string) => {
@@ -528,10 +547,14 @@ function FormSliderInputComponent(props: PropsTypes) {
     };
 
     const renderProgressTrackContainer: RenderFunctionNoArgsType = (): Node => {
-        const handlesData: HandlesDataType | null = getHandlesData();
+        let handlesData: HandlesDataType | null = getHandlesData();
 
         if (isNil(handlesData)) {
             return null;
+        }
+
+        if (ImmitableMap.isMap(handlesData)) {
+            handlesData = handlesData.toObject();
         }
 
         const [left, right] = pipe(
