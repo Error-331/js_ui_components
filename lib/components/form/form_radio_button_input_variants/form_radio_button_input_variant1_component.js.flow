@@ -10,7 +10,7 @@ import {createUseStyles, useTheme} from 'react-jss';
 
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
-import type {RenderFunctionNoArgs} from './../../../types/common_types';
+import type {RenderFunctionNoArgsType} from './../../../types/common_types';
 import type {BasePropTypes} from './form_radio_button_input_base_component';
 
 import FormRadioButtonInputBaseComponent from './form_radio_button_input_base_component';
@@ -171,7 +171,7 @@ function FormRadioButtonInputVariant1Component(props: BasePropTypes) {
     // endregion
 
     // region render helpers
-    const render: RenderFunctionNoArgs = (): Node => {
+    const render: RenderFunctionNoArgsType = (): Node => {
         return <FormRadioButtonInputBaseComponent {...props} classes={classes}/>
     };
 

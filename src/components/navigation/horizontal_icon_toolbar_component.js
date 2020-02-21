@@ -13,7 +13,7 @@ import classNames from 'classnames';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
-import type {RenderFunctionNoArgs} from './../../types/common_types';
+import type {RenderFunctionNoArgsType} from './../../types/common_types';
 import type {
     ElementPositionDataType,
     ElementsPositionDataType,
@@ -282,7 +282,7 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
         }, controlSectionData);
     };
 
-    const renderControlSections: RenderFunctionNoArgs = () => {
+    const renderControlSections: RenderFunctionNoArgsType = () => {
         return addIndex(map)((controlSectionData: ControlSectionDataType, index: number) => {
             const groupsRowPositionData: ElementsPositionDataType = defaultTo([], sectionsRowPositionData[index]);
             const {controlSection} = classes;
@@ -296,7 +296,7 @@ function HorizontalIconToolbarComponent(props: PropsTypes) {
         }, data);
     };
 
-    const renderComponentContainer: RenderFunctionNoArgs = (): Node => {
+    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
         const {componentContainer} = classes;
 
         return <div ref={$toolbarRef} className={componentContainer}>

@@ -40,7 +40,7 @@ let draftJSLib: {[any]: any};
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
-import type {RenderFunctionNoArgs} from './../../types/common_types';
+import type {RenderFunctionNoArgsType} from './../../types/common_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
 import type {ControlGroupDataType, ControlIconDataType} from './../navigation/horizontal_icon_toolbar_component';
@@ -417,7 +417,7 @@ function FormRichTextInputComponent(props: PropsTypes) {
         }, GENERAL_INLINE_STYLES_CONTROLS);
     };
 
-    const prepareAlignmentBlockStylesControls: RenderFunctionNoArgs = () => {
+    const prepareAlignmentBlockStylesControls: RenderFunctionNoArgsType = () => {
         const selectedContentBlocks: Array<BlockNodeRecord> = getSelectedContentBlocks();
 
         return map((controlData: BlockControlDataType) => {
@@ -618,13 +618,13 @@ function FormRichTextInputComponent(props: PropsTypes) {
     // endregion
 
     // region render helpers
-    const renderErrorContainer: RenderFunctionNoArgs = () => {
+    const renderErrorContainer: RenderFunctionNoArgsType = () => {
         return <div>
             Failed to load 'draft-js' library (probably not installed).
         </div>;
     };
 
-    const renderEditor: RenderFunctionNoArgs = () => {
+    const renderEditor: RenderFunctionNoArgsType = () => {
         const {Editor} = draftJSLib;
 
         return <Editor
@@ -640,7 +640,7 @@ function FormRichTextInputComponent(props: PropsTypes) {
     };
 
 
-    const renderToolbarsContainer: RenderFunctionNoArgs = () => {
+    const renderToolbarsContainer: RenderFunctionNoArgsType = () => {
         const {toolbarContainer} = classes;
 
         const toolbarSections = [
@@ -675,13 +675,13 @@ function FormRichTextInputComponent(props: PropsTypes) {
         </div>;*/
     };
 
-    const renderEditorContainer: RenderFunctionNoArgs = () => {
+    const renderEditorContainer: RenderFunctionNoArgsType = () => {
         return <div>
             {renderEditor()}
         </div>;
     };
 
-    const renderComponentContainer: RenderFunctionNoArgs = () => {
+    const renderComponentContainer: RenderFunctionNoArgsType = () => {
         const {componentContainer} = classes;
 
         return <div className={componentContainer}>

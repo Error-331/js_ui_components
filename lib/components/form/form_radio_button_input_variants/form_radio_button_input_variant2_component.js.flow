@@ -11,7 +11,7 @@ import {mergeDeepRight} from 'ramda';
 
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
-import type {RenderFunctionNoArgs} from './../../../types/common_types';
+import type {RenderFunctionNoArgsType} from './../../../types/common_types';
 import type {BaseRadioButtonInputPropsTypes} from './../../../types/form/form_radio_button_types';
 
 import FormRadioButtonInputBaseComponent from './form_radio_button_input_base_component';
@@ -89,7 +89,7 @@ function FormRadioButtonInputVariant2Component(props: BaseRadioButtonInputPropsT
     // endregion
 
     // region render helpers
-    const render: RenderFunctionNoArgs = (): Node => {
+    const render: RenderFunctionNoArgsType = (): Node => {
         return <FormRadioButtonInputBaseComponent {...props} classes={classes}/>
     };
 

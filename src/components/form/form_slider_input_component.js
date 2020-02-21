@@ -51,7 +51,7 @@ import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/help
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
-import type {RenderFunctionNoArgs} from './../../types/common_types';
+import type {RenderFunctionNoArgsType} from './../../types/common_types';
 import type {StateTypes as ThemContextType} from './../../theming/providers';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
@@ -478,7 +478,7 @@ function FormSliderInputComponent(props: PropsTypes) {
     // endregion
 
     // region render helpers
-    const renderOverlay: RenderFunctionNoArgs = (): Node => {
+    const renderOverlay: RenderFunctionNoArgsType = (): Node => {
         if (isNoneInteractive) {
             return null;
         }
@@ -495,7 +495,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         );
     };
 
-    const renderDummyHandleContainer: RenderFunctionNoArgs = (): Node => <FormSliderHandleComponent style={dummyHandleStyles}/>;
+    const renderDummyHandleContainer: RenderFunctionNoArgsType = (): Node => <FormSliderHandleComponent style={dummyHandleStyles}/>;
 
     const renderHandleContainers: () => Node = (): Node => {
         const handlesData: HandlesDataType | null = getHandlesData();
@@ -527,7 +527,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         }, [], keys(handlesData))
     };
 
-    const renderProgressTrackContainer: RenderFunctionNoArgs = (): Node => {
+    const renderProgressTrackContainer: RenderFunctionNoArgsType = (): Node => {
         const handlesData: HandlesDataType | null = getHandlesData();
 
         if (isNil(handlesData)) {
@@ -564,7 +564,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         </div>;
     };
 
-    const renderTrackContainer: RenderFunctionNoArgs = (): Node => {
+    const renderTrackContainer: RenderFunctionNoArgsType = (): Node => {
         const {trackContainer} = classes;
         const style: CSSStylesType = mergeRight({}, trackStyle);
 
@@ -572,7 +572,7 @@ function FormSliderInputComponent(props: PropsTypes) {
         </div>;
     };
 
-    const renderComponentContainer: RenderFunctionNoArgs = (): Node => {
+    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
         const {componentContainer} = classes;
         const className: string = classNames(
             componentContainer,

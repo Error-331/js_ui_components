@@ -13,7 +13,7 @@ import classNames from 'classnames';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
-import type {RenderFunctionNoArgs} from './../../types/common_types';
+import type {RenderFunctionNoArgsType} from './../../types/common_types';
 import type {
     ElementPositionDataType,
     SectionsRowPositionDataType,
@@ -164,7 +164,7 @@ function ChipCollectionComponent(props: PropsTypes) {
     // endregion
 
     // region render helpers
-    const renderChips: RenderFunctionNoArgs = () => {
+    const renderChips: RenderFunctionNoArgsType = () => {
         return addIndex(map)((chipData: ChipComponentProps, index: number) => {
             const elementRowPositionData: ElementPositionDataType = defaultTo({}, elementsRowPositionData[index]);
 
@@ -197,7 +197,7 @@ function ChipCollectionComponent(props: PropsTypes) {
         }, data);
     };
 
-    const renderComponentContainer: RenderFunctionNoArgs = (): Node => {
+    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
         const {componentContainer} = classes;
 
         return <div ref={$mainContainerRef} className={componentContainer}>

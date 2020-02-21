@@ -13,7 +13,7 @@ import {isNil, defaultTo, ifElse} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 // local imports
-import type {RenderFunctionNoArgs} from './../../types/common_types';
+import type {RenderFunctionNoArgsType} from './../../types/common_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
 
 import {DEFAULT_REDUX_FORM_FIELD_COMPONENT_INPUT_DATA_PROPS} from './../../theming/constants/redux_form_constants';
@@ -213,7 +213,7 @@ function FormRadioButtonInputComponent(props: PropsTypes) {
         )(customComponent);
     };
 
-    const render: RenderFunctionNoArgs = (): Node => {
+    const render: RenderFunctionNoArgsType = (): Node => {
         const {name, value, checked, onChange} = inputData;
         const {readOnly, disabled, labelPosition, label} = props;
 

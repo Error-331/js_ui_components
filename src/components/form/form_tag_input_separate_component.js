@@ -18,7 +18,7 @@ import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentI
 import type {BaseComponentProps as ChipComponentProps} from './../buttons/chip_component';
 import type {ChipCollectionDataType} from './../collections/chip_collection_component';
 
-import type {RenderFunctionNoArgs, InputEventHandlerType} from './../../types/common_types';
+import type {RenderFunctionNoArgsType, InputEventHandlerType} from './../../types/common_types';
 
 import FormTextInputComponent from './../form/form_text_input_component';
 import ChipCollectionComponent from './../collections/chip_collection_component';
@@ -286,7 +286,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
     // endregion
 
     // region render helpers
-    const renderTagsCollection: RenderFunctionNoArgs = () => {
+    const renderTagsCollection: RenderFunctionNoArgsType = () => {
         let value: ChipCollectionDataType | ImmutableList = pathOr([], ['value'], inputProps);
 
         if (ImmutableList.isList(value)) {
@@ -307,7 +307,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
         />;
     };
 
-    const renderTagsCollectionContainer: RenderFunctionNoArgs = () => {
+    const renderTagsCollectionContainer: RenderFunctionNoArgsType = () => {
         const {tagsCollectionContainer} = classes;
 
         return <div className={tagsCollectionContainer}>
@@ -315,7 +315,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
         </div>;
     };
 
-    const renderTextInput: RenderFunctionNoArgs = () => {
+    const renderTextInput: RenderFunctionNoArgsType = () => {
         const initial: any =  pathOr(false, ['initial'], metaProps);
         const name: any =  pathOr(false, ['name'], inputProps);
         const value: any =  pathOr(false, ['value'], inputProps);
@@ -374,7 +374,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
         />;
     };
 
-    const renderTextInputContainer: RenderFunctionNoArgs = () => {
+    const renderTextInputContainer: RenderFunctionNoArgsType = () => {
         const {textInputContainer} = classes;
 
         return <div className={textInputContainer}>
@@ -382,7 +382,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
         </div>;
     };
 
-    const renderComponentContainer: RenderFunctionNoArgs = () => {
+    const renderComponentContainer: RenderFunctionNoArgsType = () => {
         const {componentContainer} = classes;
 
         const onDrop: InputEventHandlerType  = pathOr(() => {}, ['onDrop'], inputProps);

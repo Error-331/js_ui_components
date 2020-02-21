@@ -13,7 +13,7 @@ import classNames from 'classnames';
 
 // local imports
 import type {BaseRadioButtonInputPropsTypes} from './../../../types/form/form_radio_button_types';
-import type {RenderFunctionNoArgs} from './../../../types/common_types';
+import type {RenderFunctionNoArgsType} from './../../../types/common_types';
 import type {ReduxFormFieldComponentValueType} from './../../../types/redux_form_types';
 import type {StateTypes as ThemContextType} from './../../../theming/providers';
 
@@ -101,14 +101,14 @@ function FormRadioButtonInputBaseComponent(props: PropsTypes) {
     // endregion
 
     // region render helpers
-    const renderInputIcon: RenderFunctionNoArgs = (): Node => {
+    const renderInputIcon: RenderFunctionNoArgsType = (): Node => {
         const {inputControlIcon} = classes;
 
         return <div className={inputControlIcon}>
         </div>;
     };
 
-    const renderInputControlLabel: RenderFunctionNoArgs = (): Node => {
+    const renderInputControlLabel: RenderFunctionNoArgsType = (): Node => {
         const {disabled} = props;
         const {inputControlLabel} = classes;
 
@@ -123,7 +123,7 @@ function FormRadioButtonInputBaseComponent(props: PropsTypes) {
         </label>;
     };
 
-    const renderInput: RenderFunctionNoArgs = (): Node => {
+    const renderInput: RenderFunctionNoArgsType = (): Node => {
         const checkedParam: ?string = checked ? 'checked' : '';
         const disabledParam: ?string = disabled ? 'disabled' : undefined;
 
@@ -148,7 +148,7 @@ function FormRadioButtonInputBaseComponent(props: PropsTypes) {
         />;
     };
 
-    const renderLabel: RenderFunctionNoArgs = () => {
+    const renderLabel: RenderFunctionNoArgsType = () => {
         const {disabled} = props;
         const {radioButtonLabel, radioButtonLeftLabel, radioButtonRightLabel} = classes;
 
@@ -163,7 +163,7 @@ function FormRadioButtonInputBaseComponent(props: PropsTypes) {
         </div>;
     };
 
-    const renderComponentContainer: RenderFunctionNoArgs = (): Node => {
+    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
         const {componentContainer} = classes;
 
         const containerClassName: string = classNames(componentContainer, className);
