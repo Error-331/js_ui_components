@@ -28,6 +28,12 @@ import ChipCollectionComponent from './../collections/chip_collection_component'
 // type definitions
 type PropsTypes = FieldProps & {
     /**
+     * Custom made representation of text input component used inside current component
+     */
+
+    customTextInputComponent?: ElementType | React.Node,
+
+    /**
      * Number that indicates which visual variant will be used to represent the tag input component
      */
 
@@ -355,6 +361,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
         };
 
         return <FormTextInputComponent
+            customComponent={props.customTextInputComponent}
             variant={variant}
             type='text'
 

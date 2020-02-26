@@ -3,7 +3,7 @@
 // @flow
 
 // external imports
-import type {Node} from 'react';
+import type {ElementType, Node} from 'react';
 
 import React from 'react';
 import {Field} from 'redux-form/immutable';
@@ -17,6 +17,12 @@ type CSSStylesType = {
 };
 
 export type PropsTypes = {
+    /**
+     * Custom made representation of text input component used inside current component
+     */
+
+    customTextInputComponent?: ElementType | React.Node,
+
     /**
      * Input name
      */

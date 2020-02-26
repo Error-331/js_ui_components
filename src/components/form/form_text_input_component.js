@@ -6,11 +6,13 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import {T, always, isNil, cond, equals, defaultTo, clone} from 'ramda';
+import {T, always, isNil, cond, equals, defaultTo, clone, ifElse} from 'ramda';
 import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 import type {ElementType} from 'react';
 import type {FieldProps} from 'redux-form';
+
+import {isElement} from 'react-dom/test-utils';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
@@ -20,6 +22,7 @@ import type {FormTextInputVariant1Types as ComponentVariantPropsType} from './fo
 import {FormTextInputVariant1Component} from './form_text_input_variants/form_text_input_variant1_component';
 import {FormTextInputVariant2Component} from './form_text_input_variants/form_text_input_variant2_component';
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
+
 
 // type definitions
 type CSSStylesType = {
@@ -279,7 +282,21 @@ class FormTextInputClass extends React.Component<PropsTypes, StateTypes> {
         };
 
         if (!isNil(customComponent)) {
-            return React.cloneElement(customComponent, componentVariantProps);
+            return ifElse(
+              isElement,
+              (elm) => {
+                  return React.cloneElement(
+                    elm,
+                    {
+                        ...elm.props,
+                        ...componentVariantProps,
+                    }
+                  );
+              },
+              (elm) => {
+                  return React.createElement(elm, {...componentVariantProps});
+              }
+            )(customComponent);
         }
 
         return cond([

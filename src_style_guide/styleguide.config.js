@@ -144,7 +144,7 @@ module.exports = {
                 {
                     name: 'Buttons',
                     content: path.join(__dirname, './docs/buttons/index.md'),
-                    components: path.join(__dirname, './../src/components/buttons/**/[A-Za-z_]*_component.js'),
+                    components: path.join(__dirname, './../src/components/buttons/[A-Za-z_]*_component.js'),
                 },
 
                 {

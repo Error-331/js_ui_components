@@ -908,6 +908,7 @@ class FormTextInputVariant1Class extends React.Component<PropsTypes, StateTypes>
         const {rows} = this.props;
 
         const numberOfLines: number = isNil(rows) ? inputValue.replace(/^\s*[\r\n]/gm, '').split(/\r|\r\n|\n/).length : rows;
+        // TODO: need to to relay on styles
         const flexBasis: number = (numberOfLines * this.props.theme.inputStyles.lineHeight) + bottomBorderWidth;
 
         return <textarea
