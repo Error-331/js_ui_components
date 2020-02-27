@@ -3,7 +3,7 @@
 // @flow
 
 // external imports
-import type {Node} from 'react';
+import type {ElementType, Node} from 'react';
 
 import React, {useRef} from 'react'
 import {createUseStyles, useTheme} from 'react-jss';
@@ -32,6 +32,12 @@ type CSSStylesType = {
 };
 
 type PropsTypes = {
+    /**
+     * Custom made representation of chip component used inside current component
+     */
+
+    customChipComponent?: ElementType | React.Node,
+
     /**
      * Data used to create representation of 'chip' components
      */
@@ -190,6 +196,7 @@ function ChipCollectionComponent(props: PropsTypes) {
             >
                 <ChipComponent
                     {...chipData}
+                    customComponent={props.customChipComponent}
                     className={componentClassName}
                 />
             </div>;

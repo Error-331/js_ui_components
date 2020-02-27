@@ -34,6 +34,12 @@ type PropsTypes = FieldProps & {
     customTextInputComponent?: ElementType | React.Node,
 
     /**
+     * Custom made representation of chip component used inside current component
+     */
+
+    customChipComponent?: ElementType | React.Node,
+
+    /**
      * Number that indicates which visual variant will be used to represent the tag input component
      */
 
@@ -309,6 +315,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
         }, value);
 
         return <ChipCollectionComponent
+            customChipComponent={props.customChipComponent}
             data={value}
         />;
     };

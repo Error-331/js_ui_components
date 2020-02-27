@@ -24,6 +24,12 @@ export type PropsTypes = {
     customTextInputComponent?: ElementType | React.Node,
 
     /**
+     * Custom made representation of chip component used inside current component
+     */
+
+    customChipComponent?: ElementType | React.Node,
+
+    /**
      * Input name
      */
 
