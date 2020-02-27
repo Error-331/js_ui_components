@@ -25,169 +25,171 @@ tt3
 ```jsx
 
 const injectSheet = require('react-jss').default;
+const {mergeDeepRight} = require('ramda');
 
-const {FormTextInputVariant1Class} = require('./../form/form_text_input_variants/form_text_input_variant1_component');
+const formTextInputVariant1Component = require('./../form/form_text_input_variants/form_text_input_variant1_component');
+const chipVariant1Component = require('./../buttons/chip_variants/chip_variant1_component');
 
-const styles = theme => ({
-    componentContainer: {
-        boxSizing: 'border-box',
+const newTextInputStyles = theme => {
+    return mergeDeepRight(
+        formTextInputVariant1Component.styles(theme),
+        {
+            componentContainer: {
+                padding: '0px',
+        
+                '& > $inputContainer': {
+                    boxSizing: 'border-box',
+                    position: 'relative',
+                    
+                    display: 'block',
+                    
+                    '& > $inputControl': {
+                        overflow: 'hidden',
+                        display: 'block',
+                    
+                        width: '100%',
+                    
+                        margin: '0 0 0 0',
+                        border: '1px solid #C2C2C2',
+                        borderBottomColor: '#C2C2C2',
+                        padding: '12px 17px 12px 36px',
+        
+                        fontFamily: theme.inputStyles.fontStack,
+                        fontSize: `12px`,
+                        lineHeight: `12px`,
+        
+                        boxShadow: 'none',
+                        color: 'black',
+        
+                        '&::-webkit-input-placeholder': {color: 'grey'},
+                        '&::-moz-placeholder': {color: 'grey'},
+                        '&::-ms-input-placeholder': {color: 'grey'},
+                        
+                        '&.focus': {
+                            borderBottomColor: '#C2C2C2',
+                            color: 'black',
+                        },
+        
+                        '&.error': {
+                            color: 'black',
+                            borderColor: 'red',
+                        },
+        
+                        '&.readOnly': {
+                            borderBottomColor: '#C2C2C2',
+                            color: 'grey',
+                        },
+        
+                        '&.disabled': {
+                            borderBottomStyle: '#C2C2C2',
+                            color: 'grey',
+                        },                        
+                    },
+                                
+                    '& > $inputControlLabel': {
+                        fontSize: `11px`,
+                        '-webkit-transform': 'translateY(-120%)',
+                        transform: 'translateY(-120%)',
+        
+                        color: 'black',
+        
+                        '&.focus': {color: 'black'},
+                        '&.error': {color: 'red'},
+                        '&.readOnly': {color: 'grey'},
+                        '&.disabled': {color: 'grey'},        
+                    },    
+                    
+                    '& > $inputControlIcon': {
+                        position: 'absolute',
+                        top: '12px',
+                        left: '12px',
+        
+                        color: 'gray',
+                        fontSize: '16px',
 
-        position: 'relative',
-        display: 'flex',
+                        '&.focus': {color: 'grey'},
+                        '&.error': {color: 'red'},
+                        '&.readOnly': {color: 'gray'},
+                        '&.disabled': {color: 'gray'},                       
+                    },                  
+                },
+                             
+                '& > $errorsContainer': {
+                    marginTop: '2px',
+        
+                    '& > $errorContainer': {
+                        marginTop: '2px',
+                        
+                        color: 'red',
+                    }
+                },
+        
+                '& > $warningsContainer': {
+                    color: 'blue',
+                },
+            },
+        
+            inputContainer: {},
+            inputControl: {},
+            inputControlLabel: {},
+            inputControlIcon: {},
+        
+            subMessagesContainer: {},
+        
+            errorsContainer: {},
+            errorContainer: {},
+        
+            warningsContainer: {},
+            warningContainer: {},
+        }
+    )
+};
 
-        flexBasis: 'auto',
-        flexShrink: 1,
-        flexGrow: 0,
-
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
-
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
-        alignContent: 'flex-start',
-
-        '& > $inputContainer': {
-            boxSizing: 'border-box',
-            position: 'relative',
-            
-            '& > $inputControl': {
-                boxSizing: 'border-box',
-                overflow: 'hidden',
-            
-                width: '100%',
-            
-                margin: '0 0 0 0',
-
-                border: '1px solid #C2C2C2',
-
-                padding: '12px 17px 12px 17px',
-
-                fontFamily: theme.inputStyles.fontStack,
-                fontSize: `12px`,
+const newChipStyles = theme => {
+    return mergeDeepRight(
+        chipVariant1Component.styles(theme),
+        {
+            componentContainer: {
+                borderRadius: '4px',
 
                 boxShadow: 'none',
+    
+                '&.contained': {
+                    backgroundColor: '#2DAD6A',
 
-                color: 'black',
-
-                '&::-webkit-input-placeholder': {
-                    color: 'grey',
-                },
-
-                '&::-moz-placeholder': {
-                    color: 'grey',
-                },
-
-                '&::-ms-input-placeholder': {
-                    color: 'grey',
-                },
-
-                '&.error': {
-                    color: 'black',
-                    borderColor: 'red',
-                },
-
-            },
+                    '&.clickable': {
+                        '&:hover': {
+                            backgroundColor: '#248a55',
+                        },
+                    },
+                    
+                    '& > $iconContainer': {
+                        fontSize: '10px',
                         
-            '& > $inputControlLabel': {
-                position: 'absolute',
-
-                top: `${theme.inputStyles.fontSize - theme.inputStyles.labelInactiveFontSize}px`,
-                left: '0px',
-
-                fontFamily: theme.inputStyles.fontStack,
-
-                cursor: 'text',
-                transition: '.2s ease-out',
-
-                fontSize: `11px`,
-                '-webkit-transform': 'translateY(-120%)',
-                transform: 'translateY(-120%)',
-
-                color: 'black',
-
-                '&.error': {
-                    color: 'red',
-                },
+                        '&.default': {    
+                        },
+                    },
+     
+                    '& > $labelContainer': {
+                        '&.default': {
+                            color: '#ffffff',
+                        }
+                    }
+                }
             },
 
-            '& > $inputControlLabel:first-letter': {
-                textTransform: 'capitalize',
-            },
-            
-            '& > $inputControlIcon': {
-                position: 'absolute',
-                top: '12px',
-                left: '12px',
+            labelContainer: {},
+            iconContainer: {},
+        }
+    )
+}
 
-                color: 'gray',
-                fontSize: '16px',
-
-                '&.error': {
-                    color: 'red'
-                },
-            },                  
-        },
-             
-        '& > $subMessagesContainer': {
-            boxSizing: 'border-box',
-            display: 'flex',
-
-            flexBasis: 'auto',
-            flexShrink: '1',
-            flexGrow: '0',
-
-            flexDirection: 'column',
-            flexWrap: 'nowrap',
-
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            alignContent: 'flex-start',
-        },
-
-        '& > $errorsContainer': {
-            marginTop: '2px',
-            color: theme.inputStyles.attentionColor,
-
-            '& > $errorContainer': {
-                marginTop: '2px',
-
-                fontFamily: theme.inputStyles.fontStack,
-                fontSize: theme.inputStyles.errorFontSize,
-                
-                color: 'red',
-            }
-        },
-
-        '& > $warningsContainer': {
-            color: 'blue',
-
-            '& > $warningContainer': {
-                marginTop: '2px',
-
-                fontFamily: theme.inputStyles.fontStack,
-                fontSize: theme.inputStyles.errorFontSize,
-            },
-        },
-    },
-
-    inputContainer: {},
-    inputControl: {},
-    inputControlLabel: {},
-    inputControlIcon: {},
-
-    subMessagesContainer: {},
-
-    errorsContainer: {},
-    errorContainer: {},
-
-    warningsContainer: {},
-    warningContainer: {},
-});
-
-const FormTextInputCustomComponent = injectSheet(styles)(FormTextInputVariant1Class);
+const FormTextInputCustomComponent = injectSheet(newTextInputStyles)(formTextInputVariant1Component.FormTextInputVariant1Class);
+const ChipCustomComponent = injectSheet(newChipStyles)(chipVariant1Component.ChipVariant1Component);
 
 <ReduxFormTagInputSeparateComponent
     customTextInputComponent={FormTextInputCustomComponent}
+    customChipComponent={ChipCustomComponent}
     name='testFormTagInputSeparateComponent2'
 />
 

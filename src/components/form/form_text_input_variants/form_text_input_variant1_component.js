@@ -973,5 +973,5 @@ const FormTextInputVariant1Component = injectSheet(styles, {injectTheme: true})(
 FormTextInputVariant1Component.displayName = 'FormTextInputVariant1Component';
 
 // exports
-export {FormTextInputVariant1Class, FormTextInputVariant1Component}
+export {styles, FormTextInputVariant1Class, FormTextInputVariant1Component}
 export default FormTextInputVariant1Component;

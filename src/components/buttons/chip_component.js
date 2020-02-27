@@ -50,6 +50,12 @@ export type BaseComponentProps = {
     label?: string,
 
     /**
+     * Chip label font size
+     */
+
+    labelSize?: number,
+
+    /**
      * Data associated with current component
      */
 
@@ -203,33 +209,33 @@ class ChipClass extends React.Component<PropsTypes, StateTypes> {
         const {customComponent} = this.props;
 
         const componentVariantProps: BaseComponentProps = pick(
-          [
-              'variant', 'textType',
-              'clickable', 'rightIconClickable',
-              'label', 'labelPosition', 'data', 'disabled',
-              'onClick', 'onRightIconClick',
-              'className', 'containerClassName',
-              'rightIconClassName', 'containerStyle', 'style',
-              'hoverStyle', 'labelStyle', 'rightIconStyle'
-          ],
-          this.props
+            [
+                'variant', 'textType',
+                'clickable', 'rightIconClickable',
+                'label', 'labelSize', 'labelPosition', 'data', 'disabled',
+                'onClick', 'onRightIconClick',
+                'className', 'containerClassName',
+                'rightIconClassName', 'containerStyle', 'style',
+                'hoverStyle', 'labelStyle', 'rightIconStyle'
+            ],
+            this.props
         );
 
         if (!isNil(customComponent)) {
             return ifElse(
-              isElement,
-              (elm) => {
-                  return React.cloneElement(
-                    elm,
-                    {
-                        ...elm.props,
-                        ...componentVariantProps,
-                    }
-                  );
-              },
-              (elm) => {
-                  return React.createElement(elm, {...componentVariantProps});
-              }
+                isElement,
+                (elm) => {
+                    return React.cloneElement(
+                        elm,
+                        {
+                            ...elm.props,
+                            ...componentVariantProps,
+                        }
+                    );
+                },
+                (elm) => {
+                    return React.createElement(elm, {...componentVariantProps});
+                }
             )(customComponent);
         }
 

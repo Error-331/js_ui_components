@@ -340,6 +340,57 @@ Chip component (clickable) with enabled right icon (clickable) and custom stylin
 
 ```jsx
 
+const injectSheet = require('react-jss').default;
+const {mergeDeepRight} = require('ramda');
+
+const {
+    ChipVariant1Class, 
+    ChipVariant1Component,
+    styles
+} = require('./chip_variants/chip_variant1_component');
+
+const newStyles = theme => {
+    return mergeDeepRight(
+        styles(theme),
+        {
+            componentContainer: {
+                marginRight: '10px',
+                borderRadius: '4px',
+
+                boxShadow: 'none',
+    
+                '&.contained': {
+                    backgroundColor: '#2DAD6A',
+
+                    '&.clickable': {
+                        '&:hover': {
+                            backgroundColor: '#248a55',
+                        },
+                    },
+                    
+                    '& > $iconContainer': {
+                        fontSize: '10px',
+                        
+                        '&.default': {    
+                        },
+                    },
+     
+                    '& > $labelContainer': {
+                        '&.default': {
+                            color: '#ffffff',
+                        }
+                    }
+                }
+            },
+
+            labelContainer: {},
+            iconContainer: {},
+        }
+    )
+}
+
+const NewChipVariant = injectSheet(newStyles)(ChipVariant1Component);
+
 const demoContainerStyle = {
     display: 'flex', 
     
@@ -351,38 +402,13 @@ const demoContainerStyle = {
     alignContent: 'flex-start',
 };
 
-const componentContainerStyle = {
-    marginRight: '10px',
-    borderRadius: '4px',
-    
-    boxShadow: 'none',
-    backgroundColor: '#2DAD6A',
-};
-
-const componentHoverStyle = {
-    backgroundColor: '#248a55',
-};
-
-const labelStyle = {
-    fontSize: '12px',
-    
-    color: '#ffffff',
-};
-
-const rightIconStyle = {
-    fontSize: '10px',
-};
-
 <div style={demoContainerStyle}>
     <ChipComponent 
+     customComponent={NewChipVariant}
+    
      variant='contained'
      rightIconClassName='fal fa-times'
     
-     containerStyle={componentContainerStyle} 
-     hoverStyle={componentHoverStyle}
-     labelStyle={labelStyle}
-     rightIconStyle={rightIconStyle}
-     
      label='C#' 
      
      clickable={true}
@@ -392,14 +418,11 @@ const rightIconStyle = {
     />
 
     <ChipComponent 
+     customComponent={NewChipVariant}
+    
      variant='contained'
      rightIconClassName='fal fa-times'
     
-     containerStyle={componentContainerStyle} 
-     hoverStyle={componentHoverStyle}
-     labelStyle={labelStyle}
-     rightIconStyle={rightIconStyle}
-     
      label='javascript' 
      
      clickable={true}
@@ -409,21 +432,17 @@ const rightIconStyle = {
     />
     
     <ChipComponent 
+     customComponent={NewChipVariant}
+     
      variant='contained'
      rightIconClassName='fal fa-times'
     
-     containerStyle={componentContainerStyle} 
-     hoverStyle={componentHoverStyle}
-     labelStyle={labelStyle}
-     rightIconStyle={rightIconStyle}
-     
      label='php' 
      
      clickable={true}
      rightIconClickable={true} 
 
      onRightIconClick={() => {alert('button icon 3');}}     
-     
     />    
 </div>
 
