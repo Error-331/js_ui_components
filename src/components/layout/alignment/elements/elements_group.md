@@ -4,7 +4,7 @@ A number of radio buttons aligned to the left and arranged into column:
 
 const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
-<ElementsGroup direction='column' alignment='left'>
+<ElementsGroupComponent direction='column' alignment='left'>
 
     <ReduxFormRadioButtonInputComponent
         name='testFormRadioButtonInputComponentInGroup1'
@@ -22,7 +22,7 @@ const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redu
         labelPosition='right'
     />
 
-</ElementsGroup>
+</ElementsGroupComponent>
 
 ```
 
@@ -32,7 +32,7 @@ A number of radio buttons aligned to the right and arranged into column:
 
 const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
-<ElementsGroup direction='column' alignment='right'>
+<ElementsGroupComponent direction='column' alignment='right'>
 
     <ReduxFormRadioButtonInputComponent
         name='testFormRadioButtonInputComponentInGroup2'
@@ -50,7 +50,7 @@ const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redu
         labelPosition='right'
     />
 
-</ElementsGroup>
+</ElementsGroupComponent>
 
 ```
 
@@ -60,7 +60,7 @@ A number of radio buttons aligned to the center and arranged into column:
 
 const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
-<ElementsGroup direction='column' alignment='center'>
+<ElementsGroupComponent direction='column' alignment='center'>
 
     <ReduxFormRadioButtonInputComponent
         name='testFormRadioButtonInputComponentInGroup3'
@@ -78,7 +78,7 @@ const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redu
         labelPosition='right'
     />
 
-</ElementsGroup>
+</ElementsGroupComponent>
 
 ```
 
@@ -88,7 +88,7 @@ A number of radio buttons aligned to the left and arranged into row:
 
 const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
-<ElementsGroup direction='row' alignment='left'>
+<ElementsGroupComponent direction='row' alignment='left'>
 
     <ReduxFormRadioButtonInputComponent
         name='testFormRadioButtonInputComponentInGroup4'
@@ -106,7 +106,7 @@ const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redu
         labelPosition='right'
     />
 
-</ElementsGroup>
+</ElementsGroupComponent>
 
 ```
 
@@ -116,7 +116,7 @@ A number of radio buttons aligned to the right and arranged into row:
 
 const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
-<ElementsGroup direction='row' alignment='right'>
+<ElementsGroupComponent direction='row' alignment='right'>
 
     <ReduxFormRadioButtonInputComponent
         name='testFormRadioButtonInputComponentInGroup5'
@@ -134,7 +134,7 @@ const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redu
         labelPosition='right'
     />
 
-</ElementsGroup>
+</ElementsGroupComponent>
 
 ```
 
@@ -144,7 +144,7 @@ A number of radio buttons aligned to the center and arranged into row:
 
 const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redux_form_radio_button_input_component');
 
-<ElementsGroup direction='row' alignment='center'>
+<ElementsGroupComponent direction='row' alignment='center'>
 
     <ReduxFormRadioButtonInputComponent
         name='testFormRadioButtonInputComponentInGroup6'
@@ -162,6 +162,6 @@ const {ReduxFormRadioButtonInputComponent} = require('./../../../redux_form/redu
         labelPosition='right'
     />
 
-</ElementsGroup>
+</ElementsGroupComponent>
 
 ```

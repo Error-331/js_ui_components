@@ -3,13 +3,13 @@
 // @flow
 
 // external imports
-import type {ElementType} from 'react';
+import type {ElementType, Node} from 'react';
 
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import {isNotNil} from '@webfuturistics/design_components';
-import {isNil, defaultTo, clone, unless, addIndex, map, bind} from 'ramda';
+import {isNil, defaultTo, clone, mergeDeepRight, unless, addIndex, map, bind, toLower} from 'ramda';
 
 // local imports
 import type {ItemType as GridItemType} from './../grid/grid_generator_component';
@@ -20,9 +20,13 @@ import type {PropsTypes as ReduxRadioButtonInputPropsType} from './redux_form_ra
 import type {PropsTypes as ReduxFormDropDownInputPropsType} from './redux_form_drop_down_input_component';
 import type {PropsTypes as ReduxFormDateInputPropsType} from './redux_form_date_input_component';
 import type {PropsTypes as ReduxFormSliderInputPropsType} from './redux_form_slider_input_component'
+import type {PropsTypes as ReduxFormTagInputSeparatePropsType} from './redux_form_tag_input_separate_component'
+
+import type {PropsTypes as ElementsGroupPropsType} from './../layout/alignment/elements/elements_group';
 
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 import {GridGeneratorComponent} from './../grid/grid_generator_component';
+import ElementsGroup from './../layout/alignment/elements/elements_group';
 
 import {ReduxFormTextInputComponent} from './redux_form_text_input_component';
 import {ReduxFormCheckboxInputComponent} from './redux_form_checkbox_input_component';
@@ -30,6 +34,7 @@ import {ReduxFormRadioButtonInputComponent} from './redux_form_radio_button_inpu
 import {ReduxFormDropDownInputComponent} from './redux_form_drop_down_input_component';
 import {ReduxFormDateInputComponent} from './redux_form_date_input_component';
 import ReduxFormSliderInputComponent from './redux_form_slider_input_component';
+import ReduxFormTagInputSeparateComponent from './redux_form_tag_input_separate_component';
 
 // type definitions
 type CSSStylesType = {
@@ -41,15 +46,21 @@ export type PropsType = ReduxFormTextInputPropsType |
                    ReduxRadioButtonInputPropsType |
                    ReduxFormDropDownInputPropsType |
                    ReduxFormDateInputPropsType |
-                   ReduxFormSliderInputPropsType;
+                   ReduxFormSliderInputPropsType |
+                   ReduxFormTagInputSeparatePropsType |
+                   ElementsGroupPropsType;
+
+export type MiscElementPropsType = {[any]: any};
+export type MiscElementsProps = Array<MiscElementPropsType>;
 
 export type ItemType = {
     elm?: ElementType,
     props: PropsType,
-    type?: 'text' | 'textarea' | 'checkbox' | 'radio' | 'dropdown' | 'date' | 'slider',
+    type?: 'text' | 'textarea' | 'checkbox' | 'radio' | 'dropdown' | 'date' | 'slider' | 'tag_separate' | 'radio_row' | 'radio_column',
     name: string,
     hspan?: number,
     vspan?: number,
+    childrenProps?: MiscElementsProps,
     children?: React.Node
 };
 
@@ -140,9 +151,11 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
     }
 
     _prepareTextInputPlaceholder(item: ItemType): string {
-        const {props} = item;
+        let {props} = item;
+        props = defaultTo({}, props);
 
         let {label, placeholder} = props;
+
         return isNil(placeholder) && !isNil(label) ? `${label}...` : placeholder;
     }
 
@@ -151,6 +164,31 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
 
         let newProps: InputPropsType = this._prepareProps(props);
         return defaultTo({name})(newProps);
+    }
+
+    _prepareInputName(item: ItemType | MiscElementPropsType, rowId: number, columnId: number): string {
+        const {name} = item;
+        return`${name}_${rowId}_${columnId}`;
+    }
+
+    _prepareBlockItem<InputPropsType>(
+        elm: ElementType,
+        item: ItemType,
+        rowId: number,
+        columnId: number,
+        extraProps?: InputPropsType,
+        children?: React.Node,
+    ): GridItemType {
+        const {hspan, vspan} = item;
+        extraProps = defaultTo({})(extraProps);
+
+        return {
+            elm,
+            hspan,
+            vspan,
+            props: extraProps,
+            children,
+        };
     }
 
     _prepareInputItem<InputPropsType>(
@@ -162,8 +200,7 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
     ): GridItemType {
         const {name, hspan, vspan} = item;
         extraProps = defaultTo({})(extraProps);
-
-        const elementName: string = `${name}_${rowId}_${columnId}`;
+        const elementName: string = this._prepareInputName(item, rowId, columnId);
 
         return {
             elm,
@@ -194,6 +231,33 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
             columnId,
             {placeholder: this._prepareTextInputPlaceholder(item), ...extraProps}
         );
+    }
+
+    _prepareRadioGroup(
+        elm: ElementType,
+        item: ItemType,
+        rowId: number,
+        columnId: number,
+        extraProps?: ElementsGroupPropsType,
+        childrenProps?: MiscElementsProps,
+    ): GridItemType {
+        extraProps = defaultTo({direction: 'column'})(extraProps);
+        childrenProps = defaultTo([])(childrenProps);
+        const children: Node = addIndex(map)((childProps: MiscElementPropsType, childIndex: number) => {
+            const elementName: string = this._prepareInputName(childProps, rowId, columnId);
+
+            return <ReduxFormRadioButtonInputComponent
+                {...childProps}
+                name={elementName}
+
+                key={`radio_${childIndex}`}
+            />
+        }, childrenProps);
+
+        const alignStyle: {[string]: string} = toLower(extraProps.direction) === 'column' ? {alignSelf: 'start'} : {alignSelf: 'center'};
+        const newExtraProps: InputPropsType = mergeDeepRight({style: alignStyle}, extraProps);
+
+        return this._prepareBlockItem(ElementsGroup, item, rowId, columnId, newExtraProps, children)
     }
 
     // endregion
@@ -238,7 +302,7 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
 
     // region render methods
     _prepareItem(item: ItemType, rowId: number, columnId: number): GridItemType | null {
-        const {elm, type} = item;
+        const {elm, type, childrenProps} = item;
 
         if (isNotNil(elm)) {
             return item;
@@ -249,16 +313,22 @@ class ReduxFormGeneratorClass extends React.Component<PropsTypes, StateTypes> {
                 return this._prepareTextLikeInputItem<ReduxFormTextInputPropsType>(ReduxFormTextInputComponent, item, rowId, columnId);
             case 'textarea':
                 return this._prepareTextLikeInputItem<ReduxFormTextInputPropsType>(ReduxFormTextInputComponent, item, rowId, columnId, {type: 'textarea'});
-            case 'checkbox':
-                return this._prepareInputItem<ReduxCheckboxInputPropsType>(ReduxFormCheckboxInputComponent, item, rowId, columnId);
-            case 'radio':
-                return this._prepareInputItem<ReduxRadioButtonInputPropsType>(ReduxFormRadioButtonInputComponent, item, rowId, columnId);
             case 'dropdown':
                 return this._prepareTextLikeInputItem<ReduxFormDropDownInputPropsType>(ReduxFormDropDownInputComponent, item, rowId, columnId);
             case 'date':
                 return this._prepareTextLikeInputItem<ReduxFormDateInputPropsType>(ReduxFormDateInputComponent, item, rowId, columnId);
+            case 'tag_separate':
+                return this._prepareTextLikeInputItem<ReduxFormTagInputSeparatePropsType>(ReduxFormTagInputSeparateComponent, item, rowId, columnId);
+            case 'checkbox':
+                return this._prepareInputItem<ReduxCheckboxInputPropsType>(ReduxFormCheckboxInputComponent, item, rowId, columnId);
+            case 'radio':
+                return this._prepareInputItem<ReduxRadioButtonInputPropsType>(ReduxFormRadioButtonInputComponent, item, rowId, columnId);
             case 'slider':
                 return this._prepareInputItem<ReduxFormSliderInputPropsType>(ReduxFormSliderInputComponent, item, rowId, columnId);
+            case 'radio_row':
+                return this._prepareRadioGroup(ElementsGroup, item, rowId, columnId, {direction: 'row'}, childrenProps);
+            case 'radio_column':
+                return this._prepareRadioGroup(ElementsGroup, item, rowId, columnId, {direction: 'column'}, childrenProps);
             default:
                 return null;
         }

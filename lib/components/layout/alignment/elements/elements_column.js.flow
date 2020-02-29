@@ -22,7 +22,13 @@ type PropsTypes = {
     alignment?: AlignmentType,
 
     /**
-     * React style object for in deep control of how elements row is represented
+     * Class name for in deep control of how elements column is represented
+     */
+
+    className?: string,
+
+    /**
+     * React style object for in deep control of how elements column is represented
      */
 
     style?: {[string]: mixed},
@@ -135,13 +141,14 @@ const styles = theme => ({
 
 // component implementation
 function ElementsColumnFunction(props: PropsTypes): React.Node {
-    let {alignment, classes, style} = props;
+    let {alignment, className, classes, style} = props;
 
     alignment = defaultTo('left')(alignment);
 
     const containerClasses: string = classNames(
         classes.componentContainer,
-        alignment
+        alignment,
+        className,
     );
 
     return <div className={containerClasses} style={{...style}}>

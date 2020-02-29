@@ -3,22 +3,25 @@
 // @flow
 
 // external imports
-import * as React from 'react';
-import injectSheet from 'react-jss';
+import type {ChildrenArray, ElementType, Node} from 'react';
+
+import React from 'react'
 
 import {defaultTo} from 'ramda';
 
 // local imports
+import type {RenderFunctionNoArgsType} from './../../../../types/common_types';
+
 import {ElementsRow} from './elements_row';
 import {ElementsColumn} from './elements_column';
 
 // type definitions
-type CardChildren = React.ChildrenArray<void | null | string | number | React.Element<any>>;
+type CardChildren = ChildrenArray<void | null | string | number | ElementType>;
 
 type DirectionType = 'row' | 'column';
 type AlignmentType = 'left' | 'right' | 'center';
 
-type PropsTypes = {
+export type PropsTypes = {
     /**
      * Flag that dictates how elements should be laid out
      */
@@ -36,6 +39,18 @@ type PropsTypes = {
      */
 
     children?: ?CardChildren,
+
+    /**
+     * Class name for in deep control of how elements group is represented
+     */
+
+    className?: string,
+
+    /**
+     * React style object for in deep control of how elements group is represented
+     */
+
+    style?: {[string]: mixed},
 
     /**
      * JSS inner classes
@@ -61,20 +76,72 @@ const styles = theme => ({});
  */
 
 // component implementation
-export function ElementsGroupFunction(props: PropsTypes): React.Node {
-    let {direction, alignment} = props;
-    direction = defaultTo('column')(direction);
+function ElementsGroupComponent(props: PropsTypes): Node {
+    // region private variables declaration
+    const alignment: AlignmentType = defaultTo('left')(props.alignment);
+    const direction: string = defaultTo('column')(props.direction);
 
-    // TODO: can do better with ternary operator or if Else() but react-docgen do not understand them
-    if (direction === 'column') {
-        return <ElementsColumn alignment={alignment}>{props.children}</ElementsColumn>;
-    } else {
-        return <ElementsRow alignment={alignment}>{props.children}</ElementsRow>;
-    }
+    const className: string = defaultTo('')(props.className);
+    const style: {[string]: mixed} = defaultTo({})(props.style);
+
+    // endregion
+
+    // region style hooks declaration
+    // endregion
+
+    // region context hooks declaration
+    // endregion
+
+    // region state hooks declaration
+    // endregion
+
+    // region effect hooks declaration
+    // endregion
+
+    // region state variables declaration
+    // endregion
+
+    // region ref hooks declaration
+    // endregion
+
+    // region callback hooks declaration
+    // endregion
+
+    // region custom hooks declaration
+    // endregion
+
+    // region business logic
+    // endregion
+
+    // region event handler helpers
+    // endregion
+
+    // region render helpers
+    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
+        // TODO: can do better with ternary operator or if Else() but react-docgen do not understand them
+        if (direction === 'column') {
+            return <ElementsColumn
+                alignment={alignment}
+                className={className}
+                style={style}>
+                {props.children}
+            </ElementsColumn>;
+        } else {
+            return <ElementsRow
+                alignment={alignment}
+                className={className}
+                style={style}
+            >
+                {props.children}
+            </ElementsRow>;
+        }
+    };
+
+    // endregion
+
+    // init
+    return renderComponentContainer();
 }
 
-ElementsGroupFunction.displayName = 'ElementsGroup';
-
 // exports
-export const ElementsGroup = injectSheet(styles)(ElementsGroupFunction);
-export default ElementsGroup;
+export default ElementsGroupComponent;

@@ -120,7 +120,7 @@ function BlockHeaderFunction(props: PropsTypes) {
     [level => gt(level, 6), always(6)],
     [T, identity],
   ])(level);
-console.log('m', props);
+
   const {classes, theme, children, className} = props;
   const componentClassNames: string = classNames(classes.componentContainer, `level${level}`, className);
 

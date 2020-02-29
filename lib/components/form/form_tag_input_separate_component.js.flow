@@ -10,7 +10,8 @@ import React, {useState} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
 
 import {is, isNil, equals, defaultTo, propEq, pathOr, findIndex, remove, clone, replace, map} from 'ramda';
-import {List as ImmutableList, Map as ImmitableMap} from 'immutable';
+import {List as ImmutableList, Map as ImmutableMap} from 'immutable';
+import classNames from 'classnames';
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
@@ -26,7 +27,11 @@ import ChipCollectionComponent from './../collections/chip_collection_component'
 // local imports
 
 // type definitions
-type PropsTypes = FieldProps & {
+type CSSStylesType = {
+    [string]: mixed
+};
+
+export type PropsTypes = FieldProps & {
     /**
      * Custom made representation of text input component used inside current component
      */
@@ -62,6 +67,18 @@ type PropsTypes = FieldProps & {
      */
 
     customTextInputComponent?: ElementType | React.Node,
+
+    /**
+     * Class name which will be added to the component container (main outer container)
+     */
+
+    className?: string,
+
+    /**
+     * Styles for component container (main outer container)
+     */
+
+    style?: CSSStylesType,
 
     /**
      * 'Redux-form' field-component metadata
@@ -158,6 +175,9 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
     const metaProps: ReduxFormFieldComponentMetaDataPropsTypes = defaultTo({}, props.meta);
     const inputProps: ReduxFormFieldComponentInputDataPropsTypes = defaultTo({}, props.input);
 
+    const containerClassName: string = defaultTo('', props.className);
+    const containerStyle: CSSStylesType = defaultTo({}, props.style);
+
     // endregion
 
     // region style hooks declaration
@@ -198,7 +218,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
             const value: Array<ChipCollectionDataType> | ImmutableList = pathOr([], ['value'], inputProps);
 
             if (ImmutableList.isList(value)) {
-                return value.findIndex((listValue: ImmitableMap) => {
+                return value.findIndex((listValue: ImmutableMap) => {
                     const data: string | undefined = listValue.get('data');
                     return !isNil(data) && data === currentTagData;
                 });
@@ -231,7 +251,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
 
         if (ImmutableList.isList(value)) {
             if (valueNotExist) {
-                onChange(value.push(ImmitableMap(newValue)));
+                onChange(value.push(ImmutableMap(newValue)));
                 return true;
             }
         } else {
@@ -302,7 +322,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
         let value: ChipCollectionDataType | ImmutableList = pathOr([], ['value'], inputProps);
 
         if (ImmutableList.isList(value)) {
-            value = map((tagData:  ImmitableMap) => tagData.toObject(), value.toArray());
+            value = map((tagData:  ImmutableMap) => tagData.toObject(), value.toArray());
         }
 
         value = map((tagData: ChipComponentProps) => {
@@ -399,8 +419,10 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
     const renderComponentContainer: RenderFunctionNoArgsType = () => {
         const {componentContainer} = classes;
 
-        const onDrop: InputEventHandlerType  = pathOr(() => {}, ['onDrop'], inputProps);
-        const onDragStart: InputEventHandlerType  =  pathOr(() => {}, ['onDragStart'], inputProps);
+        const onDrop: InputEventHandlerType = pathOr(() => {}, ['onDrop'], inputProps);
+        const onDragStart: InputEventHandlerType = pathOr(() => {}, ['onDragStart'], inputProps);
+
+        const className: string = classNames(componentContainer, containerClassName);
 
         return <div
             onBlur={onComponentContainerBlur}
@@ -409,7 +431,8 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
             onDrop={onDrop}
             onDragStart={onDragStart}
 
-            className={componentContainer}
+            className={className}
+            style={containerStyle}
         >
             {renderTextInputContainer()}
             {renderTagsCollectionContainer()}

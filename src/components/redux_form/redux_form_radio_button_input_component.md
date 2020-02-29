@@ -3,7 +3,7 @@ Editable radio buttons (medium) without labels:
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -16,7 +16,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -31,13 +31,13 @@ function TestContainerComponent(props) {
                             value='testVal2'
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -51,7 +51,7 @@ function TestContainerComponent(props) {
                             name='testFormRadioButtonInputComponent1'
                             value='testVal4'
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -68,7 +68,7 @@ Readonly radio buttons (medium) without labels:
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -81,7 +81,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -100,13 +100,13 @@ function TestContainerComponent(props) {
                             readOnly={true}
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -124,7 +124,7 @@ function TestContainerComponent(props) {
                             
                             readOnly={true}
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -141,7 +141,7 @@ Disabled radio buttons (medium) without labels:
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -154,7 +154,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -173,13 +173,13 @@ function TestContainerComponent(props) {
                             disabled={true}
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -197,7 +197,7 @@ function TestContainerComponent(props) {
                             
                             disabled={true}
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -214,7 +214,7 @@ Editable radio buttons (medium) with default value set but no labels:
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -227,7 +227,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -242,13 +242,13 @@ function TestContainerComponent(props) {
                             value='testVal2'
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -262,7 +262,7 @@ function TestContainerComponent(props) {
                             name='reduxFormRadioButtonInputComponents.testFromRadioButtonInputComponentWithDefaultValue1'
                             value='testVal4'
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -279,7 +279,7 @@ Readonly radio buttons (medium) with default value set but no labels:
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -292,7 +292,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -311,13 +311,13 @@ function TestContainerComponent(props) {
                             readOnly={true}
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -335,7 +335,7 @@ function TestContainerComponent(props) {
                             
                             readOnly={true}
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -352,7 +352,7 @@ Disabled radio buttons (medium) with default value set but no labels:
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -365,7 +365,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -384,13 +384,13 @@ function TestContainerComponent(props) {
                             disabled={true}
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -408,7 +408,7 @@ function TestContainerComponent(props) {
                             
                             disabled={true}
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -425,7 +425,7 @@ Editable radio buttons (medium) with labels (left):
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -438,7 +438,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -459,13 +459,13 @@ function TestContainerComponent(props) {
                             labelPosition='left'
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -485,7 +485,7 @@ function TestContainerComponent(props) {
                             label='test label'
                             labelPosition='left'
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -503,7 +503,7 @@ Editable radio buttons (medium) with labels (right):
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -516,7 +516,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -537,13 +537,13 @@ function TestContainerComponent(props) {
                             labelPosition='right'
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -563,7 +563,7 @@ function TestContainerComponent(props) {
                             label='test label'
                             labelPosition='right'
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -581,7 +581,7 @@ Editable radio buttons (medium) with labels (right) set as well as default value
 
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -594,7 +594,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -615,13 +615,13 @@ function TestContainerComponent(props) {
                             labelPosition='right'
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -641,7 +641,7 @@ function TestContainerComponent(props) {
                             label='test label'
                             labelPosition='right'
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -658,7 +658,7 @@ Disabled radio buttons (medium) with labels (right) set:
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -671,7 +671,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -696,13 +696,13 @@ function TestContainerComponent(props) {
                             labelPosition='right'
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -726,7 +726,7 @@ function TestContainerComponent(props) {
                             label='test label'
                             labelPosition='right'
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -743,7 +743,7 @@ Disabled radio buttons (medium) with labels (right) set as well as default value
 ```jsx
 
 const injectSheet = require('react-jss').default;
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {SimpleFlexGridContainer, SimpleFlexGridRow, SimpleFlexGridColumn} = require('./../grid/simple_flex_grid');
 
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
@@ -756,7 +756,7 @@ function TestContainerComponent(props) {
     return <SimpleFlexGridContainer>
             <SimpleFlexGridRow>
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px'}} full={true}>
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={1}
     
@@ -781,13 +781,13 @@ function TestContainerComponent(props) {
                             labelPosition='right'
                         />
 
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>          
             </SimpleFlexGridRow>
                
             <SimpleFlexGridRow style={{marginTop: '10px'}}>                 
                 <SimpleFlexGridColumn style={{padding: '10px 5px 5px 5px', backgroundColor: theme.layoutStyles.headerBGColor}} full={true}>                
-                    <ElementsGroup>
+                    <ElementsGroupComponent>
                         <ReduxFormRadioButtonInputComponent
                             variant={2}
     
@@ -811,7 +811,7 @@ function TestContainerComponent(props) {
                             label='test label'
                             labelPosition='right'
                         />
-                    </ElementsGroup>
+                    </ElementsGroupComponent>
                 </SimpleFlexGridColumn>
             </SimpleFlexGridRow>               
     </SimpleFlexGridContainer>;
@@ -833,7 +833,7 @@ import {createUseStyles, useTheme} from 'react-jss';
 import FormRadioButtonInputBaseComponent from './../form/form_radio_button_input_variants/form_radio_button_input_base_component';
 import {stylesFunc} from './../form/form_radio_button_input_variants/form_radio_button_input_variant1_component';
 
-const {ElementsGroup} = require('./../layout/alignment/elements/elements_group');
+const ElementsGroupComponent = require('./../layout/alignment/elements/elements_group').default;
 const {ReduxFormRadioButtonInputComponent} = require('./redux_form_radio_button_input_component');
 
 const useStyles = createUseStyles(theme => {
@@ -888,7 +888,7 @@ function FormRadioButtonInputCustomComponent(props) {
     return render();
 }
 
-<ElementsGroup>
+<ElementsGroupComponent>
     <ReduxFormRadioButtonInputComponent
         customComponent={FormRadioButtonInputCustomComponent}
     
@@ -908,6 +908,6 @@ function FormRadioButtonInputCustomComponent(props) {
         label='test label'
         labelPosition='right'
     />
-</ElementsGroup>
+</ElementsGroupComponent>
 
 ```

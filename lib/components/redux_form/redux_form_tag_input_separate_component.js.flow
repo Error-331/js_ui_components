@@ -21,13 +21,13 @@ export type PropsTypes = {
      * Custom made representation of text input component used inside current component
      */
 
-    customTextInputComponent?: ElementType | React.Node,
+    customTextInputComponent?: ElementType | Node,
 
     /**
      * Custom made representation of chip component used inside current component
      */
 
-    customChipComponent?: ElementType | React.Node,
+    customChipComponent?: ElementType | Node,
 
     /**
      * Input name
@@ -52,7 +52,6 @@ export type PropsTypes = {
      */
 
     className?: string,
-
 
     /**
      * Styles for component container (main outer container)
