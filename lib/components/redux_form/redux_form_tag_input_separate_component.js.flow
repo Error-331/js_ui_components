@@ -48,6 +48,18 @@ export type PropsTypes = {
     disabled?: ?boolean,
 
     /**
+     * Input label
+     */
+
+    label?: ?string,
+
+    /**
+     * Placeholder text used as hint for the user of how appropriate data should look like
+     */
+
+    placeholder?: ?string,
+
+    /**
      * Class name which will be added to the component container (main outer container)
      */
 

@@ -63,6 +63,18 @@ export type PropsTypes = FieldProps & {
     disabled?: ?boolean,
 
     /**
+     * Input label
+     */
+
+    label?: ?string,
+
+    /**
+     * Placeholder text used as hint for the user of how appropriate data should look like
+     */
+
+    placeholder?: ?string,
+
+    /**
      * Custom made representation of text input component
      */
 
@@ -395,8 +407,8 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
             readOnly={readOnly}
             disabled={disabled}
 
-            label={null}
-            placeholder={null}
+            label={props.label}
+            placeholder={props.placeholder}
             iconClassNames={null}
 
             meta={textInputMetaProps}

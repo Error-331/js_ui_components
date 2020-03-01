@@ -1,4 +1,4 @@
-tt1
+Empty editable tag input field without any specific parameters set:
 
 ```jsx
 
@@ -9,7 +9,7 @@ tt1
 
 ```
 
-tt2
+Editable tag input field with predefined tags list:
 
 ```jsx
 
@@ -20,7 +20,7 @@ tt2
 
 ```
 
-tt3
+Empty editable tag input field with custom styling:
 
 ```jsx
 
@@ -191,6 +191,20 @@ const ChipCustomComponent = injectSheet(newChipStyles)(chipVariant1Component.Chi
     customTextInputComponent={FormTextInputCustomComponent}
     customChipComponent={ChipCustomComponent}
     name='testFormTagInputSeparateComponent2'
+/>
+
+
+```
+
+Empty editable tag input field with specific label and placeholder:
+
+```jsx
+
+<ReduxFormTagInputSeparateComponent
+    name='testFormTagInputSeparateComponent3'
+    
+    label='Test label'
+    placeholder='Test placeholder text...'    
 />
 
 
