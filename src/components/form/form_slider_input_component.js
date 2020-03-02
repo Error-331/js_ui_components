@@ -415,6 +415,7 @@ function FormSliderInputComponent(props: PropsTypes) {
                 sortBy(
                     pipe(
                         prop(1),
+                        divide(__, sliderStep),
                         subtract(clientX),
                         Math.abs
                     )
@@ -422,7 +423,7 @@ function FormSliderInputComponent(props: PropsTypes) {
                 nth(0),
                 prop(0)
             )
-        )(getHandlesData())
+        )(getHandlesData());
     };
 
     const normalizeClientX: (clientX: number | null) => number = cond([
@@ -445,8 +446,8 @@ function FormSliderInputComponent(props: PropsTypes) {
     );
 
     const calcHandleXPosByUnits: (units: number) => number  = pipe(
-        multiply(sliderWidth),
-        divide(__, unitsCount),
+        divide(__, sliderStep),
+        multiply(unitWidth),
         Math.round,
         clampHandleXPos
     );
@@ -476,7 +477,9 @@ function FormSliderInputComponent(props: PropsTypes) {
 
             if (!isNil(nearestGrabbedHandleId)) {
                 setGrabbedHandleId(nearestGrabbedHandleId);
-                onChange(updateHandleData(nearestGrabbedHandleId, currentUnits));
+
+                const handleValue: number = currentUnits * sliderStep;
+                onChange(updateHandleData(nearestGrabbedHandleId, handleValue));
             }
         };
 
@@ -486,7 +489,9 @@ function FormSliderInputComponent(props: PropsTypes) {
         (event: SyntheticMouseEvent<HTMLDivElement>): void => {
             if (!isNil(grabbedHandleId)) {
                 const currentUnits: number = calcUnitsByClientX(event.clientX);
-                onChange(updateHandleData(grabbedHandleId, currentUnits));
+                const handleValue: number = currentUnits * sliderStep;
+
+                onChange(updateHandleData(grabbedHandleId, handleValue));
             }
         };
 

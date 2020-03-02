@@ -178,6 +178,10 @@ function TestContainerComponent(props) {
                        <ReduxFormSliderInputComponent
                            name='reduxSliderInputComponents.testFromSliderInputComponentWithDefaultValue4'
                            
+                           step={10}
+                           min={0}
+                           max={100}
+                           
                            trackStyle={trackStyle}
                            trackProgressStyle={trackProgressStyle}
                            
