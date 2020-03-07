@@ -361,9 +361,9 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
     };
 
     const renderTextInput: RenderFunctionNoArgsType = () => {
-        const initial: any =  pathOr(false, ['initial'], metaProps);
-        const name: any =  pathOr(false, ['name'], inputProps);
-        const value: any =  pathOr(false, ['value'], inputProps);
+        const name: string | null = pathOr(null, ['name'], inputProps);
+        const initial: string | null =  pathOr(null, ['initial'], metaProps);
+        const value: string | null =  pathOr(null, ['value'], inputProps);
 
         let pristine: boolean = false;
 
@@ -375,7 +375,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
 
         const dirty: boolean = !pristine;
         const textInputMetaProps: ReduxFormFieldComponentMetaDataPropsTypes = {
-            initial: null,
+            initial,
 
             pristine,
             dirty,
@@ -400,7 +400,7 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
         };
 
         return <FormTextInputComponent
-            customComponent={props.customTextInputComponent}
+            customComponent={customTextInputComponent}
             variant={variant}
             type='text'
 
@@ -415,8 +415,6 @@ function FormTagInputSeparateComponent(props: PropsTypes) {
             input={textInputProps}
 
             onKeyPress={onKeyPressTextInput}
-
-            customComponent={customTextInputComponent}
         />;
     };
 

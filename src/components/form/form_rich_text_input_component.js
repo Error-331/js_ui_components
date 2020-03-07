@@ -8,8 +8,12 @@ import type {FieldProps} from 'redux-form';
 
 import type {DraftInlineStyle} from 'draft-js/lib/DraftInlineStyle';
 import type {DraftBlockRenderConfig} from 'draft-js/lib/DraftBlockRenderConfig';
+import type {DraftEntityInstance} from 'draft-js/lib/DraftEntityInstance';
+import type {DraftEntityMutability} from 'draft-js/lib/DraftEntityMutability';
+
 import type {CoreDraftBlockType} from 'draft-js/lib/DraftBlockType';
 import type {BlockNodeRecord} from 'draft-js/lib/BlockNodeRecord';
+import type {ContentBlock} from 'draft-js/lib/ContentBlock';
 
 import type {Curry} from 'ramda';
 
@@ -17,14 +21,20 @@ import React, {useState, useRef} from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
 import Immutable from 'immutable';
 
+import SelectionState from 'draft-js/lib/SelectionState';
+import ContentState from 'draft-js/lib/ContentState';
+
 import classNames from 'classnames';
 
 import {
     T,
     isNil,
+    isEmpty,
     equals,
     cond,
     always,
+    defaultTo,
+    pathOr,
     curry,
     all,
     any,
@@ -33,22 +43,21 @@ import {
     mergeDeepRight,
 } from 'ramda';
 
-import SelectionState from 'draft-js/lib/SelectionState';
-import ContentState from 'draft-js/lib/ContentState';
-
 let draftJSLib: {[any]: any};
 
 // local imports
 import type {ThemeType} from './../../types/theme_types';
 import type {RenderFunctionNoArgsType} from './../../types/common_types';
 import type {ReduxFormFieldComponentMetaDataPropsTypes, ReduxFormFieldComponentInputDataPropsTypes} from './../../types/redux_form_types';
-
 import type {ControlGroupDataType, ControlIconDataType} from './../navigation/horizontal_icon_toolbar_component';
 
 import HorizontalIconToolbarComponent from './../navigation/horizontal_icon_toolbar_component';
 
 import TextBlock from './../layout/text/text_block';
 import InlineHeader from './../layout/text/inline_header';
+import InlineTextLink from './../layout/text/inline_text_link';
+
+import LinkEditDialogBoxComponent from './form_rich_text_input_partials/link_edit_dialog_box_component';
 
 // type definitions
 type CSSStylesType = {
@@ -64,6 +73,10 @@ type InlineControlDataType = ControlDataType & {
     controlStyle: string,
 };
 
+type InlineEntityControlType = ControlDataType & {
+    type: string,
+};
+
 type BlockControlDataType = ControlDataType & {
     blockData: string,
 };
@@ -73,12 +86,13 @@ type BlockTypeControlType = ControlDataType & {
 };
 
 type InlineControlsDataType = Array<InlineControlDataType>;
+type InlineEntityControlsType = Array<InlineEntityControlType>;
 type BlockControlsDataType = Array<BlockControlDataType>;
 type BlockTypeControlsType = Array<BlockTypeControlType>;
 
-export type FormSliderInputTypes = {
+export type FormRichTextInputTypes = {
     /**
-     * Number that indicates which visual variant will be used to represent the slider input
+     * Number that indicates which visual variant will be used to represent the rich text input
      */
 
     variant?: number,
@@ -102,7 +116,7 @@ export type FormSliderInputTypes = {
     componentContainerClassName?: string,
 
     /**
-     * Styles for component container (main outer container) of the slider input component
+     * Styles for component container (main outer container) of the rich text input component
      */
 
     componentContainerStyles?: CSSStylesType,
@@ -130,7 +144,7 @@ export type FormSliderInputTypes = {
     input?: ?ReduxFormFieldComponentInputDataPropsTypes,
 };
 
-type PropsTypes = FieldProps & FormSliderInputTypes & {
+type PropsTypes = FieldProps & FormRichTextInputTypes & {
     /**
      * JSS theme object
      *
@@ -245,6 +259,10 @@ const BLOCK_HEADER_LEVEL_2_TYPE: string = 'header-two';
 const BLOCK_HEADER_LEVEL_3_TYPE: string = 'header-three';
 const BLOCK_HEADER_LEVEL_4_TYPE: string = 'header-four';
 
+const EMBEDDED_INLINE_LINK_ENTITY_TYPE: string = 'EMBEDDED_INLINE_LINK_ENTITY_TYPE';
+const EMBEDDED_IMAGE_ENTITY_TYPE: string = 'EMBEDDED_IMAGE_ENTITY_TYPE';
+const EMBEDDED_VIDEO_ENTITY_TYPE: string = 'EMBEDDED_VIDEO_ENTITY_TYPE';
+
 const GENERAL_INLINE_STYLES_CONTROLS: InlineControlsDataType = [
     {title: 'Bold', controlStyle: 'BOLD', iconClassName: 'fas fa-bold'},
     {title: 'Italic', controlStyle: 'ITALIC', iconClassName: 'fas fa-italic'},
@@ -263,6 +281,12 @@ const HEADER_BLOCK_TYPE_CONTROLS: BlockTypeControlsType = [
     {title: 'Header level 2', blockType: BLOCK_HEADER_LEVEL_2_TYPE, iconClassName: 'fas fa-h2'},
     {title: 'Header level 3', blockType: BLOCK_HEADER_LEVEL_3_TYPE, iconClassName: 'fas fa-h3'},
     {title: 'Header level 4', blockType: BLOCK_HEADER_LEVEL_4_TYPE, iconClassName: 'fas fa-h4'},
+];
+
+const EXTERNAL_EMBEDDED_ENTITIES_CONTROLS: InlineEntityControlsType = [
+    {title: 'Link', type: EMBEDDED_INLINE_LINK_ENTITY_TYPE, iconClassName: 'fas fa-link'},
+    {title: 'Image', type: EMBEDDED_IMAGE_ENTITY_TYPE, iconClassName: 'fas fa-image-polaroid'},
+    {title: 'Video',  type: EMBEDDED_VIDEO_ENTITY_TYPE, iconClassName: 'fas fa-film'},
 ];
 
 const editorBlockRenderMap: Immutable.Map<CoreDraftBlockType, DraftBlockRenderConfig> = Immutable.Map({
@@ -306,6 +330,13 @@ let extendedEditorBlockRenderMap: Immutable.Map<CoreDraftBlockType, DraftBlockRe
 // component implementation
 function FormRichTextInputComponent(props: PropsTypes) {
     // region private variables declaration
+    const metaProps: ReduxFormFieldComponentMetaDataPropsTypes = defaultTo({}, props.meta);
+    const inputProps: ReduxFormFieldComponentInputDataPropsTypes = defaultTo({}, props.input);
+
+    //const initial: string =  pathOr('', ['initial'], metaProps);
+    const inputName: string = pathOr('', ['name'], inputProps);
+   // const value: string =  pathOr('', ['value'], inputProps);
+
     // endregion
 
     // region style hooks declaration
@@ -320,6 +351,8 @@ function FormRichTextInputComponent(props: PropsTypes) {
     // region state hooks declaration
     const [libLoaderState, setLibLoaderState] = useState(LIB_LOADER_IDLE);
     const [editorState, setEditorState] = useState(null);
+
+    const [editLinkDialogState, setEditLinkDialogState] = useState({show: false, url: null});
 
     // endregion
 
@@ -402,20 +435,53 @@ function FormRichTextInputComponent(props: PropsTypes) {
     const isAllBlocksOfType: Curry = blocksOfTypeBy(all);
     const isNoneBlocksOfType: Curry = blocksOfTypeBy(none);
 
-    const prepareGeneralInlineStylesControls: () => ControlGroupDataType = (): ControlGroupDataType => {
-        const currentInlineStyle: DraftInlineStyle = editorState.getCurrentInlineStyle();
+    const isSelectionContainsEntityType = (entityType) => {
+        const contentState: ContentState = editorState.getCurrentContent();
 
-        return map((controlData: InlineControlsDataType) => {
-            const toolbarControlData: ControlIconDataType = mergeDeepRight({}, controlData);
+        const startKey: string = editorState.getSelection().getStartKey();
+        const startOffset: number = editorState.getSelection().getStartOffset();
 
-            const {controlStyle} = controlData;
+        const blockWithLinkAtBeginning: ContentBlock = contentState.getBlockForKey(startKey);
+        const entityKeyValue: string | null = blockWithLinkAtBeginning.getEntityAt(startOffset);
 
-            toolbarControlData.active = currentInlineStyle.has(controlStyle);
-            toolbarControlData.mouseDownHandler = editorToggleInlineStyleHandle(controlStyle);
+        if (!isNil(entityKeyValue)) {
+            const entityInstance: DraftEntityInstance = contentState.getEntity(entityKeyValue);
 
-            return toolbarControlData;
-        }, GENERAL_INLINE_STYLES_CONTROLS);
+            return entityInstance.getType() === entityType;
+        } else {
+            return false;
+        }
     };
+
+    const findEmbeddedLinkEntities = (contentBlock, callback, contentState) => {
+        contentBlock.findEntityRanges(
+            (character) => {
+                const entityKey = character.getEntity();
+
+                return (
+                    entityKey !== null &&
+                    contentState.getEntity(entityKey).getType() === EMBEDDED_INLINE_LINK_ENTITY_TYPE
+                );
+            },
+            callback
+        );
+    };
+
+    const prepareGeneralInlineStylesControls: () => ControlGroupDataType =
+        (): ControlGroupDataType => {
+            const currentInlineStyle: DraftInlineStyle = editorState.getCurrentInlineStyle();
+
+            return map((controlData: InlineControlsDataType) => {
+                const toolbarControlData: ControlIconDataType = mergeDeepRight({}, controlData);
+
+                const {controlStyle} = controlData;
+
+                toolbarControlData.active = currentInlineStyle.has(controlStyle);
+                toolbarControlData.mouseDownHandler = editorToggleInlineStyleHandle(controlStyle);
+
+                return toolbarControlData;
+            }, GENERAL_INLINE_STYLES_CONTROLS);
+        };
 
     const prepareAlignmentBlockStylesControls: RenderFunctionNoArgsType = () => {
         const selectedContentBlocks: Array<BlockNodeRecord> = getSelectedContentBlocks();
@@ -445,6 +511,100 @@ function FormRichTextInputComponent(props: PropsTypes) {
 
             return toolbarControlData;
         }, HEADER_BLOCK_TYPE_CONTROLS);
+    };
+
+    const prepareExternalEmbeddedEntitiesControls = () => {
+        return map((controlData: InlineEntityControlType) => {
+            const toolbarControlData: ControlIconDataType = mergeDeepRight({}, controlData);
+
+            const {type} = controlData;
+
+            toolbarControlData.active = isSelectionContainsEntityType(type);
+            toolbarControlData.mouseDownHandler = editorEditExternalEmbeddedEntityHandle(type);
+
+            return toolbarControlData;
+        }, EXTERNAL_EMBEDDED_ENTITIES_CONTROLS);
+    };
+
+    const alterContentBlock = (alterType: string, data: string | Immutable.Map) => {
+        if (isNil(editorState)) {
+            return;
+        }
+
+        const selectionState: SelectionState = editorState.getSelection();
+        const contentState: ContentState = editorState.getCurrentContent();
+
+        const {EditorState, Modifier} = draftJSLib;
+
+        const modifierParams = [
+            contentState,
+            selectionState,
+            data
+        ];
+
+        const newContentState: ContentState = alterType === 'type' ?
+            Modifier.setBlockType(...modifierParams) :
+            Modifier.setBlockData(...modifierParams);
+
+        const newEditorState: EditorState = EditorState.createWithContent(newContentState, getContentDecorator());
+        setEditorState(EditorState.forceSelection(newEditorState, selectionState));
+    };
+
+    const alterEntityForSelection: (usrContentState?: ContentState, entityKey?: string) => void =
+        (usrContentState?: ContentState, entityKey?: string): void => {
+            const {EditorState, Modifier} = draftJSLib;
+
+            const contentState: ContentState = editorState.getCurrentContent();
+            const selectionState: SelectionState = editorState.getSelection();
+
+            const newContentState: ContentState = Modifier.applyEntity(
+                isNil(usrContentState) ? contentState : usrContentState,
+                selectionState,
+                isNil(entityKey) ? null : entityKey
+            );
+
+            const newEditorState: EditorState = EditorState.push(
+                editorState,
+                newContentState,
+                'apply-entity'
+            );
+
+            setEditorState(EditorState.forceSelection(newEditorState, selectionState));
+        };
+
+    const removeEntityFromSelection: () => void = (): void => {
+        alterEntityForSelection();
+    };
+
+    const addEntityForSelection: (entityType: string, mutability: DraftEntityMutability, entityData: {[any]: any}) => void =
+        (entityType: string, mutability: DraftEntityMutability, entityData: {[any]: any}): void => {
+            const contentState: ContentState = editorState.getCurrentContent();
+            const contentStateWithEntity: ContentState = contentState.createEntity(entityType, mutability, entityData);
+
+            const entityKey: string = contentStateWithEntity.getLastCreatedEntityKey();
+
+            alterEntityForSelection(contentStateWithEntity, entityKey);
+        };
+
+    const getContentDecorator = () => {
+        const {CompositeDecorator} = draftJSLib;
+
+        const decorator = new CompositeDecorator([
+            {
+                strategy: findEmbeddedLinkEntities,
+                component: (props) => {
+
+                    const {url} = props.contentState.getEntity(props.entityKey).getData();
+                    return (
+                        <InlineTextLink href={url}>
+                            {props.children}
+                        </InlineTextLink>
+                    );
+                },
+            },
+        ]);
+
+        return decorator;
     };
 
     const getSelectedContentBlocks = (): Array<BlockNodeRecord> => {
@@ -513,50 +673,34 @@ function FormRichTextInputComponent(props: PropsTypes) {
         return blockClassName;
     };
 
-    const setBlockType = (blockType: string) => {
-        if (isNil(editorState)) {
-            return;
-        }
-
-        const selectionState: SelectionState = editorState.getSelection();
-        const contentState: ContentState = editorState.getCurrentContent();
-
-        const {EditorState, Modifier} = draftJSLib;
-
-        const newContentState: ContentState = Modifier.setBlockType(
-          contentState,
-          selectionState,
-          blockType
-        );
-
-        const newEditorState: EditorState = EditorState.createWithContent(newContentState);
-        setEditorState(EditorState.forceSelection(newEditorState, selectionState));
-    };
+    const setBlockType: (blockType: string) => void =
+        (blockType: string): void => {
+            return alterContentBlock('type', blockType);
+        };
 
     const setBlockData: (blockDataKey: string, blockData: string) => void =
       (blockDataKey: string, blockData: string): void => {
-        if (isNil(editorState)) {
-            return;
-        }
-
-        const selectionState: SelectionState = editorState.getSelection();
-        const contentState: ContentState = editorState.getCurrentContent();
-
-        const {EditorState, Modifier} = draftJSLib;
-
-        const newContentState: ContentState = Modifier.setBlockData(
-          contentState,
-          selectionState,
-          Immutable.Map({[blockDataKey]: blockData})
-        );
-
-        const newEditorState: EditorState = EditorState.createWithContent(newContentState);
-        setEditorState(EditorState.forceSelection(newEditorState, selectionState));
+        return alterContentBlock('data', Immutable.Map({[blockDataKey]: blockData}));
     };
 
     // endregion
 
     // region event handler helpers
+    const linkEditDialogBoxCancelHandle: () => void = () => setEditLinkDialogState({
+        show: false,
+        url: null,
+    });
+
+    const linkEditDialogBoxSaveHandle = (url: string) => {
+        setEditLinkDialogState({show: false, url: null});
+
+        if (isEmpty(url)) {
+            removeEntityFromSelection();
+        } else {
+            addEntityForSelection(EMBEDDED_INLINE_LINK_ENTITY_TYPE, 'MUTABLE', {url});
+        }
+    };
+
     const editorToggleBlockType = curry((
       blockType: string,
       event: SyntheticMouseEvent<HTMLDivElement>
@@ -615,16 +759,72 @@ function FormRichTextInputComponent(props: PropsTypes) {
         );
     });
 
+    const editorEditExternalEmbeddedEntityHandle = curry((
+        entityType: string,
+        event: SyntheticMouseEvent<HTMLDivElement>
+    ) => {
+        event.preventDefault();
+
+        if (isNil(entityType)) {
+            return;
+        }
+
+        switch(entityType) {
+            case EMBEDDED_INLINE_LINK_ENTITY_TYPE:
+                const contentState: ContentState = editorState.getCurrentContent();
+
+                const startKey: string = editorState.getSelection().getStartKey();
+                const startOffset: number = editorState.getSelection().getStartOffset();
+
+                const blockWithLinkAtBeginning: ContentBlock = contentState.getBlockForKey(startKey);
+                const entityKeyValue: string | null = blockWithLinkAtBeginning.getEntityAt(startOffset);
+
+                if (!isNil(entityKeyValue)) {
+                    const linkInstance: DraftEntityInstance = contentState.getEntity(entityKeyValue);
+                    const {url} = linkInstance.getData();
+
+                    setEditLinkDialogState({
+                        show: true,
+                        url,
+                    });
+                } else {
+                    setEditLinkDialogState({
+                        show: true,
+                        url: null
+                    });
+                }
+
+                return;
+            case EMBEDDED_IMAGE_ENTITY_TYPE:
+            case EMBEDDED_VIDEO_ENTITY_TYPE:
+            default:
+                return;
+        }
+    });
+
     // endregion
 
     // region render helpers
-    const renderErrorContainer: RenderFunctionNoArgsType = () => {
+    const renderErrorContainer: RenderFunctionNoArgsType = (): Node => {
         return <div>
             Failed to load 'draft-js' library (probably not installed).
         </div>;
     };
 
-    const renderEditor: RenderFunctionNoArgsType = () => {
+    const renderLinkEditDialogBox: RenderFunctionNoArgsType = (): Node => {
+        const {show, url} = editLinkDialogState;
+
+        return <LinkEditDialogBoxComponent
+            show={show}
+            name={inputName}
+            url={url}
+
+            onClickSave={linkEditDialogBoxSaveHandle}
+            onClickCancel={linkEditDialogBoxCancelHandle}
+        />;
+    };
+
+    const renderEditor: RenderFunctionNoArgsType = (): Node => {
         const {Editor} = draftJSLib;
 
         return <Editor
@@ -639,8 +839,7 @@ function FormRichTextInputComponent(props: PropsTypes) {
         />;
     };
 
-
-    const renderToolbarsContainer: RenderFunctionNoArgsType = () => {
+    const renderToolbarsContainer: RenderFunctionNoArgsType = (): Node => {
         const {toolbarContainer} = classes;
 
         const toolbarSections = [
@@ -648,6 +847,7 @@ function FormRichTextInputComponent(props: PropsTypes) {
                 prepareGeneralInlineStylesControls(),
                 prepareAlignmentBlockStylesControls(),
                 prepareHeaderBlockStylesControls(),
+                prepareExternalEmbeddedEntitiesControls(),
             ]
         ];
 
@@ -655,38 +855,23 @@ function FormRichTextInputComponent(props: PropsTypes) {
             className={toolbarContainer}
             data={toolbarSections}
         />;
-
-        /*return <div className={toolbarContainer}>
-            <div className={controlSection}>
-
-
-
-
-
-                <div className={controlsGroup}>
-                    <FontIcon size='small' className={control} iconClassName='fas fa-quote-left' />
-
-
-                    <FontIcon size='small' className={control} iconClassName='fas fa-link' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-image' />
-                    <FontIcon size='small' className={control} iconClassName='fas fa-film' />
-                </div>
-            </div>
-        </div>;*/
     };
 
-    const renderEditorContainer: RenderFunctionNoArgsType = () => {
+    const renderEditorContainer: RenderFunctionNoArgsType = (): Node => {
         return <div>
             {renderEditor()}
         </div>;
     };
 
-    const renderComponentContainer: RenderFunctionNoArgsType = () => {
+    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
         const {componentContainer} = classes;
+        const {show} = editLinkDialogState;
 
         return <div className={componentContainer}>
             {renderToolbarsContainer()}
             {renderEditorContainer()}
+
+            {show && renderLinkEditDialogBox()}
         </div>;
     };
 
@@ -702,7 +887,12 @@ function FormRichTextInputComponent(props: PropsTypes) {
                     draftJSLib = draftJS.default;
                     extendedEditorBlockRenderMap = draftJSLib.DefaultDraftBlockRenderMap.merge(editorBlockRenderMap);
 
-                    setEditorState(draftJSLib.EditorState.createEmpty());
+                    if (isNil(editorState)) {
+                        setEditorState(draftJSLib.EditorState.createEmpty(getContentDecorator()));
+                    } else {
+
+                    }
+
                     setLibLoaderState(LIB_LOADER_LOADED);
                 })
                 .catch(() => setLibLoaderState(LIB_LOADER_LOAD_ERROR));

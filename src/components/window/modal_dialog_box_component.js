@@ -46,10 +46,17 @@ type PropsTypes = {
     loading?: boolean,
 
     /**
-     * Flag that indicates whether modal dialog box can be closed (via 'close' icon)
+     * Flag that indicates whether modal dialog box can be closed (via 'close' icon or via click on overlay)
      */
 
     closable?: boolean,
+
+    /**
+     * Flag that indicates whether modal dialog box can be closed when user clicks on overlay
+     * (only works if 'closable' flag is set)
+     */
+
+    closeOnOverlayClick?: boolean,
 
     /**
      * Dialog box title
@@ -137,6 +144,7 @@ class ModalDialogBoxClass extends React.Component<PropsTypes, StateTypes> {
         show: false,
         loading: false,
         closable: true,
+        closeOnOverlayClick: true,
         title: '',
         titleIconClassName: '',
 
@@ -192,6 +200,11 @@ class ModalDialogBoxClass extends React.Component<PropsTypes, StateTypes> {
 
     _isClosable(): boolean {
         return defaultTo(ModalDialogBoxClass.defaultProps.closable)(this.props.closable)
+    }
+
+    _isCloseOnOverlayClick(): boolean {
+        return defaultTo(ModalDialogBoxClass.defaultProps.closeOnOverlayClick)
+        (this.props.closeOnOverlayClick);
     }
 
     _isLoading(): boolean {
@@ -284,7 +297,10 @@ class ModalDialogBoxClass extends React.Component<PropsTypes, StateTypes> {
             header={this._renderHeader()}
             footer={this._renderFooter()}
 
-            onOverlayClick={this._isClosable() ? this._getCloseHandler() : undefined}
+            onOverlayClick={
+                (this._isClosable() && this._isCloseOnOverlayClick()) ?
+                    this._getCloseHandler() : undefined
+            }
 
             bodyOuterStyles={this._getBodyOuterStyle()}
         >

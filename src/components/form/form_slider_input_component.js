@@ -604,7 +604,6 @@ function FormSliderInputComponent(props: PropsTypes) {
         const {componentContainer} = classes;
         const className: string = classNames(
             componentContainer,
-
             {
                 enabled: !disabled,
                 disabled,
