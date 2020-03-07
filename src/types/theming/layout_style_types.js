@@ -45,6 +45,7 @@ export type LayoutStylesType = {
 
     headerFontColor: string,
     bodyFontColor: string,
+    linkFontColor: string,
 
     headerBGColor: string,
     bodyBGColor: string,

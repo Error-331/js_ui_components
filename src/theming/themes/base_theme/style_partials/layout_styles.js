@@ -48,6 +48,7 @@ export const layoutStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): La
 
         headerFontColor: baseStyles.noneTransparentBGColor,
         bodyFontColor: baseStyles.subPrimaryColor,
+        linkFontColor: baseStyles.mainPrimaryColor,
 
         headerBGColor: baseStyles.primaryBGColor,
         bodyBGColor: baseStyles.noneTransparentBGColor,
