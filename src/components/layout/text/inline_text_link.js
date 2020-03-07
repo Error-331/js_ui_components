@@ -8,7 +8,7 @@ import type {Node} from 'react';
 import React from 'react'
 import {createUseStyles, useTheme} from 'react-jss';
 
-import {defaultTo, mergeDeepRight} from 'ramda';
+import {isNil, defaultTo, mergeDeepRight} from 'ramda';
 import classNames from 'classnames';
 
 // local imports
@@ -131,11 +131,9 @@ function InlineTextLink(props: PropsTypes) {
         const {componentContainer} = classes;
         const componentClassName: string = classNames(componentContainer, className);
 
-        const fontSize: number = defaultTo(theme.layoutStyles.bodyFontSize)(props.fontSize);
-
         const newStyle = mergeDeepRight({
             fontFamily: theme.fontFamilyUtilities.getFontFamilyByType(theme, fontFamilyType),
-            fontSize: `${fontSize}px`,
+            fontSize: isNil(props.fontSize) ? 'inherit' : `${props.fontSize}px`,
         }, style);
 
         return <a
