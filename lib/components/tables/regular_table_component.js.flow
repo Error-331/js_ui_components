@@ -16,7 +16,7 @@ import type {UserPropsTypes as VerticalTablePropsTypes} from './vertical_table_c
 import type {UserPropsTypes as HorizontalTablePropsTypes} from './horizontal_table_component';
 
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
-import {TextBlock} from './../layout/text/text_block';
+import TextBlock from './../layout/text/text_block';
 
 import {FormCheckboxVariant3Component} from './../form/form_checkbox_variants/form_checkbox_variant3_component';
 

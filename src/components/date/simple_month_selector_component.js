@@ -17,7 +17,7 @@ import {
     SimpleFlexGridColumn as Col,
 } from './../grid';
 
-import {InlineTextBlock} from './../layout/text/inline_text_block';
+import InlineTextBlock from './../layout/text/inline_text_block';
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions

@@ -14,7 +14,7 @@ import {RegularCardComponent} from './../structure/regular_card_component';
 import {RegularPanelComponent} from './../structure/regular_panel_component';
 
 import {FontIcon} from './../icons/font_icon';
-import {InlineTextBlock} from './../text/inline_text_block';
+import InlineTextBlock from './../text/inline_text_block';
 
 // type definitions
 type StyleType = {
@@ -92,6 +92,8 @@ const styles = theme => ({
         justifyContent: 'flex-start',
         alignItems: 'center',
         alignContent: 'flex-start',
+
+        paddingBottom: `${theme.layoutStyles.bottomSpacing - theme.layoutStyles.bodyExcessVerticalSpacing}px`,
 
         borderRadius: `${theme.layoutStyles.commonBorderRadius}px`,
 

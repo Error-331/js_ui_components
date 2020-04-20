@@ -204,6 +204,20 @@ module.exports = {
                 },
 
                 {
+                    name: 'Blog',
+                    content: path.join(__dirname, './docs/blog/index.md'),
+                    sections: [
+                        {
+                            name: 'Text',
+                            content: path.join(__dirname, './docs/blog/text/index.md'),
+                            components: path.join(__dirname, './../src/components/blog/text/**/[A-Za-z_]*_component.js'),
+                        },
+                    ],
+
+                    sectionDepth: 1,
+                },
+
+                {
                     name: 'Pre-made',
                     sections: [
                         {

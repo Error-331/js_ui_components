@@ -8,6 +8,8 @@
 import type {BaseStylesType} from './../../../../types/theming/base_style_types';
 import type {LayoutStylesType} from './../../../../types/theming/layout_style_types';
 
+import {EXCESS_VERTICAL_SPACING_PERCENTAGE} from './../../../constants/general_constants';
+
 // exports
 export const layoutStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): LayoutStylesType => {
     return Object.freeze({
@@ -31,6 +33,8 @@ export const layoutStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): La
         headerFontSize: baseStyles.inlineHeaderLevel6FontSize,
         bodyFontSize: baseStyles.secondaryFontSize,
 
+        bodyFontLineHeight: 1.4,
+
         headerBorderRadius: 2, // px
         commonBorderRadius: 4, // px
 
@@ -45,6 +49,8 @@ export const layoutStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): La
 
         formHorizontalSpacing: 22, // px (between form elements inside the component)
         formVerticalSpacing: 15, // px (between form elements inside the component)
+
+        bodyExcessVerticalSpacing: (EXCESS_VERTICAL_SPACING_PERCENTAGE * baseStyles.secondaryFontSize) / 100, // px (between text lines)
 
         headerFontColor: baseStyles.noneTransparentBGColor,
         bodyFontColor: baseStyles.subPrimaryColor,

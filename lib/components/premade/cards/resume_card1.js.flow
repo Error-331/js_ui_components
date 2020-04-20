@@ -18,7 +18,7 @@ import {ElementsRow} from './../../layout/alignment/elements/elements_row';
 import {SlideVisualEffect} from './../../visual_effects/slide_visual_effect';
 import {GridGeneratorComponent} from './../../grid/grid_generator_component';
 import {RegularCardComponent} from './../../layout/structure/regular_card_component';
-import {InlineTextBlock} from './../../layout/text/inline_text_block';
+import InlineTextBlock from './../../layout/text/inline_text_block';
 import {InlineHeader} from './../../layout/text/inline_header';
 import {FontIcon} from './../../layout/icons/font_icon';
 

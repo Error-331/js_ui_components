@@ -14,7 +14,7 @@ import {isNotNil} from '@webfuturistics/design_components/lib/helpers/general/ut
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
 
-import {InlineTextBlock} from './../../layout/text/inline_text_block';
+import InlineTextBlock from './../../layout/text/inline_text_block';
 import {FontIcon} from './../../layout/icons/font_icon';
 
 // type definitions

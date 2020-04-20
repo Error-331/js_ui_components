@@ -3,19 +3,26 @@
 // @flow
 
 // external imports
+import type {Node, Element} from 'react';
+
 import * as React from 'react';
-import injectSheet from 'react-jss';
+import {createUseStyles, useTheme} from 'react-jss';
 
 import {defaultTo, mergeDeepRight} from 'ramda';
 import classNames from 'classnames';
 
 // local imports
 import type {ThemeType} from './../../../types/theme_types';
+import type {RenderFunctionNoArgsType} from './../../../types/common_types';
 
 import {REGULAR_FONT} from './../../../theming/constants/general_constants';
 
 // type definitions
 export type FontFamilyType = 'thin' | 'light' | 'regular' | 'bold';
+
+type CSSStylesType = {
+    [string]: mixed
+};
 
 type PropsTypes = {
     /**
@@ -66,11 +73,12 @@ type PropsTypes = {
 };
 
 // styles definition
-const styles = theme => ({
+const useStyles = createUseStyles(theme => ({
     componentContainer: {
+        lineHeight: theme.layoutStyles.bodyFontLineHeight,
         color: theme.layoutStyles.bodyFontColor,
     }
-});
+}));
 
 /**
  * Inline text block component styled according to material-UI guidelines.
@@ -82,26 +90,68 @@ const styles = theme => ({
  */
 
 // component implementation
-function InlineTextBlockFunction(props: PropsTypes) {
-    const {classes, theme, children, className} = props;
-    const componentClassNames: string = classNames(classes.componentContainer, className);
+function InlineTextBlock(props: PropsTypes) {
+    // region private variables declaration
+    const fontFamilyType: string = defaultTo(REGULAR_FONT)(props.fontFamilyType);
 
-    let {style, fontSize, fontFamilyType} = props;
+    const className: string = defaultTo('')(props.className);
+    const style: CSSStylesType = defaultTo({})(props.style);
 
-    fontSize = defaultTo(theme.layoutStyles.bodyFontSize)(fontSize);
-    fontFamilyType = defaultTo(REGULAR_FONT)(fontFamilyType);
-    style = defaultTo({})(style);
+    // endregion
 
-    style = mergeDeepRight({
-        fontFamily: theme.fontFamilyUtilities.getFontFamilyByType(theme, fontFamilyType),
-        fontSize: `${fontSize}px`,
-    }, style);
+    // region style hooks declaration
+    const theme: ThemeType = useTheme();
+    const classes: {[string]: string} = useStyles({...props, theme});
 
-    return <span className={componentClassNames} style={{...style}}>{children}</span>;
+    // endregion
+
+    // region context hooks declaration
+    // endregion
+
+    // region state hooks declaration
+    // endregion
+
+    // region effect hooks declaration
+    // endregion
+
+    // region state variables declaration
+    // endregion
+
+    // region ref hooks declaration
+    // endregion
+
+    // region callback hooks declaration
+    // endregion
+
+    // region custom hooks declaration
+    // endregion
+
+    // region business logic
+    // endregion
+
+    // region event handler helpers
+    // endregion
+
+    // region render helpers
+    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
+        const {componentContainer} = classes;
+        const componentClassNames: string = classNames(componentContainer, className);
+
+        const fontSize: number = defaultTo(theme.layoutStyles.bodyFontSize)(props.fontSize);
+
+        const newStyle: CSSStylesType = mergeDeepRight({
+            fontFamily: theme.fontFamilyUtilities.getFontFamilyByType(theme, fontFamilyType),
+            fontSize: `${fontSize}px`,
+        }, style);
+
+        return <span className={componentClassNames} style={{...newStyle}}>{props.children}</span>;
+    };
+
+    // endregion
+
+    // init
+    return renderComponentContainer();
 }
 
-InlineTextBlockFunction.displayName = 'InlineTextBlock';
-
 // exports
-export const InlineTextBlock = injectSheet(styles, {injectTheme: true})(InlineTextBlockFunction);
 export default InlineTextBlock;

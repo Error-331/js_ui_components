@@ -28,6 +28,8 @@ export type LayoutStylesType = {
     headerFontSize: number,
     bodyFontSize: number,
 
+    bodyFontLineHeight: number,
+
     headerBorderRadius: number,
     commonBorderRadius: number,
 
@@ -42,6 +44,8 @@ export type LayoutStylesType = {
 
     formHorizontalSpacing: number,
     formVerticalSpacing: number,
+
+    bodyExcessVerticalSpacing: number,
 
     headerFontColor: string,
     bodyFontColor: string,

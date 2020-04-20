@@ -3,19 +3,28 @@
 // @flow
 
 // external imports
-import * as React from 'react';
-import injectSheet from 'react-jss';
+import type {Node, Element} from 'react';
+
+import React from 'react';
+import {createUseStyles, useTheme} from 'react-jss';
 import classNames from 'classnames';
 
 // local imports
+import type {ThemeType} from './../../../types/theme_types';
+import type {RenderFunctionNoArgsType} from './../../../types/common_types';
+import {defaultTo} from "ramda";
 
 // type definitions
+type CSSStylesType = {
+    [string]: mixed
+};
+
 type PropsTypes = {
     /**
      * React style object for in deep control of how text block is represented
      */
 
-    style?: {[string]: mixed},
+    style?: CSSStylesType,
 
     /**
      * Name of the class which will be applied to text block along with default one
@@ -38,14 +47,15 @@ type PropsTypes = {
     children?: React.ChildrenArray<any>,
 };
 
-const styles = theme => ({
+const useStyles = createUseStyles(theme => ({
     componentContainer: {
         fontFamily: theme.layoutStyles.fontStack,
         fontSize: theme.layoutStyles.bodyFontSize,
+        lineHeight: theme.layoutStyles.bodyFontLineHeight,
 
         color: theme.layoutStyles.bodyFontColor,
     }
-});
+}));
 
 /**
  * Text block component styled according to material-UI guidelines.
@@ -57,15 +67,59 @@ const styles = theme => ({
  */
 
 // component implementation
-function TextBlockFunction(props: PropsTypes) {
-    const {classes, children, className, style} = props;
-    const componentClassNames: string = classNames(classes.componentContainer, className);
+function TextBlock(props: PropsTypes) {
+    // region private variables declaration
+    const className: string = defaultTo('')(props.className);
+    const style: CSSStylesType = defaultTo({})(props.style);
 
-    return <div className={componentClassNames} style={{...style}}>{children}</div>;
+    // endregion
+
+    // region style hooks declaration
+    const theme: ThemeType = useTheme();
+    const classes: {[string]: string} = useStyles({...props, theme});
+
+    // endregion
+
+    // region context hooks declaration
+    // endregion
+
+    // region state hooks declaration
+    // endregion
+
+    // region effect hooks declaration
+    // endregion
+
+    // region state variables declaration
+    // endregion
+
+    // region ref hooks declaration
+    // endregion
+
+    // region callback hooks declaration
+    // endregion
+
+    // region custom hooks declaration
+    // endregion
+
+    // region business logic
+    // endregion
+
+    // region event handler helpers
+    // endregion
+
+    // region render helpers
+    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
+        const {componentContainer} = classes;
+        const componentClassNames: string = classNames(componentContainer, className);
+
+        return <div className={componentClassNames} style={{...style}}>{props.children}</div>;
+    };
+
+    // endregion
+
+    // init
+    return renderComponentContainer();
 }
 
-TextBlockFunction.displayName = 'TextBlock';
-
 // exports
-export const TextBlock = injectSheet(styles)(TextBlockFunction);
 export default TextBlock;

@@ -17,7 +17,7 @@ import type {StateTypes as ThemeProps} from './../../theming/providers/main_them
 import {SMALL_SIZE} from './../../theming/constants/general_constants';
 
 import {FontIcon} from './../layout/icons/font_icon';
-import {InlineTextBlock} from './../layout/text/inline_text_block';
+import InlineTextBlock from './../layout/text/inline_text_block';
 import {MainThemeContext} from './../../theming/providers/main_theme_provider';
 
 // type definitions
@@ -156,7 +156,7 @@ const styles = theme => ({
 
         borderRadius: '2px',
 
-        padding: `${verticalPadding}px ${horizontalPadding}px`,
+        padding: `${verticalPadding}px ${horizontalPadding}px ${verticalPadding - theme.layoutStyles.bodyExcessVerticalSpacing}px ${horizontalPadding}px`,
 
         '-webkit-tap-highlight-color': 'transparent',
         transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
@@ -238,7 +238,12 @@ const styles = theme => ({
 
         '&.outlined': {
             border: `${theme.buttonStyles.borderSize}px solid ${theme.buttonStyles.borderColor}`,
-            padding: `${verticalPadding - theme.buttonStyles.borderSize}px ${horizontalPadding - theme.buttonStyles.borderSize}px`,
+            padding: `
+                ${verticalPadding - theme.buttonStyles.borderSize}px 
+                ${horizontalPadding - theme.buttonStyles.borderSize}px
+                ${(verticalPadding - theme.buttonStyles.borderSize) - theme.layoutStyles.bodyExcessVerticalSpacing}px 
+                ${horizontalPadding - theme.buttonStyles.borderSize}px
+                `,
 
             '&:hover': {
                 backgroundColor: theme.colorUtilities.shadeColorFast(theme.buttonStyles.bgColor, 0.8),

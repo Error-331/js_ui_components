@@ -7,7 +7,8 @@ const {Component} = require('react');
 const {RegularButtonComponent} = require('./../buttons/regular_button_component');
 const {ModalDialogBoxComponent} = require('./modal_dialog_box_component');
 
-const {InlineTextBlock, InlineHeader} = require('./../layout');
+const {InlineHeader} = require('./../layout');
+const InlineTextBlock = require('./../layout/text/inline_text_block').default;
 
 class DemoGlobalModalDialogBoxComponent1 extends Component {
     _onSwitchLoading() {

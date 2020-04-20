@@ -7,7 +7,7 @@ const injectSheet = require('react-jss').default;
 
 const {SimpleFlexGridContainer} = require('./simple_flex_grid_container');
 const {SimpleFlexGridColumn} = require('./simple_flex_grid_column');
-const {InlineTextBlock} = require('./../../layout/text/inline_text_block');
+const InlineTextBlock = require('./../../layout/text/inline_text_block').default;
 
 const styles = theme => ({
     testContainer: {
@@ -54,7 +54,7 @@ const injectSheet = require('react-jss').default;
 
 const {SimpleFlexGridContainer} = require('./simple_flex_grid_container');
 const {SimpleFlexGridColumn} = require('./simple_flex_grid_column');
-const {InlineTextBlock} = require('./../../layout/text/inline_text_block');
+const InlineTextBlock = require('./../../layout/text/inline_text_block').default;
 
 const styles = theme => ({
     testContainer: {

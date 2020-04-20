@@ -17,3 +17,6 @@ export const THIN_FONT: string = 'thin';
 export const LIGHT_FONT: string = 'light';
 export const REGULAR_FONT: string = 'regular';
 export const BOLD_FONT: string = 'bold';
+
+// Dimensions
+export const EXCESS_VERTICAL_SPACING_PERCENTAGE: number = 20;
