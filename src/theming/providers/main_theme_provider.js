@@ -74,7 +74,13 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
 
     // region business logic
     _saveDocumentDimensions(): void {
-        getComputedStyle(document.documentElement).fontSize
+        fontSizeUtilities.parseFontSizePX(getComputedStyle(document.documentElement).fontSize);
+
+        this.setState({
+            documentDimensions: {
+                fontSize: fontSizeUtilities.parseFontSizePX(getComputedStyle(document.documentElement).fontSize),
+            }
+        });
     }
 
     _saveWindowDimensions(): void {
@@ -89,8 +95,6 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
 
     // region lifecycle methods
     componentDidMount(): void {
-        //console.log('cc', typeof fontSizeUtilities.parseFontSizePX('20px'));
-
         window.addEventListener('resize', this._onWindowResizeBound);
         window.addEventListener('load', this._onWindowResizeBound);
 
