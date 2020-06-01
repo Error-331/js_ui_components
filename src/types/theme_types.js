@@ -13,6 +13,7 @@ import type {
     BaseThemePartialsType,
     AdditionalThemePartialsType,
     FontFamilyUtilitiesType,
+    FontSizesUtilitiesType,
 } from './theming';
 
 import type {LayoutStylesType} from './theming/layout_style_types';
@@ -28,6 +29,7 @@ export type ThemeType = BaseThemePartialsType & AdditionalThemePartialsType & {
     styleValuesRegister: StyleValuesRegisterType,
     styleSheetRegister: StyleSheetRegisterType,
     fontFamilyUtilities: FontFamilyUtilitiesType,
+    fontSizeUtilities: FontSizesUtilitiesType,
 
     layoutStyles: LayoutStylesType,
 }

@@ -8,6 +8,7 @@ import {bind} from 'ramda';
 import debounce from 'lodash.debounce';
 
 // local imports
+import {fontSizeUtilities} from './../business_logic/font_size_utilities';
 
 // type definitions
 type PropsTypes = {
@@ -26,8 +27,13 @@ type WindowDimensionsType = {
     innerHeight: number | null
 };
 
+type DocumentStylesType = {
+    fontSize: number | null,
+};
+
 export type StateTypes = {
-    windowDimensions: WindowDimensionsType
+    windowDimensions: WindowDimensionsType,
+    documentDimensions: DocumentStylesType,
 };
 
 // provider implementation
@@ -54,6 +60,10 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
 
                 innerWidth: null,
                 innerHeight: null
+            },
+
+            documentDimensions: {
+
             }
         };
 
@@ -63,6 +73,10 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region business logic
+    _saveDocumentDimensions(): void {
+        getComputedStyle(document.documentElement).fontSize
+    }
+
     _saveWindowDimensions(): void {
         const {outerHeight, outerWidth, innerWidth, innerHeight} = window;
 
@@ -75,10 +89,13 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
 
     // region lifecycle methods
     componentDidMount(): void {
+        //console.log('cc', typeof fontSizeUtilities.parseFontSizePX('20px'));
+
         window.addEventListener('resize', this._onWindowResizeBound);
         window.addEventListener('load', this._onWindowResizeBound);
 
         this._saveWindowDimensions();
+        this._saveDocumentDimensions();
     }
 
     componentWillUnmount(): void {

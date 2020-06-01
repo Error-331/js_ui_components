@@ -51,6 +51,7 @@ import {colorUtilities} from './../../business_logic/color_utilities';
 import {styleValuesRegister} from './../../business_logic/style_values_register';
 import {styleSheetRegister} from './../../business_logic/style_sheet_register';
 import {fontFamilyUtilities} from './../../business_logic/font_family_utilities';
+import {fontSizeUtilities} from './../../business_logic/font_size_utilities';
 
 // base theme partials preparation
 const fontFaces: FontFacesListType = fontFacesFunc(commonFontFaces);
@@ -98,6 +99,7 @@ export const baseTheme: ThemeType = Object.freeze({
     styleValuesRegister,
     styleSheetRegister,
     fontFamilyUtilities,
+    fontSizeUtilities,
 
     ...clone(baseThemePartials),
     ...clone(additionalThemePartials)

@@ -1,5 +1,7 @@
 export * from './font_face_types';
 export * from './font_stack_types';
+export * from './font_family_utilities_types';
+export * from './font_sizes_utilities_types';
 export * from './color_palette_types';
 export * from './material_depth_level_types';
 export * from './base_style_types';
