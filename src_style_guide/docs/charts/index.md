@@ -1,0 +1,1 @@
+Section describes usage of components which displays charts.

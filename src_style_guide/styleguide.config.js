@@ -45,6 +45,7 @@ module.exports = {
 
     configureServer(app) {
         app.use('/assets',  express.static('./public/assets'));
+        app.use('/test_data',  express.static('./public/test_data'));
     },
 
     serverPort: parseInt(process.env.serverPort) || 6060,
@@ -163,6 +164,12 @@ module.exports = {
                     name: 'Date',
                     content: path.join(__dirname, './docs/date/index.md'),
                     components: path.join(__dirname, './../src/components/date/**/[A-Za-z_]*_component.js'),
+                },
+
+                {
+                    name: 'Charts',
+                    content: path.join(__dirname, './docs/charts/index.md'),
+                    components: path.join(__dirname, './../src/components/charts/**/[A-Za-z_]*_component.js'),
                 },
 
                 {
