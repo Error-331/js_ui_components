@@ -7,6 +7,14 @@
 // local imports
 
 // exports
+export type ObjectStringKeyToAny = {
+    [string]: any
+}
+
+export type ObjectStringKeyToStringArray = {
+    [string]: Array<string>
+}
+
 export type ElementPositionDataType = {
     isFirst: boolean,
     isLast?: boolean,

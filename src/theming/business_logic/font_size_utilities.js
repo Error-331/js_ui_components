@@ -8,8 +8,8 @@ import {ifElse, always, pipe, indexOf, toLower, length, gt} from 'ramda';
 // local imports
 import type {FontSizesUtilitiesType} from './../../types/theming/font_sizes_utilities_types';
 
-// exports
-export const fontSizeUtilities: FontSizesUtilitiesType = Object.seal({
+// implementation
+const fontSizeUtilities: FontSizesUtilitiesType = Object.seal({
     parseFontSizePX(fontSizePX: string): number | null {
         return pipe(
             toLower,
@@ -29,3 +29,7 @@ export const fontSizeUtilities: FontSizesUtilitiesType = Object.seal({
         )(fontSizePX);
     },
 });
+
+// exports
+export {fontSizeUtilities};
+export default fontSizeUtilities;
