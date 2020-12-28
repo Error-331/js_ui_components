@@ -8,7 +8,8 @@ import {bind} from 'ramda';
 import debounce from 'lodash.debounce';
 
 // local imports
-import {fontSizeUtilities} from './../business_logic/font_size_utilities';
+import fontSizeUtilities from './../business_logic/font_size_utilities';
+import screenUtilities from './../business_logic/screen_utilities';
 
 // type definitions
 type PropsTypes = {
@@ -31,9 +32,14 @@ type DocumentStylesType = {
     fontSize: number | null,
 };
 
+type DeviceType = {
+    type: string,
+}
+
 export type StateTypes = {
     windowDimensions: WindowDimensionsType,
     documentDimensions: DocumentStylesType,
+    device: DeviceType,
 };
 
 // provider implementation
@@ -53,18 +59,15 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
     constructor(props: PropsTypes) {
         super(props);
 
+        const windowDimensions: WindowDimensionsType = this._extractWindowDimensions();
         this.state = {
-            windowDimensions: {
-                outerHeight: null,
-                outerWidth: null,
-
-                innerWidth: null,
-                innerHeight: null
-            },
+            windowDimensions,
 
             documentDimensions: {
+                fontSize: null,
+            },
 
-            }
+            device: this._prepareDeviceData(windowDimensions.outerWidth)
         };
 
         this._onWindowResizeBound = debounce(bind(this._onWindowResize, this), 150);
@@ -73,6 +76,23 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
     // endregion
 
     // region business logic
+    _extractWindowDimensions(): WindowDimensionsType {
+        const {outerHeight, outerWidth, innerWidth, innerHeight} = window;
+
+        return {
+            outerHeight,
+            outerWidth,
+            innerWidth,
+            innerHeight
+        };
+    }
+
+    _prepareDeviceData(windowOuterWidth) {
+        return {
+            type: screenUtilities.determineDeviceByScreenWidth(windowOuterWidth),
+        };
+    }
+
     _saveDocumentDimensions(): void {
         fontSizeUtilities.parseFontSizePX(getComputedStyle(document.documentElement).fontSize);
 
@@ -83,13 +103,16 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
         });
     }
 
-    _saveWindowDimensions(): void {
-        const {outerHeight, outerWidth, innerWidth, innerHeight} = window;
+    _saveScreenData(): void {
+        const windowDimensions: WindowDimensionsType = this._extractWindowDimensions();
 
-        this.setState({
-            windowDimensions: {outerHeight, outerWidth, innerWidth, innerHeight}
-        });
+        this.state = {
+            windowDimensions,
+
+            device: this._prepareDeviceData(windowDimensions.outerWidth)
+        };
     }
+
 
     // endregion
 
@@ -98,7 +121,7 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
         window.addEventListener('resize', this._onWindowResizeBound);
         window.addEventListener('load', this._onWindowResizeBound);
 
-        this._saveWindowDimensions();
+      //  this._saveScreenData();
         this._saveDocumentDimensions();
     }
 
@@ -123,7 +146,7 @@ export class MainThemeProvider extends React.Component<PropsTypes, StateTypes> {
 
     // region handlers
     _onWindowResize(): void {
-        this._saveWindowDimensions();
+        this._saveScreenData();
     }
 
     // endregion
