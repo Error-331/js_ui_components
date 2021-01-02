@@ -101,6 +101,7 @@
     "react-styleguidist": "9.1.5",
     "redux": "4.0.1",
     "redux-immutable": "4.0.0",
-    "redux-form": "8.2.3"
+    "redux-form": "8.2.3",
+    "next": "9.5.5"
   }
 }

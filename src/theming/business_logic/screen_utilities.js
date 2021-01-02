@@ -82,6 +82,7 @@ const screenUtilities: FontFamilyUtilitiesType = Object.seal({
         ])(screenWidth);
     },
 
+    // https://fvsch.com/em-alternatives
     // y = kx + b
     prepareMediaQueriesForStyle(jssSelector: string, jssPropertyName: string, screenWidths: Array<number>, lockValues: Array<number>): ObjectStringKeyToAny {
         screenWidths = sort(ascend(identity), screenWidths);
