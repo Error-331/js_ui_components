@@ -217,6 +217,9 @@ function FormRadioButtonInputVariant1Component(props: PropsTypes) {
 
     // region callback hooks declaration
     // endregion
+    
+    // region custom hooks declaration
+    // endregion
 
     // region business logic
     // endregion
