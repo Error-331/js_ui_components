@@ -1,13 +1,19 @@
-// styleguidist webpack config
-module.exports = {
-    target: 'web',
+// external imports
+const webpack = require('webpack');
 
-    devServer: {
-        disableHostCheck: true
-    },
+// local imports
+
+// type definitions
+
+//implementation
+// styleguidist webpack config
+const styleguidistConfig  = {
+    target: 'web',
+    mode: 'development',
+    devtool: 'eval',
 
     resolve: {
-        extensions: ['.js', '.jsx', '.json']
+        extensions: ['.js', '.jsx','.ts', '.tsx', '.json'],
     },
 
     module: {
@@ -23,16 +29,15 @@ module.exports = {
                 }
             },
 
-
             {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 use: [{loader: 'url-loader', options: {limit: 10000, mimetype: 'image/svg+xml'}}]
             },
 
-            {
+         /*   {
                 test: /^((?!\.global).)*\.(png|jpg)$/,
                 use: [{loader: 'url-loader', options: {limit: 8192}}]
-            },
+            },*/
 
             {
                 test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
@@ -54,5 +59,15 @@ module.exports = {
                 use: [{loader: 'file-loader'}]
             }
         ]
-    }
+    },
+
+    plugins: [
+        new webpack.DefinePlugin({
+            'process': {env: {}},
+            'process.env.NODE_ENV': JSON.stringify('development')
+        })
+    ],
 };
+
+// exports
+module.exports = styleguidistConfig;
