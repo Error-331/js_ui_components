@@ -1,13 +1,11 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type TableStyleType = {
+// type declaration
+type TableStyleType = {
     bodyFontStack: string,
     headerFontStack: string,
 
@@ -27,3 +25,7 @@ export type TableStyleType = {
     cellPaddingLeft: number,
     cellPaddingRight: number,
 };
+
+
+// exports
+export { TableStyleType }

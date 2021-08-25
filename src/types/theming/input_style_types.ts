@@ -1,13 +1,11 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type InputStylesType = {
+// type declaration
+type InputStylesType = {
     checkboxControlLabelWidth: number,
     checkboxControlLabelHeight: number,
 
@@ -51,3 +49,6 @@ export type InputStylesType = {
 
     switchLabelOffset: number,
 };
+
+// exports
+export { InputStylesType }

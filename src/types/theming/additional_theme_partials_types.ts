@@ -1,7 +1,5 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
@@ -13,11 +11,14 @@ import type {
     WindowStylesType,
 } from './';
 
-// exports
-export type AdditionalThemePartialsType = {
+// type declaration
+type AdditionalThemePartialsType = {
     layoutStyles: LayoutStylesType,
     inputStyles: InputStylesType,
     buttonStyles: ButtonStyleType,
     tableStyles: TableStyleType,
     windowStyles: WindowStylesType,
 };
+
+// exports
+export { AdditionalThemePartialsType };

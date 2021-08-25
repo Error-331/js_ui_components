@@ -1,13 +1,14 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type WindowStylesType = {
+// type declaration
+type WindowStylesType = {
     overlayOpacity: number,
     overlayColor: string,
 };
+
+// exports
+export { WindowStylesType }

@@ -1,13 +1,11 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type NavigationStylesType = {
+// type declaration
+type NavigationStylesType = {
     verticalNavigationMaxWidth: number, // px
 
     fontStack: string,
@@ -23,3 +21,6 @@ export type NavigationStylesType = {
     fontColor1: string,
     fontColor2: string,
 };
+
+// exports
+export { NavigationStylesType }

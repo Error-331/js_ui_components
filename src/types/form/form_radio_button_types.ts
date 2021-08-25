@@ -1,17 +1,15 @@
 'use strict';
 
-// @flow
-
 // external imports
-import type {Event} from 'redux-form/lib/types';
+import type { Event } from 'redux-form/lib/types';
 
 // local imports
-import type {ReduxFormFieldComponentValueType} from './../redux_form_types';
+import type { ReduxFormFieldComponentValueType } from '../redux_form_types';
 
-// exports
-export type OnChangeHandlerType = (eventOrValue: Event | any) => void;
+// type declaration
+type OnChangeHandlerType = (eventOrValue: Event | any) => void;
 
-export type BaseRadioButtonInputPropsTypes = {
+type BaseRadioButtonInputPropsTypes = {
     /**
      * Radio button id (used with 'input' tag)
      */
@@ -46,7 +44,7 @@ export type BaseRadioButtonInputPropsTypes = {
      * Flag that dictates whether component should be readable only (none selectable)
      */
 
-    readOnly?: ?boolean,
+    readOnly?: unknown,
 
     /**
      * Flag that dictates whether component should be disabled
@@ -84,3 +82,12 @@ export type BaseRadioButtonInputPropsTypes = {
 
     onChange?: OnChangeHandlerType,
 }
+
+// exports
+export {
+    OnChangeHandlerType,
+    BaseRadioButtonInputPropsTypes,
+}
+
+
+

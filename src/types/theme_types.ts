@@ -1,7 +1,5 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
@@ -18,13 +16,13 @@ import type {
 
 import type {LayoutStylesType} from './theming/layout_style_types';
 
-// exports
-export type CSSStylesType = {
-    [string]: mixed
+// type declaration
+type CSSStylesType = {
+    [key: string]: any
 };
 
 // TODO: fix styles
-export type ThemeType = BaseThemePartialsType & AdditionalThemePartialsType & {
+type ThemeType = BaseThemePartialsType & AdditionalThemePartialsType & {
     colorUtilities: ColorUtilitiesTypes,
     styleValuesRegister: StyleValuesRegisterType,
     styleSheetRegister: StyleSheetRegisterType,
@@ -32,4 +30,10 @@ export type ThemeType = BaseThemePartialsType & AdditionalThemePartialsType & {
     fontSizeUtilities: FontSizesUtilitiesType,
 
     layoutStyles: LayoutStylesType,
+}
+
+// exports
+export {
+    CSSStylesType,
+    ThemeType,
 }

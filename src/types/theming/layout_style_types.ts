@@ -1,13 +1,11 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type LayoutStylesType = {
+// type declaration
+type LayoutStylesType = {
     fontStack: string,
     headerFontStack: string,
     bodyFontStack: string,
@@ -57,3 +55,6 @@ export type LayoutStylesType = {
     baseIconColor: string,
     accentIconColor: string,
 };
+
+// exports
+export { LayoutStylesType }

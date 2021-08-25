@@ -1,7 +1,5 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
@@ -13,11 +11,14 @@ import type {
     BaseStylesType,
 } from './';
 
-// exports
-export type BaseThemePartialsType = {
+// type declaration
+type BaseThemePartialsType = {
     '@font-face': FontFacesListType,
     fontStacks: FontStacksType,
     colorPalette: ColorPaletteType,
     materialDepthLevels: MaterialDepthLevelsType,
     baseStyles: BaseStylesType
 };
+
+// exports
+export { BaseThemePartialsType }

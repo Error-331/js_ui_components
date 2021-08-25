@@ -1,13 +1,11 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type DateStylesType = {
+// type declaration
+type DateStylesType = {
     calendarCompactMaxWidth: number,
 
     fontStack: string,
@@ -18,3 +16,6 @@ export type DateStylesType = {
 
     selectionBackgroundColor: string,
 };
+
+// exports
+export { DateStylesType }

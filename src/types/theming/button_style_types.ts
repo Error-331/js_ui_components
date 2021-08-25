@@ -1,13 +1,11 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type ButtonStyleType = {
+// type declaration
+type ButtonStyleType = {
     fontStackRegular: string,
     fontStackBold: string,
 
@@ -39,3 +37,6 @@ export type ButtonStyleType = {
     bgColor: string,
     disabledBgColor: string,
 };
+
+// exports
+export { ButtonStyleType }

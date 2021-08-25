@@ -1,13 +1,11 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type MaterialDepthLevelsType = {
+// type declaration
+type MaterialDepthLevelsType = {
     materialDepth1BoxShadow: string,
     materialDepth2BoxShadow: string,
     materialDepth3BoxShadow: string,
@@ -15,4 +13,7 @@ export type MaterialDepthLevelsType = {
     materialDepth5BoxShadow: string,
 }
 
-export type MaterialDepthLevelsFuncType = () => MaterialDepthLevelsType;
+type MaterialDepthLevelsFuncType = () => MaterialDepthLevelsType;
+
+// exports
+export { MaterialDepthLevelsType, MaterialDepthLevelsFuncType }

@@ -1,15 +1,12 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
+import type { ColorPaletteType, FontStacksType } from './';
 
-// exports
-import type {ColorPaletteType, FontStacksType} from './';
-
-export type BaseStylesType = {
+// type declaration
+type BaseStylesType = {
     accentColorPrimary: string,
 
     mainPrimaryColor: string,
@@ -50,4 +47,10 @@ export type BaseStylesType = {
     boldFontStack: string,
 };
 
-export type BaseStylesFuncType = (colorPalette: ColorPaletteType, fontStacks: FontStacksType) => BaseStylesType;
+type BaseStylesFuncType = (colorPalette: ColorPaletteType, fontStacks: FontStacksType) => BaseStylesType;
+
+// exports
+export {
+    BaseStylesType,
+    BaseStylesFuncType,
+}

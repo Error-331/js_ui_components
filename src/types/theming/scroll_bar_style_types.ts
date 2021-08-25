@@ -1,13 +1,11 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
 
-// exports
-export type ScrollBarStylesType = {
+// type declaration
+type ScrollBarStylesType = {
     scrollBarWidth: number,
     scrollBarHeight: number,
 
@@ -19,3 +17,6 @@ export type ScrollBarStylesType = {
     scrollBarThumbBackgroundColor: string,
     scrollBarThumbBorderColor: string,
 };
+
+// exports
+export { ScrollBarStylesType }
