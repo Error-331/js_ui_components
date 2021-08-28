@@ -10,7 +10,7 @@ import Styled from 'react-styleguidist/lib/client/rsg-components/Styled';
 import {generateRandomIdNumber} from '@webfuturistics/design_components/lib/helpers/general/dom_helpers';
 
 // local imports
-import FormCheckboxInputComponent from './../../../src/components/form/form_checkbox_input_component';
+//import FormCheckboxInputComponent from '../../../src1/components/form/form_checkbox_input_component';
 
 // styles definition
 const styles = ({ fontFamily, space }) => ({
@@ -87,7 +87,7 @@ class SectionsRendererClass extends React.Component {
         }
 
         return <div className={this.props.classes.checkboxContainer}>
-            <FormCheckboxInputComponent
+            { /*<FormCheckboxInputComponent
                 id={this._id}
                 labelPosition='right'
                 label='Show contents'
@@ -97,7 +97,7 @@ class SectionsRendererClass extends React.Component {
                         value: true,
                         onChange: this._onClickCheckbox
                     }
-                }/>
+                }/>*/}
         </div>;
     }
 

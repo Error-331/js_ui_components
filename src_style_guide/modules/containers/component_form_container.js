@@ -92,18 +92,21 @@ class ComponentFormContainer extends Component {
 
     // region render methods
     render() {
-        return (
+        return null;
+       /* return (
             <form onSubmit={this._onSubmit}>
                 {this.props.children}
             </form>
-        );
+        );*/
     }
 
     // endregion
 }
 
 // exports
-const ComponentFormContainerConnected = reduxForm({
+const ComponentFormContainerConnected = ComponentFormContainer;
+
+/*const ComponentFormContainerConnected = reduxForm({
     form: MAIN_FORM_NAME,
 
     initialValues: clone({
@@ -304,6 +307,6 @@ const ComponentFormContainerConnected = reduxForm({
 
         return errorMessages;
     },
-})(ComponentFormContainer);
+})(ComponentFormContainer);*/
 
 export default injectSheet(styles)(ComponentFormContainerConnected);

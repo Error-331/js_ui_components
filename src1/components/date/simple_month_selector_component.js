@@ -1,0 +1,250 @@
+'use strict';
+
+// @flow
+
+// external imports
+import * as React from 'react';
+import injectSheet from 'react-jss';
+import classNames from 'classnames';
+
+import {isNil, defaultTo} from 'ramda';
+import moment from 'moment';
+
+// local imports
+import {
+    SimpleFlexGridContainer as Container,
+    SimpleFlexGridRow as Row,
+    SimpleFlexGridColumn as Col,
+} from '../grid';
+
+import InlineTextBlock from '../layout/text/inline_text_block';
+import {MainThemeContext} from '../../../src/theming/providers/main_theme_provider';
+
+// type definitions
+type DateChangeCallbackType = (date: moment) => void;
+type DateType = moment | Date | string;
+
+type PropsTypes = {
+    /**
+     * Initial date
+     */
+
+    initialDate?: DateType,
+
+    /**
+     * Callback function which will be called once user clicks forward or back buttons
+     */
+
+    onDateChange?: DateChangeCallbackType,
+
+    /**
+     * JSS inner classes
+     *
+     * @ignore
+     */
+
+    classes: any
+}
+
+type StateTypes = {
+    /**
+     * Internal selected date
+     */
+
+    date?: moment,
+};
+
+// styles definition
+const styles = theme => ({
+    componentContainer: {
+        '& $selectionButton': {
+            padding: '0 3px 0 3px',
+
+            fontSize: `${theme.dateStyles.regularFontSize}px`,
+            cursor: 'pointer'
+        },
+
+        '& $selectedDateContainer': {
+            fontSize: `${theme.dateStyles.regularFontSize}px`
+        }
+    },
+
+    selectionButton: {},
+    selectedDateContainer: {}
+});
+
+/**
+ * Simple month selector component styled according to material-UI guidelines.
+ *
+ * @version 1.0.0
+ * @author [Sergei Selihov](https://github.com/Error-331)
+ *
+ */
+
+// component implementation
+
+// $FlowFixMe decorators
+@injectSheet(styles)
+class SimpleMonthSelectorClass extends React.Component<PropsTypes, StateTypes> {
+    // region static props
+    static displayName = 'SimpleMonthSelectorClass';
+
+    static defaultProps = {
+        initialDate: moment(),
+        onDateChange: () => {},
+    };
+
+    // endregion
+
+    // region constructor
+    constructor(props: PropsTypes): void {
+        super(props);
+        const self: any = this;
+
+        self._onBackButtonClick = self._onBackButtonClick.bind(this);
+        self._onForwardButtonClick = self._onForwardButtonClick.bind(this);
+
+        const {initialDate} = props;
+
+        this.state = {
+            date: isNil(initialDate) ?
+                this._getDateOrDefault() :
+                this._getDateOrDefault(initialDate)
+        };
+    }
+
+    // endregion
+
+    // region general logic methods
+    // TODO: to generic functions
+    _normalizeDate(usrDate: moment): moment {
+        return usrDate.clone().hour(0).minute(0).second(0).millisecond(0);
+    }
+
+    _getDateOrDefault(usrDate?: DateType): moment {
+        const currentDate: moment = defaultTo(moment())(moment(usrDate));
+        return this._normalizeDate(currentDate);
+    }
+
+    // endregion
+
+    // region lifecycle methods
+    _onBackButtonClick(): void {
+        const currentDate: moment = this._getDate();
+        const currentMonth: number = currentDate.month();
+        const newDate: moment = moment(currentDate).month(currentMonth - 1);
+
+        this.setState({
+            date: newDate
+        });
+
+        this._getDateChangeHander()(newDate);
+    }
+
+    _onForwardButtonClick(): void {
+        const currentDate: moment = this._getDate();
+        const currentMonth: number = currentDate.month();
+        const newDate: moment = moment(currentDate).month(currentMonth + 1);
+
+        this.setState({
+            date: newDate
+        });
+
+        this._getDateChangeHander()(newDate);
+    }
+
+    // endregion
+
+    // region style accessors
+    _getButtonClasses(): string {
+        return classNames('fas', this.props.classes.selectionButton);
+    }
+
+    _getBackButtonClasses(): string {
+        return classNames('fa-angle-left', this._getButtonClasses());
+    }
+
+    _getForwardButtonClasses(): string {
+        return classNames('fa-angle-right', this._getButtonClasses());
+    }
+
+    _getSelectedDateClasses(): string {
+        return this.props.classes.selectedDateContainer;
+    }
+
+    // endregion
+
+    // region label accessors
+    // endregion
+
+    // region state accessors
+    _getDate(): moment {
+        return this.state.date;
+    }
+
+    _getFormattedDate(): string {
+        const date: moment = this._getDate();
+        return date.format('MMMM Y');
+    }
+
+    // endregion
+
+    // region prop accessors
+    _getDateChangeHander(): DateChangeCallbackType {
+        return defaultTo(SimpleMonthSelectorClass.defaultProps.onDateChange)(this.props.onDateChange);
+    }
+
+    // endregion
+
+    // region handlers
+    // endregion
+
+    // region render methods
+    _renderBackButton(): React.Node {
+        return <i onClick={this._onBackButtonClick} className={this._getBackButtonClasses()} />;
+    }
+
+    _renderForwardButton(): React.Node {
+        return <i onClick={this._onForwardButtonClick} className={this._getForwardButtonClasses()} />;
+    }
+
+    _renderSelectedDate(): React.Node {
+        return <InlineTextBlock className={this._getSelectedDateClasses()}>
+            {this._getFormattedDate()}
+        </InlineTextBlock>;
+    }
+
+    render(): React.Node {
+        return <Container className={this.props.classes.componentContainer}>
+            <Row xAlign='space-between' yAlign='center'>
+                <Col>
+                    {this._renderBackButton()}
+                </Col>
+
+                <Col>
+                    {this._renderSelectedDate()}
+                </Col>
+
+                <Col>
+                    {this._renderForwardButton()}
+                </Col>
+            </Row>
+        </Container>;
+    }
+
+    // endregion
+}
+
+function SimpleMonthSelectorComponent(props: PropsTypes) {
+    return (
+        <MainThemeContext.Consumer>
+            {windowDimensions => <SimpleMonthSelectorClass {...props} {...windowDimensions} />}
+        </MainThemeContext.Consumer>
+    );
+}
+
+SimpleMonthSelectorComponent.displayName = 'SimpleMonthSelectorComponent';
+
+// exports
+export {SimpleMonthSelectorClass, SimpleMonthSelectorComponent};
+export default SimpleMonthSelectorComponent;

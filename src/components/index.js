@@ -3,14 +3,14 @@
 // @flow
 
 // exports
-export * from './buttons';
-export * from './form';
-export * from './grid';
-export * from './layout';
-export * from './navigation';
-export * from './redux_form';
-export * from './tables';
-export * from './utility';
-export * from './window';
-export * from './visual_effects';
-export * from './premade';
+/*export * from '../../src1/components/buttons';
+export * from '../../src1/components/form';
+export * from '../../src1/components/grid';
+export * from '../../src1/components/layout';
+export * from '../../src1/components/navigation';
+export * from '../../src1/components/redux_form';
+export * from '../../src1/components/tables';
+export * from '../../src1/components/utility';
+export * from '../../src1/components/window';
+export * from '../../src1/components/visual_effects';
+export * from '../../src1/components/premade';*/

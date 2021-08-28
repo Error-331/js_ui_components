@@ -17,12 +17,12 @@ import MainContainer from './modules/containers/main_container';
 import CoreLayoutWrapperComponent from './modules/components/core_layout_wrapper_component';
 import ComponentFormContainer from './modules/containers/component_form_container';
 
-import {
+/*import {
     SimpleFlexGridContainer,
     SimpleFlexGridRow,
     SimpleFlexGridColumn,
     ReduxFormDropDownInputComponent,
-} from './../src';
+} from './../src';*/
 
 //
 const styles = ({color, fontFamily, fontSize, sidebarWidth, mq, space}) => ({
@@ -108,7 +108,7 @@ class ComponentsWrapper extends Component {
                             </div>
 
                             <ComponentFormContainer>
-                                <SimpleFlexGridContainer>
+                                {/* <SimpleFlexGridContainer>
                                     <SimpleFlexGridRow className={classes.themeSelectorContainerRow}>
                                         <SimpleFlexGridColumn size={100} className={classes.themeSelectorContainerColumn}>
                                             <ReduxFormDropDownInputComponent label='Theme selector' name='reduxFormDropDownInputComponents.themeSelectorValue' options={{
@@ -122,7 +122,7 @@ class ComponentsWrapper extends Component {
                                             }}/>
                                         </SimpleFlexGridColumn>
                                     </SimpleFlexGridRow>
-                                </SimpleFlexGridContainer>
+                                </SimpleFlexGridContainer>*/}
                             </ComponentFormContainer>
                             {toc}
                         </div>

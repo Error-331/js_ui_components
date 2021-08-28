@@ -6,7 +6,7 @@ import Wrapper from 'react-styleguidist/lib/client/rsg-components/Wrapper/Wrappe
 
 // local imports
 import MainContainer from './main_container';
-import ComponentFormContainer from './component_form_container';
+//import ComponentFormContainer from './component_form_container';
 
 // Component implementation
 class ComponentWrapperContainer extends Component {
@@ -14,9 +14,10 @@ class ComponentWrapperContainer extends Component {
         return (
             <MainContainer>
                 <Wrapper {...this.props}>
-                    <ComponentFormContainer>
+                    {this.props.children}
+                    {/*<ComponentFormContainer>
                         {this.props.children}
-                    </ComponentFormContainer>
+                    </ComponentFormContainer>*/}
                 </Wrapper>
             </MainContainer>
         );
