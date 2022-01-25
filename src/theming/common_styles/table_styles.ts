@@ -1,15 +1,14 @@
 'use strict';
 
-// @flow
-
 // external imports
-import {mergeDeepRight} from 'ramda';
+import { Styles as JSSStyles } from 'jss';
+import { mergeDeepRight } from 'ramda';
 
 // local imports
-import type {ThemeType, CSSStylesType} from './../../types/theme_types';
+import type { ThemeType } from './../../types/theme_types';
 
 // styles definition
-export const commonCellContentStylesFunc = (theme: ThemeType): CSSStylesType => ({
+const commonCellContentStylesFunc = (theme: ThemeType): JSSStyles => ({
     lineHeight: `${theme.tableStyles.cellLineHeight}px`,
 
     fontFamily: theme.tableStyles.bodyFontStack,
@@ -21,7 +20,7 @@ export const commonCellContentStylesFunc = (theme: ThemeType): CSSStylesType => 
     backgroundColor: theme.tableStyles.cellBGColor
 });
 
-export const commonCellStylesFunc = (theme: ThemeType): CSSStylesType => ({
+const commonCellStylesFunc = (theme: ThemeType): JSSStyles => ({
     borderBottom: `1px solid ${theme.tableStyles.cellBorderColor}`,
 
     paddingLeft: `${theme.tableStyles.cellPaddingLeft}px`,
@@ -30,26 +29,26 @@ export const commonCellStylesFunc = (theme: ThemeType): CSSStylesType => ({
     extend: commonCellContentStylesFunc(theme)
 });
 
-export const commonVerticalTableCellStylesFunc = (theme: ThemeType): CSSStylesType => ({
+const commonVerticalTableCellStylesFunc = (theme: ThemeType): JSSStyles => ({
     paddingTop: `${theme.tableStyles.cellPaddingTop}px`,
     paddingBottom: `${theme.tableStyles.cellPaddingBottom}px`,
 
     extend: commonCellStylesFunc(theme)
 });
 
-export const commonHorizontalTableCellStylesFunc = (theme: ThemeType): CSSStylesType => ({
+const commonHorizontalTableCellStylesFunc = (theme: ThemeType): JSSStyles => ({
     height: `${theme.tableStyles.cellLineHeight + theme.tableStyles.cellPaddingTop + theme.tableStyles.cellPaddingBottom}px`,
 
     extend: commonCellStylesFunc(theme)
 });
 
-export const commonHeaderCellStylesFunc = (theme: ThemeType): CSSStylesType => {
+const commonHeaderCellStylesFunc = (theme: ThemeType): JSSStyles => {
     return mergeDeepRight(commonCellStylesFunc(theme), {
         paddingTop: '0px',
     });
 };
 
-export const commonFooterCellStylesFunc = (theme: ThemeType): CSSStylesType => {
+const commonFooterCellStylesFunc = (theme: ThemeType): JSSStyles => {
     return {
         extend: commonHeaderCellStylesFunc(theme),
 
@@ -58,7 +57,18 @@ export const commonFooterCellStylesFunc = (theme: ThemeType): CSSStylesType => {
     };
 };
 
-export const longTextCellStylesFunc = (): CSSStylesType => ({
+const longTextCellStylesFunc = (): JSSStyles => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
 });
+
+// exports
+export {
+    commonCellContentStylesFunc,
+    commonCellStylesFunc,
+    commonVerticalTableCellStylesFunc,
+    commonHorizontalTableCellStylesFunc,
+    commonHeaderCellStylesFunc,
+    commonFooterCellStylesFunc,
+    longTextCellStylesFunc,
+}

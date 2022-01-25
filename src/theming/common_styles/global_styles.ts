@@ -1,14 +1,14 @@
 'use strict';
 
-// @flow
-
 // external imports
+import { Styles as JSSStyles } from 'jss';
 
 // local imports
-import type {ThemeType} from './../../types/theme_types';
+import { FontFacesListType } from './../../types/theming';
+import { ThemeType } from './../../types/theme_types';
 
 // styles definition
-export const globalStylesFunc = (theme: ThemeType): { [string]: mixed } => ({
+const globalStylesFunc = (theme: ThemeType): { [key: string]: JSSStyles | FontFacesListType } => ({
     '@font-face': theme['@font-face'],
 
     '::-webkit-scrollbar': {
@@ -31,3 +31,6 @@ export const globalStylesFunc = (theme: ThemeType): { [string]: mixed } => ({
         display: 'none'
     }
 });
+
+// exports
+export { globalStylesFunc };

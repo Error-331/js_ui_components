@@ -1,14 +1,12 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
-import type {FontFacesType} from './../../types/theming/font_face_types';
+import { FontFacesType } from './../../types/theming/font_face_types';
 
-// exports
-export const fontFaces: FontFacesType = Object.freeze({
+// implementation
+const fontFaces: FontFacesType = Object.freeze({
     RobotoThin: {
         fontFamily: 'Roboto-Thin',
         fontStyle: 'normal',
@@ -38,3 +36,6 @@ export const fontFaces: FontFacesType = Object.freeze({
     }
 });
 
+// exports
+export default fontFaces;
+export { fontFaces };
