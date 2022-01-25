@@ -1,12 +1,10 @@
 'use strict';
 
-// @flow
-
 // external imports
-import {ifElse, always, pipe, indexOf, toLower, length, gt} from 'ramda';
+import { ifElse, always, pipe, indexOf, toLower, length, gt } from 'ramda';
 
 // local imports
-import type {FontSizesUtilitiesType} from './../../types/theming/font_sizes_utilities_types';
+import { FontSizesUtilitiesType } from './../../types/theming/font_sizes_utilities_types';
 
 // implementation
 const fontSizeUtilities: FontSizesUtilitiesType = Object.seal({
@@ -31,5 +29,5 @@ const fontSizeUtilities: FontSizesUtilitiesType = Object.seal({
 });
 
 // exports
-export {fontSizeUtilities};
 export default fontSizeUtilities;
+export { fontSizeUtilities };

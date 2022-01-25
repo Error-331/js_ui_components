@@ -1,22 +1,20 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // local imports
-import type {ThemeType} from './../../types/theme_types';
-import type {FontFamilyUtilitiesType} from './../../types/theming/font_family_utilities_types';
+import { ThemeType } from './../../types/theme_types';
+import { FontFamilyUtilitiesType } from './../../types/theming/font_family_utilities_types';
 
 import {
     THIN_FONT,
     LIGHT_FONT,
     REGULAR_FONT,
     BOLD_FONT,
-} from './../constants/general_constants';
+} from '../constants/general_constants';
 
-// exports
-export const fontFamilyUtilities: FontFamilyUtilitiesType = Object.seal({
+// implementation
+const fontFamilyUtilities: FontFamilyUtilitiesType = Object.seal({
     getFontFamilyByType(theme: ThemeType, fontFamilyType?: string): string {
         switch(fontFamilyType) {
             case THIN_FONT: {
@@ -41,3 +39,7 @@ export const fontFamilyUtilities: FontFamilyUtilitiesType = Object.seal({
         }
     },
 });
+
+// exports
+export default fontFamilyUtilities;
+export { fontFamilyUtilities };

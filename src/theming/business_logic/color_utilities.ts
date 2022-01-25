@@ -1,19 +1,17 @@
 'use strict';
 
-// @flow
-
 // https://github.com/PimpTrizkit/PJs/wiki/12.-Shade,-Blend-and-Convert-a-Web-Color-(pSBC.js)
 // https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors/13542669#13542669
 // https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
 
 // external imports
-import {always, isNil, ifElse, join} from 'ramda';
+import { always, isNil, ifElse, join } from 'ramda';
 
 // local imports
-import type {ColorUtilitiesTypes} from './../../types/theming/color_utilities_types';
+import { ColorUtilitiesTypes } from './../../types/theming/color_utilities_types';
 
-// exports
-export const colorUtilities: ColorUtilitiesTypes = Object.seal({
+// implementation
+const colorUtilities: ColorUtilitiesTypes = Object.seal({
     hexToRGBArray(hexValue: string): number[] {
         return [
             parseInt(hexValue.slice(1, 3), 16),
@@ -49,3 +47,7 @@ export const colorUtilities: ColorUtilitiesTypes = Object.seal({
         return `#${shadedColorHex.toString(16).slice(1)}`;
     },
 });
+
+// exports
+export default colorUtilities;
+export { colorUtilities };

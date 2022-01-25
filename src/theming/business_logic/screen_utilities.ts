@@ -1,7 +1,5 @@
 'use strict';
 
-// @flow
-
 // external imports
 import {
     always,
@@ -23,8 +21,8 @@ import {
 } from 'ramda';
 
 // local imports
-import type {ObjectStringKeyToAny} from './../../types/common_data_types';
-import type {FontFamilyUtilitiesType} from './../../types/theming/screen_utilities_types';
+import { ObjectStringKeyToAny } from './../../types/common_data_types';
+import { FontFamilyUtilitiesType } from './../../types/theming/screen_utilities_types';
 
 import {
     DEVICE_MOBILE,
@@ -34,7 +32,7 @@ import {
     MOBILE_WIDTH_LIST,
     TABLET_WIDTH_LIST,
     DESKTOP_WIDTH_LIST,
-} from './../constants/screen_resolution_constants';
+} from '../constants/screen_resolution_constants';
 
 // implementation
 const screenUtilities: FontFamilyUtilitiesType = Object.seal({
@@ -44,7 +42,8 @@ const screenUtilities: FontFamilyUtilitiesType = Object.seal({
 
             [
                 (
-                    screenWidth: number) => and(
+                    screenWidth: number
+                ) => and(
                     gte(screenWidth, head(MOBILE_WIDTH_LIST)),
                     lte(screenWidth, last(MOBILE_WIDTH_LIST))
                 ),
@@ -53,7 +52,8 @@ const screenUtilities: FontFamilyUtilitiesType = Object.seal({
 
             [
                 (
-                    screenWidth: number) => and(
+                    screenWidth: number
+                ) => and(
                     gt(screenWidth, last(MOBILE_WIDTH_LIST)),
                     lt(screenWidth, head(TABLET_WIDTH_LIST))
                 ),
@@ -62,7 +62,8 @@ const screenUtilities: FontFamilyUtilitiesType = Object.seal({
             
             [
                 (
-                    screenWidth: number) => and(
+                    screenWidth: number
+                ) => and(
                     gte(screenWidth, head(TABLET_WIDTH_LIST)),
                     lte(screenWidth, last(TABLET_WIDTH_LIST))
                 ),
@@ -73,7 +74,7 @@ const screenUtilities: FontFamilyUtilitiesType = Object.seal({
                 (
                     screenWidth: number) => and(
                     gt(screenWidth, last(TABLET_WIDTH_LIST)),
-                    lt(screenWidth, head(DEVICE_DESKTOP))
+                    lt(screenWidth, head(DESKTOP_WIDTH_LIST))
                 ),
                 always(DEVICE_DESKTOP)
             ],
@@ -89,6 +90,7 @@ const screenUtilities: FontFamilyUtilitiesType = Object.seal({
         const screenWidthsLength: number = length(screenWidths);
         let index: number = 0;
 
+        // TODO: check
         return addIndex(reduceWhile)(
             (mediaQueriesObject: ObjectStringKeyToAny, width1: number, index: number): boolean => index + 1 < screenWidthsLength,
             (mediaQueriesObject: ObjectStringKeyToAny, width1): ObjectStringKeyToAny => {
@@ -150,5 +152,5 @@ const screenUtilities: FontFamilyUtilitiesType = Object.seal({
 });
 
 // exports
-export {screenUtilities};
 export default screenUtilities;
+export { screenUtilities };
