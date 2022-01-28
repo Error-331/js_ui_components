@@ -5,7 +5,7 @@ import { Styles as JSSStyles } from 'jss';
 import { mergeDeepRight } from 'ramda';
 
 // local imports
-import type { ThemeType } from './../../types/theme_types';
+import { ThemeType } from './../../types/theme_types';
 
 // styles definition
 const commonCellContentStylesFunc = (theme: ThemeType): JSSStyles => ({

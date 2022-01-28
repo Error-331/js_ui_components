@@ -4,7 +4,7 @@
 import { Styles as JSSStyles } from 'jss';
 
 // local imports
-import { FontFacesListType } from './../../types/theming';
+import { FontFacesListType } from './../../types/theming/font_face_types';
 import { ThemeType } from './../../types/theme_types';
 
 // styles definition
