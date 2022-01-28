@@ -13,6 +13,10 @@ type ObjectStringKeyToStringArray = {
     [key: string]: Array<string>
 }
 
+type ObjectStringKeyToStringArrayReadonly = {
+    [key: string]: Readonly<Array<string>>
+}
+
 type ElementPositionDataType = {
     isFirst: boolean,
     isLast?: boolean,
@@ -32,6 +36,7 @@ type SectionsRowPositionDataType = Array<ElementsPositionDataType>;
 // exports
 export {
     ObjectStringKeyToAny,
+    ObjectStringKeyToStringArrayReadonly,
     ObjectStringKeyToStringArray,
 
     ElementPositionDataType,

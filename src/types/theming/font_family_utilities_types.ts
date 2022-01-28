@@ -3,7 +3,7 @@
 // external imports
 
 // local imports
-import type { ThemeType } from '../theme_types';
+import { ThemeType } from './../theme_types';
 
 // type declaration
 type GetFontFamilyByTypeType = (theme: ThemeType, fontFamilyType?: string) => string;

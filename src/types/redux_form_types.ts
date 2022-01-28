@@ -1,13 +1,13 @@
 'use strict';
 
 // external imports
-import type { InputProps } from 'redux-form/lib/FieldProps.types';
+import { InputProps } from 'redux-form/lib/FieldProps.types';
 
 // type declaration
-type ReduxFormFieldComponentValueType = ?(string | number);
+type ReduxFormFieldComponentValueType = (string | number);
 
 type ReduxFormFieldComponentMetaDataPropsTypes = {
-    initial: ?(string | number),
+    initial: (string | number),
 
     active: boolean,
     pristine: boolean,

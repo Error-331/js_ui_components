@@ -3,7 +3,8 @@
 // external imports
 
 // local imports
-import type { ColorPaletteType, FontStacksType } from './';
+import { ColorPaletteType } from './color_palette_types';
+import { FontStacksType } from './font_stack_types';
 
 // type declaration
 type BaseStylesType = {

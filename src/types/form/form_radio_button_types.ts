@@ -1,10 +1,11 @@
 'use strict';
 
 // external imports
-import type { Event } from 'redux-form/lib/types';
+import { Styles as JSSStyles } from 'jss';
+import { Event } from 'redux-form/lib/types';
 
 // local imports
-import type { ReduxFormFieldComponentValueType } from '../redux_form_types';
+import { ReduxFormFieldComponentValueType } from '../redux_form_types';
 
 // type declaration
 type OnChangeHandlerType = (eventOrValue: Event | any) => void;
@@ -50,7 +51,7 @@ type BaseRadioButtonInputPropsTypes = {
      * Flag that dictates whether component should be disabled
      */
 
-    disabled?: ?boolean,
+    disabled?: boolean,
 
     /**
      * Radio button label label
@@ -74,7 +75,7 @@ type BaseRadioButtonInputPropsTypes = {
      * Styles for component container (main outer container) of the form radio input component
      */
 
-    style?: CSSStylesType,
+    style?: JSSStyles,
 
     /**
      * Callback function which handles component value change

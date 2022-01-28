@@ -1,11 +1,12 @@
 'use strict';
 
 // external imports
-import { SheetsRegistry } from 'react-jss';
+import { Styles as JSSStyles, StyleSheet, StyleSheetFactoryOptions } from 'jss';
 
 // local imports
 
 // type declaration
+// TODO: remove
 type CSSStylesType = {
     [key: string]: any,
 };
@@ -14,12 +15,12 @@ type SheetsRegistryOptionsType = {
     [key: string]: any
 }
 
-type PrepareGlobalStyleSheetType = (styles: CSSStylesType) => CSSStylesType;
-type CreateStyleSheetType = (styles: CSSStylesType, options: SheetsRegistryOptionsType) => SheetsRegistry;
-type AddGlobalStylesType = (styles: CSSStylesType, name: string) => void;
+type PrepareGlobalStyleSheetType = (styles: JSSStyles) => JSSStyles;
+type CreateStyleSheetType = (styles: JSSStyles, options: StyleSheetFactoryOptions) =>  StyleSheet;
+type AddGlobalStylesType = (styles: JSSStyles, name: string) => void;
 
 type StyleSheetRegisterType = {
-    styleSheetNames: Array<string>,
+    styleSheetNames: Array<StyleSheet>,
 
     prepareGlobalStyleSheet: PrepareGlobalStyleSheetType,
     createStyleSheet: CreateStyleSheetType,

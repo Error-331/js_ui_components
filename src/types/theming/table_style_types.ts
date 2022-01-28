@@ -10,6 +10,7 @@ type TableStyleType = {
     headerFontStack: string,
 
     cellFontSize: number,
+    cellLineHeight: number,
 
     headerCellFontColor: string,
     cellFontColor: string,
