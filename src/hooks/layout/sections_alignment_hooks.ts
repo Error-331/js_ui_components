@@ -1,28 +1,24 @@
 'use strict';
 
-// @flow
-
 // external imports
-import React, {useState, useEffect, useContext} from 'react';
-import {useTheme} from 'react-jss';
-
-import {isNil, defaultTo, map, concat} from 'ramda';
+import { MutableRefObject, useState, useEffect, useContext } from 'react';
+import { isNil, defaultTo, map, concat } from 'ramda';
 
 // local imports
-import type {StateTypes as ThemContextType} from './../../theming/providers';
-import type {
+import { StateTypes as ThemContextType } from './../../theming/providers/main_theme_provider';
+import {
     SectionRowPositionFullDataType,
     SectionsRowPositionDataType,
 } from './../../types/common_data_types';
 
-import {MainThemeContext} from './../../theming/providers';
-import {prepareElementsAlignmentData} from './../../helpers/dom/elements_alignment';
+import { MainThemeContext } from './../../theming/providers/main_theme_provider';
+import { prepareElementsAlignmentData } from './../../helpers/dom/elements_alignment';
 
 // type definitions
 
 // hooks implementation
 // TODO: add memoization
-function useHorizontalSectionsAlignment($containerRef: any, spacingBetweenElms: number, dataToWatch: Array<any>): SectionsRowPositionDataType {
+function useHorizontalSectionsAlignment($containerRef: MutableRefObject<HTMLElement>, spacingBetweenElms: number, dataToWatch: Array<any>): SectionsRowPositionDataType {
     const [sectionsAlignmentData, setSectionsAlignmentData] = useState([]);
     const themeContext: ThemContextType = useContext(MainThemeContext);
 
@@ -33,11 +29,11 @@ function useHorizontalSectionsAlignment($containerRef: any, spacingBetweenElms: 
             return;
         }
 
-        const $sections: Array<HTMLDivElement> = $containerRef.current.children;
+        const $sections: HTMLCollection = $containerRef.current.children;
 
-        const sectionsFormatData: SectionsRowPositionDataType = map(($section: HTMLDivElement) => {
+        const sectionsFormatData: SectionsRowPositionDataType = map(($section: HTMLElement) => {
             const controlSectionClientRect: ClientRect = $section.getBoundingClientRect();
-            const $elementsElements: Array<HTMLDivElement> = $section.children;
+            const $elementsElements: HTMLCollection = $section.children;
 
             const sectionRowPositionData: SectionRowPositionFullDataType =
                 prepareElementsAlignmentData($elementsElements, controlSectionClientRect.width, spacingBetweenElms);
@@ -51,7 +47,7 @@ function useHorizontalSectionsAlignment($containerRef: any, spacingBetweenElms: 
 }
 
 // TODO: add memoization
- function useHorizontalElementsAlignment($containerRef: any, spacingBetweenElms: number, dataToWatch: Array<any>) {
+function useHorizontalElementsAlignment($containerRef: MutableRefObject<HTMLElement>, spacingBetweenElms: number, dataToWatch: Array<any>) {
     const [elementsAlignmentData, setElementsAlignmentData] = useState([]);
     const themeContext: ThemContextType = useContext(MainThemeContext);
 
@@ -62,7 +58,7 @@ function useHorizontalSectionsAlignment($containerRef: any, spacingBetweenElms: 
             return;
         }
 
-        const $elements: Array<HTMLDivElement> = $containerRef.current.children;
+        const $elements: HTMLCollection = $containerRef.current.children;
         const containerClientRect: ClientRect = $containerRef.current.getBoundingClientRect();
 
         const sectionRowPositionData: SectionRowPositionFullDataType =
@@ -75,4 +71,4 @@ function useHorizontalSectionsAlignment($containerRef: any, spacingBetweenElms: 
 }
 
 // exports
-export {useHorizontalSectionsAlignment, useHorizontalElementsAlignment};
+export { useHorizontalSectionsAlignment, useHorizontalElementsAlignment };
