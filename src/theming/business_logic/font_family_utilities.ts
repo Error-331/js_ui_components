@@ -11,7 +11,7 @@ import {
     LIGHT_FONT,
     REGULAR_FONT,
     BOLD_FONT,
-} from '../constants/general_constants';
+} from './../constants/general_constants';
 
 // implementation
 const fontFamilyUtilities: FontFamilyUtilitiesType = Object.seal({

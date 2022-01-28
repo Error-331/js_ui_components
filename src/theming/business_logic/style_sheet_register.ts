@@ -3,7 +3,7 @@
 // external imports
 import { StyleSheetFactoryOptions, StyleSheet } from 'jss';
 import { jss, SheetsRegistry, Styles as JSSStyles } from 'react-jss';
-import { contains } from 'ramda';
+import { includes } from 'ramda';
 
 // local imports
 import { StyleSheetRegisterType } from './../../types/theming/style_sheet_register_types';
@@ -30,7 +30,7 @@ const styleSheetRegister: StyleSheetRegisterType = Object.seal({
     addGlobalStyles(styles: JSSStyles, name: string): void {
         const preparedStyleSheetName: string = `${name}, ${DEFAULT_CUSTOM_GLOBAL_STYLESHEET_META_NAME}`;
 
-        if (contains(preparedStyleSheetName, this.styleSheetNames)) {
+        if (includes(preparedStyleSheetName, this.styleSheetNames)) {
             return;
         }
 

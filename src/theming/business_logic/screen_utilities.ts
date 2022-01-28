@@ -32,7 +32,7 @@ import {
     MOBILE_WIDTH_LIST,
     TABLET_WIDTH_LIST,
     DESKTOP_WIDTH_LIST,
-} from '../constants/screen_resolution_constants';
+} from './../constants/screen_resolution_constants';
 
 // implementation
 const screenUtilities: FontFamilyUtilitiesType = Object.seal({
@@ -93,7 +93,7 @@ const screenUtilities: FontFamilyUtilitiesType = Object.seal({
         // TODO: check
         return addIndex(reduceWhile)(
             (mediaQueriesObject: ObjectStringKeyToAny, width1: number, index: number): boolean => index + 1 < screenWidthsLength,
-            (mediaQueriesObject: ObjectStringKeyToAny, width1): ObjectStringKeyToAny => {
+            (mediaQueriesObject: ObjectStringKeyToAny, width1: number): ObjectStringKeyToAny => {
                 const width2: number = screenWidths[index + 1];
                 const lockValue1: number = isNil(lockValues[index]) ? last(lockValues) : lockValues[index];
 
