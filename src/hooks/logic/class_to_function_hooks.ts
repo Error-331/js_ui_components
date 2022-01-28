@@ -6,11 +6,9 @@ import { MutableRefObject, useRef } from 'react';
 // local imports
 
 // type declarations
-type UseConstructorCallbackType = () => any;
-type UseConstructorType = (callback: UseConstructorCallbackType) => void
 
 // hooks implementation
-const useConstructor: UseConstructorType = (callBack = () => {}): void => {
+function useConstructor(callBack = () => {}): void {
     const hasBeenCalled: MutableRefObject<boolean> = useRef<boolean>(false);
 
     if (hasBeenCalled.current) {
@@ -23,7 +21,5 @@ const useConstructor: UseConstructorType = (callBack = () => {}): void => {
 
 // exports
 export {
-    UseConstructorCallbackType,
-    UseConstructorType,
     useConstructor,
 }
