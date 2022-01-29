@@ -19,7 +19,7 @@ const styleguidistConfig  = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.(js|ts|tsx)?$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
