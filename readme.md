@@ -81,14 +81,12 @@
     
 ### Container component boilerplate  
 
-```jsx harmony
+```typescript jsx
 'use strict';
-
-// @flow
 
 // external imports
 import * as React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 // local imports
 import HeaderComponent from './../../components/header/header_component';
@@ -125,27 +123,25 @@ export default HeaderContainer;
 
 ### Presentational component boilerplate
 
-```jsx harmony
+```typescript jsx
 
 'use strict';
 
-// @flow
-
 // external imports
-import type {Node} from 'react';
+import { Node } from 'react';
 
-import React, {useState, useEffect, useRef, useContext} from 'react';
-import {createUseStyles, useTheme} from 'react-jss';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { createUseStyles, useTheme } from 'react-jss';
 
-import {isNil} from 'ramda';
+import { isNil } from 'ramda';
 import classNames from 'classnames';
 
 // local imports
-import type {ThemeType} from './../../../types/theme_types';
-import type {RenderFunctionNoArgs} from './../../../types/common_types';
-import type {StateTypes as ThemContextType} from './../../../theming/providers';
+import { ThemeType } from './../../../types/theme_types';
+import { RenderFunctionNoArgs } from './../../../types/common_types';
+import { StateTypes as ThemContextType } from './../../../theming/providers';
 
-import {MainThemeContext} from './../../../theming/providers';
+import { MainThemeContext } from './../../../theming/providers';
 
 // type definitions
 type CSSStylesType = {
@@ -257,8 +253,8 @@ https://codepen.io/TrevorWelch/pen/NwERXE
 - input ellipses;
 - dropdown limit drop menu height;      
 - layoutStyles.headerBorderRadius -> something;  
-- const styles = theme =>  - type for theme;  
-- update webpack and stylegist;
+- const styles = theme =>  - type for theme;
 - make mechanism that always returns top`est z-Index;
 - form generator - options -> props
 - replace calssnames with clsx;
+- -REMOVE LODASH DEBOUNCE!!!
