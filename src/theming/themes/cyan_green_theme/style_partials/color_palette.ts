@@ -4,7 +4,7 @@
 import { mergeDeepRight } from 'ramda';
 
 // local imports
-import { ColorPaletteType, ColorPaletteFuncType } from './../../../../types/theming/';
+import { ColorPaletteType, ColorPaletteFuncType } from './../../../../types/theming/color_palette_types';
 import { default as canonicalColorPaletteFunc } from './../../base_theme/style_partials/color_palette';
 
 // implementation

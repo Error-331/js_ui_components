@@ -4,7 +4,7 @@
 
 // local imports
 import { BaseStylesType } from './../../../../types/theming/base_style_types';
-import { NavigationStylesType } from './../../../../types/theming';
+import { NavigationStylesType } from './../../../../types/theming/navigation_style_types';
 
 // implementation
 const navigationStylesFunc = ({baseStyles}: {baseStyles: BaseStylesType}): NavigationStylesType => {
