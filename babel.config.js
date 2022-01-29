@@ -5,35 +5,36 @@ module.exports = function (api) {
         [
             "@babel/env",
             {
-                "modules": "auto",
-                "targets": {
+                modules: 'auto',
+                targets: {
                     "browsers": [ ">0.25%", "not ie 11", "not op_mini all"]
                 },
-                "useBuiltIns": "usage",
-                "corejs": 3
+
+                useBuiltIns: 'entry',
+                corejs: '3.9.0',
             }
         ],
-        ["@babel/flow"],
-        ["@babel/react"]
+        ['@babel/react'],
+        ['@babel/preset-typescript']
     ];
 
     const plugins = [
         [
-            "@babel/plugin-syntax-dynamic-import",
+            '@babel/plugin-syntax-dynamic-import',
         ],
         [
-            "@babel/plugin-proposal-object-rest-spread",
+            '@babel/plugin-proposal-object-rest-spread',
         ],
         [
-            "@babel/plugin-proposal-decorators",
+            '@babel/plugin-proposal-decorators',
             {
-                "legacy": true
+                'legacy': true
             }
         ],
         [
-            "@babel/plugin-proposal-class-properties",
+            '@babel/plugin-proposal-class-properties',
             {
-                "loose": true
+                'loose': true
             }
         ]
     ];
