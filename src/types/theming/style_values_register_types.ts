@@ -10,8 +10,11 @@ type ReleaseZIndexType = (oldZIndex?: ZIndexType) => void
 
 type StyleValuesRegisterType = {
     lastUsedZIndexes: Array<ZIndexType>,
+
+    isTop: (oldZIndex?: ZIndexType) => boolean,
+    releaseZIndex: ReleaseZIndexType,
+
     zIndex: ZIndexType,
-    releaseZIndex: ReleaseZIndexType
 }
 
 // exports
