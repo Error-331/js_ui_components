@@ -1,11 +1,11 @@
 'use strict';
 
 // external imports
-import * as React from 'react';
+import React, {useContext} from 'react'
 import { Classes } from 'jss';
 import { createUseStyles, useTheme } from 'react-jss';
-import { defaultTo, mergeDeepRight } from 'ramda';
 
+import { isNil, defaultTo, mergeDeepRight } from 'ramda';
 import classNames from 'classnames';
 
 // local imports
@@ -13,12 +13,23 @@ import { ThemeType } from './../../../types/theme_types';
 import { RenderFunctionNoArgsType } from './../../../types/common_types';
 
 import { REGULAR_FONT } from './../../../theming/constants/general_constants';
+import {MainThemeContext} from "../../../theming/providers/main_theme_provider";
 
 // type definitions
 type FontFamilyType = 'thin' | 'light' | 'regular' | 'bold';
 
-type PropsTypes =  {
-    accent?: boolean,
+type PropsTypes = {
+    /**
+     * The URL that the hyperlink points to
+     */
+
+    href?: string,
+
+    /**
+     * Font size
+     */
+
+    fontSize?: number,
 
     /**
      * Font family type ('thin', 'light', 'regular', 'bold')
@@ -33,7 +44,7 @@ type PropsTypes =  {
     className?: string,
 
     /**
-     * React style object for in deep control of how mark is represented
+     * React style object for in deep control of how header is represented
      */
 
     style?: React.CSSProperties,
@@ -47,34 +58,18 @@ type PropsTypes =  {
     children: React.ReactElement | null,
 };
 
-type StateTypes = {};
-
 // styles definition
 const useStyles = createUseStyles((theme: ThemeType) => {
-    const verticalPadding: number = (20 * theme.layoutStyles.bodyFontSize) / 100;
-    const horizontalPadding: number = (33 * theme.layoutStyles.bodyFontSize) / 100;
-
     return {
         componentContainer: {
-            marginRight: `${theme.layoutStyles.rightSpacing}px`,
-            padding: `${verticalPadding}px ${horizontalPadding}px ${verticalPadding}px ${horizontalPadding}px`,
-
-            fontFamily: theme.layoutStyles.fontStack,
-            fontSize: theme.layoutStyles.bodyFontSize,
-
-            backgroundColor: theme.layoutStyles.baseIconColor,
-            color: theme.layoutStyles.bodyBGColor,
-
-            '&.accent': {
-                backgroundColor: theme.baseStyles.accentColorPrimary,
-            }
+            textDecoration: 'underline',
+            color: theme.layoutStyles.linkFontColor,
         }
-    };
+    }
 });
 
 /**
- * Text mark styled according to material-UI guidelines.
- * Used alongside text blocks to highlight words, somehow similar to ['Chip'](#/UI%20Components/Buttons/ChipComponent) component but more minimalistic.
+ * Inline text link component styled according to material-UI guidelines.
  *
  * @version 1.0.0
  * @author [Sergei Selihov](https://github.com/Error-331)
@@ -82,13 +77,15 @@ const useStyles = createUseStyles((theme: ThemeType) => {
  */
 
 // component implementation
-function InlineMark(props: PropsTypes): React.ReactElement | null {
+const defaultStyleObject: React.CSSProperties = {};
+
+function InlineTextLink(props: PropsTypes): React.ReactElement | null {
     // region private variables declaration
-    const accent: boolean = defaultTo(false)(props.accent);
+    const href: string = defaultTo('#')(props.href);
     const fontFamilyType: string = defaultTo(REGULAR_FONT)(props.fontFamilyType);
 
     const className: string = defaultTo('')(props.className);
-    const style: React.CSSProperties = defaultTo({})(props.style);
+    const style: React.CSSProperties = defaultTo(defaultStyleObject)(props.style);
 
     // endregion
 
@@ -99,6 +96,8 @@ function InlineMark(props: PropsTypes): React.ReactElement | null {
     // endregion
 
     // region context hooks declaration
+    const mainThemeContext = useContext(MainThemeContext);
+
     // endregion
 
     // region state hooks declaration
@@ -128,20 +127,20 @@ function InlineMark(props: PropsTypes): React.ReactElement | null {
     // region render helpers
     const renderComponentContainer: RenderFunctionNoArgsType = (): React.ReactElement | null => {
         const { componentContainer } = classes;
-        const componentClassName: string = classNames(componentContainer, { accent }, className);
+        const componentClassName: string = classNames(componentContainer, className);
 
         const newStyle: React.CSSProperties = mergeDeepRight({
             fontFamily: theme.fontFamilyUtilities.getFontFamilyByType(theme, fontFamilyType),
+            fontSize: isNil(props.fontSize) ? 'inherit' : `${props.fontSize}px`,
         }, style);
 
-        return (
-            <span
-                className={componentClassName}
-                style={newStyle}
-            >
+        return <a
+            href={href}
+            className={componentClassName}
+            style={newStyle}
+        >
             {props.children}
-        </span>
-        );
+        </a>;
     };
 
     // endregion
@@ -150,11 +149,11 @@ function InlineMark(props: PropsTypes): React.ReactElement | null {
     return renderComponentContainer();
 }
 
-InlineMark.displayName = 'InlineMark';
+InlineTextLink.displayName = 'InlineTextLink';
 
 // exports
-export default InlineMark;
+export default InlineTextLink;
 export {
     FontFamilyType,
     PropsTypes,
-};
+}

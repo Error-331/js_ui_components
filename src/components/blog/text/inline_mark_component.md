@@ -18,7 +18,7 @@ Example usage of marks in conjunction with inline text block:
 
 ```jsx
 
-const InlineTextBlock = require('../../../../src1/components/layout/text/inline_text_block').default;
+const InlineTextBlock = require('./../../layout/text/inline_text_block').default;
 
 <div>
   <InlineMark>Video</InlineMark>
@@ -40,7 +40,7 @@ Example usage of marks inside of regular text block:
 
 ```jsx
 
-const TextBlock = require('../../../../src1/components/layout/text/text_block').default;
+const TextBlock = require('./../../layout/text/inline_text_block').default;
 
 <div>
   <TextBlock>
@@ -62,7 +62,7 @@ Example usage of marks (with custom font family type) in conjunction with inline
 
 ```jsx
 
-const InlineTextBlock = require('../../../../src1/components/layout/text/inline_text_block').default;
+const InlineTextBlock = require('./../../layout/text/inline_text_block').default;
 
 <div>
   <InlineMark fontFamilyType='bold'>VIDEO</InlineMark>

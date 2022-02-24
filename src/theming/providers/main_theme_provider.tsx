@@ -44,7 +44,13 @@ type StateTypes = {
 };
 
 // provider implementation
-const MainThemeContext = React.createContext();
+const defaultThemData = {
+    windowDimensions: null,
+    documentDimensions: null,
+    device: null,
+};
+
+const MainThemeContext = React.createContext(defaultThemData);
 
 function MainThemeProvider(props: PropsTypes): React.ReactNode {
     // region private variables declaration
@@ -57,11 +63,7 @@ function MainThemeProvider(props: PropsTypes): React.ReactNode {
     // endregion
 
     // region state hooks declaration
-    const [themeData, setThemeData] = useState({
-        windowDimensions: null,
-        documentDimensions: null,
-        device: null,
-    });
+    const [themeData, setThemeData] = useState(defaultThemData);
 
     // endregion
 

@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import injectSheet from 'react-jss';
 
 // local imports
-import {globalStylesFunc} from './../../../src/theming/common_styles/global_styles';
+import { globalStylesFunc } from '../../../src/theming/common_styles/global_styles';
 
 // styles definition
 const styles = theme => ({

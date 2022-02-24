@@ -8,7 +8,7 @@ const express = require('express');
 
 // exports
 module.exports = {
-    webpackConfig: require('./../webpack_configs/webpack.styleguidist.config.js'),
+    webpackConfig: Object.assign({}, require('./../webpack_configs/webpack.styleguidist.config.js'), {}),
 
     require: [
         "core-js/modules/es.promise",
@@ -63,7 +63,7 @@ module.exports = {
                         {
                             name: 'Text',
                             content: path.join(__dirname, './docs/blog/text/index.md'),
-                            components: path.join(__dirname, './../src/components/blog/text/**/[A-Za-z_]*_component.js'),
+                            components: path.join(__dirname, './../src/components/blog/text/**/[A-Za-z_]*_component.tsx'),
                         },
                     ],
 
@@ -74,10 +74,10 @@ module.exports = {
             sectionDepth: 15,
         },
 
-        {
+       /* {
             name: 'Demo',
             content: path.join(__dirname, './docs/demo/index.md'),
-        },
+        },*/
 
         {}
     ],

@@ -1,20 +1,29 @@
 'use strict';
 
-// @flowReact
-
 // external imports
-import {defaultTo, addIndex, reduce} from 'ramda';
+import { defaultTo, addIndex, reduce } from 'ramda';
 
 // local imports
-import type {SectionRowPositionFullDataType,} from './../../types/common_data_types';
+import { SectionRowPositionFullDataType } from './../../types/common_data_types';
 
-// type definitions
+// type declaration
+type ElementsRowPositionDataType = {
+    isFirst: boolean,
+    isLast?: boolean,
+    rowNum: number,
+}
+
+type AlignmentDataType = {
+    totalWidth: number,
+    currentRow: number,
+    elementsRowPositionData: Array<ElementsRowPositionDataType>,
+}
 
 // helper functions implementation
-const prepareElementsAlignmentData: ($elements: Array<HTMLDivElement>, sectionWidth: number, spacingBetweenElms: number) => SectionRowPositionFullDataType=
-    ($elements: Array<HTMLDivElement>, sectionWidth: number, spacingBetweenElms: number): SectionRowPositionFullDataType => {
+const prepareElementsAlignmentData: ($elements: HTMLCollection, sectionWidth: number, spacingBetweenElms: number) => SectionRowPositionFullDataType=
+    ($elements: HTMLCollection, sectionWidth: number, spacingBetweenElms: number): SectionRowPositionFullDataType => {
         return addIndex(reduce)(
-            (data, $element: HTMLDivElement, elementIndex: number) => {
+            (data: AlignmentDataType, $element: HTMLElement, elementIndex: number) => {
                 const elementClientRect: ClientRect = $element.getBoundingClientRect();
                 const elementWidth: number = elementClientRect.width;
 
@@ -51,10 +60,15 @@ const prepareElementsAlignmentData: ($elements: Array<HTMLDivElement>, sectionWi
 
             },
 
-            {totalWidth: 0, currentRow: 0, elementsRowPositionData: []},
-            $elements,
+            { totalWidth: 0, currentRow: 0, elementsRowPositionData: [] },
+            $elements as unknown as Array<HTMLElement>,
         );
     };
 
 // exports
-export {prepareElementsAlignmentData};
+export {
+    ElementsRowPositionDataType,
+    AlignmentDataType,
+
+    prepareElementsAlignmentData,
+};

@@ -1,7 +1,5 @@
 'use strict';
 
-// @flow
-
 // external imports
 
 // type definitions
@@ -20,4 +18,4 @@ const getComputedStylePixelVal: ($element: HTMLElement, propertyName: string) =>
 };
 
 // exports
-export {getComputedStylePixelVal};
+export { getComputedStylePixelVal };

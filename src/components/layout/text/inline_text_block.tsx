@@ -3,26 +3,43 @@
 // external imports
 import {Node, Element} from 'react';
 
-import React from 'react';
+import * as React from 'react';
 import {createUseStyles, useTheme} from 'react-jss';
-import {defaultTo} from "ramda";
+
+import {defaultTo, mergeDeepRight} from 'ramda';
 import classNames from 'classnames';
 
 // local imports
 import {ThemeType} from '../../../../src/types/theme_types';
 import {RenderFunctionNoArgsType} from '../../../../src/types/common_types';
 
+import {REGULAR_FONT} from '../../../../src/theming/constants/general_constants';
+
 // type definitions
+type FontFamilyType = 'thin' | 'light' | 'regular' | 'bold';
+
 type CSSStylesType = {
-    [string]: mixed,
+    [string]: mixed
 };
 
 type PropsTypes = {
     /**
+     * Font size
+     */
+
+    fontSize?: number,
+
+    /**
+     * Font family type ('thin', 'light', 'regular', 'bold')
+     */
+
+    fontFamilyType?: FontFamilyType,
+
+    /**
      * React style object for in deep control of how text block is represented
      */
 
-    style?: CSSStylesType,
+    style?: {[string]: mixed},
 
     /**
      * Name of the class which will be applied to text block along with default one
@@ -31,32 +48,22 @@ type PropsTypes = {
     className?: string,
 
     /**
-     * JSS inner classes
-     *
-     * @ignore
-     */
-
-    classes: any,
-
-    /**
      * Child node (with optional sub-nodes)
      */
 
     children?: React.ChildrenArray<any>,
 };
 
+// styles definition
 const useStyles = createUseStyles(theme => ({
     componentContainer: {
-        fontFamily: theme.layoutStyles.fontStack,
-        fontSize: theme.layoutStyles.bodyFontSize,
         lineHeight: theme.layoutStyles.bodyFontLineHeight,
-
         color: theme.layoutStyles.bodyFontColor,
     }
 }));
 
 /**
- * Text block component styled according to material-UI guidelines.
+ * Inline text block component styled according to material-UI guidelines.
  * Used to represent simple text blocks, captions, labels and etc.
  *
  * @version 1.0.0
@@ -65,8 +72,10 @@ const useStyles = createUseStyles(theme => ({
  */
 
 // component implementation
-function TextBlock(props: PropsTypes) {
+function InlineTextBlock(props: PropsTypes) {
     // region private variables declaration
+    const fontFamilyType: string = defaultTo(REGULAR_FONT)(props.fontFamilyType);
+
     const className: string = defaultTo('')(props.className);
     const style: CSSStylesType = defaultTo({})(props.style);
 
@@ -110,7 +119,14 @@ function TextBlock(props: PropsTypes) {
         const {componentContainer} = classes;
         const componentClassNames: string = classNames(componentContainer, className);
 
-        return <div className={componentClassNames} style={{...style}}>{props.children}</div>;
+        const fontSize: number = defaultTo(theme.layoutStyles.bodyFontSize)(props.fontSize);
+
+        const newStyle: CSSStylesType = mergeDeepRight({
+            fontFamily: theme.fontFamilyUtilities.getFontFamilyByType(theme, fontFamilyType),
+            fontSize: `${fontSize}px`,
+        }, style);
+
+        return <span className={componentClassNames} style={{...newStyle}}>{props.children}</span>;
     };
 
     // endregion
@@ -120,4 +136,5 @@ function TextBlock(props: PropsTypes) {
 }
 
 // exports
-export default TextBlock;
+export default InlineTextBlock;
+export { FontFamilyType };

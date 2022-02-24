@@ -8,7 +8,7 @@ import { ReactNode, SyntheticEvent } from 'react';
 // type declaration
 type DOMElementEventSource = HTMLElement | Window | Document;
 
-type RenderFunctionNoArgsType = () => ReactNode;
+type RenderFunctionNoArgsType = () => React.ReactElement | null;
 type DOMEventHandlerType = (event: Event) => void;
 type EventHandlerType = (event: SyntheticEvent<HTMLElement>) => void;
 type InputEventHandlerType = (event: SyntheticEvent<HTMLInputElement>) => void;

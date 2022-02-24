@@ -255,6 +255,7 @@ https://codepen.io/TrevorWelch/pen/NwERXE
 - layoutStyles.headerBorderRadius -> something;  
 - const styles = theme =>  - type for theme;
 - make mechanism that always returns top`est z-Index;
-- form generator - options -> props
-- replace calssnames with clsx;
-- -REMOVE LODASH DEBOUNCE!!!
+- form generator - options -> props;
+- REMOVE LODASH DEBOUNCE!!!;
+- replace examples with classes to functions;
+- remove everything related to dom_types events;

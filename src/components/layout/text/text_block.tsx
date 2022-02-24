@@ -1,28 +1,25 @@
 'use strict';
 
 // external imports
-import {Node, Element} from 'react';
+import React, {useContext} from 'react';
+import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-import React from 'react';
-import {createUseStyles, useTheme} from 'react-jss';
-import {defaultTo} from "ramda";
 import classNames from 'classnames';
+import { defaultTo } from 'ramda';
 
 // local imports
-import {ThemeType} from '../../../../src/types/theme_types';
-import {RenderFunctionNoArgsType} from '../../../../src/types/common_types';
+import { ThemeType } from './../../../../src/types/theme_types';
+import { RenderFunctionNoArgsType } from './../../../../src/types/common_types';
+import {MainThemeContext} from "../../../theming/providers/main_theme_provider";
 
 // type definitions
-type CSSStylesType = {
-    [string]: mixed,
-};
-
 type PropsTypes = {
     /**
      * React style object for in deep control of how text block is represented
      */
 
-    style?: CSSStylesType,
+    style?: React.CSSProperties,
 
     /**
      * Name of the class which will be applied to text block along with default one
@@ -31,29 +28,25 @@ type PropsTypes = {
     className?: string,
 
     /**
-     * JSS inner classes
-     *
-     * @ignore
-     */
-
-    classes: any,
-
-    /**
      * Child node (with optional sub-nodes)
      */
 
-    children?: React.ChildrenArray<any>,
+    children?: React.ReactElement | null,
 };
 
-const useStyles = createUseStyles(theme => ({
-    componentContainer: {
-        fontFamily: theme.layoutStyles.fontStack,
-        fontSize: theme.layoutStyles.bodyFontSize,
-        lineHeight: theme.layoutStyles.bodyFontLineHeight,
+// styles definition
+const useStyles = createUseStyles((theme: ThemeType) => {
+    return {
+        componentContainer: {
+            fontFamily: theme.layoutStyles.fontStack,
+            fontSize: theme.layoutStyles.bodyFontSize,
+            lineHeight: theme.layoutStyles.bodyFontLineHeight,
 
-        color: theme.layoutStyles.bodyFontColor,
+            color: theme.layoutStyles.bodyFontColor,
+        }
+
     }
-}));
+});
 
 /**
  * Text block component styled according to material-UI guidelines.
@@ -65,20 +58,24 @@ const useStyles = createUseStyles(theme => ({
  */
 
 // component implementation
-function TextBlock(props: PropsTypes) {
+const defaultStyleObject: React.CSSProperties = {};
+
+function TextBlock(props: PropsTypes): React.ReactElement | null {
     // region private variables declaration
     const className: string = defaultTo('')(props.className);
-    const style: CSSStylesType = defaultTo({})(props.style);
+    const style: React.CSSProperties = defaultTo(defaultStyleObject)(props.style);
 
     // endregion
 
     // region style hooks declaration
     const theme: ThemeType = useTheme();
-    const classes: {[string]: string} = useStyles({...props, theme});
+    const classes: Classes = useStyles({...props, theme});
 
     // endregion
 
     // region context hooks declaration
+    const mainThemeContext = useContext(MainThemeContext);
+
     // endregion
 
     // region state hooks declaration
@@ -106,11 +103,11 @@ function TextBlock(props: PropsTypes) {
     // endregion
 
     // region render helpers
-    const renderComponentContainer: RenderFunctionNoArgsType = (): Node => {
-        const {componentContainer} = classes;
+    const renderComponentContainer: RenderFunctionNoArgsType = (): React.ReactElement | null => {
+        const { componentContainer } = classes;
         const componentClassNames: string = classNames(componentContainer, className);
 
-        return <div className={componentClassNames} style={{...style}}>{props.children}</div>;
+        return <div className={componentClassNames} style={style}>{props.children}</div>;
     };
 
     // endregion
@@ -121,3 +118,6 @@ function TextBlock(props: PropsTypes) {
 
 // exports
 export default TextBlock;
+export {
+    PropsTypes,
+}

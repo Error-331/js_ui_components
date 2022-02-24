@@ -1,14 +1,14 @@
 'use strict';
 
 // external imports
-import React, {Component} from 'react';
-import {Provider as ReactReduxProvider} from 'react-redux';
-import {BrowserRouter} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Provider as ReactReduxProvider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
 // local imports
 import store from './../store';
 import StyleGuideContainer from './style_guide_container';
-import {MainThemeProvider} from './../../../src/theming';
+import { MainThemeProvider } from './../../../src/theming/providers/main_theme_provider';
 
 // Component implementation
 class MainContainer extends Component {
